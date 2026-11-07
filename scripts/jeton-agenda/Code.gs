@@ -2,7 +2,7 @@
    Le script tourne avec le compte du propriétaire et ne répond qu'à lui :
    il vérifie d'abord que la demande vient bien de sa session dans l'appli. */
 const ALLOWED_EMAIL = "t.mallet06@gmail.com";
-const FIREBASE_API_KEY = "A_REMPLIR"; // clé publique Firebase, déjà visible dans firebase-config.js
+const FIREBASE_API_KEY = "AIzaSyBgYrV_-hMre0i_0IBGU70yAopTrFIXK0E"; // clé publique Firebase, déjà visible dans firebase-config.js
 
 function doPost(e) {
   let out;
