@@ -716,7 +716,7 @@ nav.tabs a[aria-current="page"]{background:#E4F1FA!important;color:#0B3A5C!impor
 
 
 <script>
-var APP_VERSION = "MyWorld_0.5";
+var APP_VERSION = "MyWorld_0.6";
 (function(){
 "use strict";
 var CAL = "t.mallet06@gmail.com";
@@ -1217,14 +1217,16 @@ function watchCal(){
   }, {refetchInterval: 300000});
 }
 function reminders(time, date, rappel){
-  var r = rappel ? [0] : [20160, 10080, 1440];
-  if (time && !rappel){ var p = time.split(":"), mins = (+p[0])*60 + (+p[1]||0); if (mins - 480 > 90) r.push(mins - 480); r.push(60); }
+  /* Une seule notification, le jour même : à 8 h, ou 1 h avant si le rendez-vous commence avant 9 h 30.
+     Rappel seul (« rappelle-moi… ») : à l'heure pile. Si l'heure prévue est déjà passée, on prend la suivante possible. */
+  var c = [0];
+  if (time && !rappel){ var p = time.split(":"), mins = (+p[0])*60 + (+p[1]||0); c = mins - 480 >= 90 ? [mins - 480, 60, 1] : [60, 1]; }
   if (date && time){
     var q = time.split(":"), start = new Date(+date.slice(0,4), +date.slice(5,7)-1, +date.slice(8,10), +q[0], +q[1]||0).getTime(), now = Date.now();
-    r = r.filter(function(m){ return start - m*60000 > now + 30000; });
-    if (!r.length && start > now) r = [0];
+    var ok = c.filter(function(m){ return start - m*60000 > now + 30000; });
+    c = ok.length ? ok : [rappel || !time ? 0 : 1]; /* 0 min seul = « rappel » pour l'appli, donc 1 min pour un rendez-vous */
   }
-  return r.map(function(m){ return {method:"popup", minutes:m}; });
+  return [{method:"popup", minutes:c[0]}];
 }
 function remindersText(r){
   var labels = {20160:"J-14",10080:"J-7",1440:"la veille",60:"1 h avant",0:"à l'heure pile"};
@@ -1238,7 +1240,7 @@ function createCalEvent(o){
   if (!mcp) return Promise.reject({code:"not_granted"});
   var input = {calendarId:CAL, summary:o.title};
   if (o.time){ input.startTime = o.date + "T" + o.time + ":00"; input.endTime = o.endTime ? o.date + "T" + o.endTime + ":00" : endOf(o.date, o.time); input.overrideReminders = reminders(o.time, o.date, o.reminder); }
-  else { input.allDay = true; input.startTime = o.date + "T00:00:00"; input.endTime = iso(addDays(parseISO(o.date),1)) + "T00:00:00"; input.overrideReminders = [{method:"popup",minutes:19620},{method:"popup",minutes:9540},{method:"popup",minutes:300}]; }
+  else { input.allDay = true; input.startTime = o.date + "T00:00:00"; input.endTime = iso(addDays(parseISO(o.date),1)) + "T00:00:00"; input.overrideReminders = [{method:"popup",minutes:240}]; /* journée entière : Google ne permet pas de notifier après minuit du jour même, donc la veille à 20 h */ }
   if (o.yearly) input.recurrenceData = ["RRULE:FREQ=YEARLY"];
   if (o.place) input.location = o.place;
   if (o.cat && CATS[o.cat] && CATS[o.cat].color) input.colorId = CATS[o.cat].color;
