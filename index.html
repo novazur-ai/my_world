@@ -290,6 +290,7 @@ html{overflow-x:hidden}
 .bg-nuit{background:radial-gradient(circle at 20% 20%,rgba(255,255,255,.35) 1px,transparent 1.5px) 0 0/34px 34px,radial-gradient(circle at 70% 60%,rgba(255,255,255,.25) 1px,transparent 1.5px) 0 0/52px 52px,linear-gradient(160deg,#24476F,#173455)}
 .bg-rose{background:linear-gradient(160deg,#FFF4F6,#F8DCE4)}
 .bg-lavande{background:linear-gradient(160deg,#F7F3FC,#E4DAF3)}
+.bg-azur{background:linear-gradient(160deg,#EAF5FB,#CFE7F5)}
 .ncard2.dark,.note-editor.dark{color:#F4F1FF;border-color:#2E5884}
 .ncard2.dark .nc-p,.ncard2.dark .nc-d,.note-editor.dark .ne-meta{color:#C9D6EA}
 .ncard2.dark .nc-pin{color:#F6D77A}
@@ -675,10 +676,8 @@ nav.tabs a[aria-current="page"]{background:#E4F1FA!important;color:#0B3A5C!impor
   <p id="gateMsg" role="alert"></p>
 </div>
 <div id="paper" aria-hidden="true"></div>
-<div id="drift" aria-hidden="true"></div>
 
 <div id="app">
-  <div id="washes" aria-hidden="true"></div>
   <header class="hd" id="hero"></header>
 
   <div class="gut" id="captureZone">
@@ -715,7 +714,7 @@ nav.tabs a[aria-current="page"]{background:#E4F1FA!important;color:#0B3A5C!impor
 
 
 <script>
-var APP_VERSION = "MyWorld_0.3";
+var APP_VERSION = "MyWorld_0.4";
 (function(){
 "use strict";
 var CAL = "t.mallet06@gmail.com";
@@ -737,8 +736,7 @@ var JOURS = ["dim.","lun.","mar.","mer.","jeu.","ven.","sam."];
 var JOURS_L = ["dimanche","lundi","mardi","mercredi","jeudi","vendredi","samedi"];
 var MOIS = ["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"];
 
-var S = { items:[], people:[], log:[], gazette:[], settings:null, gcal:[], gcalState:"loading", gcalMsg:"", dbState:"loading", view:"accueil", topicFilter:"Tout", monthOffset:0, accSection:"tout", monthSel:null, gcalExtra:{}, monthLoading:{}, monthErr:{} };
-try { var savedSec = localStorage.getItem("accSection"); if (["tout","briefing","semaine","quete","anniv"].indexOf(savedSec) >= 0) S.accSection = savedSec; } catch(err){}
+var S = { items:[], people:[], log:[], gazette:[], settings:null, gcal:[], gcalState:"loading", gcalMsg:"", dbState:"loading", view:"accueil", topicFilter:"Tout", monthOffset:0, monthSel:null, gcalExtra:{}, monthLoading:{}, monthErr:{} };
 var db = null, mcp = null;
 
 /* ---------- utilitaires ---------- */
@@ -758,75 +756,13 @@ function nextOccurrence(md){ var t = today(); var p = md.split("-"); var d = new
 function sinceText(n){ if (n < 7) return n + " jour" + (n>1?"s":""); var w = Math.round(n/7); if (w < 9) return w + " semaine" + (w>1?"s":""); return Math.round(n/30) + " mois"; }
 
 /* ---------- décors du carnet : un thème par mois, plus Noël, le Nouvel An et l'anniversaire ---------- */
-var THEMES = [{"name": "Janvier", "motto": "Nouveau départ · Nouvel espoir · Nouvelle toi", "c": {"paper": "#FAF9F7", "dot": "rgba(80,100,140,0.16)", "ink": "#3E5C8A", "inkSoft": "#5A6E92", "band": "#E4EBF6", "line": "#C3CFE2", "glow": "#DCE6F4", "wash": "#CFDCEE"}, "motif": "snowflake", "week": "mitten", "quest": "pine", "liens": "snowflake", "bday": "mug_cocoa", "spark": "sparkle_blue", "fall": "snow", "hero": "img/01-janvier-haut.webp", "title": {"left": 100, "top": 66, "width": 190}, "size": 54, "halo": true, "brief": {"src": "img/01-janvier-brief.webp", "r": 1.2277}, "foot": {"src": "img/01-janvier-foot.webp", "r": 1.0181}}, {"name": "Février", "motto": "Aime plus · Inquiète-toi moins · Sois douce", "c": {"paper": "#FDF8F6", "dot": "rgba(170,90,110,0.14)", "ink": "#B04A6E", "inkSoft": "#9A5A72", "band": "#FAE3EA", "line": "#EBC8D3", "glow": "#FBDDE6", "wash": "#F6CAD8"}, "motif": "heart", "week": "rose", "quest": "heart", "liens": "blossom", "bday": "rose", "spark": "sparkle_pink", "fall": "petals", "hero": "img/02-fevrier-haut.webp", "title": {"left": 100, "top": 74, "width": 190}, "size": 54, "halo": false, "brief": {"src": "img/02-fevrier-brief.webp", "r": 0.9758}, "foot": {"src": "img/02-fevrier-foot.webp", "r": 0.9371}}, {"name": "Mars", "motto": "Fleurir · Grandir · Se transformer", "c": {"paper": "#FBFAF3", "dot": "rgba(90,120,70,0.15)", "ink": "#4E7A48", "inkSoft": "#5E7A56", "band": "#F9E2EA", "line": "#D2DFC6", "glow": "#E8F1DC", "wash": "#F6D3DF"}, "motif": "tulip_pink", "week": "butterfly", "quest": "tulip_yellow", "liens": "sprig_green", "bday": "tulip_yellow", "spark": "sparkle_gold", "fall": "petals-white", "hero": "img/03-mars-haut.webp", "title": {"left": 160, "top": 58, "width": 160}, "size": 56, "halo": false, "brief": {"src": "img/03-mars-brief.webp", "r": 0.9887}, "foot": {"src": "img/03-mars-foot.webp", "r": 0.9548}}, {"name": "Avril", "motto": "Respirer · Se renouveler · Se réjouir", "c": {"paper": "#F9FAF6", "dot": "rgba(80,100,140,0.14)", "ink": "#4A6A8E", "inkSoft": "#5A7090", "band": "#E3EAF6", "line": "#C8D4E6", "glow": "#E2EBF5", "wash": "#D8D2EE"}, "motif": "raindrop", "week": "raindrop", "quest": "hydrangea", "liens": "leaf_green", "bday": "hydrangea", "spark": "sparkle_blue", "fall": "rain", "hero": "img/04-avril-haut.webp", "title": {"left": 110, "top": 52, "width": 170}, "size": 56, "halo": true, "brief": {"src": "img/04-avril-brief.webp", "r": 0.9806}, "foot": {"src": "img/04-avril-foot.webp", "r": 0.8855}}, {"name": "Mai", "motto": "Vis pleinement · Rêve grand · Sois reconnaissante", "c": {"paper": "#FCFBF3", "dot": "rgba(90,120,70,0.15)", "ink": "#5A8448", "inkSoft": "#5E7A50", "band": "#E9F2DC", "line": "#D0E0BF", "glow": "#F3F6D8", "wash": "#E0EDCC"}, "motif": "muguet", "week": "daisy", "quest": "bee", "liens": "daisy", "bday": "muguet", "spark": "sparkle_gold", "fall": "pollen", "hero": "img/05-mai-haut.webp", "title": {"left": 105, "top": 46, "width": 180}, "size": 58, "halo": true, "brief": {"src": "img/05-mai-brief.webp", "r": 0.8919}, "foot": {"src": "img/05-mai-foot.webp", "r": 0.7339}}, {"name": "Juin", "motto": "Brille · Reste positive · Bonnes ondes", "c": {"paper": "#FFFBF2", "dot": "rgba(60,120,130,0.14)", "ink": "#2A7484", "inkSoft": "#3E7480", "band": "#DDF1F0", "line": "#BFE0DF", "glow": "#FCECBE", "wash": "#BFE6E6"}, "motif": "sun", "week": "seashell", "quest": "lemon", "liens": "starfish", "bday": "hibiscus", "spark": "sparkle_gold", "fall": "sparkle", "hero": "img/06-juin-haut.webp", "title": {"left": 100, "top": 54, "width": 190}, "size": 58, "halo": false, "brief": {"src": "img/06-juin-brief.webp", "r": 1.0385}, "foot": {"src": "img/06-juin-foot.webp", "r": 1.1355}, "heroFilter": "saturate(0.82) brightness(1.04)", "noGlow": true}, {"name": "Juillet", "motto": "Savoure le soleil · Poursuis tes rêves · Crée des souvenirs", "c": {"paper": "#FFF8F0", "dot": "rgba(180,90,50,0.14)", "ink": "#C2522E", "inkSoft": "#A8583A", "band": "#FCE4D4", "line": "#F0C9B0", "glow": "#FCE0BC", "wash": "#F8CDB0"}, "motif": "sun", "week": "icecream", "quest": "starfish", "liens": "watermelon", "bday": "icecream", "spark": "sparkle_orange", "fall": "fireflies", "hero": "img/07-juillet-haut.webp", "title": {"left": 98, "top": 34, "width": 194}, "size": 54, "halo": true, "brief": {"src": "img/07-juillet-brief.webp", "r": 1.1481}, "foot": {"src": "img/07-juillet-foot.webp", "r": 1.1091}}, {"name": "Août", "motto": "Nouveau mois · Nouveaux départs · Mille possibles", "c": {"paper": "#FFFAEE", "dot": "rgba(170,130,50,0.15)", "ink": "#A87A1E", "inkSoft": "#8E6A24", "band": "#FBEFC6", "line": "#EEDCA6", "glow": "#FBE6A6", "wash": "#F6DC8E"}, "motif": "sunflower", "week": "wheat", "quest": "peach", "liens": "wheat", "bday": "peach", "spark": "sparkle_gold", "fall": "pollen-gold", "hero": "img/08-aout-haut.webp", "title": {"left": 98, "top": 56, "width": 194}, "size": 58, "halo": false, "brief": {"src": "img/08-aout-brief.webp", "r": 1.2229}, "foot": {"src": "img/08-aout-foot.webp", "r": 0.979}}, {"name": "Septembre", "motto": "Lâche prise · Apprends · Avance", "c": {"paper": "#FCF7EC", "dot": "rgba(150,110,50,0.15)", "ink": "#946422", "inkSoft": "#80602E", "band": "#F6EACB", "line": "#E6D3A8", "glow": "#F4E0AE", "wash": "#EFD6A0"}, "motif": "leaf_gold", "week": "pencil", "quest": "acorn", "liens": "leaf_gold", "bday": "apple", "spark": "sparkle_gold", "fall": "leaves-gold", "hero": "img/09-septembre-haut.webp", "title": {"left": 105, "top": 60, "width": 180}, "size": 50, "halo": true, "brief": {"src": "img/09-septembre-brief.webp", "r": 1.19}, "foot": {"src": "img/09-septembre-foot.webp", "r": 1.0368}}, {"name": "Octobre", "motto": "Sois courageuse · Ose · Vois la magie", "c": {"paper": "#F8F6FB", "dot": "rgba(90,80,140,0.15)", "ink": "#5B4A8C", "inkSoft": "#6A5E92", "band": "#ECE7F6", "line": "#D5CDE8", "glow": "#F4ECD6", "wash": "#DCD4EE"}, "motif": "maple", "week": "lantern", "quest": "acorn", "liens": "berries", "bday": "pumpkin", "spark": "sparkle_orange", "fall": "leaves-orange", "hero": "img/10-octobre-haut.webp", "title": {"left": 105, "top": 92, "width": 180}, "size": 52, "halo": true, "brief": {"src": "img/10-octobre-brief.webp", "r": 0.9581}, "foot": {"src": "img/10-octobre-foot.webp", "r": 1.0065}}, {"name": "Novembre", "motto": "Sois reconnaissante · Reste humble · Continue", "c": {"paper": "#FCF6EA", "dot": "rgba(160,120,50,0.16)", "ink": "#A0702A", "inkSoft": "#8E6312", "band": "#FBE6B4", "line": "#E9D4AA", "glow": "#FBE2A8", "wash": "#F4D59C"}, "motif": "maple_gold", "week": "wheat", "quest": "acorn", "liens": "mug_tea", "bday": "berries", "spark": "sparkle_gold", "fall": "leaves-brown", "hero": "img/11-novembre-haut.webp", "title": {"right": 10, "top": 70, "width": 214}, "size": 56, "halo": false, "brief": {"src": "img/11-novembre-brief.webp", "r": 1.0994}, "foot": {"src": "img/11-novembre-foot.webp", "r": 1.0197}}, {"name": "Décembre", "motto": "Sois joyeuse · Répands l'amour · Garde espoir", "c": {"paper": "#FBF8F4", "dot": "rgba(60,100,80,0.14)", "ink": "#2E6450", "inkSoft": "#3E6656", "band": "#F5E1E1", "line": "#D9CFC6", "glow": "#F3DCDC", "wash": "#D6E6DC"}, "motif": "star", "week": "ornament_red", "quest": "holly", "liens": "ornament_gold", "bday": "gift", "spark": "sparkle_gold", "fall": "snow", "hero": "img/12-decembre-haut.webp", "title": {"right": 4, "top": 46, "width": 196}, "size": 50, "halo": true, "brief": {"src": "img/12-decembre-brief.webp", "r": 0.8581}, "foot": {"src": "img/12-decembre-foot.webp", "r": 1.1355}}];
-var FETE_THEMES = {"noel": {"base": 11, "name": "Noël", "motto": "Partage · Savoure · Émerveille-toi", "fall": "snow", "hero": "img/noel-haut.webp", "title": {"left": 100, "top": 66, "width": 190}, "size": 52, "halo": true, "brief": {"src": "img/noel-brief.webp", "r": 1.1314}, "foot": {"src": "img/noel-foot.webp", "r": 1.0877}}, "anniv": {"base": 10, "noGlow": true, "heroFilter": "saturate(0.78) brightness(1.06)", "name": "Joyeux anniversaire", "motto": "Célèbre-toi · Souris · Savoure", "fall": "confetti", "hero": "img/anniv-haut.webp", "title": {"left": 80, "top": 50, "width": 230}, "size": 46, "halo": false, "brief": {"src": "img/anniv-brief.webp", "r": 0.8742}, "foot": {"src": "img/anniv-foot.webp", "r": 0.8435}}, "nouvel-an": {"base": 11, "name": "Nouvel An", "motto": "Célèbre · Remercie · Recommence", "fall": "sparkle", "c": {"paper": "#FAF9F6", "dot": "rgba(60,80,130,0.14)", "ink": "#34507F", "inkSoft": "#4D6288", "band": "#E6EAF4", "line": "#CDD5E6", "glow": "#F6EBC8", "wash": "#DDE3F1"}, "motif": "star", "week": "ornament_gold", "quest": "star", "liens": "ornament_gold", "bday": "gift", "hero": "img/nouvel-an-haut.webp", "title": {"left": 100, "top": 66, "width": 190}, "size": 46, "halo": true, "brief": {"src": "img/nouvel-an-brief.webp", "r": 1.181}, "foot": {"src": "img/nouvel-an-foot.webp", "r": 1.1293}}};
 
-var FETE_NAMES = {noel:"Noël", "nouvel-an":"Nouvel An", anniv:"Mon anniversaire"};
 function between(d, a, b){ return d >= a && d <= b; }
-function stk(name){ return "stk/" + name + ".svg"; }
-function previewMonth(){ try { var v = localStorage.getItem("previewMonth"); if (v === null || v === "") return null; if (FETE_THEMES[v]) return v; if (!isNaN(+v) && +v >= 0 && +v <= 11) return +v; } catch(e){} return null; }
-function currentFete(t){
-  var y = t.getFullYear(), bd = S.settings && S.settings.birthday;
-  if (bd){ var occ = nextOccurrence(bd), prev = new Date(occ.getFullYear()-1, occ.getMonth(), occ.getDate()); var dn = diffDays(t, occ), dp = diffDays(prev, t); if (dn <= 3 || dp <= 1) return "anniv"; }
-  if (between(t, new Date(y,11,21), new Date(y,11,27))) return "noel";
-  if (between(t, new Date(y,11,28), new Date(y,11,31)) || between(t, new Date(y,0,1), new Date(y,0,2))) return "nouvel-an";
-  return "";
-}
 function applyMonth(){
-  var t = today(), pm = previewMonth(), fete = "", mi = t.getMonth();
-  if (pm === null) fete = currentFete(t);
-  else if (typeof pm === "string") fete = pm;
-  else mi = pm;
-  var base, th;
-  if (fete){ var f = FETE_THEMES[fete]; base = THEMES[f.base]; th = Object.assign({}, base, f); }
-  else th = Object.assign({}, THEMES[mi]);
-  th.fete = fete; th.mi = fete ? FETE_THEMES[fete].base : mi;
-  /* Nouvelle direction : blanc, anthracite et couleurs des domaines, plus de teinte par mois */
-  var c = {paper:"#FFFFFF", dot:"transparent", ink:"#26262C", inkSoft:"#5E5E68", band:"#EEEEF2", line:"#E6E6EC", glow:"transparent", wash:"transparent"}, r = document.documentElement.style;
-  r.setProperty("--paper", c.paper); r.setProperty("--dot", c.dot); r.setProperty("--ink", c.ink); r.setProperty("--ink-soft", c.inkSoft);
-  r.setProperty("--band", c.band); r.setProperty("--line", c.line); r.setProperty("--glow", c.glow); r.setProperty("--wash", c.wash);
+  /* palette fixe (ambiance Riviera : le bleu vient du CSS) */
+  var c = {paper:"#FFFFFF", dot:"transparent", ink:"#26262C", "ink-soft":"#5E5E68", band:"#EEEEF2", line:"#E6E6EC", glow:"transparent", wash:"transparent"}, r = document.documentElement.style;
+  Object.keys(c).forEach(function(k){ r.setProperty("--" + k, c[k]); });
   var meta = document.querySelector('meta[name="theme-color"]'); if (meta) meta.content = "#0B4F7C";
-  var key = (fete || mi) + "";
-  if (S.sceneKey !== key){
-    document.getElementById("washes").innerHTML = ""; if (false) document.getElementById("washes").innerHTML = (th.noGlow ? "" : '<div class="wash" style="left:-120px;top:-120px;width:420px;height:360px;background:radial-gradient(closest-side,var(--glow),transparent);opacity:.95"></div>')
-      + '<div class="wash" style="right:-160px;top:520px;width:360px;height:360px;background:radial-gradient(closest-side,var(--wash),transparent);opacity:.55"></div>'
-      + '<div class="wash" style="left:-170px;top:1200px;width:380px;height:380px;background:radial-gradient(closest-side,var(--wash),transparent);opacity:.5"></div>';
-    S.sceneKey = key;
-  }
-  S.theme = th; S.monthIdx = th.mi; S.fall = th.fall;
-}
-function makePaper(){}
-var FALLS = {
-  snow:{cols:["#FFFFFF","#EEF2FA","#DCE4F2"], shape:"dot", r:4},
-  petals:{cols:["#F7B8CC","#FBD3DF","#F49AB3"], shape:"petal"},
-  "petals-white":{cols:["#FFFFFF","#FBE1EA","#F7C6D6"], shape:"petal"},
-  rain:{cols:["#9FB7C4"], shape:"rain"},
-  pollen:{cols:["#FFF6C8","#FFFFFF","#F8DA6A"], shape:"dot", r:2.4},
-  sparkle:{cols:["#F6D77A","#FFF6D6","#E9C25A"], shape:"dot", r:2.2},
-  fireflies:{cols:["#FFE0A0","#FFC872"], shape:"dot", r:2.6},
-  "pollen-gold":{cols:["#F4C02E","#F8DA6A","#FFF0B8"], shape:"dot", r:2.4},
-  "leaves-gold":{cols:["#E8B754","#D9A441","#F2CF7A","#C98E36"], shape:"leaf"},
-  "leaves-orange":{cols:["#E8733A","#F4A04E","#D9733A","#C9502A","#EE9B52"], shape:"leaf"},
-  "leaves-brown":{cols:["#B0703E","#8A5A3A","#C98A4E","#D9A441"], shape:"leaf"},
-  confetti:{cols:["#F2C29E","#CDB9E4","#A9D3E8","#F3C6D6","#F6D77A"], shape:"petal"}
-};
-function makeDrift(){
-  var el = document.getElementById("drift"); el.textContent = "";
-  var f = FALLS[S.fall] || FALLS.sparkle, n = f.shape === "rain" ? 14 : 8;
-  for (var i=0;i<n;i++){
-    var d = document.createElementNS("http://www.w3.org/2000/svg","svg"), col = f.cols[i % f.cols.length];
-    var w = f.shape === "rain" ? 4 : 11 + Math.round(Math.random()*6);
-    d.setAttribute("width", w); d.setAttribute("height", f.shape === "rain" ? 16 : Math.round(w*.75)); d.setAttribute("viewBox", f.shape === "rain" ? "0 0 4 16" : "0 0 16 12");
-    d.setAttribute("class", "faller" + (f.shape === "rain" ? " raindrop" : ""));
-    d.style.left = (3 + Math.random()*94) + "%";
-    d.style.animationDuration = (f.shape === "rain" ? 1.6 + Math.random()*.8 : 16 + Math.random()*9) + "s";
-    d.style.animationDelay = (-Math.random()*(f.shape === "rain" ? 2 : 20)) + "s";
-    d.innerHTML = f.shape === "rain" ? '<path d="M3 0 L1 16" stroke="' + col + '" stroke-width="1.2" stroke-linecap="round" opacity=".7"/>'
-      : f.shape === "dot" ? '<circle cx="8" cy="6" r="' + f.r + '" fill="' + col + '" opacity=".9"/>'
-      : f.shape === "petal" ? '<ellipse cx="8" cy="6" rx="6" ry="3.6" fill="' + col + '"/>'
-      : '<path d="M1 6 C 5 0, 11 0, 15 6 C 11 12, 5 12, 1 6 Z" fill="' + col + '"/><path d="M1 6 L15 6" stroke="rgba(25,25,35,.35)" stroke-width=".8"/>';
-    el.appendChild(d);
-  }
 }
 
 
@@ -910,19 +846,9 @@ function eventsOn(dIso){
   });
   S.items.forEach(function(i){
     if (i.kind === "event" && i.date === dIso){ var sp2 = splitTitle(i.title, i.place); list.push({title:i.title, time:i.time, endTime:i.endTime, place:i.place, todo:!i.time, id:i._id, src:"draft", unsynced:i.unsynced, cat:i.cat || guessCat(sp2.core, sp2.place, sp2.people), date:i.date}); }
-    if (i.kind === "followup" && !i.done && i.date === dIso) list.push({title:i.title, meta:"Prendre des nouvelles", note:"Prendre des nouvelles", src:"follow", cat:"famille"});
     if (i.kind === "birthday" && i.md && i.md === dIso.slice(5) && !all.some(function(e){ return e.date === dIso && /anniv/i.test(e.title) && e.title.indexOf(i.person||"@@") >= 0; })) list.push({title:"Anniversaire de " + i.person, meta:"Toute la journée", src:"bday", cat:"famille"});
   });
   return list.sort(function(a,b){ return (a.time||"00:00") < (b.time||"00:00") ? -1 : 1; });
-}
-function dueLinks(){
-  var t = today(), out = [];
-  S.people.forEach(function(p){
-    var days = p.last ? diffDays(parseISO(p.last), t) : null;
-    if (days == null || days >= (p.every||14)) out.push({type:"person", id:p._id, name:p.name, text: days == null ? "Note ton prochain échange pour suivre le rythme" : "Pas de nouvelles depuis " + sinceText(days), days: days == null ? 999 : days});
-  });
-  S.items.forEach(function(i){ if (i.kind === "followup" && !i.done && i.date && diffDays(t, parseISO(i.date)) <= 0) out.push({type:"follow", id:i._id, name:i.person || "Un proche", text:i.title, days:1000}); });
-  return out.sort(function(a,b){ return b.days - a.days; });
 }
 function upcomingBirthdays(){
   var t = today();
@@ -934,21 +860,18 @@ var VINE = '<svg width="52" height="14" viewBox="0 0 74 16" aria-hidden="true"%S
 var VINE_HEAD = '<svg class="vine" width="96" height="18" viewBox="0 0 96 18" aria-hidden="true"><path d="M2 10 C 26 4, 56 14, 94 8" stroke="currentColor" stroke-width="1.3" fill="none"/><path d="M16 8 q-4 -6 2 -7 q2 5 -2 7z M32 10 q-1 -7 5 -7 q1 6 -5 7z M50 9 q-2 -6 4 -7 q2 5 -4 7z M68 8 q-3 -6 3 -6 q2 4 -3 6z M82 8 q-3 -6 3 -6 q2 4 -3 6z M24 11 q3 5 -3 6 q-2 -4 3 -6z M60 11 q3 5 -3 6 q-2 -4 3 -6z" fill="currentColor" opacity="0.85"/></svg>';
 var GEAR_ICON = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>';
 var GEAR = '<button type="button" class="gear" data-act="settings" aria-label="Réglages"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>';
-function garlandHTML(){ var th = S.theme; return '<div class="garland">' + VINE.replace("%S", "") + '<img src="' + stk(th.motif) + '" alt="">' + VINE.replace("%S", ' style="transform:scaleX(-1)"') + '</div>'; }
 function cq(px){ return (px/3.9).toFixed(2) + "cqw"; }
 function greetText(){
-  var t = new Date(), hr = t.getHours(), th = S.theme, d = today(), md = (d.getMonth()+1) + "-" + d.getDate();
-  if (!previewMonth()){
-    if (th.fete === "noel" && (md === "12-24" || md === "12-25")) return "Joyeux Noël, " + NAME;
-    if (th.fete === "nouvel-an" && md === "12-31") return "Bon réveillon, " + NAME;
-    if (th.fete === "nouvel-an" && md === "1-1") return "Bonne année, " + NAME + " !";
-    if (th.fete === "anniv" && S.settings && S.settings.birthday && iso(d).slice(5) === S.settings.birthday) return "Joyeux anniversaire, " + NAME + " !";
-  }
+  var t = new Date(), hr = t.getHours(), d = today(), md = (d.getMonth()+1) + "-" + d.getDate();
+  if (md === "12-24" || md === "12-25") return "Joyeux Noël, " + NAME;
+  if (md === "12-31") return "Bon réveillon, " + NAME;
+  if (md === "1-1") return "Bonne année, " + NAME + " !";
+  if (S.settings && S.settings.birthday && iso(d).slice(5) === S.settings.birthday) return "Joyeux anniversaire, " + NAME + " !";
   var hello = hr < 5 ? "Bonne nuit" : hr < 18 ? "Bonjour" : "Bonsoir";
   return hello + ", " + NAME + " · " + fmtDay(d).split(" ").slice(0,2).join(" ");
 }
 function heroHTML(){
-  var th = S.theme, d = today();
+  var d = today();
   var date = fmtDay(d); date = date.charAt(0).toUpperCase() + date.slice(1);
   if (S.view === "accueil"){
     var hr = new Date().getHours(), g = greetText().split(" · ")[0];
@@ -961,30 +884,6 @@ function heroHTML(){
 }
 function ago(isoStr){ var d = new Date(isoStr); var m = Math.round((Date.now() - d.getTime())/60000); if (m < 2) return "à l'instant"; if (m < 60) return "il y a " + m + " min"; var hh = Math.round(m/60); if (hh < 24) return "il y a " + hh + " h"; var j = Math.round(hh/24); return "il y a " + j + " jour" + (j>1?"s":""); }
 
-function briefingHTML(){
-  var hr = new Date().getHours(), tom = hr >= 20;
-  var day = tom ? addDays(today(),1) : today(), di = iso(day);
-  var evs = eventsOn(di), q = activeQuests()[0], stepI = q ? (q.steps||[]).findIndex(function(s){ return !s.done; }) : -1;
-  var links = dueLinks().slice(0, 2), bds = upcomingBirthdays().filter(function(b){ return b.days <= 3; });
-  var CATC = {sport:"#6640A6", sante:"#2F7440", famille:"#A8402F", admin:"#8E6312", boulot:"#33449A", projets:"#AA4A1C", maison:"#56661A", rappel:"#2C679C", neutre:"#85858F"};
-  var loose = [], timed = [];
-  bds.forEach(function(b){ loose.push({c:"#A8402F", t: b.days === 0 ? "Anniversaire de " + b.person + " !" : "Anniversaire de " + b.person, s: b.days === 0 ? "C'est aujourd'hui" : inDays(b.days)}); });
-  if (q && stepI >= 0){ var c = (STAT_COL[q.stat] || STAT_COL.sag)[1]; loose.push({c:c, t:q.steps[stepI].t, s:"Étape de ta quête « " + q.title + " »", act:'<button type="button" data-act="step" data-id="' + h(q._id) + '" data-i="' + stepI + '" style="color:' + c + '">C\'est fait</button>'}); }
-  links.forEach(function(l){ loose.push({c:"#A8402F", t: l.type === "person" ? "Un mot à " + l.name : l.text, s: l.type === "person" ? (l.days >= 999 ? "Note ton prochain échange" : "Ça fait " + sinceText(l.days)) : l.name, act:'<button type="button" data-act="' + (l.type === "person" ? "contacted" : "follow-done") + '" data-id="' + h(l.id) + '" style="color:#A8402F">C\'est fait</button>'}); });
-  evs.forEach(function(e){ var sp = splitTitle(e.title, e.meta && e.src === "gcal" ? e.meta : e.place); var item = {c:CATC[e.cat] || CATC.neutre, t:sp.core, s:[sp.place, sp.people.length ? "avec " + joinEt(sp.people) : ""].filter(Boolean).join(" · "), filled:true}; if (e.time){ item.lbl = fmtTime(e.time); timed.push(item); } else loose.push(item); });
-  var rows = [];
-  loose.forEach(function(it, i){ rows.push({lbl: i === 0 ? (tom ? "Demain" : "Dans la journée") : "", it:it}); });
-  timed.forEach(function(it){ rows.push({lbl:it.lbl, it:it, hour:true}); });
-  var html;
-  if (!rows.length) html = '<div class="dstep"><span class="dl">' + (tom ? "Demain" : "Aujourd'hui") + '</span><span class="dot"></span><span><span class="dt">Rien de prévu</span><span class="ds">Repose-toi, c\'est aussi une mission.</span></span></div>';
-  else {
-    html = rows.map(function(r){ var it = r.it;
-      return '<div class="dstep"><span class="dl' + (r.hour ? " hour" : "") + '">' + h(r.lbl) + '</span><span class="dot" style="border-color:' + it.c + (it.filled && r.hour ? ";background:" + it.c : "") + '"></span><span style="min-width:0"><span class="dt">' + h(it.t) + '</span>' + (it.s || it.act ? '<span class="ds">' + h(it.s || "") + (it.s && it.act ? " · " : "") + (it.act || "") + '</span>' : "") + '</span></div>';
-    }).join("");
-  }
-  var dl = (tom ? "Demain · " : "") + cap(JOURS_LONG[day.getDay()]) + " " + day.getDate();
-  return '<section class="section gut" aria-labelledby="bt"><div class="section-head"><h2 id="bt">' + (tom ? "Demain" : "Ma journée") + '</h2><span class="sec-date">' + h(dl) + '</span></div><div class="card day2">' + (rows.length > 1 ? '<div class="fil" aria-hidden="true"></div>' : "") + html + '</div></section>';
-}
 
 function calNotice(){
   if (S.gcalState === "auth") return '<button type="button" class="gcal-btn" data-act="gcal-connect"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7L21 8M21 3v5h-5"/></svg>Synchroniser Google Agenda</button>';
@@ -994,20 +893,6 @@ function calNotice(){
 
 function monday(d){ return addDays(d, -((d.getDay() + 6) % 7)); }
 var JOURS_LONG = ["dimanche","lundi","mardi","mercredi","jeudi","vendredi","samedi"];
-function weekHTML(){
-  var t = today(), m = monday(t), rows = [], count = 0, used = {}, free = [];
-  for (var i=0;i<7;i++){
-    var d = addDays(m,i), di = iso(d), evs = eventsOn(di), isToday = di === iso(t), past = d < t;
-    count += evs.length; evs.forEach(function(e){ used[e.cat || "neutre"] = 1; });
-    var date = '<div class="wdate"><small>' + JOURS[d.getDay()].replace(".","") + '</small><b>' + d.getDate() + '</b></div>';
-    var cls = "wday" + (rows.length === 0 ? " first" : "") + (isToday ? " today" : "") + (past ? " past" : "");
-    if (!evs.length){ if (!past) free.push(JOURS_LONG[d.getDay()]); rows.push('<div class="' + cls + ' free">' + date + '<p class="wfree">Libre</p></div>'); continue; }
-    rows.push('<div class="' + cls + '">' + date + '<div style="min-width:0">' + (isToday ? '<p class="wtoday">Aujourd\'hui</p>' : "") + '<div class="wevs">' + evs.map(evCard).join("") + '</div></div></div>');
-  }
-  var sum = '<p class="wsum"><span>' + (count ? count + " rendez-vous" : "Aucun rendez-vous") + '</span> cette semaine' + (free.length && count ? " · " + (free.length > 3 ? free.length + " jours libres" : joinEt(free) + " libre" + (free.length > 1 ? "s" : "")) : "") + '</p>';
-  var legend = '<div class="wlegend">' + CAT_ORDER.filter(function(k){ return used[k]; }).map(function(k){ return '<span class="k-' + k + '">' + CATS[k].n + '</span>'; }).join("") + '</div>';
-  return '<section class="section gut" aria-labelledby="wk"><div class="section-head"><div style="display:flex;align-items:center;gap:10px"><h2 id="wk">Cette semaine</h2></div><button type="button" class="link-btn" data-act="month">Voir le mois</button></div><div class="card week2">' + calNotice() + sum + rows.join("") + (count ? legend : "") + '</div><img class="stk" src="' + stk(S.theme.week) + '" alt="" style="right:4px;bottom:-34px;width:54px;height:54px;transform:rotate(10deg)"></section>';
-}
 
 function questCardHTML(q, big){
   var steps = q.steps || [], doneN = steps.filter(function(s){ return s.done; }).length;
@@ -1025,19 +910,6 @@ function questCardHTML(q, big){
   return '<div class="card quest2"><div class="q2-head">' + statIc(q.stat) + '<span style="min-width:0"><span class="q2-t">' + h(q.title) + '</span><span class="q2-m" style="color:' + c[1] + '">' + h(meta) + '</span></span><span class="xp-pill">+' + (q.xp||40) + ' XP</span></div>' + seg + (stepsHTML ? '<div style="display:flex;flex-direction:column;gap:2px">' + stepsHTML + '</div>' : "") + (big ? '<div class="qtools"><button type="button" class="mini" data-act="del-item" data-id="' + h(q._id) + '">Supprimer</button>' + (!steps.length || doneN === steps.length ? '<button type="button" class="btn-ink" data-act="quest-done" data-id="' + h(q._id) + '">Quête accomplie</button>' : "") + '</div>' : "") + '</div>';
 }
 
-function linksHTML(){
-  var due = dueLinks(), body;
-  if (due.length){
-    body = '<div class="lrows">' + due.slice(0,4).map(function(l, idx){
-      return (idx ? '<div class="dotline" aria-hidden="true"></div>' : "") + '<div class="lrow"><span class="avatar" aria-hidden="true">' + initial(l.name) + '</span><div style="flex:1;min-width:0"><p class="n">' + h(l.name) + '</p><p class="w">' + h(l.text) + '</p></div><button type="button" class="btn-line" data-act="' + (l.type === "person" ? "contacted" : "follow-done") + '" data-id="' + h(l.id) + '">C\'est fait</button></div>';
-    }).join("") + '</div>';
-  } else if (S.people.length) {
-    body = '<p style="margin-top:16px;font-size:15px;font-weight:700;text-align:center">Tout le monde a eu de tes nouvelles récemment. Beau travail.</p>';
-  } else {
-    body = '<p style="margin-top:16px;font-size:15px;text-align:center">Ajoute tes proches dans les réglages, ou écris « appeler maman » quand c\'est fait.</p>';
-  }
-  return '<section class="frame" aria-labelledby="lk" style="margin-left:18px;margin-right:18px"><div class="c tl" aria-hidden="true"></div><div class="c tr" aria-hidden="true"></div><div class="c bl" aria-hidden="true"></div><div class="c br" aria-hidden="true"></div><h2 id="lk"><span>Liens</span></h2>' + body + '<img class="stk" src="' + stk(S.theme.liens) + '" alt="" style="left:14px;top:-44px;width:50px;height:50px;transform:rotate(-10deg)"></section>';
-}
 
 function whenBday(b){ if (b.days <= 45) return inDays(b.days); var mo = Math.round(b.days/30.4); return "Le " + b.date.getDate() + " " + MOIS[b.date.getMonth()] + " · dans " + mo + " mois"; }
 var PENCIL = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M14 6l4 4"/></svg>';
@@ -1055,33 +927,7 @@ function bdaysHTML(){
     : '<p class="soft-empty" style="padding:0">Aucun anniversaire enregistré. Écris par exemple <b>« anniv de Marie-Sarah le 12 mars »</b>.</p>';
   return '<section class="section gut" aria-labelledby="bd"><h2 id="bd">Anniversaires</h2><div class="card bd2">' + body + '</div></section>';
 }
-function footHTML(){
-  return ""; /* plus d'illustration en bas de page */
-  var f = S.theme.foot, w = Math.min(250, 230 * f.r), hh = w / f.r;
-  return '<div class="foot" aria-hidden="true"><img src="' + f.src + '" alt="" style="width:' + Math.round(w) + 'px;height:' + Math.round(hh) + 'px"><img class="stk" src="' + stk(S.theme.spark) + '" alt="" style="left:40px;top:64px;width:16px;height:16px"><img class="stk" src="' + stk(S.theme.spark) + '" alt="" style="right:40px;top:114px;width:12px;height:12px"></div>';
-}
 
-var BUBBLES = [
-  {id:"tout", label:"Tout"},
-  {id:"briefing", label:"Ma journée"},
-  {id:"semaine", label:"Cette semaine"},
-  {id:"quete", label:"Quête"},
-  {id:"anniv", label:"Anniversaires"}
-];
-function bubbleCount(id){
-  if (id === "semaine"){ var n = 0, t = today(), m = monday(t); for (var i=0;i<7;i++){ var d = addDays(m,i); if (d >= t) n += eventsOn(iso(d)).length; } return n; }
-  if (id === "quete") return activeQuests().length;
-  if (id === "liens") return dueLinks().length;
-  if (id === "anniv") return upcomingBirthdays().filter(function(b){ return b.days <= 30; }).length;
-  return null;
-}
-function bubblesHTML(){
-  var sel = S.accSection || "tout";
-  return '<div class="bubbles-wrap" role="toolbar" aria-label="Choisir ce qui s\'affiche"><div class="bubbles">' + BUBBLES.map(function(b){
-    var c = bubbleCount(b.id);
-    return '<button type="button" class="bubble" data-act="acc-sec" data-s="' + b.id + '" aria-pressed="' + (sel === b.id) + '">' + b.label + (c ? '<span class="ct">' + c + '</span>' : "") + '</button>';
-  }).join("") + '</div></div>';
-}
 /* ---------- Accueil (Planner_0.4) : bandeau de la semaine + programme du jour ---------- */
 var CAT_COL = {sport:["#E3D3F7","#6640A6","#AC8BE0"], sante:["#D4EED6","#2F7440","#86C892"], famille:["#FAD3CB","#A8402F","#E9998A"], admin:["#FBE6B4","#8E6312","#E3BC62"], boulot:["#D9DFF7","#33449A","#8E9BE0"], projets:["#FDDCC6","#AA4A1C","#EFA27A"], maison:["#E6EDC8","#56661A","#B3C46E"], rappel:["#D2E8FA","#2C679C","#7AB2E3"], neutre:["#FFFFFF","#66666F","#C4C4CC"]};
 var CAT_STAT = {sport:"force", sante:"con", famille:"cha", admin:"sag", boulot:"sag", projets:"int", maison:"dex", rappel:"int", neutre:"sag"};
@@ -1118,7 +964,6 @@ function programmeHTML(){
     upcomingBirthdays().filter(function(b){ return b.days === 0; }).forEach(function(b){ rows.push({cat:"famille", ic:CAKE_IC2, t:"Anniversaire de " + b.person, s:"C'est aujourd'hui !", tm:"Journée"}); });
     var q = activeQuests()[0], stepI = q ? (q.steps || []).findIndex(function(st){ return !st.done; }) : -1;
     if (q && stepI >= 0) rows.push({cat:STAT_CAT[q.stat] || "admin", ic:FLAG_IC, t:q.steps[stepI].t, s:"Quête « " + q.title + " »", act:'<span class="prbtn" role="button" tabindex="0" data-act="step" data-id="' + h(q._id) + '" data-i="' + stepI + '">C\'est fait</span>'});
-    dueLinks().slice(0, 2).forEach(function(l){ rows.push({cat:"famille", ic:CHAT_IC, t:l.type === "person" ? "Un mot à " + l.name : l.text, s:l.type === "person" ? (l.days >= 999 ? "Note ton prochain échange" : "Ça fait " + sinceText(l.days)) : l.name, act:'<span class="prbtn" role="button" tabindex="0" data-act="' + (l.type === "person" ? "contacted" : "follow-done") + '" data-id="' + h(l.id) + '">C\'est fait</span>'}); });
   }
   eventsOn(di).forEach(function(e){
     if (!isToday && e.src === "bday") return;
@@ -1598,20 +1443,9 @@ function localParse(text){
     if (pm){ who2 = cap(pm[1].replace(/[,.;:]$/,"")); if (pm[2] && /^[A-ZÀ-Ü]/.test(pm[2]) && !/^(Le|La|Les|Du|En|Au)$/.test(pm[2])) who2 += " " + pm[2].replace(/[,.;:]$/,""); }
     return {kind:"birthday", person: who2 || title, date: date ? iso(date) : null, title:"Anniversaire", xp:0};
   }
-  /* j'ai appelé / vu / écrit à un proche */
-  var known = S.people.find(function(p){ return n.indexOf(noAcc(p.name.toLowerCase())) >= 0; });
-  if (/^(j'ai|j’ai|jai)\s+(appel|vu|ecrit|parl|dine|dejeune|pris des nouvelles|envoye)/.test(n) && (known || /maman|papa|frere|soeur|ami|copine|copain/.test(n))){
-    var who = known ? known.name : (n.match(/\b(maman|papa)\b/) ? cap(n.match(/\b(maman|papa)\b/)[1]) : null);
-    return {kind:"contact", person: who, title:title, xp:15, stat:"cha"};
-  }
   /* exploit : quelque chose de déjà fait */
   if (/^(j'ai|j’ai|jai|fait|fini|termine)\b|^\d+(?:[.,]\d+)?\s*(h|min)/.test(n)){
-    var st = guessStat(s); return {kind:"exploit", title:cap(text.trim()), xp:exploitXP(s), stat: st === "cha" && !known ? "sag" : st, skill:skillOf(s)};
-  }
-  /* prendre des nouvelles */
-  if (/demander (des nouvelles|a |à )|prendre des nouvelles|penser a demander/.test(n)){
-    var wf = known ? known.name : null;
-    return {kind:"followup", title:title, date: iso(date || addDays(t,1)), person:wf, xp:15, stat:"cha"};
+    var st = guessStat(s); return {kind:"exploit", title:cap(text.trim()), xp:exploitXP(s), stat: st, skill:skillOf(s)};
   }
   /* rendez-vous daté */
   if (date){
@@ -1744,7 +1578,6 @@ function buildFinal(F, text){
       var items = F.todo ? splitItems(body) : [];
       return {kind:"note", title:(F.noteTitle || "").trim(), text:F.todo ? "" : cap(body.replace(/[ \t]+\n/g, "\n").trim()), items:items, todo:F.todo};
     case "contact": return Object.assign({}, o, {title:t || o.title});
-    case "followup": return Object.assign({}, o, {title:t || o.title, date:F.date || o.date});
   }
   return o;
 }
@@ -1784,7 +1617,6 @@ function describe(r){
   switch (r.kind){
     case "event": return "Rendez-vous « " + r.title + " » " + d + (r.time ? " à " + fmtTime(r.time) : "");
     case "birthday": return "Anniversaire de " + r.person + (d ? " · " + d : "");
-    case "followup": return "Rappel : " + r.title + (d ? " · " + d : "");
     case "quest": return "Nouvelle quête : " + r.title;
     case "note": return "Nouvelle note" + (r.title ? " « " + r.title + " »" : "") + (r.items && r.items.length ? " · " + r.items.length + " élément" + (r.items.length > 1 ? "s" : "") : r.text ? " : " + r.text.replace(/\n/g, " · ").slice(0, 60) + (r.text.length > 60 ? "…" : "") : "");
     case "note-add": return "Ajouté à « " + (r.title || "ta note") + " » : " + r.items.join(", ").slice(0, 60);
@@ -1839,23 +1671,16 @@ function commit(r){
     return db.collection("notes").doc(tn._id).update({html:nh, text:textFromHTML(nh), updatedAt:nowISO(), deleted:false}).then(function(){ toast("Ajouté à « " + (tn.title || "ta note") + " »" + (placed.length ? " (ligne " + placed.join(", ") + ")" : "") + "."); });
   }
 
-  if (r.kind === "followup") return db.collection("items").add(Object.assign(base, {kind:"followup", date: r.date || iso(addDays(today(),1)), person: r.person ? cap(r.person) : null, done:false})).then(function(){ toast("Je te le rappelle " + (r.date ? fmtDay(parseISO(r.date)) : "demain") + "."); });
   if (r.kind === "quest"){
     var steps = (Array.isArray(r.steps) ? r.steps : []).slice(0,5).map(function(t){ return {t: cap(String(t)), done:false}; });
     return db.collection("items").add(Object.assign(base, {kind:"quest", steps:steps, stat:stat, xp: Math.max(20, Math.min(100, +r.xp || 40)), done:false})).then(function(){ toast("Nouvelle quête. Première étape : " + (steps[0] ? steps[0].t.toLowerCase() : base.title.toLowerCase()) + "."); });
-  }
-  if (r.kind === "contact"){
-    var name = r.person ? cap(r.person) : null;
-    var p = name && S.people.find(function(x){ return x.name.toLowerCase() === name.toLowerCase(); });
-    var w = p ? db.collection("people").doc(p._id).update({last: iso(today())}) : name ? db.collection("people").add({name:name, every:21, last: iso(today())}) : Promise.resolve();
-    return w.then(function(){ return award(base.title, "cha", 15, "Prendre des nouvelles"); }).then(function(){ toast("Lien entretenu" + (name ? " avec " + name : "") + ". +15 XP en Liens."); });
   }
   // exploit
   var xp = Math.max(5, Math.min(60, +r.xp || 15));
   return award(base.title, stat, xp, r.skill).then(function(){ toast("Bien joué. +" + xp + " XP en " + STATS[stat].n + "."); burst(window.innerWidth/2, window.innerHeight - 150); });
 }
 
-var KIND_LBL = {event:"Rendez-vous", quest:"Quête", exploit:"Exploit", note:"Note", birthday:"Anniversaire", "note-add":"Ajout à une note", contact:"Lien", followup:"Nouvelles à prendre"};
+var KIND_LBL = {event:"Rendez-vous", quest:"Quête", exploit:"Exploit", note:"Note", birthday:"Anniversaire", "note-add":"Ajout à une note"};
 var CP = null;
 function onCapture(e){
   e.preventDefault();
@@ -2069,11 +1894,8 @@ function monthHTML(){
 function settingsHTML(){
   var st = S.settings || {}, topics = st.topics || [];
   var bd = st.birthday ? "2000-" + st.birthday : "";
-  var pm = previewMonth();
-  var prev = '<h3 style="margin-bottom:6px">Décor du carnet</h3><p style="font-size:13px;color:var(--muted);margin-bottom:8px">L\'appli change de décor chaque mois, et pour Noël, le Nouvel An et ton anniversaire. Tu peux regarder les autres décors ici.</p><div class="field"><label for="pmSel">Décor affiché</label><select id="pmSel"><option value="">Selon la date du jour</option>' + THEMES.map(function(mm, i){ return '<option value="' + i + '"' + (pm === i ? " selected" : "") + '>' + mm.name + '</option>'; }).join("") + Object.keys(FETE_NAMES).map(function(k){ return '<option value="' + k + '"' + (pm === k ? " selected" : "") + '>' + FETE_NAMES[k] + '</option>'; }).join("") + '</select></div><div style="height:12px"></div>';
+  var prev = '';
   return prev + (st.birthday ? '<h3 style="margin-bottom:6px">Mon anniversaire</h3><p style="margin-bottom:22px;font-size:16px;font-weight:700">Le ' + (+st.birthday.slice(3)) + ' ' + MOIS[+st.birthday.slice(0,2)-1] + (st.birthYear ? ' ' + st.birthYear : '') + '</p>' : '<h3 style="margin-bottom:10px">Mon anniversaire</h3><form id="fBd" class="fgrid" style="margin-bottom:22px"><div class="field"><label for="bdIn">Date (l\'année ne compte pas)</label><input type="date" id="bdIn" value="' + h(bd) + '"></div><button class="btn green" type="submit">Enregistrer</button></form>')
-    + '<h3 style="margin-bottom:6px">Mes proches</h3><p style="font-size:13px;color:var(--muted);margin-bottom:6px">L\'appli te rappelle de prendre des nouvelles au rythme choisi.</p><div>' + S.people.map(function(p){ return '<div class="list-line"><span>' + h(p.name) + ' <span style="font-weight:600;color:var(--muted)">· tous les ' + (p.every||14) + ' jours</span></span><button type="button" class="mini" data-act="del-person" data-id="' + h(p._id) + '">Retirer</button></div>'; }).join("") + '</div>'
-    + '<form id="fP" class="fgrid" style="margin:12px 0 22px"><div class="field wide"><label for="pName">Prénom</label><input id="pName" type="text" required></div><div class="field"><label for="pEvery">Rythme</label><select id="pEvery"><option value="7">7 jours</option><option value="14" selected>14 jours</option><option value="21">21 jours</option><option value="30">30 jours</option><option value="60">60 jours</option></select></div><button class="btn green" type="submit">Ajouter</button></form>'
     + '<h3 style="margin-bottom:6px">Sujets de la Gazette</h3><div>' + topics.map(function(t){ return '<div class="list-line"><span>' + h(t) + '</span><button type="button" class="mini" data-act="del-topic" data-t="' + h(t) + '">Retirer</button></div>'; }).join("") + '</div>'
     + '<form id="fT" class="fgrid" style="margin-top:12px"><div class="field"><label for="tName">Nouveau sujet</label><input id="tName" type="text" required placeholder="Un acteur, une série, un lieu…"></div><button class="btn green" type="submit">Ajouter</button></form>'
     + learnSettingsHTML()
@@ -2083,11 +1905,9 @@ function settingsHTML(){
     + '<p style="margin:18px 0 0;font-size:12px;font-weight:700;color:#85858F">Version ' + APP_VERSION + '</p>';
 }
 function mountSettings(){
-  var ps = document.getElementById("pmSel"); if (ps) ps.onchange = function(){ try { if (ps.value === "") localStorage.removeItem("previewMonth"); else localStorage.setItem("previewMonth", ps.value); } catch(e){} applyMonth(); makeDrift(); render(); };
   var imp = document.getElementById("impFile"); if (imp) imp.onchange = function(){ var f = imp.files && imp.files[0]; if (!f || !needDb()) return; f.text().then(function(t){ var j = JSON.parse(t); if (!j || !j.collections) throw new Error("format"); return db.importAll(j); }).then(function(n){ toast("Sauvegarde importée (" + n + " éléments)."); closeSheet(); }).catch(function(){ toast("Ce fichier n'est pas une sauvegarde valide."); }); };
-  var fb = document.getElementById("fBd"), fp = document.getElementById("fP"), ft = document.getElementById("fT");
-  if (fb) fb.onsubmit = function(e){ e.preventDefault(); var v = document.getElementById("bdIn").value; saveSettings({birthday: v ? v.slice(5) : null}).then(function(){ toast(v ? "Ton anniversaire est noté." : "Date retirée."); applyMonth(); makeDrift(); render(); }); };
-  fp.onsubmit = function(e){ e.preventDefault(); if (!needDb()) return; var n = document.getElementById("pName").value.trim(); if (!n) return; db.collection("people").add({name:cap(n), every:+document.getElementById("pEvery").value, last:null}).then(function(){ toast(cap(n) + " ajouté(e) à tes proches."); setTimeout(refreshSettings, 300); }).catch(dbErr); };
+  var fb = document.getElementById("fBd"), ft = document.getElementById("fT");
+  if (fb) fb.onsubmit = function(e){ e.preventDefault(); var v = document.getElementById("bdIn").value; saveSettings({birthday: v ? v.slice(5) : null}).then(function(){ toast(v ? "Ton anniversaire est noté." : "Date retirée."); render(); }); };
   mountLearn();
   ft.onsubmit = function(e){ e.preventDefault(); var n = document.getElementById("tName").value.trim(); if (!n) return; var topics = ((S.settings && S.settings.topics) || []).slice(); if (topics.indexOf(n) < 0) topics.push(n); saveSettings({topics:topics}).then(function(){ toast("Sujet ajouté. Il apparaîtra dès qu'il y aura du nouveau."); refreshSettings(); }); };
 }
@@ -2197,11 +2017,11 @@ function completeEventSheet(id){
 var NOTE_BGS = [
   {id:"papier", name:"Papier"},
   {id:"creme", name:"Crème"},
-  {id:"sauge", name:"Sauge", stk:"leaf_green"},
+  {id:"sauge", name:"Sauge"},
   {id:"nuit", name:"Nuit", dark:true},
-  {id:"rose", name:"Rose", stk:"blossom"},
+  {id:"rose", name:"Rose"},
   {id:"lavande", name:"Lavande"},
-  {id:"mois", name:"Le mois"}
+  {id:"azur", name:"Azur"}
 ];
 var NE = null;          /* éditeur ouvert */
 var DP = null;          /* bloc de dessin ouvert */
@@ -2216,10 +2036,7 @@ function noteDate(isoStr){
   if (d.toDateString() === t.toDateString()) return pad(d.getHours()) + ":" + pad(d.getMinutes());
   return d.getDate() + " " + MOIS[d.getMonth()] + (d.getFullYear() !== t.getFullYear() ? " " + d.getFullYear() : "");
 }
-function noteBgStyle(bgId){
-  if (bgId !== "mois") return "";
-  var c = S.theme.c; return "background:linear-gradient(160deg," + c.band + "," + c.wash + ");";
-}
+function noteBgStyle(bgId){ return ""; }
 function noteMatches(n, q){ if (!q) return true; q = noAcc(q.toLowerCase()); return noAcc(((n.title || "") + " " + (n.text || "")).toLowerCase()).indexOf(q) >= 0; }
 function sortedNotes(){
   var pr = notePrefs(), f = S.noteFolder, q = S.noteQuery.trim();
@@ -2258,8 +2075,6 @@ function noteCard(n){
   var bg = noteBg(n.bg), thumb = n.thumb ? '<div class="nc-img"><img data-mid="' + h(n.thumb) + '" alt=""></div>' : "";
   var preview = (n.text || "").split("\n").filter(function(l){ return l.trim(); }).slice(0, 5).join("\n");
   return '<button type="button" class="ncard2 bg-' + bg.id + (bg.dark ? " dark" : "") + '" data-act="note-open" data-id="' + h(n._id) + '" style="' + noteBgStyle(bg.id) + '">'
-    + (bg.stk ? '<img class="nc-stk a" src="' + stk(bg.stk) + '" alt=""><img class="nc-stk b" src="' + stk(bg.stk) + '" alt="">' : "")
-    + (bg.id === "mois" ? '<img class="nc-stk b" src="' + stk(S.theme.motif) + '" alt="">' : "")
     + thumb + '<span class="nc-body">' + (n.title ? '<span class="nc-t">' + h(n.title) + '</span>' : "")
     + (preview ? '<span class="nc-p">' + h(preview) + '</span>' : (!n.title && !thumb ? '<span class="nc-p nc-empty">Note vide</span>' : ""))
     + '<span class="nc-d">' + h(noteDate(n.updatedAt)) + (n.hasAudio ? ICON.audio : "") + (n.pinned ? '<span class="nc-pin" aria-label="Épinglée">' + ICON.pin + '</span>' : "") + '</span></span></button>';
@@ -2509,7 +2324,7 @@ function setNoteField(patch){ Object.assign(NE.note, patch); var el = document.g
 function nePop(html){ var p = document.getElementById("nePop"); if (!html || (!p.hidden && p.dataset.k === html.slice(0, 40))){ p.hidden = true; p.innerHTML = ""; return; } p.dataset.k = html.slice(0, 40); p.innerHTML = html; p.hidden = false; }
 function neBgPicker(){
   var cur = NE.note.bg || "papier";
-  nePop('<div class="bg-row">' + NOTE_BGS.map(function(b){ return '<button type="button" class="bg-sw bg-' + b.id + (b.id === cur ? " on" : "") + '" data-act="ne-setbg" data-bg="' + b.id + '" style="' + noteBgStyle(b.id) + '" aria-label="Fond ' + b.name + '"' + (b.id === cur ? ' aria-pressed="true"' : "") + '>' + (b.stk ? '<img src="' + stk(b.stk) + '" alt="">' : b.id === "mois" ? '<img src="' + stk(S.theme.motif) + '" alt="">' : "") + '<span>' + b.name + '</span></button>'; }).join("") + '</div>');
+  nePop('<div class="bg-row">' + NOTE_BGS.map(function(b){ return '<button type="button" class="bg-sw bg-' + b.id + (b.id === cur ? " on" : "") + '" data-act="ne-setbg" data-bg="' + b.id + '" style="' + noteBgStyle(b.id) + '" aria-label="Fond ' + b.name + '"' + (b.id === cur ? ' aria-pressed="true"' : "") + '>' + '<span>' + b.name + '</span></button>'; }).join("") + '</div>');
 }
 function neMenu(){
   var n = NE.note;
@@ -2745,7 +2560,6 @@ document.addEventListener("click", function(e){
   if (act === "import"){ var fi = document.getElementById("impFile"); if (fi) fi.click(); return; }
   if (act === "signout"){ if (window.APP_SIGNOUT) window.APP_SIGNOUT(); return; }
   if (act === "topic"){ S.topicFilter = b.dataset.t; render(); return; }
-  if (act === "acc-sec"){ S.accSection = b.dataset.s; try { localStorage.setItem("accSection", S.accSection); } catch(err){} var sx = document.querySelector(".bubbles-wrap"), keep = sx ? sx.scrollLeft : 0; render(); var nx2 = document.querySelector(".bubbles-wrap"); if (nx2) nx2.scrollLeft = keep; var pb = document.querySelector('.bubble[data-s="' + S.accSection + '"]'); if (pb) pb.focus({preventScroll:true}); return; }
   if (act === "stat"){ statSheet(b.dataset.k); return; }
   if (act === "complete-event"){ completeEventSheet(id); return; }
   if (!needDb()) return;
@@ -2766,9 +2580,6 @@ document.addEventListener("click", function(e){
   }
   if (act === "quest-done"){ var qq = S.items.find(function(i){ return i._id === id; }); if (!qq) return; db.collection("items").doc(id).update({done:true, doneAt:nowISO()}).then(function(){ return award("Quête : " + qq.title, qq.stat||"sag", qq.xp||40, null); }).then(function(){ toast("Mission accomplie. +" + (qq.xp||40) + " XP."); }).catch(dbErr); return; }
   if (act === "del-item"){ var it = S.items.find(function(i){ return i._id === id; }); db.collection("items").doc(id).delete().then(function(){ closeSheet(); toast("Supprimé.", {undo: it ? function(){ var c = Object.assign({}, it); delete c._id; db.collection("items").doc(id).set(c).catch(dbErr); } : null}); }).catch(dbErr); return; }
-  if (act === "contacted"){ var p = S.people.find(function(x){ return x._id === id; }); if (!p) return; var rr = b.getBoundingClientRect(); burst(rr.left + 30, rr.top); db.collection("people").doc(id).update({last: iso(today())}).then(function(){ return award("Nouvelles de " + p.name, "cha", 15, "Prendre des nouvelles"); }).then(function(){ toast("Lien entretenu avec " + p.name + ". +15 XP en Liens."); }).catch(dbErr); return; }
-  if (act === "follow-done"){ var f = S.items.find(function(i){ return i._id === id; }); if (!f) return; db.collection("items").doc(id).update({done:true}).then(function(){ return award(f.title, "cha", 15, "Prendre des nouvelles"); }).then(function(){ toast("C'est noté. +15 XP en Liens."); }).catch(dbErr); return; }
-  if (act === "del-person"){ db.collection("people").doc(id).delete().then(function(){ setTimeout(refreshSettings, 300); }).catch(dbErr); return; }
   if (act === "learn-del"){ var L = learnData(), t = b.dataset.t, k = b.dataset.k;
     if (t === "place"){ delete L.places[k]; if (DEFAULT_PLACES[k] && L.removed.indexOf(k) < 0) L.removed.push(k); }
     else if (t === "kind") L.kinds.splice(+k, 1); else if (t === "cat") L.cats.splice(+k, 1); else if (t === "rw") delete L.rewrites[k];
@@ -2848,15 +2659,15 @@ function snap(col, key, order){
   var ref = db.collection(col); if (order) ref = ref.orderBy(order[0], order[1]).limit(order[2]);
   ref.onSnapshot(function(s){ S[key] = s.docs.map(function(d){ var o = Object.assign({}, d.data()); o._id = d.id; return o; }); if (key === "notes") S.notesLoaded = true; S.dbState = "ok"; render(); if (key === "items" || key === "notes") markReady(key); }, function(e){ if (e && e.code === "revoked"){ S.dbState = "off"; render(); } });
 }
-applyMonth(); makePaper(); makeDrift(); route();
-setInterval(function(){ var before = S.sceneKey; applyMonth(); if (before !== S.sceneKey){ makeDrift(); } render(); }, 600000);
+applyMonth(); route();
+setInterval(render, 600000);
 
 var readyParts = {items:0, notes:0, settings:0}, readySent = false;
 function markReady(k){ readyParts[k] = 1; if (!readySent && readyParts.items && readyParts.notes && readyParts.settings){ readySent = true; window.dispatchEvent(new Event("carnet-ready")); } }
 window.startData = function(dbApi, calApi){
   db = dbApi; mcp = calApi;
-  snap("items","items"); snap("people","people"); snap("log","log"); snap("gazette","gazette",["addedAt","desc",80]); snap("notes","notes");
-  db.doc("settings/main").onSnapshot(function(s){ S.settings = s.exists ? s.data() : null; var b = S.sceneKey; applyMonth(); if (b !== S.sceneKey) makeDrift(); render(); markReady("settings"); }, function(){ markReady("settings"); });
+  snap("items","items"); snap("log","log"); snap("gazette","gazette",["addedAt","desc",80]); snap("notes","notes");
+  db.doc("settings/main").onSnapshot(function(s){ S.settings = s.exists ? s.data() : null; render(); markReady("settings"); }, function(){ markReady("settings"); });
   watchCal();
 };
 })();
