@@ -1,0 +1,30 @@
+name: Gazette du matin
+
+on:
+  schedule:
+    # GitHub ne connaît que l'heure UTC : on lance à 4h et 5h UTC,
+    # et le script ne travaille qu'une fois, dès qu'il est 6h ou plus à Paris (été comme hiver).
+    - cron: "0 4 * * *"
+    - cron: "0 5 * * *"
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "Lancer même si la Gazette a déjà été mise à jour aujourd'hui"
+        type: boolean
+        default: true
+
+jobs:
+  gazette:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm install --no-save firebase-admin@12
+      - run: node scripts/gazette.mjs
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          OWNER_UID: ${{ secrets.OWNER_UID }}
+          FORCE: ${{ github.event_name == 'workflow_dispatch' && inputs.force }}
