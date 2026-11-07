@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 <title>My World</title>
-<meta name="theme-color" content="#DAF1F2">
+<meta name="theme-color" content="#0B4F7C">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="My World">
@@ -644,6 +644,25 @@ body.add-on{overflow:hidden}
 #addSlot .capture{margin:0}
 .add-tip{margin-top:10px;font-size:13px;font-weight:600;color:var(--muted);line-height:1.45}
 #addSlot .cap-prev~.add-tip,#addSlot:has(.cap-prev)+.add-tip{display:none}
+
+/* MyWorld_0.2 : ambiance Riviera. Grand bandeau bleu Méditerranée, texte blanc, semaine qui flotte dessus */
+html{background:#F5F8FB!important}
+:root{--ink:#0B3A5C;--text:#10263D;--muted:#5B6B7C;--line:#E1E8EF}
+#app::before{content:"";position:absolute;left:0;right:0;top:0;height:212px;background:linear-gradient(160deg,#0B4F7C 0%,#1677B3 55%,#3FA7DB 100%);border-radius:0 0 32px 32px;z-index:-1}
+.hd2 .eb,.hd2 .sub{color:rgba(255,255,255,.82)!important}
+.hd2 h1{color:#FFFFFF!important}
+.hd2 .av{background:rgba(255,255,255,.18)!important;border-color:rgba(255,255,255,.5)!important;color:#FFFFFF!important;box-shadow:none!important}
+.wsh>span:first-child{color:rgba(255,255,255,.85)!important}
+.wsnav{background:rgba(255,255,255,.18)!important;border-color:rgba(255,255,255,.4)!important;color:#FFFFFF!important}
+.wstrip{box-shadow:0 14px 30px rgba(11,58,92,.18)!important;border-color:transparent!important}
+.wsd.on{background:#0B4F7C!important}.wsd.on .pts i{box-shadow:0 0 0 1.5px #0B4F7C}
+.prbtn,.btn-ink{background:#0B4F7C!important}
+.nav-add{background:linear-gradient(160deg,#0B4F7C,#1F8FCB)!important;border-color:#FFFFFF!important}
+body:not([data-view="accueil"]) #app::before{height:104px;border-radius:0 0 28px 28px}
+body[data-view="gazette"] #app::before{height:124px}
+.fab{background:#0B4F7C!important}
+.prow,.card{border-color:#E6ECF2!important;box-shadow:0 6px 20px rgba(11,58,92,.06)!important}
+nav.tabs a[aria-current="page"]{background:#E4F1FA!important;color:#0B3A5C!important}
 </style>
 </head>
 <body>
@@ -696,7 +715,7 @@ body.add-on{overflow:hidden}
 
 
 <script>
-var APP_VERSION = "MyWorld_0.1";
+var APP_VERSION = "MyWorld_0.2";
 (function(){
 "use strict";
 var CAL = "t.mallet06@gmail.com";
@@ -766,7 +785,7 @@ function applyMonth(){
   var c = {paper:"#FFFFFF", dot:"transparent", ink:"#26262C", inkSoft:"#5E5E68", band:"#EEEEF2", line:"#E6E6EC", glow:"transparent", wash:"transparent"}, r = document.documentElement.style;
   r.setProperty("--paper", c.paper); r.setProperty("--dot", c.dot); r.setProperty("--ink", c.ink); r.setProperty("--ink-soft", c.inkSoft);
   r.setProperty("--band", c.band); r.setProperty("--line", c.line); r.setProperty("--glow", c.glow); r.setProperty("--wash", c.wash);
-  var meta = document.querySelector('meta[name="theme-color"]'); if (meta) meta.content = "#DAF1F2";
+  var meta = document.querySelector('meta[name="theme-color"]'); if (meta) meta.content = "#0B4F7C";
   var key = (fete || mi) + "";
   if (S.sceneKey !== key){
     document.getElementById("washes").innerHTML = ""; if (false) document.getElementById("washes").innerHTML = (th.noGlow ? "" : '<div class="wash" style="left:-120px;top:-120px;width:420px;height:360px;background:radial-gradient(closest-side,var(--glow),transparent);opacity:.95"></div>')
@@ -1227,6 +1246,7 @@ function fmtShort(d){ var x = parseISO(String(d).slice(0,10)); return x.getDate(
 
 function render(){
   var v = S.view;
+  document.body.setAttribute("data-view", v);
   var hero = document.getElementById("hero");
   hero.className = "hd" + (v === "accueil" ? "" : " small");
   hero.innerHTML = heroHTML();

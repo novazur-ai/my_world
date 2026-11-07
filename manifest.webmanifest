@@ -8,7 +8,7 @@
   "display": "fullscreen",
   "orientation": "portrait",
   "background_color": "#FFFFFF",
-  "theme_color": "#DAF1F2",
+  "theme_color": "#0B4F7C",
   "icons": [
     {
       "src": "icons/icon-192-v2.png",
