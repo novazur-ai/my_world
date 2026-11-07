@@ -649,7 +649,7 @@ body.add-on{overflow:hidden}
 /* MyWorld_0.2 : ambiance Riviera. Grand bandeau bleu Méditerranée, texte blanc, semaine qui flotte dessus */
 html{background:#F5F8FB!important}
 :root{--ink:#0B3A5C;--text:#10263D;--muted:#5B6B7C;--line:#E1E8EF}
-#app::before{content:"";position:absolute;left:0;right:0;top:0;height:212px;background:linear-gradient(160deg,#0B4F7C 0%,#1677B3 55%,#3FA7DB 100%);border-radius:0 0 32px 32px;z-index:-1}
+#app::before{content:"";position:absolute;left:0;right:0;top:0;height:180px;background:linear-gradient(160deg,#0B4F7C 0%,#1677B3 55%,#3FA7DB 100%);border-radius:0 0 32px 32px;z-index:-1}
 .hd2 .eb,.hd2 .sub{color:rgba(255,255,255,.82)!important}
 .hd2 h1{color:#FFFFFF!important}
 .hd2 .av{background:rgba(255,255,255,.18)!important;border-color:rgba(255,255,255,.5)!important;color:#FFFFFF!important;box-shadow:none!important}
@@ -659,6 +659,8 @@ html{background:#F5F8FB!important}
 .wsd.on{background:#0B4F7C!important}.wsd.on .pts i{box-shadow:0 0 0 1.5px #0B4F7C}
 .prbtn,.btn-ink{background:#0B4F7C!important}
 .nav-add{background:linear-gradient(160deg,#0B4F7C,#1F8FCB)!important;border-color:#FFFFFF!important}
+body[data-view="accueil"] .hd2 h1{font-size:26px!important}
+body[data-view="accueil"] .hd2 .av{width:40px!important;height:40px!important;top:0!important}
 body:not([data-view="accueil"]) #app::before{height:104px;border-radius:0 0 28px 28px}
 body[data-view="gazette"] #app::before{height:124px}
 .fab{background:#0B4F7C!important}
@@ -714,7 +716,7 @@ nav.tabs a[aria-current="page"]{background:#E4F1FA!important;color:#0B3A5C!impor
 
 
 <script>
-var APP_VERSION = "MyWorld_0.4";
+var APP_VERSION = "MyWorld_0.5";
 (function(){
 "use strict";
 var CAL = "t.mallet06@gmail.com";
@@ -876,7 +878,7 @@ function heroHTML(){
   if (S.view === "accueil"){
     var hr = new Date().getHours(), g = greetText().split(" · ")[0];
     if (/^Bonjour, /.test(g)) g = "Coucou " + NAME + " !"; else if (/^(Bonsoir|Bonne nuit), /.test(g)) g = g.replace(", ", " ") + " !";
-    return '<div class="hd2 gut"><p class="eb">' + h(date) + '</p><h1>' + h(g) + '</h1><p class="sub">' + h(hr < 18 ? "Prêt pour une belle journée ?" : "Une bonne soirée t'attend.") + '</p><a class="av" href="#fiche" aria-label="Ta fiche">' + h((NAME || "A").charAt(0)) + '</a></div>';
+    return '<div class="hd2 gut"><p class="eb">' + h(date) + '</p><h1>' + h(g) + '</h1><a class="av" href="#fiche" aria-label="Ta fiche">' + h((NAME || "A").charAt(0)) + '</a></div>';
   }
   var title = S.view === "quetes" ? "Tes quêtes" : S.view === "fiche" ? "Ta fiche" : S.view === "notes" ? "Tes notes" : "La Gazette", sub = "";
   if (S.view === "gazette"){ var u = S.settings && S.settings.gazetteUpdatedAt; sub = '<p class="sub"><span class="pulse" aria-hidden="true" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#2F7440;margin-right:6px"></span>' + h(u ? "Mise à jour " + ago(u) : "En attente de la première mise à jour") + '</p>'; }
