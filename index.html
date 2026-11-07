@@ -632,6 +632,7 @@ nav.tabs .in{grid-template-columns:repeat(2,calc((100% - 64px) / 4)) 64px repeat
 nav.tabs a{font-size:11.5px!important;min-width:0}
 .nav-add{justify-self:center;width:58px;height:58px;margin-top:-30px;border-radius:50%;border:4px solid #FFFFFF;background:#26262C;color:#FFFFFF;display:grid;place-items:center;padding:0;box-shadow:0 10px 22px rgba(30,30,45,.28);cursor:pointer}
 .nav-add:active{transform:scale(.95)}
+.nav-add{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;touch-action:manipulation}
 #addRoot{position:fixed;inset:0;z-index:45}
 #addRoot[hidden]{display:none}
 body.add-on{overflow:hidden}
@@ -703,7 +704,7 @@ nav.tabs a[aria-current="page"]{background:#E4F1FA!important;color:#0B3A5C!impor
   <div class="in">
     <a href="#accueil" data-tab="accueil"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11l8-6 8 6v9H4z"/><path d="M10 20v-5h4v5"/></svg>Aujourd'hui</a>
     <a href="#quetes" data-tab="quetes"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4h11v14a2 2 0 0 1-2 2H6"/><path d="M7 4a2 2 0 0 0-2 2v2h2M6 20a2 2 0 0 1-2-2v-1h10v1a2 2 0 0 0 2 2M10 9h5M10 13h5"/></svg>Quêtes</a>
-    <button type="button" class="nav-add" data-act="add-open" aria-label="Ajouter quelque chose"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
+    <button type="button" class="nav-add" data-act="add-open" aria-label="Ajouter en parlant (appui long : écrire)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
     <a href="#fiche" data-tab="fiche"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 5-3.5 8-7 10-3.5-2-7-5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg>Fiche</a>
     <a href="#gazette" data-tab="gazette"><span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h13v14a1 1 0 0 0 1 1H5a1 1 0 0 1-1-1z"/><path d="M17 9h3v10a1 1 0 0 1-2 0M7 9h7M7 13h7M7 16h4"/></svg><i class="nbadge" id="gazBadge" hidden></i></span>Gazette<span class="sr" id="gazBadgeSr"></span></a>
     <a href="#notes" data-tab="notes"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 12h7M9 16h5"/></svg>Notes</a>
@@ -716,7 +717,7 @@ nav.tabs a[aria-current="page"]{background:#E4F1FA!important;color:#0B3A5C!impor
 
 
 <script>
-var APP_VERSION = "MyWorld_0.6";
+var APP_VERSION = "MyWorld_0.7";
 (function(){
 "use strict";
 var CAL = "t.mallet06@gmail.com";
@@ -1755,12 +1756,15 @@ function updatePreviewOut(){
     : '<b>' + h(describe(r)) + '</b>';
 }
 /* ---------- panneau d'ajout (bouton + au milieu) ---------- */
-function addOpen(){
+function addOpen(mode){
+  /* mode « voix » : la dictée démarre tout de suite (un toucher sur +) ; sinon clavier (appui long sur +) */
   var root = document.getElementById("addRoot"), slot = document.getElementById("addSlot");
   ["captureForm","capPrev","captureHint"].forEach(function(id){ var el = document.getElementById(id); if (el) slot.appendChild(el); });
   root.hidden = false; document.body.classList.add("add-on");
   addFit();
-  var inp = document.getElementById("captureInput"); setTimeout(function(){ inp.focus(); }, 60);
+  var inp = document.getElementById("captureInput");
+  if (mode === "voice" && S.dictate && S.dictate(true)){ if (document.activeElement && document.activeElement.blur) document.activeElement.blur(); return; }
+  setTimeout(function(){ inp.focus(); }, 60);
 }
 function addClose(){
   var root = document.getElementById("addRoot"); if (root.hidden) return;
@@ -2553,7 +2557,7 @@ document.addEventListener("click", function(e){
   if (act === "export"){ exportBackup(); return; }
   if (act === "bday-edit"){ bdayEditSheet(id); return; }
   if (act === "ev-edit"){ eventEditSheet(b.dataset.gid || null, b.dataset.id || null); return; }
-  if (act === "add-open"){ addOpen(); return; }
+  if (act === "add-open"){ if (S.lpFired){ S.lpFired = false; return; } addOpen("voice"); return; }
   if (act === "add-close"){ addClose(); return; }
   if (act === "ev-open"){ openEvent(b.dataset.gid || null, b.dataset.id || null, b.dataset.d || null); return; }
   if (act === "ev-close"){ closeEvent(); return; }
@@ -2642,21 +2646,33 @@ document.addEventListener("wheel", function(e){
   var SR = window.SpeechRecognition || window.webkitSpeechRecognition, btn = document.getElementById("micBtn");
   if (!SR || !btn) return;
   btn.hidden = false;
-  var rec = null, input = document.getElementById("captureInput"), hint = document.getElementById("captureHint"), base = "";
+  var rec = null, input = document.getElementById("captureInput"), hint = document.getElementById("captureHint"), base = "", auto = false;
   function stop(){ if (hint.textContent === "Je t'écoute…") hint.textContent = ""; btn.classList.remove("on"); btn.setAttribute("aria-pressed","false"); btn.setAttribute("aria-label","Dicter"); rec = null; }
-  btn.addEventListener("click", function(){
-    if (rec){ rec.stop(); return; }
-    if (!navigator.onLine){ toast("La dictée a besoin d'internet. Tu peux utiliser le micro de ton clavier."); return; }
+  /* renvoie true si l'écoute a démarré ; autoSend : la phrase dictée part seule à l'analyse */
+  S.dictate = function(autoSend){
+    if (rec){ rec.stop(); return true; }
+    if (!navigator.onLine){ toast("La dictée a besoin d'internet. Tu peux écrire ta phrase."); return false; }
+    auto = !!autoSend;
     rec = new SR(); rec.lang = "fr-FR"; rec.interimResults = true; rec.continuous = false; rec.maxAlternatives = 1;
     base = input.value ? input.value.replace(/\s+$/,"") + " " : "";
     rec.onresult = function(ev){ var txt = ""; for (var i = 0; i < ev.results.length; i++) txt += ev.results[i][0].transcript; input.value = base + txt.trim(); };
     rec.onerror = function(ev){ var c = ev && ev.error; if (c === "not-allowed" || c === "service-not-allowed") toast("Autorise le micro pour cette appli dans les réglages de Chrome."); else if (c === "no-speech") toast("Je n'ai rien entendu. Réessaie."); else if (c !== "aborted") toast("La dictée n'a pas fonctionné. Réessaie."); stop(); };
-    rec.onend = function(){ var had = rec !== null; stop(); if (had && input.value.trim()){ input.focus(); hint.innerHTML = "<strong>Vérifie, puis touche +</strong>"; setTimeout(function(){ if (hint.textContent === "Vérifie, puis touche +") hint.textContent = ""; }, 5000); } };
-    try { rec.start(); btn.classList.add("on"); btn.setAttribute("aria-pressed","true"); btn.setAttribute("aria-label","Arrêter la dictée"); hint.textContent = "Je t'écoute…"; }
-    catch(e){ stop(); toast("La dictée n'a pas pu démarrer."); }
-  });
+    rec.onend = function(){ var had = rec !== null; stop(); if (had && auto && input.value.trim()){ auto = false; var f = document.getElementById("captureForm"); if (f.requestSubmit) f.requestSubmit(); else f.dispatchEvent(new Event("submit", {cancelable:true})); return; } if (had && input.value.trim()){ input.focus(); hint.innerHTML = "<strong>Vérifie, puis touche +</strong>"; setTimeout(function(){ if (hint.textContent === "Vérifie, puis touche +") hint.textContent = ""; }, 5000); } };
+    try { rec.start(); btn.classList.add("on"); btn.setAttribute("aria-pressed","true"); btn.setAttribute("aria-label","Arrêter la dictée"); hint.textContent = "Je t'écoute…"; return true; }
+    catch(e){ stop(); toast("La dictée n'a pas pu démarrer."); return false; }
+  };
+  btn.addEventListener("click", function(){ S.dictate(false); });
 })();
 window.addEventListener("hashchange", route);
+/* bouton + : appui long (0,45 s) = saisie au clavier */
+(function(){
+  var b = document.querySelector(".nav-add"), t = null;
+  if (!b) return;
+  function cancel(){ if (t){ clearTimeout(t); t = null; } }
+  b.addEventListener("pointerdown", function(){ cancel(); S.lpFired = false; t = setTimeout(function(){ t = null; S.lpFired = true; try { navigator.vibrate && navigator.vibrate(15); } catch(e){} addOpen("text"); }, 450); });
+  ["pointerup","pointerleave","pointercancel"].forEach(function(ev){ b.addEventListener(ev, cancel); });
+  b.addEventListener("contextmenu", function(e){ e.preventDefault(); });
+})();
 
 /* ---------- démarrage ---------- */
 function snap(col, key, order){
