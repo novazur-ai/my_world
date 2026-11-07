@@ -650,7 +650,7 @@ body.add-on{overflow:hidden}
 /* MyWorld_0.2 : ambiance Riviera. Grand bandeau bleu Méditerranée, texte blanc, semaine qui flotte dessus */
 html{background:#F5F8FB!important}
 :root{--ink:#0B3A5C;--text:#10263D;--muted:#5B6B7C;--line:#E1E8EF}
-#app::before{content:"";position:absolute;left:0;right:0;top:0;height:180px;background:linear-gradient(160deg,#0B4F7C 0%,#1677B3 55%,#3FA7DB 100%);border-radius:0 0 32px 32px;z-index:-1}
+#app::before{content:"";position:absolute;left:0;right:0;top:0;height:calc(180px + env(safe-area-inset-top,0px));background:linear-gradient(160deg,#0B4F7C 0%,#1677B3 55%,#3FA7DB 100%);border-radius:0 0 32px 32px;z-index:-1}
 .hd2 .eb,.hd2 .sub{color:rgba(255,255,255,.82)!important}
 .hd2 h1{color:#FFFFFF!important}
 .hd2 .av{background:rgba(255,255,255,.18)!important;border-color:rgba(255,255,255,.5)!important;color:#FFFFFF!important;box-shadow:none!important}
@@ -662,8 +662,8 @@ html{background:#F5F8FB!important}
 .nav-add{background:linear-gradient(160deg,#0B4F7C,#1F8FCB)!important;border-color:#FFFFFF!important}
 body[data-view="accueil"] .hd2 h1{font-size:26px!important}
 body[data-view="accueil"] .hd2 .av{width:40px!important;height:40px!important;top:0!important}
-body:not([data-view="accueil"]) #app::before{height:104px;border-radius:0 0 28px 28px}
-body[data-view="gazette"] #app::before{height:124px}
+body:not([data-view="accueil"]) #app::before{height:calc(104px + env(safe-area-inset-top,0px));border-radius:0 0 28px 28px}
+body[data-view="gazette"] #app::before{height:calc(124px + env(safe-area-inset-top,0px))}
 .fab{background:#0B4F7C!important}
 .prow,.card{border-color:#E6ECF2!important;box-shadow:0 6px 20px rgba(11,58,92,.06)!important}
 nav.tabs a[aria-current="page"]{background:#E4F1FA!important;color:#0B3A5C!important}
@@ -717,7 +717,7 @@ nav.tabs a[aria-current="page"]{background:#E4F1FA!important;color:#0B3A5C!impor
 
 
 <script>
-var APP_VERSION = "MyWorld_0.8";
+var APP_VERSION = "MyWorld_0.9";
 (function(){
 "use strict";
 var CAL = "t.mallet06@gmail.com";
