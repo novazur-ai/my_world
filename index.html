@@ -717,7 +717,7 @@ nav.tabs a[aria-current="page"]{background:#E4F1FA!important;color:#0B3A5C!impor
 
 
 <script>
-var APP_VERSION = "MyWorld_0.7";
+var APP_VERSION = "MyWorld_0.8";
 (function(){
 "use strict";
 var CAL = "t.mallet06@gmail.com";
@@ -1231,7 +1231,7 @@ function reminders(time, date, rappel){
 }
 function remindersText(r){
   var labels = {20160:"J-14",10080:"J-7",1440:"la veille",60:"1 h avant",0:"à l'heure pile"};
-  var l = r.map(function(x){ return labels[x.minutes] || (x.minutes > 60 ? "le matin" : x.minutes + " min avant"); });
+  var l = r.map(function(x){ return labels[x.minutes] || (x.minutes > 60 ? "à 8 h le jour même" : x.minutes + " min avant"); });
   if (!l.length) return "";
   return (l.length > 1 ? "Rappels " : "Rappel ") + (l.length > 1 ? l.slice(0,-1).join(", ") + " et " + l[l.length-1] : l[0]) + ".";
 }
@@ -1302,6 +1302,7 @@ function stripWords(text){
     .replace(/(^|\s)((à|a|vers|pour|ce|le)\s+)?(midi|minuit)(\s*(et demie?|et quart|moins le quart|30|trente|15|quart|45))?(?![\wà-ÿ-])/ig,"$1")
     .replace(/(^|\s)(du soir|de l['’]apr[eè]s-midi|de l['’]aprem|du matin)(?![\wà-ÿ])/ig,"$1")
     .replace(/\brdv\b/ig,"rendez-vous").replace(/\bdoc\b/ig,"docteur")
+    .replace(/^\s*(j'ai|j’ai|jai)\s+(?=(un |une )?(rendez-vous|rendez vous|cours|entra[iî]nement|match|vacation|r[ée]union)\b)/i,"")
     .replace(/^\s*(peux-tu |tu peux |merci de )?((fais|fait|mets|met|ajoute|cr[ée]e|programme)[- ]moi |(fais|fait|mets|met|ajoute|cr[ée]e|programme) )?(un )?(rappel(?!le)|petit rappel|alarme)\s*/i,"")
     .replace(/^\s*rappelle[- ]moi\s*/i,"")
     .replace(/^\s*(je dois|penser à|penser a|ne pas oublier de|ne pas oublier d')\s*/i,"")
@@ -1449,7 +1450,7 @@ function localParse(text){
     return {kind:"birthday", person: who2 || title, date: date ? iso(date) : null, title:"Anniversaire", xp:0};
   }
   /* exploit : quelque chose de déjà fait */
-  if (/^(j'ai|j’ai|jai|fait|fini|termine)\b|^\d+(?:[.,]\d+)?\s*(h|min)/.test(n)){
+  if ((/^(j'ai|j’ai|jai|fait|fini|termine)\b|^\d+(?:[.,]\d+)?\s*(h|min)/.test(n)) && !/^(j'ai|j’ai|jai)\s+(un |une )?(rendez[- ]vous|rdv|rendez vous|cours|entrainement|match|vacation|reunion|dentiste|medecin|kine|rendez)/.test(n)){
     var st = guessStat(s); return {kind:"exploit", title:cap(text.trim()), xp:exploitXP(s), stat: st, skill:skillOf(s)};
   }
   /* rendez-vous daté */
@@ -1631,13 +1632,14 @@ function describe(r){
   return r.title || "";
 }
 
+function undoCal(id){ return function(){ mcp.callTool(GC, "delete_event", {calendarId:CAL, eventId:id}).then(function(){ try { mcp.invalidate(GC, "list_events"); } catch(e){} toast("Annulé, retiré de ton agenda."); }).catch(function(e){ toast(calWriteMsg(e)); }); }; }
 function commit(r){
   var stat = STATS[r.stat] ? r.stat : "sag";
   var base = {title: cap(r.title || ""), createdAt: nowISO()};
   if (r.kind === "event"){
     if (!r.date){ r.kind = "quest"; return commit(r); }
-    if (!r.time) return db.collection("items").add(Object.assign(base, {kind:"event", date:r.date, time:null, place:r.place || null, cat:r.cat || null})).then(function(){ toast("Noté. Il manque l'heure : touche « À compléter » quand tu la sais."); });
-    return createCalEvent({title:base.title, date:r.date, time:r.time, endTime:r.endTime, reminder:r.reminder, place:r.place || null, cat:r.cat || null}).then(function(){ toast("Ajouté à ton agenda. " + remindersText(reminders(r.time, r.date, r.reminder))); }).catch(function(e){
+    if (!r.time) return db.collection("items").add(Object.assign(base, {kind:"event", date:r.date, time:null, place:r.place || null, cat:r.cat || null})).then(function(ref){ toast("Noté. Il manque l'heure : touche « À compléter » quand tu la sais.", ref && ref.id ? {undo:function(){ db.collection("items").doc(ref.id).delete().catch(dbErr); }} : undefined); });
+    return createCalEvent({title:base.title, date:r.date, time:r.time, endTime:r.endTime, reminder:r.reminder, place:r.place || null, cat:r.cat || null}).then(function(res){ var ev = res && res.payload; toast("Ajouté à ton agenda : " + base.title + ". " + remindersText(reminders(r.time, r.date, r.reminder)), ev && ev.id ? {undo:undoCal(ev.id)} : undefined); }).catch(function(e){
       toast(calWriteMsg(e)); if (e && (e.code === "server_unavailable" || e.code === "upstream_error")) return;
       return db.collection("items").add(Object.assign(base, {kind:"event", date:r.date, time:r.time, endTime:r.endTime || null, place:r.place || null, cat:r.cat || null, unsynced:true}));
     });
@@ -1647,13 +1649,13 @@ function commit(r){
     if (!r.date){ return db.collection("items").add(Object.assign(base, {kind:"birthday", person:person, md:null})).then(function(){ toast("Il me manque la date de l'anniversaire de " + person + "."); }); }
     var md = r.date.slice(5);
     return db.collection("items").add(Object.assign(base, {kind:"birthday", person:person, md:md})).then(function(ref){
-      return createCalEvent({title:"Anniversaire de " + person, date: iso(nextOccurrence(md)), time:null, yearly:true}).then(function(res){ var ev = res && res.payload; if (ref && ref.id && ev && ev.id) db.collection("items").doc(ref.id).update({gcalId: ev.id}).catch(function(){}); toast("Anniversaire de " + person + " noté. Rappels à J-14, J-7 et la veille."); }).catch(function(e){ toast("Anniversaire noté dans l'appli. " + calWriteMsg(e).replace(/le rendez-vous est gardé dans l'appli\.?/,"")); });
+      return createCalEvent({title:"Anniversaire de " + person, date: iso(nextOccurrence(md)), time:null, yearly:true}).then(function(res){ var ev = res && res.payload; if (ref && ref.id && ev && ev.id) db.collection("items").doc(ref.id).update({gcalId: ev.id}).catch(function(){}); toast("Anniversaire de " + person + " noté. Rappel la veille à 20 h.", {undo:function(){ if (ref && ref.id) db.collection("items").doc(ref.id).delete().catch(dbErr); if (ev && ev.id) undoCal(ev.id)(); }}); }).catch(function(e){ toast("Anniversaire noté dans l'appli. " + calWriteMsg(e).replace(/le rendez-vous est gardé dans l'appli\.?/,"")); });
     });
   }
   if (r.kind === "note"){
     var nid = db.collection("notes").newId(), now = nowISO();
     var html = (r.text ? String(r.text).split(/\n/).map(function(l){ return "<div>" + (l.trim() ? h(l) : "<br>") + "</div>"; }).join("") : "") + (r.items && r.items.length ? todoHTML(r.items) : r.todo ? todoHTML([""]) : "");
-    return db.collection("notes").doc(nid).set({title:r.title || "", html:html, text:textFromHTML(html), media:[], thumb:null, hasAudio:false, folder:null, bg:"papier", pinned:false, deleted:false, createdAt:now, updatedAt:now}).then(function(){ toast("Note ajoutée dans tes notes."); });
+    return db.collection("notes").doc(nid).set({title:r.title || "", html:html, text:textFromHTML(html), media:[], thumb:null, hasAudio:false, folder:null, bg:"papier", pinned:false, deleted:false, createdAt:now, updatedAt:now}).then(function(){ toast("Note ajoutée dans tes notes.", {undo:function(){ db.collection("notes").doc(nid).delete().catch(dbErr); }}); });
   }
   if (r.kind === "note-add"){
     var tn = S.notes.find(function(n){ return n._id === r.noteId; }); if (!tn || !r.items.length) return;
@@ -1695,9 +1697,24 @@ function onCapture(e){
   understand(text).then(function(r){
     input.value = ""; hint.textContent = "";
     var F = fieldsOf(r, text);
+    if (isClear(F)){
+      /* tout est compris : création directe, avec « Annuler » dans le message */
+      CP = null; renderPreview();
+      if (!document.getElementById("addRoot").hidden) setTimeout(addClose, 150);
+      Promise.resolve(commit(buildFinal(F, text))).catch(dbErr);
+      return;
+    }
     CP = {text:text, F0:Object.assign({}, F), F:F, learnedBefore:!!r.learned};
     renderPreview(true);
   });
+}
+/* La carte « J'ai compris » ne s'affiche qu'en cas de doute.
+   Clair = rendez-vous avec quoi + jour + heure + domaine reconnu, anniversaire avec prénom + date, ou note. */
+function isClear(F){
+  if (F.kind === "event") return !!((F.core || "").trim() && F.date && F.time && (F.reminder || guessCatPlain(F) !== "neutre"));
+  if (F.kind === "birthday") return !!((F.person || F.core || "").trim() && F.date);
+  if (F.kind === "note") return !!((F.noteTitle || "").trim() || (F.noteBody || "").trim() || (F.orig && F.orig.items && F.orig.items.length));
+  return false;
 }
 function cpField(id, label, val, type, wide, ph){
   return '<div class="field' + (wide ? " wide" : "") + '"><label for="' + id + '">' + label + '</label><input id="' + id + '" type="' + (type || "text") + '" value="' + h(val || "") + '"' + (ph ? ' placeholder="' + h(ph) + '"' : "") + ' enterkeyhint="done"></div>';
