@@ -2,16 +2,16 @@
 
 Compte environ 1 h la première fois. Tu as besoin de ton compte GitHub, et de ton compte Google (pour créer le projet Firebase et te connecter), avec ton téléphone pour l'étape 6.
 
-Dans ce guide, remplace `PSEUDO` par ton nom d'utilisateur GitHub et `DEPOT` par le nom du dépôt.
+Le dépôt est `novazur-ai/my_world`, et l'appli sera en ligne sur `https://novazur-ai.github.io/my_world/`.
 
 ---
 
 ## 1. GitHub Pages
 
-1. Crée un dépôt **public**, par exemple `carnet`. GitHub Pages gratuit demande un dépôt public. Le code ne contient aucune donnée personnelle : tout ce qui est privé reste dans Firebase.
-2. Dépose tous les fichiers du dossier à la racine du dépôt, **y compris** le dossier caché `.github`.
+1. Le dépôt `novazur-ai/my_world` existe déjà et doit rester **public**. GitHub Pages gratuit demande un dépôt public. Le code ne contient aucune donnée personnelle : tout ce qui est privé reste dans Firebase.
+2. Les fichiers y sont déjà (Claude les pousse directement).
 3. Va dans **Settings → Pages** et choisis *Source : **GitHub Actions***. La mise en ligne passe alors par `.github/workflows/deploy.yml`, qui numérote chaque version automatiquement.
-4. Au bout d'une minute, l'appli est en ligne sur `https://PSEUDO.github.io/DEPOT/`. Elle affiche encore une erreur tant que l'étape 2 n'est pas faite : c'est normal.
+4. Au bout d'une minute, l'appli est en ligne sur `https://novazur-ai.github.io/my_world/`. Elle affiche encore une erreur tant que l'étape 2 n'est pas faite : c'est normal.
 
 > ⚠️ Ne mets **jamais** dans le dépôt le fichier `sauvegarde-tableau-de-bord.json` ni la clé du compte de service (étape 4). Le `.gitignore` les bloque déjà.
 
@@ -20,7 +20,7 @@ Dans ce guide, remplace `PSEUDO` par ton nom d'utilisateur GitHub et `DEPOT` par
 1. Sur <https://console.firebase.google.com>, clique sur **Ajouter un projet** et nomme-le (par exemple `mon-carnet`). Google Analytics n'est pas utile.
 2. Dans **Vue d'ensemble**, clique sur l'icône **`</>`** (application Web), donne-lui un surnom et **ne coche pas** Hosting. Copie le bloc `firebaseConfig` dans `firebase-config.js` (`FIREBASE_CONFIG`).
 3. Dans **Authentication → Commencer → Sign-in method**, active **Google**.
-4. Dans **Authentication → Paramètres → Domaines autorisés**, ajoute `PSEUDO.github.io`.
+4. Dans **Authentication → Paramètres → Domaines autorisés**, ajoute `novazur-ai.github.io`.
 5. Dans **Firestore Database → Créer une base de données**, choisis le *mode production* et la région `eur3 (europe-west)`.
 6. Dans l'onglet **Règles** de Firestore, colle le contenu de `firestore.rules`, puis clique sur **Publier**. Seul le compte `t.mallet06@gmail.com` peut alors lire et écrire.
 
@@ -37,11 +37,12 @@ Ton projet Firebase est aussi un projet Google Cloud : tu travailles donc dans l
    - **Utilisateurs test** : ajoute `t.mallet06@gmail.com`.
 4. Dans **API et services → Identifiants → Créer des identifiants → ID client OAuth** :
    - type **Application Web** ;
-   - **Origines JavaScript autorisées** : `https://PSEUDO.github.io` (sans `/DEPOT`, sans `/` final) ;
+   - **Origines JavaScript autorisées** : `https://novazur-ai.github.io` (sans `/my_world`, sans `/` final) ;
    - pas besoin d'URI de redirection.
 
    Copie l'**ID client** (il se termine par `.apps.googleusercontent.com`) dans `firebase-config.js` (`GOOGLE_CLIENT_ID`).
-5. Pousse `firebase-config.js` sur GitHub.
+5. Envoie ces valeurs à Claude, qui les met dans `firebase-config.js` et pousse le fichier.
+6. **Accès à l'agenda sans fenêtre Google** : suis `scripts/jeton-agenda/LISEZMOI.md`, puis donne l'adresse `/exec` obtenue à Claude pour `AGENDA_TOKEN_URL`.
 
 **À savoir sur l'agenda :**
 
@@ -63,7 +64,7 @@ Ensuite, la Gazette tourne toute seule chaque matin vers 6h, heure de Paris, ét
 
 ## 5. Vérifier
 
-Ouvre `https://PSEUDO.github.io/DEPOT/` sur un ordinateur : l'écran « My World » doit proposer **Se connecter avec Google**.
+Ouvre `https://novazur-ai.github.io/my_world/` sur un ordinateur : l'écran « My World » doit proposer **Se connecter avec Google**.
 
 ## 6. Sur ton téléphone
 

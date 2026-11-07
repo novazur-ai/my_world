@@ -420,7 +420,7 @@ nav.tabs a[aria-current="page"]{background:var(--band);color:var(--ink);font-wei
 .dots{display:flex;gap:3px;height:8px}
 .dots{height:9px}
 .dots i{width:9px;height:9px;border-radius:50%;box-sizing:border-box}
-.dots i.k-danse{box-shadow:inset 0 0 0 1.5px #AC8BE0}.dots i.k-sante{box-shadow:inset 0 0 0 1.5px #86C892}.dots i.k-famille{box-shadow:inset 0 0 0 1.5px #E9998A}.dots i.k-admin{box-shadow:inset 0 0 0 1.5px #E3BC62}.dots i.k-rappel{box-shadow:inset 0 0 0 1.5px #7AB2E3}
+.dots i.k-sport{box-shadow:inset 0 0 0 1.5px #AC8BE0}.dots i.k-sante{box-shadow:inset 0 0 0 1.5px #86C892}.dots i.k-famille{box-shadow:inset 0 0 0 1.5px #E9998A}.dots i.k-admin{box-shadow:inset 0 0 0 1.5px #E3BC62}.dots i.k-rappel{box-shadow:inset 0 0 0 1.5px #7AB2E3}.dots i.k-boulot{box-shadow:inset 0 0 0 1.5px #8E9BE0}.dots i.k-projets{box-shadow:inset 0 0 0 1.5px #EFA27A}.dots i.k-maison{box-shadow:inset 0 0 0 1.5px #B3C46E}
 .dots i.k-neutre{outline:0;box-shadow:inset 0 0 0 1.5px #B4B4BE}
 .mpanel .wdate.today small,.mpanel .wdate.today b{color:var(--ink)}
 .burst{position:fixed;z-index:60;pointer-events:none;width:12px;height:9px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;animation:burst 1.1s ease-out forwards}
@@ -457,7 +457,7 @@ nav.tabs a[aria-current="page"]{background:var(--band);color:var(--ink);font-wei
 .learn-sub{font-size:13px;font-weight:800;color:var(--muted);margin:12px 0 4px}
 
 /* Semaine : dates en colonne + rendez-vous en couleur par domaine */
-:root{--c-danse:#E3D3F7;--c-danse-ink:#6640A6;--c-sante:#D4EED6;--c-sante-ink:#2F7440;--c-famille:#FAD3CB;--c-famille-ink:#A8402F;--c-admin:#FBE6B4;--c-admin-ink:#8E6312;--c-rappel:#D2E8FA;--c-rappel-ink:#2C679C;--c-neutre:#FFFFFF;--c-neutre-ink:#5A4636}
+:root{--c-sport:#E3D3F7;--c-sport-ink:#6640A6;--c-sante:#D4EED6;--c-sante-ink:#2F7440;--c-famille:#FAD3CB;--c-famille-ink:#A8402F;--c-admin:#FBE6B4;--c-admin-ink:#8E6312;--c-rappel:#D2E8FA;--c-rappel-ink:#2C679C;--c-boulot:#D9DFF7;--c-boulot-ink:#33449A;--c-projets:#FDDCC6;--c-projets-ink:#AA4A1C;--c-maison:#E6EDC8;--c-maison-ink:#56661A;--c-neutre:#FFFFFF;--c-neutre-ink:#66666F}
 .week2{margin-top:12px;padding:12px 12px 14px;display:flex;flex-direction:column;gap:12px}
 .wsum{font-size:14px;font-weight:800;color:var(--muted);margin:0 2px}
 .wsum span{color:var(--ink)}
@@ -483,7 +483,7 @@ button.wev:active{filter:brightness(.97)}
 .wmeta .pin{display:inline-flex;align-items:center;gap:4px}
 .wtm{font-size:13px;font-weight:800;font-variant-numeric:tabular-nums;text-align:right;line-height:1.2;color:var(--text);white-space:nowrap}
 .wtm small{display:block;font-size:11px;font-weight:700;opacity:.75}
-.k-danse{background:var(--c-danse);color:var(--c-danse-ink)} .k-sante{background:var(--c-sante);color:var(--c-sante-ink)} .k-famille{background:var(--c-famille);color:var(--c-famille-ink)} .k-admin{background:var(--c-admin);color:var(--c-admin-ink)} .k-rappel{background:var(--c-rappel);color:var(--c-rappel-ink)} .k-neutre{background:var(--c-neutre);color:var(--c-neutre-ink);outline:1.5px dashed #B9A68C;outline-offset:-1.5px}
+.k-sport{background:var(--c-sport);color:var(--c-sport-ink)} .k-sante{background:var(--c-sante);color:var(--c-sante-ink)} .k-famille{background:var(--c-famille);color:var(--c-famille-ink)} .k-admin{background:var(--c-admin);color:var(--c-admin-ink)} .k-rappel{background:var(--c-rappel);color:var(--c-rappel-ink)} .k-boulot{background:var(--c-boulot);color:var(--c-boulot-ink)} .k-projets{background:var(--c-projets);color:var(--c-projets-ink)} .k-maison{background:var(--c-maison);color:var(--c-maison-ink)} .k-neutre{background:var(--c-neutre);color:var(--c-neutre-ink);outline:1.5px dashed #C4C4CC;outline-offset:-1.5px}
 .k-neutre .wic{background:var(--paper)}
 .wlegend{display:flex;flex-wrap:wrap;gap:6px}
 .wlegend span{font-size:11.5px;font-weight:800;padding:3px 9px;border-radius:999px}
@@ -715,19 +715,19 @@ nav.tabs a[aria-current="page"]{background:#E4F1FA!important;color:#0B3A5C!impor
 
 
 <script>
-var APP_VERSION = "MyWorld_0.2";
+var APP_VERSION = "MyWorld_0.3";
 (function(){
 "use strict";
 var CAL = "t.mallet06@gmail.com";
 var GC = "Google Calendar";
 var NAME = "Théo";
 var STATS = {
-  force:{k:"Force", n:"Condition physique", cls:"s-force", icon:'<path d="M3 12h4l3-7 4 14 3-7h4"/>', title:"Danseuse de la Comté"},
-  dex:{k:"Dextérité", n:"Savoir-faire", cls:"s-dex", icon:'<path d="M12 3l2.2 5.2L20 9l-4.4 3.8L17 19l-5-3-5 3 1.4-6.2L4 9l5.8-.8z"/>', title:"Artisane"},
+  force:{k:"Force", n:"Condition physique", cls:"s-force", icon:'<path d="M3 12h4l3-7 4 14 3-7h4"/>', title:"Athlète"},
+  dex:{k:"Dextérité", n:"Savoir-faire", cls:"s-dex", icon:'<path d="M12 3l2.2 5.2L20 9l-4.4 3.8L17 19l-5-3-5 3 1.4-6.2L4 9l5.8-.8z"/>', title:"Artisan"},
   con:{k:"Constitution", n:"Santé et soin de soi", cls:"s-con", icon:'<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>', title:"Corps et âme en paix"},
   int:{k:"Intelligence", n:"Savoir", cls:"s-int", icon:'<path d="M4 5h6a2 2 0 0 1 2 2v13a2 2 0 0 0-2-2H4zM20 5h-6a2 2 0 0 0-2 2v13a2 2 0 0 1 2-2h6z"/>', title:"Esprit curieux"},
-  sag:{k:"Sagesse", n:"Maîtrise du quotidien", cls:"s-sag", icon:'<circle cx="12" cy="12" r="8"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/>', title:"Maîtresse du quotidien"},
-  cha:{k:"Charisme", n:"Liens", cls:"s-cha", icon:'<circle cx="9" cy="12" r="5"/><circle cx="15" cy="12" r="5"/>', title:"Gardienne des liens"}
+  sag:{k:"Sagesse", n:"Maîtrise du quotidien", cls:"s-sag", icon:'<circle cx="12" cy="12" r="8"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/>', title:"Maître du quotidien"},
+  cha:{k:"Charisme", n:"Liens", cls:"s-cha", icon:'<circle cx="9" cy="12" r="5"/><circle cx="15" cy="12" r="5"/>', title:"Gardien des liens"}
 };
 var COLS = [["force","con","sag"],["dex","int","cha"]];
 var STAT_SHORT = {force:"Forme", con:"Santé", cha:"Liens", sag:"Quotidien", int:"Savoir", dex:"Savoir-faire"};
@@ -846,22 +846,28 @@ function activeQuests(){ return S.items.filter(function(i){ return i.kind === "q
 function gcalAll(){ var ids = {}, out = S.gcal.slice(); S.gcal.forEach(function(e){ ids[e.id] = 1; }); Object.keys(S.gcalExtra).forEach(function(k){ S.gcalExtra[k].forEach(function(e){ if (!ids[e.id]){ ids[e.id] = 1; out.push(e); } }); }); return out; }
 /* ---------- domaines des rendez-vous (une couleur chacun, la même dans Google Agenda) ---------- */
 var CATS = {
-  danse:{n:"Sport", color:"1", ic:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h4l3-7 4 14 3-7h4"/></svg>'},
+  sport:{n:"Sport", color:"1", ic:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h4l3-7 4 14 3-7h4"/></svg>'},
   sante:{n:"Santé", color:"2", ic:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>'},
   famille:{n:"Proches", color:"4", ic:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>'},
   admin:{n:"Papiers", color:"5", ic:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10l9-6 9 6M5 10v9M19 10v9M9 10v9M15 10v9M3 21h18"/></svg>'},
+  boulot:{n:"Boulot", color:"9", ic:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 13h18"/></svg>'},
+  projets:{n:"Projets", color:"6", ic:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.8.8 1 1.5 1 2.5h6c0-1 .2-1.7 1-2.5A6 6 0 0 0 12 3z"/></svg>'},
+  maison:{n:"Maison", color:"10", ic:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg>'},
   rappel:{n:"Rappel", color:"7", ic:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 21h4"/></svg>'},
   neutre:{n:"Autre", color:null, ic:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="3"/><path d="M4 10h16M9 3v4M15 3v4"/></svg>'}
 };
-var CAT_ORDER = ["danse","sante","famille","admin","rappel","neutre"];
-var COLOR_CAT = {"1":"danse","2":"sante","4":"famille","5":"admin","7":"rappel","6":"admin"};
+var CAT_ORDER = ["boulot","sport","sante","famille","admin","projets","maison","rappel","neutre"];
+var COLOR_CAT = {"1":"sport","2":"sante","4":"famille","5":"admin","6":"projets","7":"rappel","9":"boulot","10":"maison"};
 /* couleur Google → domaine ; « Banane » posée par l'ancienne palette sur un rappel (notification à l'heure pile) reste un rappel */
 function catFromColor(colorId, rappel){ if (colorId === "5" && rappel) return "rappel"; return COLOR_CAT[colorId]; }
 var CAT_WORDS = [
-  ["danse", /\bdans|la sauce|yoga|pilates|zumba|salsa|bachata|kizomba|stretch|\bsport|muscu|fitness|footing|course a pied|natation|piscine|\bgym\b/],
-  ["sante", /dentiste|medecin|docteur|\bdr\b|\bkine|osteo|ophtalmo|dermato|gyneco|gastro|cardio|orthodont|analyse|prise de sang|\blabo|pharmacie|hopital|clinique|radio|\birm\b|echographie|vaccin|\bpsy|sante|\bveto|veterinaire/],
-  ["admin", /banque|impot|notaire|garage|garagiste|controle technique|mutuelle|assurance|\bcaf\b|mairie|prefecture|passeport|carte d'identite|permis|\bpret\b|dossier|comptable|urssaf|syndic|facture|agence/],
-  ["famille", /maman|papa|theo|\banniv|apero|\bresto|restaurant|diner|dejeuner|manger|brunch|soiree|famille|copain|copine|\bamis?\b|\bchez (?!le\b|la\b|les\b|l'|un\b|une\b|mon\b|ma\b|mes\b|nous\b|moi\b)|\bfete|mariage|bapteme|noel|nouvelles/]
+  ["boulot", /vacation|\bfbo\b|dc aviation|\bg-?ops\b|\bboulot|\btaf\b|\btravail\b|au bureau|\bshift|astreinte|\bbriefing|planning|\bops\b/],
+  ["sport", /\bsport|rugby|entrainement|\bmatch\b|muscu|salle de sport|fitness|footing|course a pied|\bcourir|running|natation|piscine|\bgym\b|\bvelo\b|randonn|crossfit|yoga|stretch|padel|tennis/],
+  ["sante", /dentiste|medecin|docteur|\bdr\b|\bkine|osteo|ophtalmo|dermato|gastro|cardio|orthodont|analyse|prise de sang|\blabo|pharmacie|hopital|clinique|radio|\birm\b|echographie|vaccin|\bpsy|sante|\bveto|veterinaire/],
+  ["admin", /banque|impot|notaire|garage|garagiste|controle technique|mutuelle|assurance|\bcaf\b|mairie|prefecture|passeport|carte d'identite|permis|\bpret\b|dossier|comptable|urssaf|syndic|facture|agence|crypto|\betf\b|bourse|budget/],
+  ["projets", /novazur|\bbox\b|projet|youtube|chaine|tournage|montage video|page de vente|canva|fournisseur|prototype|\bappli\b|site web|site internet|prospect|micro-entreprise|side/],
+  ["maison", /terrasse|jardin|potager|plante|arros|rempot|bricol|laser|pyrograv|graveur|menage|aspirateur|lessive|reparer|plombier|electricien|demenag|\bcourses\b|ikea|leroy merlin|castorama|hydropon/],
+  ["famille", /maman|papa|parents|mamie|papi|\banniv|apero|\bresto|restaurant|diner|dejeuner|manger|brunch|soiree|famille|copain|copine|\bamis?\b|\bchez (?!le\b|la\b|les\b|l'|un\b|une\b|mon\b|ma\b|mes\b|nous\b|moi\b)|\bfete|mariage|bapteme|noel|nouvelles/]
 ];
 function guessCat(title, place, people, rappel){
   var L = learnData(), words = keyWords(title || "");
@@ -873,7 +879,7 @@ function guessCat(title, place, people, rappel){
   if (people && people.length) return "famille";
   return "neutre";
 }
-/* « Cours de danse (Thaïs + Léa) - Studio La Sauce - 10h » → quoi, avec qui, où */
+/* « Entraînement (Max + Julie) - Stade - 18h30 » → quoi, avec qui, où */
 function splitTitle(t, loc){
   var x = String(t || "").trim(), place = "", people = [], hadTime = /\s+-\s+\d{1,2}h(\d{2})?$/i.test(x);
   x = x.replace(/\s+-\s+\d{1,2}h(\d{2})?$/i, "");
@@ -947,7 +953,7 @@ function heroHTML(){
   if (S.view === "accueil"){
     var hr = new Date().getHours(), g = greetText().split(" · ")[0];
     if (/^Bonjour, /.test(g)) g = "Coucou " + NAME + " !"; else if (/^(Bonsoir|Bonne nuit), /.test(g)) g = g.replace(", ", " ") + " !";
-    return '<div class="hd2 gut"><p class="eb">' + h(date) + '</p><h1>' + h(g) + '</h1><p class="sub">' + h(hr < 18 ? "Prête pour une belle journée ?" : "Une bonne soirée t'attend.") + '</p><a class="av" href="#fiche" aria-label="Ta fiche">' + h((NAME || "A").charAt(0)) + '</a></div>';
+    return '<div class="hd2 gut"><p class="eb">' + h(date) + '</p><h1>' + h(g) + '</h1><p class="sub">' + h(hr < 18 ? "Prêt pour une belle journée ?" : "Une bonne soirée t'attend.") + '</p><a class="av" href="#fiche" aria-label="Ta fiche">' + h((NAME || "A").charAt(0)) + '</a></div>';
   }
   var title = S.view === "quetes" ? "Tes quêtes" : S.view === "fiche" ? "Ta fiche" : S.view === "notes" ? "Tes notes" : "La Gazette", sub = "";
   if (S.view === "gazette"){ var u = S.settings && S.settings.gazetteUpdatedAt; sub = '<p class="sub"><span class="pulse" aria-hidden="true" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#2F7440;margin-right:6px"></span>' + h(u ? "Mise à jour " + ago(u) : "En attente de la première mise à jour") + '</p>'; }
@@ -960,7 +966,7 @@ function briefingHTML(){
   var day = tom ? addDays(today(),1) : today(), di = iso(day);
   var evs = eventsOn(di), q = activeQuests()[0], stepI = q ? (q.steps||[]).findIndex(function(s){ return !s.done; }) : -1;
   var links = dueLinks().slice(0, 2), bds = upcomingBirthdays().filter(function(b){ return b.days <= 3; });
-  var CATC = {danse:"#6640A6", sante:"#2F7440", famille:"#A8402F", admin:"#8E6312", rappel:"#2C679C", neutre:"#B9A68C"};
+  var CATC = {sport:"#6640A6", sante:"#2F7440", famille:"#A8402F", admin:"#8E6312", boulot:"#33449A", projets:"#AA4A1C", maison:"#56661A", rappel:"#2C679C", neutre:"#85858F"};
   var loose = [], timed = [];
   bds.forEach(function(b){ loose.push({c:"#A8402F", t: b.days === 0 ? "Anniversaire de " + b.person + " !" : "Anniversaire de " + b.person, s: b.days === 0 ? "C'est aujourd'hui" : inDays(b.days)}); });
   if (q && stepI >= 0){ var c = (STAT_COL[q.stat] || STAT_COL.sag)[1]; loose.push({c:c, t:q.steps[stepI].t, s:"Étape de ta quête « " + q.title + " »", act:'<button type="button" data-act="step" data-id="' + h(q._id) + '" data-i="' + stepI + '" style="color:' + c + '">C\'est fait</button>'}); }
@@ -1077,9 +1083,9 @@ function bubblesHTML(){
   }).join("") + '</div></div>';
 }
 /* ---------- Accueil (Planner_0.4) : bandeau de la semaine + programme du jour ---------- */
-var CAT_COL = {danse:["#E3D3F7","#6640A6","#AC8BE0"], sante:["#D4EED6","#2F7440","#86C892"], famille:["#FAD3CB","#A8402F","#E9998A"], admin:["#FBE6B4","#8E6312","#E3BC62"], rappel:["#D2E8FA","#2C679C","#7AB2E3"], neutre:["#FFFFFF","#66666F","#C4C4CC"]};
-var CAT_STAT = {danse:"force", sante:"con", famille:"cha", admin:"sag", rappel:"int", neutre:"sag"};
-var STAT_CAT = {force:"danse", con:"sante", cha:"famille", sag:"admin", int:"rappel", dex:"neutre"};
+var CAT_COL = {sport:["#E3D3F7","#6640A6","#AC8BE0"], sante:["#D4EED6","#2F7440","#86C892"], famille:["#FAD3CB","#A8402F","#E9998A"], admin:["#FBE6B4","#8E6312","#E3BC62"], boulot:["#D9DFF7","#33449A","#8E9BE0"], projets:["#FDDCC6","#AA4A1C","#EFA27A"], maison:["#E6EDC8","#56661A","#B3C46E"], rappel:["#D2E8FA","#2C679C","#7AB2E3"], neutre:["#FFFFFF","#66666F","#C4C4CC"]};
+var CAT_STAT = {sport:"force", sante:"con", famille:"cha", admin:"sag", boulot:"sag", projets:"int", maison:"dex", rappel:"int", neutre:"sag"};
+var STAT_CAT = {force:"sport", con:"sante", cha:"famille", sag:"admin", int:"projets", dex:"maison"};
 var FLAG_IC = '<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21V4h11l-2 4 2 4H5"/></svg>';
 var CAKE_IC2 = '<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21h16M5 21v-7h14v7M12 14V9M12 6.5c-.8-1-.3-2.2 0-3 .3.8.8 2 0 3z"/></svg>';
 var CHAT_IC = '<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg>';
@@ -1193,7 +1199,7 @@ function viewQuetes(){
 }
 function viewFiche(){
   var o = statXP(), tot = totalXP(), lvl = globalLevel(tot), into = tot - (lvl-1)*200;
-  var titles = unlockedTitles(), mine = titles.length ? titles[titles.length-1] : "Aventurière";
+  var titles = unlockedTitles(), mine = titles.length ? titles[titles.length-1] : "Aventurier";
   var tiles = ["force","con","cha","sag","int","dex"].map(function(k){ var st = STATS[k], xp = o[k], lv = statLevel(xp), pc = Math.round((xp % 80) / 80 * 100);
     return '<button type="button" class="stat ' + st.cls + '" data-act="stat" data-k="' + k + '"><span class="top"><span class="qic" style="background:rgba(255,255,255,.7)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + st.icon + '</svg></span><span class="lv">' + lv + '</span></span><span class="k">' + st.k + '</span><span class="nm">' + st.n + '</span><span class="sbar"><i style="width:' + Math.max(pc,3) + '%"></i></span></button>'; }).join("");
   var nt = nextTitle();
@@ -1405,10 +1411,10 @@ var MOIS_N = ["janvier","fevrier","mars","avril","mai","juin","juillet","aout","
 function noAcc(s){ return String(s).normalize("NFD").replace(/[̀-ͯ]/g, ""); }
 /* caractéristique selon les mots de la phrase */
 var STAT_WORDS = [
-  ["force", /danse|danser|sport|marche|course|courir|yoga|pilates|muscu|salle|velo|natation|nager|randonn|stretch|etire|footing|fitness|gym/],
+  ["force", /rugby|entrainement|sport|marche|course|courir|yoga|pilates|muscu|salle|velo|natation|nager|randonn|stretch|etire|footing|fitness|gym/],
   ["con", /medecin|docteur|dentiste|gyneco|kine|osteo|ophtalmo|dermato|gastro|pharmacie|ordonnance|analyse|prise de sang|sommeil|dormir|sieste|bain|soin|masque|coiffeur|manucure|meditation|respir|vaccin|sante|mutuelle|lunettes|lentilles/],
-  ["int", /lire|livre|lecture|apprendre|cours|formation|langue|anglais|vietnamien|italien|espagnol|etudier|reviser|documentaire|podcast|tuto/],
-  ["dex", /cuisine|cuisiner|recette|gateau|patisserie|bricol|monter|reparer|peindre|peinture|plante|jardin|rempoter|arroser|coudre|tricot|dessin|creer|decor|lapin/],
+  ["int", /lire|livre|lecture|apprendre|cours|formation|langue|anglais|italien|espagnol|etudier|reviser|documentaire|podcast|tuto/],
+  ["dex", /cuisine|cuisiner|recette|gateau|patisserie|bricol|monter|reparer|peindre|peinture|plante|jardin|rempoter|arroser|coudre|tricot|dessin|creer|decor|laser|pyrograv|graver|hydropon/],
   ["cha", /maman|papa|frere|soeur|\bami|\bamie|copine|copain|famille|anniv|cadeau|inviter|diner avec|prendre des nouvelles/],
   ["sag", /garage|voiture|controle technique|assurance|impot|banque|facture|papier|administr|dossier|resilier|abonnement|menage|ranger|rangement|lessive|courses|vaisselle|aspirateur|trier|demenag|maison|appartement|notaire|pret|budget|caf|mairie|passeport|carte d.identite|permis/]
 ];
@@ -1433,7 +1439,7 @@ function questSteps(title){
 function questXP(title){ var n = noAcc(title.toLowerCase()); return /impot|declaration|demenag|dossier|administr|resilier|notaire|garage|voiture|dentiste/.test(n) ? 70 : /ranger|trier|menage|reparer|bricol/.test(n) ? 50 : 40; }
 function exploitXP(s){ var n = noAcc(s.toLowerCase()); var m = n.match(/(\d+(?:[.,]\d+)?)\s*h(?!\d)/), mn = n.match(/(\d+)\s*min/); var mins = m ? parseFloat(m[1].replace(",", "."))*60 : mn ? +mn[1] : 0; if (mins) return Math.max(10, Math.min(40, Math.round(mins/3))); return 15; }
 function skillOf(s){ var n = noAcc(s.toLowerCase());
-  var map = [[/danse|danser/,"Danse"],[/yoga/,"Yoga"],[/pilates/,"Pilates"],[/marche|randonn/,"Marche"],[/course|courir|footing/,"Course"],[/velo/,"Vélo"],[/\bnager|\bnage\b|natation|piscine/,"Natation"],[/lu |lire|lecture|livre/,"Lecture"],[/cuisin|recette/,"Cuisine"],[/patisserie|gateau/,"Pâtisserie"],[/plante|jardin|rempot|arros/,"Plantes"],[/menage|ranger|rangement|aspirateur/,"Maison"],[/anglais|vietnamien|italien|espagnol|langue/,"Langues"],[/dessin|peint/,"Dessin"],[/tricot|coud/,"Couture"]];
+  var map = [[/rugby/,"Rugby"],[/yoga/,"Yoga"],[/pilates/,"Pilates"],[/marche|randonn/,"Marche"],[/course|courir|footing/,"Course"],[/velo/,"Vélo"],[/\bnager|\bnage\b|natation|piscine/,"Natation"],[/lu |lire|lecture|livre/,"Lecture"],[/cuisin|recette/,"Cuisine"],[/patisserie|gateau/,"Pâtisserie"],[/plante|jardin|rempot|arros/,"Plantes"],[/menage|ranger|rangement|aspirateur/,"Maison"],[/anglais|italien|espagnol|langue/,"Langues"],[/dessin|peint/,"Dessin"],[/tricot|coud/,"Couture"]];
   for (var i=0;i<map.length;i++) if (map[i][0].test(n)) return map[i][1]; return null; }
 function stripWords(text){
   return text.replace(/\b(le\s+)?\d{1,2}(er)?\s+(janvier|f[ée]vrier|mars|avril|mai|juin|juillet|ao[uû]t|septembre|octobre|novembre|d[ée]cembre)\b/ig,"")
@@ -1619,7 +1625,7 @@ function localParse(text){
 function understand(text){ return Promise.resolve(applyLearnedKind(localParse(text), text)); }
 
 /* ---------- découpage d'un rendez-vous : quoi, avec qui, où ----------
-   « cours de danse à la sauce avec thais et léa » → quoi « Cours de danse », avec « Thaïs, Léa », où « Studio La Sauce » */
+   « entraînement au stade avec max et julie » → quoi « Entraînement », avec « Max, Julie », où « Stade » */
 function normS(x){ return noAcc(String(x||"").toLowerCase()).replace(/[’]/g,"'").replace(/\s+/g," ").trim(); }
 function escRe(x){ return x.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
 function personName(p){
@@ -1754,7 +1760,7 @@ function learnFrom(F0, F, text){
     if (p1 && p1 !== p0){
       if (F0.placeRaw){ L.places[F0.placeRaw] = p1; learned.push("lieu"); }
       else {
-        /* le lieu était resté dans « quoi » : « Cours de danse à la sauce » → « Cours de danse » + lieu */
+        /* le lieu était resté dans « quoi » : « Entraînement au stade » → « Entraînement » + lieu */
         var c0 = normS(F0.core), c1 = normS(F.core);
         if (c1 && c0.indexOf(c1) === 0){ var rest = c0.slice(c1.length).trim().replace(/^(a|au|aux|chez|dans)\s+/, ""); if (rest && rest.split(" ").length <= 4){ L.places[rest] = p1; learned.push("lieu"); } }
       }
@@ -2091,7 +2097,7 @@ function learnSettingsHTML(){
   var opts = ["event","quest","exploit","note","birthday"].map(function(k){ return '<option value="' + k + '">' + KIND_LBL[k] + '</option>'; }).join("");
   return '<h3 style="margin:26px 0 6px">Ce que l\'appli a appris</h3><p style="font-size:13px;color:var(--muted);margin-bottom:6px">Quand tu corriges l\'aperçu avant de valider, l\'appli retient ta correction. Tu peux aussi lui apprendre tes mots ici.</p>'
     + '<p class="learn-sub">Lieux</p>' + (pk.length ? pk.map(function(k){ return line("« " + h(k) + " » → " + h(L.places[k]), "place", k); }).join("") : '<p class="soft-empty" style="padding:0">Aucun pour l\'instant.</p>')
-    + '<form id="fLp" class="fgrid" style="margin:8px 0 6px"><div class="field"><label for="lpRaw">Quand j\'écris</label><input id="lpRaw" type="text" required placeholder="la sauce"></div><div class="field"><label for="lpVal">C\'est le lieu</label><input id="lpVal" type="text" required placeholder="Studio La Sauce"></div><button class="btn green" type="submit" style="grid-column:1/-1">Ajouter ce lieu</button></form>'
+    + '<form id="fLp" class="fgrid" style="margin:8px 0 6px"><div class="field"><label for="lpRaw">Quand j\'écris</label><input id="lpRaw" type="text" required placeholder="l\'aéroport"></div><div class="field"><label for="lpVal">C\'est le lieu</label><input id="lpVal" type="text" required placeholder="Aéroport Nice Côte d\'Azur"></div><button class="btn green" type="submit" style="grid-column:1/-1">Ajouter ce lieu</button></form>'
     + '<p class="learn-sub">Types</p>' + (L.kinds.length ? L.kinds.map(function(r, i){ return line("« " + h(r.w.join(" ")) + " » → " + KIND_LBL[r.k], "kind", i); }).join("") : '<p class="soft-empty" style="padding:0">Aucun pour l\'instant.</p>')
     + '<form id="fLk" class="fgrid" style="margin:8px 0 6px"><div class="field"><label for="lkRaw">Quand j\'écris</label><input id="lkRaw" type="text" required placeholder="véto"></div><div class="field"><label for="lkVal">C\'est</label><select id="lkVal">' + opts + '</select></div><button class="btn green" type="submit" style="grid-column:1/-1">Ajouter ce type</button></form>'
     + (L.cats.length ? '<p class="learn-sub">Domaines (couleurs)</p>' + L.cats.map(function(r, i){ return line("« " + h(r.w.join(" ")) + " » → " + CATS[r.c].n, "cat", i); }).join("") : "")

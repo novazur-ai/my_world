@@ -10,7 +10,7 @@ function doPost(e) {
     const idToken = JSON.parse(e.postData.contents).idToken;
     const r = UrlFetchApp.fetch("https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=" + FIREBASE_API_KEY, {
       method: "post", contentType: "application/json", payload: JSON.stringify({ idToken: idToken }),
-      headers: { Referer: "https://PSEUDO.github.io/" }, muteHttpExceptions: true
+      headers: { Referer: "https://novazur-ai.github.io/" }, muteHttpExceptions: true
     });
     const u = (JSON.parse(r.getContentText()).users || [])[0];
     if (!u || String(u.email).toLowerCase() !== ALLOWED_EMAIL || !u.emailVerified) out = { error: "refused" };

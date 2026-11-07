@@ -17,4 +17,4 @@ Mise en ligne pas à pas : voir **[GUIDE.md](GUIDE.md)**.
 | `sw.js` | Fonctionnement hors connexion (changer `VERSION` à chaque mise à jour) |
 | `firestore.rules` | Règles de sécurité à coller dans Firebase |
 | `.github/workflows/gazette.yml` + `scripts/gazette.mjs` | La Gazette du matin |
-| `img/`, `stk/`, `fonts/`, `icons/` | Illustrations, stickers, polices et icônes |
+| `fonts/`, `icons/` | Polices et icônes |
