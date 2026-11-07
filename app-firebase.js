@@ -79,9 +79,11 @@ function makeCal(email){
       try {
         const idToken = await auth.currentUser.getIdToken();
         const r = await fetch(AGENDA_TOKEN_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ idToken }) });
-        const j = await r.json();
+        const txt = await r.text();
+        let j = null; try { j = JSON.parse(txt); } catch(e){ console.warn("[Agenda] le script n'a pas renvoyé de JSON (accès du déploiement ou autorisation ?) :", r.status, txt.slice(0, 200)); }
         if (j && j.token){ silentFailed = false; saveTok(j.token, 2700); try { localStorage.setItem("gcalConsented", "1"); } catch(e){} return true; }
-      } catch(e){}
+        if (j) console.warn("[Agenda] le script a répondu :", j.error || j);
+      } catch(e){ console.warn("[Agenda] script injoignable :", e && e.message); }
       silentFailed = navigator.onLine; /* le script ne répond pas : on garde l'ancienne méthode en secours */
       return false;
     })().finally(() => { setTimeout(() => { silentP = null; }, 0); });
