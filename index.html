@@ -80,14 +80,18 @@ body.locked #app,body.locked nav.tabs{visibility:hidden}
 @keyframes micPulse{0%{box-shadow:0 0 0 0 rgba(224,64,94,.45)}100%{box-shadow:0 0 0 12px rgba(224,64,94,0)}}
 @keyframes inFromRight{from{transform:translateX(36px);opacity:0}to{transform:none;opacity:1}}
 @keyframes inFromLeft{from{transform:translateX(-36px);opacity:0}to{transform:none;opacity:1}}
-html{overflow-x:hidden;overscroll-behavior-y:none;-webkit-tap-highlight-color:transparent}
+html{overflow-x:hidden;overscroll-behavior-y:none;-webkit-tap-highlight-color:transparent;scrollbar-width:none}
+html::-webkit-scrollbar,body::-webkit-scrollbar{display:none;width:0;height:0}
+html:has(#splash),html:has(#splash) body{overflow:hidden}
 *{-webkit-tap-highlight-color:transparent}
 .slide-next>#hero,.slide-next>#captureZone,.slide-next>#view>:not(.fab){animation:inFromRight .26s cubic-bezier(.2,.7,.3,1)}
 .slide-prev>#hero,.slide-prev>#captureZone,.slide-prev>#view>:not(.fab){animation:inFromLeft .26s cubic-bezier(.2,.7,.3,1)}
 /* MyWorld_0.27 : écran de lancement = même fond et même logo que l'écran d'Android (passage invisible) ;
    pendant le chargement les anneaux tournent et les lunes orbitent ; à la fin les applis montent dans l'appli */
 #splash{position:fixed;inset:0;z-index:200;display:grid;place-items:center;background:#DCE1E6}
-#splash .sp-lg{width:min(63.2vw,63.2vh,420px);height:auto;overflow:visible;margin-top:-2.4vh;transform:translateY(-1.75vh)} /* calé sur la vidéo de Théo (Xiaomi 11T Pro) : Android centre son logo au-dessus de la barre de navigation */
+#splash .sp-lg{width:min(63.2vw,63.2vh,420px);height:auto;overflow:visible;margin-top:-2.4vh;transform:translateY(-1.75vh);animation:spIn .6s cubic-bezier(.3,.7,.3,1) .05s both}
+/* respiration : on repart du fond seul, puis le logo apparaît en douceur (le passage depuis l'écran d'Android ne se voit plus) */
+@keyframes spIn{from{opacity:0;transform:translateY(-1.75vh) scale(.94)}to{opacity:1;transform:translateY(-1.75vh) scale(1)}} /* calé sur la vidéo de Théo (Xiaomi 11T Pro) : Android centre son logo au-dessus de la barre de navigation */
 #splash .sp-spin,#splash .sp-out,#splash .sp-roof{transform-box:view-box;transform-origin:256px 256px}
 #splash .sp-t{transform-box:fill-box;transform-origin:center}
 #splash .sp-spin{animation:spSpin 3.2s linear infinite}
@@ -899,7 +903,7 @@ body.scroll-lock{position:fixed;left:0;right:0;width:100%;overflow:hidden}
 
 
 <script>
-var APP_VERSION = "MyWorld_0.28";
+var APP_VERSION = "MyWorld_0.29";
 (function(){
 "use strict";
 var CAL = "t.mallet06@gmail.com";

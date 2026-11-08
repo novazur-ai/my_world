@@ -219,7 +219,7 @@ function hideSplash(){
   setTimeout(() => {
     const meta = document.querySelector('meta[name="theme-color"]'); if (meta) meta.content = "#0B4F7C";
     splash.classList.add("out"); setTimeout(() => splash.remove(), 1300);
-  }, Math.max(0, 900 - (Date.now() - t0)));
+  }, Math.max(0, 1300 - (Date.now() - t0)));   /* le logo a le temps d'apparaître et de tourner un peu */
 }
 const timeout = (ms) => new Promise((r) => setTimeout(r, ms));
 const appReady = new Promise((resolve) => {
