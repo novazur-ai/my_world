@@ -884,7 +884,7 @@ body.scroll-lock{position:fixed;left:0;right:0;width:100%;overflow:hidden}
 
 
 <script>
-var APP_VERSION = "MyWorld_0.24";
+var APP_VERSION = "MyWorld_0.25";
 (function(){
 "use strict";
 var CAL = "t.mallet06@gmail.com";
@@ -1310,14 +1310,15 @@ function ensureMeteo(force){
   var m = S.meteo;
   if (!force && m && m.key === key && m.data && Date.now() - m.at < 30 * 60000) return;
   if (S.meteoBusy === key) return;
+  if (!force && S.meteoErrAt && Date.now() - S.meteoErrAt < 2 * 60000) return;     /* après un échec, on attend 2 min avant de réessayer */
   S.meteoBusy = key;
   var url = "https://api.open-meteo.com/v1/forecast?latitude=" + p.lat + "&longitude=" + p.lon + "&timezone=Europe%2FParis&forecast_days=7"
     + "&current=temperature_2m,apparent_temperature,weather_code,is_day,wind_speed_10m"
     + "&hourly=temperature_2m,weather_code,precipitation_probability,is_day"
     + "&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,precipitation_sum,wind_gusts_10m_max";
   fetch(url).then(function(r){ if (!r.ok) throw new Error(r.status); return r.json(); }).then(function(d){
-    S.meteo = {key:key, at:Date.now(), data:d, place:p.name}; S.meteoErr = false; mtCacheSet(S.meteo);
-  }).catch(function(){ S.meteoErr = true; }).then(function(){ S.meteoBusy = null; if (S.view === "meteo" || S.view === "accueil") render(); });
+    S.meteo = {key:key, at:Date.now(), data:d, place:p.name}; S.meteoErr = false; S.meteoErrAt = 0; mtCacheSet(S.meteo);
+  }).catch(function(){ S.meteoErr = true; S.meteoErrAt = Date.now(); }).then(function(){ S.meteoBusy = null; if (S.view === "meteo" || S.view === "accueil") render(); });
 }
 function mtData(){ var p = mtPlace(), key = p.lat.toFixed(3) + "," + p.lon.toFixed(3); return S.meteo && S.meteo.key === key ? S.meteo.data : null; }
 function mtRound(x){ return Math.round(x) + "°"; }
