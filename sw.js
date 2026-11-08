@@ -5,7 +5,7 @@ const VERSION = "carnet-__BUILD__";
 const ASSETS = "carnet-assets-1"; /* images, stickers, polices, SDK : gardés d'une version à l'autre */
 const SHELL = [
   "./", "index.html", "app-firebase.js", "firebase-config.js", "manifest.webmanifest",
-  "icons/icon-192-v3.png", "icons/icon-512-v3.png",
+  "icons/icon-192-v4.png", "icons/icon-512-v4.png", "icons/apple-touch-180-v4.png",
   "fonts/nunito-latin-400-normal.woff2", "fonts/nunito-latin-600-normal.woff2", "fonts/nunito-latin-700-normal.woff2", "fonts/nunito-latin-800-normal.woff2",
   "fonts/dancing-script-latin-600-normal.woff2", "fonts/dancing-script-latin-700-normal.woff2"
 ];

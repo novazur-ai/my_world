@@ -9,8 +9,8 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="My World">
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" href="icons/icon-192-v3.png">
-<link rel="apple-touch-icon" href="icons/icon-192-v3.png">
+<link rel="icon" href="icons/icon-192-v4.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-180-v4.png">
 <style>
 @font-face{font-family:Nunito;font-weight:400;font-display:swap;src:url(fonts/nunito-latin-400-normal.woff2) format("woff2")}
 @font-face{font-family:Nunito;font-weight:600;font-display:swap;src:url(fonts/nunito-latin-600-normal.woff2) format("woff2")}
@@ -87,7 +87,7 @@ html{overflow-x:hidden;overscroll-behavior-y:none;-webkit-tap-highlight-color:tr
 /* MyWorld_0.27 : écran de lancement = même fond et même logo que l'écran d'Android (passage invisible) ;
    pendant le chargement les anneaux tournent et les lunes orbitent ; à la fin les applis montent dans l'appli */
 #splash{position:fixed;inset:0;z-index:200;display:grid;place-items:center;background:#DCE1E6}
-#splash .sp-lg{width:min(63.2vw,63.2vh,420px);height:auto;overflow:visible;margin-top:-2.4vh}
+#splash .sp-lg{width:min(63.2vw,63.2vh,420px);height:auto;overflow:visible;margin-top:-2.4vh;transform:translateY(-1.75vh)} /* calé sur la vidéo de Théo (Xiaomi 11T Pro) : Android centre son logo au-dessus de la barre de navigation */
 #splash .sp-spin,#splash .sp-out,#splash .sp-roof{transform-box:view-box;transform-origin:256px 256px}
 #splash .sp-t{transform-box:fill-box;transform-origin:center}
 #splash .sp-spin{animation:spSpin 3.2s linear infinite}
@@ -899,7 +899,7 @@ body.scroll-lock{position:fixed;left:0;right:0;width:100%;overflow:hidden}
 
 
 <script>
-var APP_VERSION = "MyWorld_0.27";
+var APP_VERSION = "MyWorld_0.28";
 (function(){
 "use strict";
 var CAL = "t.mallet06@gmail.com";
