@@ -6,6 +6,10 @@ on:
     # et le script ne travaille qu'une fois, dès qu'il est 6h ou plus à Paris (été comme hiver).
     - cron: "0 4 * * *"
     - cron: "0 5 * * *"
+  # Quand le script change, on relance aussitôt la Gazette
+  push:
+    branches: [main]
+    paths: ["scripts/gazette.mjs"]
   workflow_dispatch:
     inputs:
       force:
@@ -27,4 +31,4 @@ jobs:
         env:
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
           OWNER_UID: ${{ secrets.OWNER_UID }}
-          FORCE: ${{ github.event_name == 'workflow_dispatch' && inputs.force }}
+          FORCE: ${{ github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.force) }}

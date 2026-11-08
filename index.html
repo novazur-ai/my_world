@@ -737,6 +737,36 @@ body.fan-on nav.tabs a,body.fan-on .nav-add{opacity:.35;pointer-events:none;tran
 .imp-kw{display:flex;align-items:center;gap:10px;min-height:44px;font-weight:700;font-size:14.5px}.imp-kw input{width:20px;height:20px;accent-color:#0B4F7C}
 .imp-files{margin-top:18px;padding-top:14px;border-top:1px solid #EEF1F5;display:flex;flex-direction:column;gap:8px}.imp-files p{margin:0;font-size:13.5px;color:var(--muted)}
 .imp-pick{display:flex;align-items:center;justify-content:center;cursor:pointer}
+/* MyWorld_0.16 : Gazette */
+.gz{display:flex;flex-direction:column;gap:16px;margin-top:6px;padding-bottom:30px}
+.gz-num{display:flex;flex-direction:column;gap:6px;width:100%;text-align:left;font:inherit;background:#fff;border:0;border-radius:22px;box-shadow:0 14px 30px rgba(11,58,92,.16);padding:18px 18px 16px;cursor:pointer;color:inherit}
+.gz-num .top{display:flex;justify-content:space-between;align-items:center;font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#5B6B7C}
+.gz-num .dots{display:flex;gap:5px}.gz-num .dots i{width:7px;height:7px;border-radius:50%;background:#D5DEE7}.gz-num .dots i.on{background:#0B4F7C;width:18px;border-radius:4px}
+.gz-num .n{font-size:44px;font-weight:800;letter-spacing:-.02em;line-height:1.05;color:#0B4F7C}
+.gz-num .p{font-size:15px;font-weight:600;line-height:1.45;color:#26262C}.gz-num .hint{font-size:12.5px;font-weight:700;color:#85858F;margin-top:2px}
+.gz-chips{display:flex;gap:8px;overflow-x:auto;margin:0 calc(-1 * max(18px,env(safe-area-inset-left,0px)));padding:2px max(18px,env(safe-area-inset-left,0px));scrollbar-width:none}
+.gz-chips button{flex:0 0 auto;display:flex;align-items:center;gap:7px;min-height:40px;padding:8px 14px;border-radius:999px;background:#fff;border:1.5px solid #E1E8EF;font:inherit;font-weight:800;font-size:13.5px;color:#3B4654;cursor:pointer}
+.gz-chips button i{width:9px;height:9px;border-radius:50%}.gz-chips button[aria-pressed="true"]{background:#0B4F7C;border-color:#0B4F7C;color:#fff}
+.gz-sec{display:flex;flex-direction:column;gap:10px}.gz-sh{display:flex;align-items:center;gap:10px;margin:6px 2px 0}.gz-sh h2{margin:0;font-family:inherit;font-size:20px;font-weight:800}
+.gz-ic{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;font-size:15px}
+.gz-card{display:flex;flex-direction:column;gap:5px;width:100%;text-align:left;font:inherit;background:#fff;border:1px solid #E6ECF2;border-radius:18px;box-shadow:0 6px 20px rgba(11,58,92,.06);padding:14px 16px;cursor:pointer;color:inherit}
+.gz-card .t{font-size:15.5px;font-weight:800;line-height:1.3;color:#1E2530}
+.gz-card .l{font-size:13.5px;font-weight:600;line-height:1.4;color:#66666F;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.gz-card .meta{font-size:12px;font-weight:800;color:#85858F}.gz-card .meta em{font-style:normal;color:#C2412D}.gz-card.read{opacity:.55}
+#gzPop{position:fixed;inset:0;z-index:45}
+#gzPop .gz-veil{position:absolute;inset:0;background:rgba(10,30,50,.35);opacity:0;transition:opacity .2s}
+#gzPop .gz-pop{position:absolute;left:0;right:0;bottom:0;max-width:640px;margin:0 auto;background:#fff;border-radius:26px 26px 0 0;box-shadow:0 -14px 40px rgba(10,30,50,.22);padding:10px 20px calc(24px + env(safe-area-inset-bottom,0px));max-height:82vh;overflow:auto;transform:translateY(100%);transition:transform .28s cubic-bezier(.16,1,.3,1)}
+#gzPop.on .gz-veil{opacity:1}#gzPop.on .gz-pop{transform:none}
+#gzPop .grab{display:block;width:40px;height:5px;border-radius:3px;background:#DADCE3;margin:0 auto 14px}
+#gzPop .tag{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:800}
+#gzPop h2{margin:10px 0 4px;font-family:inherit;font-size:21px;font-weight:800;line-height:1.25}#gzPop .meta{font-size:12.5px;font-weight:800;color:#85858F}
+#gzPop h4{margin:16px 0 6px;font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#5B6B7C}
+#gzPop p{margin:0;font-size:15.5px;line-height:1.55;color:#26262C;font-weight:600}#gzPop p.more{font-weight:500;color:#3B4654}
+#gzPop .acts{display:grid;grid-template-columns:1fr 1.4fr;gap:10px;margin-top:20px}
+#gzPop .acts .b1,#gzPop .acts .b2{display:grid;place-items:center;min-height:48px;border-radius:14px;font:inherit;font-weight:800;text-decoration:none;text-align:center;padding:0 10px;cursor:pointer}
+#gzPop .b1{border:1.5px solid #D5DEE7;background:#fff;color:#3B4654}#gzPop .b2{background:#0B4F7C;color:#fff;border:0}
+.gz-quick{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}.gz-quick button{font:inherit;font-weight:800;font-size:13.5px;padding:8px 14px;min-height:40px;border-radius:999px;border:1.5px dashed #C9D6E2;background:#fff;color:#0B4F7C;cursor:pointer}
+@media (prefers-reduced-motion: reduce){#gzPop .gz-pop,#gzPop .gz-veil{transition:none}}
 </style>
 </head>
 <body>
@@ -786,7 +816,7 @@ body.fan-on nav.tabs a,body.fan-on .nav-add{opacity:.35;pointer-events:none;tran
 
 
 <script>
-var APP_VERSION = "MyWorld_0.15";
+var APP_VERSION = "MyWorld_0.16";
 (function(){
 "use strict";
 var CAL = "t.mallet06@gmail.com";
@@ -950,7 +980,7 @@ function heroHTML(){
     return '<div class="hd2 gut"><p class="eb">' + h(date) + '</p><h1>' + h(g) + '</h1><a class="av" href="#fiche" aria-label="Ta fiche">' + h((NAME || "A").charAt(0)) + '</a></div>';
   }
   var title = S.view === "listes" ? "Tes listes" : S.view === "fiche" ? "Ta fiche" : S.view === "notes" ? "Tes notes" : "La Gazette", sub = "";
-  if (S.view === "gazette"){ var u = S.settings && S.settings.gazetteUpdatedAt; sub = '<p class="sub"><span class="pulse" aria-hidden="true" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#2F7440;margin-right:6px"></span>' + h(u ? "Mise à jour " + ago(u) : "En attente de la première mise à jour") + '</p>'; }
+  if (S.view === "gazette"){ var u = S.settings && S.settings.gazetteUpdatedAt; sub = '<p class="sub"><span class="pulse" aria-hidden="true" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#2F7440;margin-right:6px"></span>' + h(u ? (iso(new Date(u)) === iso(today()) ? "Mise à jour à " + new Date(u).getHours() + " h " + pad(new Date(u).getMinutes()) : "Mise à jour " + ago(u)) + " · " + gzBatch().length + " info" + (gzBatch().length > 1 ? "s" : "") : "En attente de la première mise à jour") + '</p>'; }
   return '<div class="hd2 gut"><p class="eb">' + h(date) + '</p><h1>' + title + '</h1>' + sub + '</div>';
 }
 function ago(isoStr){ var d = new Date(isoStr); var m = Math.round((Date.now() - d.getTime())/60000); if (m < 2) return "à l'instant"; if (m < 60) return "il y a " + m + " min"; var hh = Math.round(m/60); if (hh < 24) return "il y a " + hh + " h"; var j = Math.round(hh/24); return "il y a " + j + " jour" + (j>1?"s":""); }
@@ -1115,29 +1145,72 @@ function markGazetteSeen(){
   if (db) db.doc("settings/main")[S.settings ? "update" : "set"](S.settings ? {gazetteSeenAt: now} : {topics:[], birthday:null, gazetteSeenAt: now}).catch(function(){});
 }
 /* couleur de chaque sujet de la Gazette (la couleur de sa marque) */
-var TOPIC_COLORS = [[/star ?academy/, "#5B2E91"], [/nintendo/, "#E60012"], [/unlock/, "#1D5FA8"], [/rei?c?a/, "#7462C9"], [/fourth ?wing/, "#1E1A18"]];
+var TOPIC_COLORS = [];
 var TOPIC_FALLBACK = ["#A0702A", "#2F7440", "#A8402F", "#2C679C", "#6640A6", "#AA4A1C"];
 function topicColor(t){ var n = normS(t); for (var i = 0; i < TOPIC_COLORS.length; i++) if (TOPIC_COLORS[i][0].test(n)) return TOPIC_COLORS[i][1]; var x = 0; for (var j = 0; j < n.length; j++) x = (x * 31 + n.charCodeAt(j)) >>> 0; return TOPIC_FALLBACK[x % TOPIC_FALLBACK.length]; }
+/* ===== MyWorld_0.16 : Gazette (rubriques = tes sujets, résumés sans IA, chiffres du jour) ===== */
+var GZ_RUB = {
+  monde:{n:"Monde", alias:["monde","international","internationale","le monde"], c:["#D2E8FA","#2C679C"], ic:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/>'},
+  france:{n:"France", alias:["france","actualite","actualites","actu","a la une","une"], c:["#FAD3CB","#A8402F"], ic:'<path d="M5 21V4M5 4h11l-2 4 2 4H5"/>'},
+  nice:{n:"Nice & Côte d'Azur", alias:["nice","cote d'azur","cote dazur","alpes-maritimes","alpes maritimes","local","nice & cote d'azur","nice et cote d'azur"], c:["#FDDCC6","#AA4A1C"], ic:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>'},
+  eco:{n:"Éco", alias:["eco","economie"], c:["#FBE6B4","#8E6312"], ic:'<path d="M4 19V5M4 19h16M8 15l4-4 3 3 5-6"/>'},
+  tech:{n:"Tech", alias:["tech","technologie","technologies","high-tech","high tech","numerique"], c:["#E3D3F7","#6640A6"], ic:'<rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/>'},
+  sport:{n:"Sport", alias:["sport","sports"], c:["#D4EED6","#2F7440"], ic:'<circle cx="12" cy="12" r="9"/><path d="M12 7l4 3-1.5 5h-5L8 10z"/>'}
+};
+var GZ_FREE = [["#E6EDC8","#56661A"],["#D9DFF7","#33449A"],["#D2E8FA","#2C679C"],["#FAD3CB","#A8402F"],["#FBE6B4","#8E6312"],["#E3D3F7","#6640A6"]];
+function gzKey(t){ return noAcc(String(t || "").toLowerCase()).replace(/[’']/g, "'").trim(); }
+function gzRub(t){ var k = gzKey(t); for (var r in GZ_RUB) if (GZ_RUB[r].alias.indexOf(k) >= 0) return r; return null; }
+function gzCol(t){ var r = gzRub(t); if (r) return GZ_RUB[r].c; var n = gzKey(t), x = 0; for (var j = 0; j < n.length; j++) x = (x * 31 + n.charCodeAt(j)) >>> 0; return GZ_FREE[x % GZ_FREE.length]; }
+function gzIcon(t, size){ var r = gzRub(t), z = size || 18; return r ? '<svg width="' + z + '" height="' + z + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + GZ_RUB[r].ic + '</svg>' : '<b aria-hidden="true">' + h(String(t).charAt(0).toUpperCase()) + '</b>'; }
+function gzRead(){ try { return JSON.parse(localStorage.getItem("gzRead") || "[]"); } catch(e){ return []; } }
+function gzMarkRead(id){ try { var r = gzRead(); if (r.indexOf(id) < 0){ r.push(id); localStorage.setItem("gzRead", JSON.stringify(r.slice(-400))); } } catch(e){} }
+function gzBatch(){
+  var u = S.settings && S.settings.gazetteUpdatedAt; if (!u) return [];
+  var lim = new Date(u).getTime() - 20 * 3600e3;
+  return S.gazette.filter(function(g){ return g.addedAt && new Date(g.addedAt).getTime() >= lim; });
+}
+function gzWhen(g){ if (!g.ts) return g.date ? fmtShort(g.date) : ""; var d = new Date(g.ts), t = today(); return (iso(d) === iso(t) ? "" : iso(d) === iso(addDays(t, -1)) ? "hier, " : d.getDate() + " " + MOIS[d.getMonth()] + ", ") + d.getHours() + " h " + pad(d.getMinutes()); }
 function viewGazette(){
-  var topics = (S.settings && S.settings.topics) || [];
-  var cutoff = Date.now() - 7*86400000;
-  var fresh = S.gazette.filter(function(g){ return g.addedAt && new Date(g.addedAt).getTime() >= cutoff; });
-  var groups = {}; fresh.forEach(function(g){ (groups[g.topic] = groups[g.topic] || []).push(g); });
+  var topics = (S.settings && S.settings.topics) || [], batch = gzBatch(), read = gzRead();
+  var groups = {}; batch.forEach(function(g){ (groups[g.topic] = groups[g.topic] || []).push(g); });
   var withNews = topics.filter(function(t){ return groups[t] && groups[t].length; });
-  var chips = ["Tout"].concat(withNews).map(function(t){ return '<button type="button" class="tchip" data-act="topic" data-t="' + h(t) + '" aria-pressed="' + (S.topicFilter === t) + '">' + h(t) + '</button>'; }).join("");
-  var shown = S.topicFilter === "Tout" ? withNews : withNews.filter(function(t){ return t === S.topicFilter; });
-  var nNew = fresh.filter(function(g){ return S.gazNew && S.gazNew[g._id]; }).length;
-  var html = (nNew ? '<p class="qsum gut" style="margin-top:6px"><b>' + nNew + ' nouvel' + (nNew > 1 ? "s" : "") + ' article' + (nNew > 1 ? "s" : "") + '</b> depuis ta dernière visite</p>' : "") + '<div class="topics gut">' + chips + '</div>';
-  if (!shown.length){ html += '<section class="section gut" style="margin-top:20px"><div class="card soft-empty">Pas de nouveauté sur tes sujets pour le moment. La Gazette se met à jour chaque matin vers 6h.</div></section>'; }
-  else {
-    html += '<div class="gut news">' + shown.map(function(t){
-      var gs = groups[t].slice().sort(function(a,b){ return (b.date||"") > (a.date||"") ? 1 : -1; });
-      return '<section class="card gcard" aria-label="' + h(t) + '"><div class="gth"><span class="gi" aria-hidden="true" style="background:' + topicColor(t) + '">' + h(t.replace(/^(série|serie)\s+/i, "").charAt(0).toUpperCase()) + '</span><b>' + h(t) + '</b><span>' + gs.length + ' article' + (gs.length>1?"s":"") + '</span></div>' + gs.map(function(g){ return '<a class="gart" href="' + h(g.url) + '" target="_blank" rel="noopener">' + (S.gazNew && S.gazNew[g._id] ? '<span class="gnew"><i></i>Nouveau</span>' : "") + '<span class="ti">' + h(g.title) + '</span><span class="src">' + h([g.source, g.date ? fmtShort(g.date) : ""].filter(Boolean).join(" · ")) + '</span></a>'; }).join("") + '</section>';
-    }).join("") + '</div>';
+  var f = S.topicFilter && withNews.indexOf(S.topicFilter) >= 0 ? S.topicFilter : "Tout";
+  var nums = ((S.settings && S.settings.gazNumbers) || []).filter(function(x){ return x && x.n; }), ni = (S.gzNum || 0) % Math.max(1, nums.length);
+  var html = '<div class="gz gut">';
+  if (nums.length){
+    var x = nums[ni], rl = topics.filter(function(t){ return t === x.topic; })[0] || x.topic || "";
+    html += '<button type="button" class="gz-num" data-act="gz-num" aria-label="Chiffre du jour suivant"><span class="top"><span>Chiffre du jour' + (rl ? " · " + h(rl) : "") + '</span>' + (nums.length > 1 ? '<span class="dots">' + nums.map(function(_, i){ return '<i' + (i === ni ? ' class="on"' : "") + '></i>'; }).join("") + '</span>' : "") + '</span><span class="n">' + h(x.n) + '</span><span class="p">' + h(x.text) + '</span>' + (nums.length > 1 ? '<span class="hint">Touche pour le suivant →</span>' : "") + '</button>';
   }
-  html += '<div class="section gut"><button type="button" class="dashed-btn" data-act="settings"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Gérer mes sujets</button></div>';
+  if (withNews.length > 1) html += '<div class="gz-chips" role="toolbar" aria-label="Filtrer par sujet"><button type="button" data-act="topic" data-t="Tout" aria-pressed="' + (f === "Tout") + '">Tout</button>' + withNews.map(function(t){ return '<button type="button" data-act="topic" data-t="' + h(t) + '" aria-pressed="' + (f === t) + '"><i style="background:' + gzCol(t)[1] + '"></i>' + h(t) + '</button>'; }).join("") + '</div>';
+  var shown = f === "Tout" ? withNews : [f];
+  if (!shown.length){
+    html += '<div class="lt-empty">' + (topics.length ? "Pas encore d'infos pour tes sujets. La Gazette se met à jour chaque matin vers 6 h." : "Choisis tes sujets pour recevoir ta Gazette chaque matin.") + '</div>';
+  }
+  html += shown.map(function(t){
+    var c = gzCol(t), gs = groups[t].slice().sort(function(a, b){ return (b.ts || 0) - (a.ts || 0); });
+    return '<section class="gz-sec" aria-label="' + h(t) + '"><div class="gz-sh"><span class="gz-ic" style="background:' + c[0] + ';color:' + c[1] + '">' + gzIcon(t) + '</span><h2>' + h(t) + '</h2></div>'
+      + gs.map(function(g){ return '<button type="button" class="gz-card' + (read.indexOf(g._id) >= 0 ? " read" : "") + '" data-act="gz-open" data-id="' + h(g._id) + '"><span class="t">' + h(g.title) + '</span>' + (g.lead ? '<span class="l">' + h(g.lead) + '</span>' : "") + '<span class="meta">' + h(g.source || "") + (gzWhen(g) ? " · " + h(gzWhen(g)) : "") + (S.gazNew && S.gazNew[g._id] ? ' · <em>Nouveau</em>' : "") + '</span></button>'; }).join("") + '</section>';
+  }).join("");
+  html += '<button type="button" class="lt-add" data-act="settings"><span class="lt-addi">' + LT_PLUS + '</span><span>Gérer mes sujets</span></button></div>';
   return html;
 }
+function gzOpen(id){
+  var g = S.gazette.find(function(x){ return x._id === id; }); if (!g) return;
+  gzMarkRead(id); var c = gzCol(g.topic);
+  var el = document.createElement("div"); el.id = "gzPop";
+  el.innerHTML = '<div class="gz-veil" data-act="gz-close"></div><div class="gz-pop" role="dialog" aria-modal="true" aria-labelledby="gzT"><span class="grab" aria-hidden="true"></span>'
+    + '<span class="tag" style="background:' + c[0] + ';color:' + c[1] + '">' + gzIcon(g.topic, 14) + h(g.topic) + '</span><h2 id="gzT">' + h(g.title) + '</h2><span class="meta">' + h(g.source || "") + (gzWhen(g) ? " · " + h(gzWhen(g)) : "") + '</span>'
+    + (g.lead ? '<h4>L\'essentiel</h4><p>' + h(g.lead) + '</p>' : "")
+    + (g.more ? '<h4>En quelques phrases</h4><p class="more">' + h(g.more) + '</p>' : "")
+    + (!g.lead && !g.more ? '<p class="more">Pas de résumé pour cet article : le site ne le fournit pas.</p>' : "")
+    + '<div class="acts"><button type="button" class="b1" data-act="gz-close">Fermer</button><a class="b2" href="' + h(g.url) + '" target="_blank" rel="noopener">Lire sur ' + h(g.source || "le site") + ' ↗</a></div></div>';
+  document.body.appendChild(el); document.body.classList.add("gz-on");
+  requestAnimationFrame(function(){ el.classList.add("on"); });
+  setTimeout(function(){ var b = el.querySelector(".b1"); if (b) b.focus({preventScroll:true}); }, 60);
+  render();
+}
+function gzClose(){ var el = document.getElementById("gzPop"); if (!el) return; el.classList.remove("on"); document.body.classList.remove("gz-on"); setTimeout(function(){ el.remove(); }, 220); }
+document.addEventListener("keydown", function(e){ if (e.key === "Escape" && document.getElementById("gzPop")) gzClose(); });
 function fmtShort(d){ var x = parseISO(String(d).slice(0,10)); return x.getDate() + " " + MOIS[x.getMonth()]; }
 
 function render(){
@@ -2054,7 +2127,8 @@ function settingsHTML(){
   var bd = st.birthday ? "2000-" + st.birthday : "";
   var prev = '';
   return prev + (st.birthday ? '<h3 style="margin-bottom:6px">Mon anniversaire</h3><p style="margin-bottom:22px;font-size:16px;font-weight:700">Le ' + (+st.birthday.slice(3)) + ' ' + MOIS[+st.birthday.slice(0,2)-1] + (st.birthYear ? ' ' + st.birthYear : '') + '</p>' : '<h3 style="margin-bottom:10px">Mon anniversaire</h3><form id="fBd" class="fgrid" style="margin-bottom:22px"><div class="field"><label for="bdIn">Date (l\'année ne compte pas)</label><input type="date" id="bdIn" value="' + h(bd) + '"></div><button class="btn green" type="submit">Enregistrer</button></form>')
-    + '<h3 style="margin-bottom:6px">Sujets de la Gazette</h3><div>' + topics.map(function(t){ return '<div class="list-line"><span>' + h(t) + '</span><button type="button" class="mini" data-act="del-topic" data-t="' + h(t) + '">Retirer</button></div>'; }).join("") + '</div>'
+    + '<h3 style="margin-bottom:6px">Sujets de la Gazette</h3><p style="font-size:13px;color:var(--muted);margin-bottom:6px">Chaque sujet devient une rubrique de ta Gazette, mise à jour chaque matin vers 6 h.</p><div>' + topics.map(function(t){ return '<div class="list-line"><span>' + h(t) + '</span><button type="button" class="mini" data-act="del-topic" data-t="' + h(t) + '">Retirer</button></div>'; }).join("") + '</div>'
+    + (function(){ var miss = Object.keys(GZ_RUB).filter(function(r){ return !topics.some(function(t){ return gzRub(t) === r; }); }); return miss.length ? '<p class="learn-sub">Rubriques prêtes</p><div class="gz-quick">' + miss.map(function(r){ return '<button type="button" data-act="topic-quick" data-t="' + h(GZ_RUB[r].n) + '">+ ' + h(GZ_RUB[r].n) + '</button>'; }).join("") + '</div>' : ""; })()
     + '<form id="fT" class="fgrid" style="margin-top:12px"><div class="field"><label for="tName">Nouveau sujet</label><input id="tName" type="text" required placeholder="Un acteur, une série, un lieu…"></div><button class="btn green" type="submit">Ajouter</button></form>'
     + learnSettingsHTML()
     + '<h3 style="margin:26px 0 6px">Google Agenda</h3>' + gcalSettingsHTML()
@@ -2709,6 +2783,10 @@ document.addEventListener("click", function(e){
   if (act === "export"){ exportBackup(); return; }
   if (act === "bday-edit"){ bdayEditSheet(id); return; }
   if (act === "ev-edit"){ eventEditSheet(b.dataset.gid || null, b.dataset.id || null); return; }
+  if (act === "gz-open"){ gzOpen(b.dataset.id); return; }
+  if (act === "gz-close"){ gzClose(); return; }
+  if (act === "gz-num"){ S.gzNum = (S.gzNum || 0) + 1; render(); return; }
+  if (act === "topic-quick"){ var tq = b.dataset.t, tl = ((S.settings && S.settings.topics) || []).slice(); if (tl.indexOf(tq) < 0) tl.push(tq); saveSettings({topics:tl}).then(refreshSettings); return; }
   if (act === "note-import"){ noteImportSheet(); return; }
   if (act === "lt-tab"){ S.listTab = b.dataset.k; render(); return; }
   if (act === "lt-mom"){ S.todoMom = b.dataset.k; render(); return; }

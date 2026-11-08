@@ -3,7 +3,7 @@
 // (résumé écrit par la rédaction), on extrait 2 ou 3 phrases clés de l'article quand le site le permet
 // (calcul de fréquence des mots, pas d'IA), et on repère les chiffres du jour.
 // Lancé par .github/workflows/gazette.yml chaque matin vers 6h (heure de Paris).
-// Mode essai : ESSAI=1 ESSAI_SUJETS="Monde,rugby" node scripts/gazette.mjs → écrit scripts/sonde/gazette-essai.json
+// Mode essai : ESSAI=1 ESSAI_SUJETS="Monde,rugby" node scripts/gazette.mjs → écrit gazette-essai.json (sans Firebase)
 import { createHash } from "node:crypto";
 import { writeFileSync } from "node:fs";
 
@@ -173,8 +173,8 @@ export async function build(topics, seen = new Set()){
 if (process.env.ESSAI){
   const topics = (process.env.ESSAI_SUJETS || "Monde,France,Nice,Éco,Tech,Sport").split(",").map((s) => s.trim()).filter(Boolean);
   const res = await build(topics);
-  writeFileSync("scripts/sonde/gazette-essai.json", JSON.stringify({ at: new Date().toISOString(), ...res }, null, 1));
-  console.log("Essai écrit dans scripts/sonde/gazette-essai.json");
+  writeFileSync("gazette-essai.json", JSON.stringify({ at: new Date().toISOString(), ...res }, null, 1));
+  console.log("Essai écrit dans gazette-essai.json");
 } else {
   const { initializeApp, cert } = await import("firebase-admin/app");
   const { getFirestore } = await import("firebase-admin/firestore");
