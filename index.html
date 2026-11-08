@@ -747,7 +747,7 @@ body.fan-on nav.tabs a,body.fan-on .nav-add{opacity:.35;pointer-events:none;tran
 
 
 <script>
-var APP_VERSION = "MyWorld_0.11";
+var APP_VERSION = "MyWorld_0.12";
 (function(){
 "use strict";
 var CAL = "t.mallet06@gmail.com";
@@ -2717,17 +2717,39 @@ document.addEventListener("keydown", function(e){
 });
 window.addEventListener("resize", function(){ if (!document.getElementById("appsFan").hidden) fanClose(); });
 
+/* Navigation (MyWorld_0.12) : Accueil et Notes sont côte à côte (barre) ; les autres pages sont des apps
+   ouvertes depuis l'éventail. S.hist garde le chemin parcouru pour le retour. */
+var MAIN = ["accueil","notes"];
+S.hist = [];
+function isApp(v){ return MAIN.indexOf(v) < 0; }
+function goBack(){
+  /* retour à la page d'où l'on vient ; sinon à l'accueil */
+  if (S.hist.length > 1) history.back(); else { S.hist = []; location.replace("#accueil"); }
+}
+function navSide(dir){
+  /* dir = 1 : vers la droite de la barre (Notes) ; -1 : vers la gauche ou retour */
+  if (!isApp(S.view)){
+    var i = MAIN.indexOf(S.view) + dir;
+    if (i >= 0 && i < MAIN.length) location.hash = MAIN[i];
+    return true;
+  }
+  if (dir < 0){ goBack(); return true; }
+  return false;
+}
 function route(){
   var hsh = (location.hash || "").replace("#",""), prev = S.view;
   S.view = TABS.indexOf(hsh) >= 0 ? hsh : "accueil";
+  var back = S.hist.length > 1 && S.hist[S.hist.length - 2] === S.view;
+  if (back) S.hist.pop(); else if (S.hist[S.hist.length - 1] !== S.view) S.hist.push(S.view);
   render(); window.scrollTo(0,0);
   if (prev && prev !== S.view){
-    var app = document.getElementById("app"), cls = TABS.indexOf(S.view) > TABS.indexOf(prev) ? "slide-next" : "slide-prev";
+    var fwd = isApp(S.view) && !isApp(prev) ? true : !isApp(S.view) && !isApp(prev) ? MAIN.indexOf(S.view) > MAIN.indexOf(prev) : !back;
+    var app = document.getElementById("app"), cls = fwd ? "slide-next" : "slide-prev";
     app.classList.remove("slide-next","slide-prev"); void app.offsetWidth; app.classList.add(cls);
     setTimeout(function(){ app.classList.remove(cls); }, 300);
   }
 }
-/* glisser le doigt à gauche ou à droite pour changer de page */
+/* glisser : entre Accueil et Notes ; dans une app, glisser vers la droite = retour */
 (function(){
   var x0 = null, y0 = 0, t0 = 0;
   document.addEventListener("touchstart", function(e){
@@ -2739,9 +2761,7 @@ function route(){
     if (x0 === null) return;
     var t = e.changedTouches[0], dx = t.clientX - x0, dy = t.clientY - y0; x0 = null;
     if (Math.abs(dx) < 70 || Math.abs(dx) < Math.abs(dy) * 1.8 || Date.now() - t0 > 700) return;
-    var i = TABS.indexOf(S.view) + (dx < 0 ? 1 : -1);
-    if (i < 0 || i >= TABS.length) return;
-    location.hash = TABS[i];
+    navSide(dx < 0 ? 1 : -1);
   }, {passive:true});
 })();
 /* ordinateur : flèches gauche / droite du clavier pour changer de page */
@@ -2749,8 +2769,8 @@ document.addEventListener("keydown", function(e){
   if ((e.key !== "ArrowLeft" && e.key !== "ArrowRight") || e.altKey || e.ctrlKey || e.metaKey) return;
   if (document.querySelector(".sheet-wrap,.levelup,.note-editor,.draw-pad")) return;
   var a = document.activeElement; if (a && (a.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName))) return;
-  var i = TABS.indexOf(S.view) + (e.key === "ArrowRight" ? 1 : -1);
-  if (i >= 0 && i < TABS.length){ e.preventDefault(); location.hash = TABS[i]; }
+  if (!document.getElementById("appsFan").hidden) return;
+  if (navSide(e.key === "ArrowRight" ? 1 : -1)) e.preventDefault();
 });
 /* ordinateur : la molette fait défiler les rangées de bulles horizontalement */
 document.addEventListener("wheel", function(e){
