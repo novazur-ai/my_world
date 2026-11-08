@@ -1,0 +1,25 @@
+# Test ponctuel des flux RSS pour la future Gazette (écrit scripts/sonde/resultat.json).
+name: Sonde des flux
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ["scripts/sonde/sonde.mjs"]
+permissions:
+  contents: write
+jobs:
+  sonde:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: node scripts/sonde/sonde.mjs
+      - name: Enregistrer le résultat
+        run: |
+          git config user.name "sonde-gazette"
+          git config user.email "actions@users.noreply.github.com"
+          git add scripts/sonde/resultat.json
+          git commit -m "Sonde des flux : résultat" || echo "rien à enregistrer"
+          git pull --rebase origin main && git push
