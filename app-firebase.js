@@ -210,13 +210,16 @@ onAuthStateChanged(auth, async (user) => {
 });
 
 /* ---------- écran de lancement ----------
-   À chaque ouverture : logo + roue de chargement, pendant qu'on vérifie s'il y a une nouvelle version
+   À chaque ouverture : logo animé (anneaux qui tournent, lunes en orbite), pendant qu'on vérifie s'il y a une nouvelle version
    et qu'on charge les données. Une fois l'appli affichée, plus aucune mise à jour ni rechargement. */
 const splash = document.getElementById("splash"), t0 = Date.now();
 let splashOpen = !!splash;
 function hideSplash(){
   if (!splashOpen) return; splashOpen = false;
-  setTimeout(() => { splash.classList.add("out"); setTimeout(() => splash.remove(), 400); }, Math.max(0, 900 - (Date.now() - t0)));
+  setTimeout(() => {
+    const meta = document.querySelector('meta[name="theme-color"]'); if (meta) meta.content = "#0B4F7C";
+    splash.classList.add("out"); setTimeout(() => splash.remove(), 1300);
+  }, Math.max(0, 900 - (Date.now() - t0)));
 }
 const timeout = (ms) => new Promise((r) => setTimeout(r, ms));
 const appReady = new Promise((resolve) => {
