@@ -767,6 +767,19 @@ body.fan-on nav.tabs a,body.fan-on .nav-add{opacity:.35;pointer-events:none;tran
 #gzPop .b1{border:1.5px solid #D5DEE7;background:#fff;color:#3B4654}#gzPop .b2{background:#0B4F7C;color:#fff;border:0}
 .gz-quick{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}.gz-quick button{font:inherit;font-weight:800;font-size:13.5px;padding:8px 14px;min-height:40px;border-radius:999px;border:1.5px dashed #C9D6E2;background:#fff;color:#0B4F7C;cursor:pointer}
 @media (prefers-reduced-motion: reduce){#gzPop .gz-pop,#gzPop .gz-veil{transition:none}}
+/* MyWorld_0.17 : Gazette rangée par jour */
+.gzd-list{display:flex;flex-direction:column;gap:10px}
+.gzd{display:flex;align-items:center;gap:14px;width:100%;text-align:left;font:inherit;color:inherit;background:#fff;border:1px solid #E6ECF2;border-radius:18px;box-shadow:0 6px 20px rgba(11,58,92,.06);padding:12px 14px;cursor:pointer}
+.gzd.today{box-shadow:0 14px 30px rgba(11,58,92,.16);border-color:transparent}
+.gzd-date{flex:0 0 auto;width:54px;height:58px;border-radius:14px;background:#EEF3F8;color:#0B3A5C;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1}
+.gzd.today .gzd-date{background:#0B4F7C;color:#fff}
+.gzd-date b{font-size:24px;font-weight:800}.gzd-date small{font-size:12px;font-weight:800;margin-top:3px;text-transform:lowercase}
+.gzd-mid{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.gzd-t{font-size:16px;font-weight:800;color:#1E2530}.gzd-t em{font-style:normal;font-size:11.5px;font-weight:800;color:#C2412D;background:#FDECE8;padding:2px 8px;border-radius:999px;margin-left:4px;vertical-align:2px}
+.gzd-s{font-size:12.5px;font-weight:700;color:#7A7A85}
+.gzd-n{font-size:13px;font-weight:600;color:#3B4654;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.gzd-n b{color:#0B4F7C;font-weight:800}
+.gzd-go{flex:0 0 auto;color:#9AA0AA}
+.gz-back{align-self:flex-start;display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:6px 14px 6px 10px;border-radius:999px;border:1.5px solid #E1E8EF;background:#fff;font:inherit;font-weight:800;font-size:13.5px;color:#0B3A5C;cursor:pointer}
 </style>
 </head>
 <body>
@@ -816,7 +829,7 @@ body.fan-on nav.tabs a,body.fan-on .nav-add{opacity:.35;pointer-events:none;tran
 
 
 <script>
-var APP_VERSION = "MyWorld_0.16";
+var APP_VERSION = "MyWorld_0.17";
 (function(){
 "use strict";
 var CAL = "t.mallet06@gmail.com";
@@ -980,7 +993,9 @@ function heroHTML(){
     return '<div class="hd2 gut"><p class="eb">' + h(date) + '</p><h1>' + h(g) + '</h1><a class="av" href="#fiche" aria-label="Ta fiche">' + h((NAME || "A").charAt(0)) + '</a></div>';
   }
   var title = S.view === "listes" ? "Tes listes" : S.view === "fiche" ? "Ta fiche" : S.view === "notes" ? "Tes notes" : "La Gazette", sub = "";
-  if (S.view === "gazette"){ var u = S.settings && S.settings.gazetteUpdatedAt; sub = '<p class="sub"><span class="pulse" aria-hidden="true" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#2F7440;margin-right:6px"></span>' + h(u ? (iso(new Date(u)) === iso(today()) ? "Mise à jour à " + new Date(u).getHours() + " h " + pad(new Date(u).getMinutes()) : "Mise à jour " + ago(u)) + " · " + gzBatch().length + " info" + (gzBatch().length > 1 ? "s" : "") : "En attente de la première mise à jour") + '</p>'; }
+  if (S.view === "gazette"){ var u = S.settings && S.settings.gazetteUpdatedAt, ds0 = gzDays();
+    if (S.gzDay){ var nb = gzBatch(S.gzDay).length; title = "La Gazette"; sub = '<p class="sub">' + h(gzDayLabel(S.gzDay) + (S.gzDay === iso(today()) || S.gzDay === iso(addDays(today(), -1)) ? " · " + parseISO(S.gzDay).getDate() + " " + MOIS[parseISO(S.gzDay).getMonth()] : "") + " · " + nb + " info" + (nb > 1 ? "s" : "")) + '</p>'; }
+    else sub = '<p class="sub"><span class="pulse" aria-hidden="true" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#2F7440;margin-right:6px"></span>' + h(u ? (iso(new Date(u)) === iso(today()) ? "Mise à jour à " + new Date(u).getHours() + " h " + pad(new Date(u).getMinutes()) : "Mise à jour " + ago(u)) + " · " + ds0.length + " jour" + (ds0.length > 1 ? "s" : "") + " d'archives" : "En attente de la première mise à jour") + '</p>'; }
   return '<div class="hd2 gut"><p class="eb">' + h(date) + '</p><h1>' + title + '</h1>' + sub + '</div>';
 }
 function ago(isoStr){ var d = new Date(isoStr); var m = Math.round((Date.now() - d.getTime())/60000); if (m < 2) return "à l'instant"; if (m < 60) return "il y a " + m + " min"; var hh = Math.round(m/60); if (hh < 24) return "il y a " + hh + " h"; var j = Math.round(hh/24); return "il y a " + j + " jour" + (j>1?"s":""); }
@@ -1164,25 +1179,56 @@ function gzCol(t){ var r = gzRub(t); if (r) return GZ_RUB[r].c; var n = gzKey(t)
 function gzIcon(t, size){ var r = gzRub(t), z = size || 18; return r ? '<svg width="' + z + '" height="' + z + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + GZ_RUB[r].ic + '</svg>' : '<b aria-hidden="true">' + h(String(t).charAt(0).toUpperCase()) + '</b>'; }
 function gzRead(){ try { return JSON.parse(localStorage.getItem("gzRead") || "[]"); } catch(e){ return []; } }
 function gzMarkRead(id){ try { var r = gzRead(); if (r.indexOf(id) < 0){ r.push(id); localStorage.setItem("gzRead", JSON.stringify(r.slice(-400))); } } catch(e){} }
-function gzBatch(){
-  var u = S.settings && S.settings.gazetteUpdatedAt; if (!u) return [];
-  var lim = new Date(u).getTime() - 20 * 3600e3;
-  return S.gazette.filter(function(g){ return g.addedAt && new Date(g.addedAt).getTime() >= lim; });
+function gzDays(){
+  /* une entrée par jour (date de mise à jour, heure de Paris), du plus récent au plus ancien */
+  var m = {}; S.gazette.forEach(function(g){ if (!g.addedAt) return; var d = iso(new Date(g.addedAt)); (m[d] = m[d] || []).push(g); });
+  return Object.keys(m).sort().reverse().map(function(d){ return {day:d, items:m[d]}; });
+}
+function gzBatch(day){
+  var ds = gzDays(); if (!ds.length) return [];
+  var x = day ? ds.filter(function(o){ return o.day === day; })[0] : ds[0];
+  return x ? x.items : [];
+}
+function gzNumsOf(day){
+  var st = S.settings || {}, byDay = st.gazDays || {};
+  if (byDay[day] && byDay[day].numbers) return byDay[day].numbers;
+  var u = st.gazetteUpdatedAt; return u && iso(new Date(u)) === day ? (st.gazNumbers || []) : [];
+}
+function gzDayLabel(day){ var d = parseISO(day), t = today(); if (day === iso(t)) return "Aujourd'hui"; if (day === iso(addDays(t, -1))) return "Hier"; return cap(JOURS_LONG[d.getDay()]) + " " + d.getDate() + " " + MOIS[d.getMonth()]; }
+function viewGazetteDays(){
+  var ds = gzDays(), topics = (S.settings && S.settings.topics) || [], read = gzRead();
+  var html = '<div class="gz gut">';
+  if (!ds.length) html += '<div class="lt-empty">' + (topics.length ? "Ta première Gazette arrivera demain matin vers 6 h." : "Choisis tes sujets pour recevoir ta Gazette chaque matin.") + '</div>';
+  else html += '<div class="gzd-list">' + ds.map(function(o){
+    var d = parseISO(o.day), nums = gzNumsOf(o.day), nNew = o.items.filter(function(g){ return S.gazNew && S.gazNew[g._id]; }).length;
+    var nRead = o.items.filter(function(g){ return read.indexOf(g._id) >= 0; }).length, subj = {}; o.items.forEach(function(g){ subj[g.topic] = 1; });
+    var isT = o.day === iso(today());
+    return '<button type="button" class="gzd' + (isT ? " today" : "") + '" data-act="gz-day" data-d="' + o.day + '">'
+      + '<span class="gzd-date"><b>' + d.getDate() + '</b><small>' + MOIS_COURT[d.getMonth()].toLowerCase() + '</small></span>'
+      + '<span class="gzd-mid"><span class="gzd-t">' + h(gzDayLabel(o.day)) + (nNew ? ' <em>' + nNew + ' nouveau' + (nNew > 1 ? "x" : "") + '</em>' : "") + '</span>'
+      + '<span class="gzd-s">' + o.items.length + ' info' + (o.items.length > 1 ? "s" : "") + ' · ' + Object.keys(subj).length + ' sujet' + (Object.keys(subj).length > 1 ? "s" : "") + (nRead ? ' · ' + nRead + ' lue' + (nRead > 1 ? "s" : "") : "") + '</span>'
+      + (nums[0] ? '<span class="gzd-n"><b>' + h(nums[0].n) + '</b> ' + h(String(nums[0].text || "").slice(0, 70)) + (String(nums[0].text || "").length > 70 ? "…" : "") + '</span>' : "") + '</span>'
+      + '<span class="gzd-go" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span></button>';
+  }).join("") + '</div>';
+  html += '<button type="button" class="lt-add" data-act="settings"><span class="lt-addi">' + LT_PLUS + '</span><span>Gérer mes sujets</span></button></div>';
+  return html;
 }
 function gzWhen(g){ if (!g.ts) return g.date ? fmtShort(g.date) : ""; var d = new Date(g.ts), t = today(); return (iso(d) === iso(t) ? "" : iso(d) === iso(addDays(t, -1)) ? "hier, " : d.getDate() + " " + MOIS[d.getMonth()] + ", ") + d.getHours() + " h " + pad(d.getMinutes()); }
 function viewGazette(){
-  var topics = (S.settings && S.settings.topics) || [], batch = gzBatch(), read = gzRead();
+  if (!S.gzDay) return viewGazetteDays();
+  var topics = (S.settings && S.settings.topics) || [], batch = gzBatch(S.gzDay), read = gzRead();
   var groups = {}; batch.forEach(function(g){ (groups[g.topic] = groups[g.topic] || []).push(g); });
   var withNews = topics.filter(function(t){ return groups[t] && groups[t].length; });
+  if (!withNews.length && Object.keys(groups).length) withNews = Object.keys(groups);
   var f = S.topicFilter && withNews.indexOf(S.topicFilter) >= 0 ? S.topicFilter : "Tout";
-  var nums = ((S.settings && S.settings.gazNumbers) || []).filter(function(x){ return x && x.n; }), ni = (S.gzNum || 0) % Math.max(1, nums.length);
-  var html = '<div class="gz gut">';
+  var nums = gzNumsOf(S.gzDay).filter(function(x){ return x && x.n; }), ni = (S.gzNum || 0) % Math.max(1, nums.length);
+  var html = '<div class="gz gut"><button type="button" class="gz-back" data-act="gz-days"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Toutes les Gazettes</button>';
   if (nums.length){
     var x = nums[ni], rl = topics.filter(function(t){ return t === x.topic; })[0] || x.topic || "";
     html += '<button type="button" class="gz-num" data-act="gz-num" aria-label="Chiffre du jour suivant"><span class="top"><span>Chiffre du jour' + (rl ? " · " + h(rl) : "") + '</span>' + (nums.length > 1 ? '<span class="dots">' + nums.map(function(_, i){ return '<i' + (i === ni ? ' class="on"' : "") + '></i>'; }).join("") + '</span>' : "") + '</span><span class="n">' + h(x.n) + '</span><span class="p">' + h(x.text) + '</span>' + (nums.length > 1 ? '<span class="hint">Touche pour le suivant →</span>' : "") + '</button>';
   }
   if (withNews.length > 1) html += '<div class="gz-chips" role="toolbar" aria-label="Filtrer par sujet"><button type="button" data-act="topic" data-t="Tout" aria-pressed="' + (f === "Tout") + '">Tout</button>' + withNews.map(function(t){ return '<button type="button" data-act="topic" data-t="' + h(t) + '" aria-pressed="' + (f === t) + '"><i style="background:' + gzCol(t)[1] + '"></i>' + h(t) + '</button>'; }).join("") + '</div>';
-  var shown = f === "Tout" ? withNews : [f];
+  var shown = f === "Tout" ? withNews.concat(Object.keys(groups).filter(function(t){ return topics.indexOf(t) < 0; })) : [f];
   if (!shown.length){
     html += '<div class="lt-empty">' + (topics.length ? "Pas encore d'infos pour tes sujets. La Gazette se met à jour chaque matin vers 6 h." : "Choisis tes sujets pour recevoir ta Gazette chaque matin.") + '</div>';
   }
@@ -2783,6 +2829,8 @@ document.addEventListener("click", function(e){
   if (act === "export"){ exportBackup(); return; }
   if (act === "bday-edit"){ bdayEditSheet(id); return; }
   if (act === "ev-edit"){ eventEditSheet(b.dataset.gid || null, b.dataset.id || null); return; }
+  if (act === "gz-day"){ S.gzNum = 0; S.topicFilter = "Tout"; location.hash = "gazette-" + b.dataset.d; return; }
+  if (act === "gz-days"){ if (S.hist.length > 1 && S.hist[S.hist.length - 2] === "gazette") history.back(); else location.hash = "gazette"; return; }
   if (act === "gz-open"){ gzOpen(b.dataset.id); return; }
   if (act === "gz-close"){ gzClose(); return; }
   if (act === "gz-num"){ S.gzNum = (S.gzNum || 0) + 1; render(); return; }
@@ -3068,13 +3116,17 @@ function navSide(dir){
   return false;
 }
 function route(){
-  var hsh = (location.hash || "").replace("#",""), prev = S.view;
-  S.view = TABS.indexOf(hsh) >= 0 ? hsh : "accueil";
-  var back = S.hist.length > 1 && S.hist[S.hist.length - 2] === S.view;
-  if (back) S.hist.pop(); else if (S.hist[S.hist.length - 1] !== S.view) S.hist.push(S.view);
+  var hsh = (location.hash || "").replace("#",""), prev = S.view, prevKey = S.viewKey;
+  var gd = hsh.match(/^gazette-(\d{4}-\d{2}-\d{2})$/);
+  S.gzDay = gd ? gd[1] : null;
+  S.view = gd ? "gazette" : TABS.indexOf(hsh) >= 0 ? hsh : "accueil";
+  S.viewKey = gd ? hsh : S.view;
+  var back = S.hist.length > 1 && S.hist[S.hist.length - 2] === S.viewKey;
+  if (back) S.hist.pop(); else if (S.hist[S.hist.length - 1] !== S.viewKey) S.hist.push(S.viewKey);
   render(); window.scrollTo(0,0);
-  if (prev && prev !== S.view){
+  if (prevKey && prevKey !== S.viewKey){
     var fwd = isApp(S.view) && !isApp(prev) ? true : !isApp(S.view) && !isApp(prev) ? MAIN.indexOf(S.view) > MAIN.indexOf(prev) : !back;
+    if (S.view === "gazette" && prev === "gazette") fwd = !!S.gzDay;
     var app = document.getElementById("app"), cls = fwd ? "slide-next" : "slide-prev";
     app.classList.remove("slide-next","slide-prev"); void app.offsetWidth; app.classList.add(cls);
     setTimeout(function(){ app.classList.remove(cls); }, 300);

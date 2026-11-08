@@ -202,7 +202,16 @@ if (process.env.ESSAI){
   }
   const limitIso = new Date(Date.now() - 30 * 86400000).toISOString();
   existing.forEach((d) => { const a = d.data().addedAt; if (a && a < limitIso) batch.delete(d.ref); });
-  batch.set(settingsRef, { gazetteUpdatedAt: addedAt, gazNumbers: numbers }, { merge: true });
+  /* chiffres du jour gardés jour par jour (30 jours) ; une 2e mise à jour le même jour ne les efface pas */
+  const days = settings.gazDays || {}, prev = days[day] || {};
+  const dayNums = numbers.length ? numbers : (prev.numbers || []);
+  const upd = { gazetteUpdatedAt: addedAt, gazNumbers: dayNums, gazDays: { [day]: { numbers: dayNums, count: (prev.count || 0) + added, at: addedAt } } };
+  const { FieldValue } = await import("firebase-admin/firestore");
+  const limitDay = new Date(Date.now() - 30 * 86400000).toISOString().slice(0, 10);
+  Object.keys(days).filter((k) => k < limitDay).forEach((k) => { upd["gazDays." + k] = FieldValue.delete(); });
+  batch.set(settingsRef, { gazetteUpdatedAt: upd.gazetteUpdatedAt, gazNumbers: upd.gazNumbers, gazDays: upd.gazDays }, { merge: true });
+  const old = Object.keys(upd).filter((k) => k.startsWith("gazDays."));
+  if (old.length) batch.update(settingsRef, Object.fromEntries(old.map((k) => [k, upd[k]])));
   await batch.commit();
   console.log(`Terminé : ${added} article(s), ${numbers.length} chiffre(s) du jour.`);
 }
