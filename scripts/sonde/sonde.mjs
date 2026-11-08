@@ -14,9 +14,12 @@ for (const [src,u] of Object.entries(UNES)){
     const title = tag(b,"title"), lead = tag(b,"description"); arts.push({ src, title, lead, w: W(title + " " + lead), tw: W(title), ts, url: tag(b,"link") }); n++; }
   console.log(src, items.length, "→", n, "récents");
 }
-const sim = (a,b) => { let c=0; for (const w of a.tw) if (b.w.has(w)) c++; let d=0; for (const w of b.tw) if (a.w.has(w)) d++; return Math.min(c,d); };
+const df = new Map(); arts.forEach(a => a.w.forEach(w => df.set(w, (df.get(w)||0)+1)));
+const N = arts.length, idf = (w) => Math.log(N / (df.get(w)||1));
+/* deux articles parlent du même sujet s'ils partagent au moins 2 mots de titre distinctifs (rares dans l'ensemble des unes) */
+const sim = (a,b) => { const sh = new Set([...a.tw].filter(w=>b.w.has(w)).concat([...b.tw].filter(w=>a.w.has(w)))); const rare = [...sh].filter(w => (df.get(w)||0) <= 12); return rare.length >= 2 ? rare.reduce((x,w)=>x+idf(w),0) : 0; };
 const clusters = [];
-for (const a of arts){ let best=null, bs=0; for (const c of clusters){ const s = Math.max(...c.items.map(x=>sim(a,x))); if (s>bs){bs=s;best=c;} } if (best && bs>=2) best.items.push(a); else clusters.push({ items:[a] }); }
+for (const a of arts){ let best=null, bs=0; for (const c of clusters){ const s = sim(a, c.items[0]); if (s>bs){bs=s;best=c;} } if (best && bs>=5) best.items.push(a); else clusters.push({ items:[a] }); }
 for (const c of clusters){ c.srcs = new Set(c.items.map(x=>x.src)); c.score = c.srcs.size*10 + c.items.length; }
 clusters.sort((a,b)=>b.score-a.score);
-for (const c of clusters.slice(0,6)){ console.log(`\n=== ${c.srcs.size} journaux, ${c.items.length} articles : ${[...c.srcs].join(", ")}`); c.items.slice(0,6).forEach(x=>console.log(`   [${x.src}] ${x.title.slice(0,110)}`)); }
+for (const c of clusters.slice(0,6)){ console.log(`\n=== ${c.srcs.size} journaux, ${c.items.length} articles : ${[...c.srcs].join(", ")}`); c.items.slice(0,7).forEach(x=>console.log(`   [${x.src}] ${x.title.slice(0,110)}`)); }
