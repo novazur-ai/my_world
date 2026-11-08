@@ -81,7 +81,6 @@ body.locked #app,body.locked nav.tabs{visibility:hidden}
 @keyframes inFromRight{from{transform:translateX(36px);opacity:0}to{transform:none;opacity:1}}
 @keyframes inFromLeft{from{transform:translateX(-36px);opacity:0}to{transform:none;opacity:1}}
 html{overflow-x:hidden;overscroll-behavior-y:none}
-body{overscroll-behavior-y:none}
 .slide-next>#hero,.slide-next>#captureZone,.slide-next>#view>:not(.fab){animation:inFromRight .26s cubic-bezier(.2,.7,.3,1)}
 .slide-prev>#hero,.slide-prev>#captureZone,.slide-prev>#view>:not(.fab){animation:inFromLeft .26s cubic-bezier(.2,.7,.3,1)}
 #splash{position:fixed;inset:0;z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:34px;background:#FFFFFF;transition:opacity .35s ease}
@@ -838,7 +837,7 @@ body.scroll-lock{position:fixed;left:0;right:0;width:100%;overflow:hidden}
 
 
 <script>
-var APP_VERSION = "MyWorld_0.21";
+var APP_VERSION = "MyWorld_0.22";
 (function(){
 "use strict";
 var CAL = "t.mallet06@gmail.com";
