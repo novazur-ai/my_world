@@ -31,7 +31,7 @@ const FEEDS = {
 export const RUBRIQUES = {
   monde: { feeds: ["fi_monde", "lm_inter"], alias: ["monde", "international", "internationale", "le monde"] },
   france: { feeds: ["fi_titres", "vm_une", "bfm_info"], alias: ["france", "actualite", "actualites", "actu", "a la une", "une"] },
-  nice: { feeds: ["vm_nice", "nicematin", "bfm_azur"], alias: ["nice", "cote d'azur", "cote dazur", "alpes-maritimes", "alpes maritimes", "local", "nice & cote d'azur", "nice et cote d'azur"] },
+  nice: { feeds: ["vm_nice", "nicematin"], alias: ["nice", "cote d'azur", "cote dazur", "alpes-maritimes", "alpes maritimes", "local", "nice & cote d'azur", "nice et cote d'azur"] },
   eco: { feeds: ["fi_eco", "echos"], alias: ["eco", "economie", "économie"] },
   tech: { feeds: ["numerama", "frandroid", "bfm_tech", "lm_pixels"], alias: ["tech", "technologie", "technologies", "high-tech", "high tech", "numerique"] },
   sport: { feeds: ["fi_sport", "lequipe"], alias: ["sport", "sports"] }
@@ -63,7 +63,7 @@ async function readFeed(key){
     const pub = tag(b, "pubDate") || tag(b, "dc:date");
     let link = tag(b, "link") || ((b.match(/<link[^>]*href="([^"]+)"/) || [])[1] || "");
     return { title: tag(b, "title"), lead: tag(b, "description"), url: link.trim(), source, ts: pub ? Date.parse(pub) || 0 : 0 };
-  }).filter((i) => i.title && i.url && !PROMO.test(i.title));
+  }).filter((i) => i.title && i.url && !PROMO.test(i.title + " " + i.lead));
   items.forEach((i) => { if (norm(i.lead) === norm(i.title)) i.lead = ""; if (i.lead.length > 420) i.lead = i.lead.slice(0, 417).replace(/\s+\S*$/, "") + "…"; });
   feedCache.set(key, items);
   if (!r.ok) console.warn(`Flux ${key} : ${r.status}`);
@@ -75,7 +75,8 @@ async function googleNews(topic){
     const source = tag(b, "source"); let title = tag(b, "title");
     if (source && title.endsWith(" - " + source)) title = title.slice(0, -(" - " + source).length);
     const pub = tag(b, "pubDate");
-    return { title, lead: "", url: tag(b, "link"), source: source || "Google Actualités", ts: pub ? Date.parse(pub) : 0 };
+    let src = source || "Google Actualités"; if (/^https?:\/\//.test(src)) { try { src = new URL(src).hostname.replace(/^www\./, ""); } catch (e) {} }
+    return { title, lead: "", url: tag(b, "link"), source: src, ts: pub ? Date.parse(pub) : 0 };
   }).filter((i) => i.title && i.url && !PROMO.test(i.title));
 }
 
@@ -93,7 +94,7 @@ export function summarize(paras, lead, max = 3, maxChars = 460){
     if (i < 4) sc *= 1.2; if (/\d/.test(s)) sc *= 1.1;
     const sn = norm(s);
     if (leadN && (leadN.includes(sn.slice(0, 60)) || sn.includes(leadN.slice(0, 60)))) sc = 0;          /* déjà dans « L'essentiel » */
-    if (/^(lire aussi|a lire|voir aussi|abonnez|inscrivez|newsletter|publicite|cet article|vous avez aime)/.test(sn) || /cookie|©|tous droits|abonne/.test(sn)) sc = 0;
+    if (/^(lire aussi|a lire|voir aussi|abonnez|inscrivez|newsletter|publicite|cet article|vous avez aime)/.test(sn) || /cookie|©|tous droits|abonne|unsplash|getty|shutterstock|credit photo|photo :|illustration :/.test(sn)) sc = 0;
     return { s, i, sc };
   });
   const pick = scored.filter((x) => x.sc > 0).sort((a, b) => b.sc - a.sc).slice(0, max).sort((a, b) => a.i - b.i);
@@ -128,7 +129,7 @@ export function keyNumbers(items, n = 3){
         if (!best || cand.score > best.score) best = cand;
       }
     }
-    if (best) out.push(best);
+    if (best && !/^(tech|sport)$/.test(rubriqueOf(it.topic) || "")) out.push(best);
   }
   const seen = new Set();
   return out.sort((a, b) => b.score - a.score).filter((x) => !seen.has(x.topic) && seen.add(x.topic)).slice(0, n).map(({ score, ...x }) => x);
@@ -146,7 +147,7 @@ export async function build(topics, seen = new Set()){
     let cands = [];
     if (rub){
       for (const f of RUBRIQUES[rub].feeds) cands.push(...(await readFeed(f)));
-      cands = cands.filter((i) => !i.ts || now - i.ts < 36 * 3600e3);
+      cands = cands.filter((i) => (!i.ts || now - i.ts < 36 * 3600e3) && i.lead);
     } else {
       const ws = words(topic);
       for (const f of Object.keys(FEEDS)) cands.push(...(await readFeed(f)));
