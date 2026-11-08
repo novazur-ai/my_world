@@ -698,6 +698,22 @@ body[data-view="meteo"] #app::before{height:calc(var(--mtH,250px) + 8px)}
 .mt-msg{margin:0;font-size:14px;font-weight:700;color:#5B6B7C}
 .mt-home{display:flex;flex-direction:column;gap:10px;margin-top:18px;padding-top:14px;border-top:1px solid #E1E8EF;font-size:14px;font-weight:700;color:#5B6B7C}
 .mt-home .btn{align-self:flex-start}
+/* MyWorld_0.24 : pastille météo de l'accueil (à la place du T) */
+body[data-view="accueil"] .hd2 h1{padding-right:122px}
+.wpill{position:absolute;right:max(18px,env(safe-area-inset-right,0px));top:0;width:108px;height:50px;padding:0;overflow:hidden;border-radius:18px;background:rgba(255,255,255,.14);border:1.5px solid rgba(255,255,255,.4);color:#fff;font:inherit;cursor:pointer;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;touch-action:manipulation;transition:background .3s,border-color .3s,color .3s,transform .15s}
+.wpill:focus-visible{outline:3px solid #F2B84B;outline-offset:2px}
+.wpill.held{transform:scale(.96)}
+.wp-track{display:flex;width:200%;height:100%;transition:transform .34s cubic-bezier(.2,.8,.2,1)}
+.wpill.tm{background:#FFFFFF;border-color:#FFFFFF;color:#0B3A5C}
+.wpill.tm .wp-track{transform:translateX(-50%)}
+.wp-face{width:50%;height:100%;display:flex;align-items:center;gap:6px;padding:0 10px 0 7px}
+.wp-face .mtic{flex:none}
+.wp-n{display:flex;flex-direction:column;line-height:1.05;text-align:left}
+.wp-n b{font-size:20px;font-weight:900}
+.wp-p{display:flex;align-items:center;gap:2px;font-size:11.5px;font-weight:800;color:#9FD0F5}
+.wpill.tm .wp-p{color:#2F7FC1}
+.wpill.empty{display:grid;place-items:center}.wp-dots{font-size:22px;font-weight:900;letter-spacing:2px;opacity:.7}
+@media (prefers-reduced-motion: reduce){.wp-track,.wpill{transition:none}}
 /* MyWorld_0.10 : barre Accueil · Notes · + · Apps, et éventail des apps */
 nav.tabs .in{display:grid!important;grid-template-columns:1fr 1fr 64px 2fr!important;align-items:center}
 .nav-apps{display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 0;border:0;background:transparent;border-radius:14px;color:var(--muted);font:inherit;font-size:11.5px;font-weight:700;justify-self:center;width:50%;min-width:64px;cursor:pointer;-webkit-tap-highlight-color:transparent}
@@ -868,7 +884,7 @@ body.scroll-lock{position:fixed;left:0;right:0;width:100%;overflow:hidden}
 
 
 <script>
-var APP_VERSION = "MyWorld_0.23";
+var APP_VERSION = "MyWorld_0.24";
 (function(){
 "use strict";
 var CAL = "t.mallet06@gmail.com";
@@ -1029,7 +1045,8 @@ function heroHTML(){
   if (S.view === "accueil"){
     var hr = new Date().getHours(), g = greetText().split(" · ")[0];
     if (/^Bonjour, /.test(g)) g = "Coucou " + NAME + " !"; else if (/^(Bonsoir|Bonne nuit), /.test(g)) g = g.replace(", ", " ") + " !";
-    return '<div class="hd2 gut"><p class="eb">' + h(date) + '</p><h1>' + h(g) + '</h1><a class="av" href="#fiche" aria-label="Ta fiche">' + h((NAME || "A").charAt(0)) + '</a></div>';
+    ensureMeteo();
+    return '<div class="hd2 gut"><p class="eb">' + h(date) + '</p><h1>' + h(g) + '</h1>' + wPillHTML() + '</div>';
   }
   if (S.view === "meteo") return meteoHero(date);
   var title = S.view === "listes" ? "Tes listes" : S.view === "fiche" ? "Ta fiche" : S.view === "notes" ? "Tes notes" : "La Gazette", sub = "";
@@ -1381,6 +1398,40 @@ function mtPlaceSheet(){
     setTimeout(function(){ q.focus(); }, 60);
   });
 }
+/* pastille météo de l'accueil : un toucher bascule aujourd'hui ⇄ demain (glissement), un appui long ouvre la page Météo */
+function wPillFaces(){
+  var d = mtData(); if (!d) return null;
+  var c = d.current, D = d.daily;
+  return [
+    {t:c.temperature_2m, code:c.weather_code, day:!!c.is_day, p:D.precipitation_probability_max[0], say:"aujourd'hui"},
+    {t:D.temperature_2m_max[1], code:D.weather_code[1], day:true, p:D.precipitation_probability_max[1], say:"demain"}
+  ];
+}
+function wPillLabel(f, tm){ return "Météo " + f.say + " : " + Math.round(f.t) + " degrés, " + mtLabel(f.code).toLowerCase() + ", risque de pluie " + (f.p || 0) + " %. Toucher pour " + (tm ? "aujourd'hui" : "demain") + ", appui long pour ouvrir la météo."; }
+function wPillHTML(){
+  var F = wPillFaces();
+  if (!F) return '<button type="button" class="wpill empty" aria-label="Météo en cours de chargement. Appui long pour ouvrir la météo."><span class="wp-dots" aria-hidden="true">···</span></button>';
+  var face = function(f, light){ return '<span class="wp-face">' + wIcon(f.code, f.day, 34, light) + '<span class="wp-n"><b>' + mtRound(f.t) + '</b><span class="wp-p"><svg width="10" height="10" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3s6 6.6 6 11a6 6 0 0 1-12 0c0-4.4 6-11 6-11z" fill="currentColor"/></svg>' + (f.p || 0) + ' %</span></span></span>'; };
+  return '<button type="button" class="wpill' + (S.mtTm ? " tm" : "") + '" aria-label="' + h(wPillLabel(F[S.mtTm ? 1 : 0], S.mtTm)) + '"><span class="wp-track">' + face(F[0], true) + face(F[1], false) + '</span></button>';
+}
+(function(){
+  var timer = null, longDone = false, startXY = null;
+  document.addEventListener("pointerdown", function(e){
+    var b = e.target.closest && e.target.closest(".wpill"); if (!b) return;
+    longDone = false; startXY = [e.clientX, e.clientY]; clearTimeout(timer);
+    timer = setTimeout(function(){ longDone = true; b.classList.add("held"); if (navigator.vibrate) try { navigator.vibrate(12); } catch(x){} location.hash = "meteo"; }, 500);
+  });
+  document.addEventListener("pointermove", function(e){ if (timer && startXY && Math.abs(e.clientX - startXY[0]) + Math.abs(e.clientY - startXY[1]) > 12){ clearTimeout(timer); timer = null; } });
+  ["pointerup","pointercancel"].forEach(function(n){ document.addEventListener(n, function(){ clearTimeout(timer); timer = null; }); });
+  document.addEventListener("contextmenu", function(e){ if (e.target.closest && e.target.closest(".wpill")) e.preventDefault(); });
+  document.addEventListener("click", function(e){
+    var b = e.target.closest && e.target.closest(".wpill"); if (!b) return;
+    e.preventDefault(); e.stopPropagation();
+    if (longDone){ longDone = false; return; }
+    var F = wPillFaces(); if (!F) return;
+    S.mtTm = !S.mtTm; b.classList.toggle("tm", S.mtTm); b.setAttribute("aria-label", wPillLabel(F[S.mtTm ? 1 : 0], S.mtTm));
+  }, true);
+})();
 function viewGazette(){
   if (!S.gzDay) return viewGazetteDays();
   var topics = (S.settings && S.settings.topics) || [], batch = gzBatch(S.gzDay), read = gzRead();
