@@ -667,6 +667,37 @@ body[data-view="gazette"] #app::before{height:calc(124px + env(safe-area-inset-t
 .fab{background:#0B4F7C!important}
 .prow,.card{border-color:#E6ECF2!important;box-shadow:0 6px 20px rgba(11,58,92,.06)!important}
 nav.tabs a[aria-current="page"]{background:#E4F1FA!important;color:#0B3A5C!important}
+/* MyWorld_0.23 : Météo */
+body[data-view="meteo"] #app::before{height:calc(var(--mtH,250px) + 8px)}
+.mt-place{display:inline-flex;align-items:center;gap:6px;margin-top:8px;min-height:36px;padding:5px 12px;border-radius:999px;border:1.5px solid rgba(255,255,255,.4);background:rgba(255,255,255,.14);color:#fff;font:inherit;font-size:13.5px;font-weight:800;cursor:pointer}
+.mt-place:focus-visible{outline:3px solid #F2B84B;outline-offset:2px}
+.mt-now{display:flex;align-items:center;gap:12px;margin-top:12px;color:#fff}
+.mt-now .deg{font-size:52px;font-weight:900;line-height:.95;letter-spacing:-.03em}
+.mt-now .d{display:flex;flex-direction:column;gap:2px;font-size:13.5px;font-weight:700;color:rgba(255,255,255,.88);margin-left:auto;text-align:right}
+.mt-now .d b{font-size:16px;font-weight:900;color:#fff}
+.mt{display:flex;flex-direction:column;gap:14px;margin-top:22px;padding-bottom:30px}
+.mt-parts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mt-part{display:flex;flex-direction:column;gap:6px;background:#fff;border:1px solid #E6ECF2;border-radius:18px;box-shadow:0 6px 20px rgba(11,58,92,.06);padding:12px 14px}
+.mt-part .n{font-size:11.5px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#5B6B7C}
+.mt-part .top{display:flex;justify-content:space-between;align-items:center}
+.mt-part .top b{font-size:24px;font-weight:900;color:#1E2530}
+.mt-part .x{font-size:13px;font-weight:700;color:#5B6B7C}
+.mt-part .x em{font-style:normal;color:#2F7FC1;font-weight:900}
+.mt-alert{display:flex;gap:10px;align-items:center;background:#FCE9DC;color:#9A4316;border-radius:16px;padding:10px 12px;font-size:14px;font-weight:800;line-height:1.35}
+.mt-alert .mtic{flex:none}
+.mt-week{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;background:#fff;border:1px solid #E6ECF2;border-radius:18px;box-shadow:0 6px 20px rgba(11,58,92,.06);padding:12px 8px}
+.mt-week>div{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:12px;font-weight:800;color:#5B6B7C;padding:4px 0;border-radius:12px}
+.mt-week>div b{color:#1E2530;font-size:15px;font-weight:900}
+.mt-week>div i{font-style:normal;color:#2F7FC1;font-size:11.5px;font-weight:900}
+.mt-week>div.bad{background:#FCE9DC}
+.mt-credit{margin:0;text-align:center;font-size:12px;font-weight:700;color:#85858F}.mt-credit a{color:inherit}
+.mt-retry{align-self:center}
+.mt-res{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.mt-hit{display:flex;flex-direction:column;align-items:flex-start;gap:2px;width:100%;text-align:left;font:inherit;padding:12px 14px;border-radius:14px;border:1.5px solid #E1E8EF;background:#fff;cursor:pointer}
+.mt-hit b{font-size:15.5px;font-weight:800;color:#1E2530}.mt-hit span{font-size:13px;font-weight:700;color:#5B6B7C}
+.mt-msg{margin:0;font-size:14px;font-weight:700;color:#5B6B7C}
+.mt-home{display:flex;flex-direction:column;gap:10px;margin-top:18px;padding-top:14px;border-top:1px solid #E1E8EF;font-size:14px;font-weight:700;color:#5B6B7C}
+.mt-home .btn{align-self:flex-start}
 /* MyWorld_0.10 : barre Accueil · Notes · + · Apps, et éventail des apps */
 nav.tabs .in{display:grid!important;grid-template-columns:1fr 1fr 64px 2fr!important;align-items:center}
 .nav-apps{display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 0;border:0;background:transparent;border-radius:14px;color:var(--muted);font:inherit;font-size:11.5px;font-weight:700;justify-self:center;width:50%;min-width:64px;cursor:pointer;-webkit-tap-highlight-color:transparent}
@@ -837,7 +868,7 @@ body.scroll-lock{position:fixed;left:0;right:0;width:100%;overflow:hidden}
 
 
 <script>
-var APP_VERSION = "MyWorld_0.22";
+var APP_VERSION = "MyWorld_0.23";
 (function(){
 "use strict";
 var CAL = "t.mallet06@gmail.com";
@@ -1000,6 +1031,7 @@ function heroHTML(){
     if (/^Bonjour, /.test(g)) g = "Coucou " + NAME + " !"; else if (/^(Bonsoir|Bonne nuit), /.test(g)) g = g.replace(", ", " ") + " !";
     return '<div class="hd2 gut"><p class="eb">' + h(date) + '</p><h1>' + h(g) + '</h1><a class="av" href="#fiche" aria-label="Ta fiche">' + h((NAME || "A").charAt(0)) + '</a></div>';
   }
+  if (S.view === "meteo") return meteoHero(date);
   var title = S.view === "listes" ? "Tes listes" : S.view === "fiche" ? "Ta fiche" : S.view === "notes" ? "Tes notes" : "La Gazette", sub = "";
   if (S.view === "gazette"){ var u = S.settings && S.settings.gazetteUpdatedAt, ds0 = gzDays();
     if (S.gzDay){ var nb = gzBatch(S.gzDay).length; title = "La Gazette"; sub = '<p class="sub">' + h(gzDayLabel(S.gzDay) + (S.gzDay === iso(today()) || S.gzDay === iso(addDays(today(), -1)) ? " · " + parseISO(S.gzDay).getDate() + " " + MOIS[parseISO(S.gzDay).getMonth()] : "") + " · " + nb + " info" + (nb > 1 ? "s" : "")) + '</p>'; }
@@ -1222,6 +1254,133 @@ function viewGazetteDays(){
   return html;
 }
 function gzWhen(g){ if (!g.ts) return g.date ? fmtShort(g.date) : ""; var d = new Date(g.ts), t = today(); return (iso(d) === iso(t) ? "" : iso(d) === iso(addDays(t, -1)) ? "hier, " : d.getDate() + " " + MOIS[d.getMonth()] + ", ") + d.getHours() + " h " + pad(d.getMinutes()); }
+/* ---------- Météo (Open-Meteo, sans clé ; mention « Open-Meteo.com » obligatoire) ---------- */
+var MT_HOME = {name:"Cagnes-sur-Mer", lat:43.6635, lon:7.1479};
+var MT_CODES = {0:"Ciel dégagé",1:"Peu nuageux",2:"Éclaircies",3:"Couvert",45:"Brouillard",48:"Brouillard givrant",51:"Bruine légère",53:"Bruine",55:"Bruine forte",56:"Bruine verglaçante",57:"Bruine verglaçante",61:"Pluie faible",63:"Pluie",65:"Forte pluie",66:"Pluie verglaçante",67:"Pluie verglaçante",71:"Neige faible",73:"Neige",75:"Forte neige",77:"Grains de neige",80:"Averses faibles",81:"Averses",82:"Fortes averses",85:"Averses de neige",86:"Fortes averses de neige",95:"Orage",96:"Orage et grêle",99:"Orage et grêle"};
+/* gravité d'un code : sert à choisir le temps le plus marquant d'une période */
+function mtSev(c){ return c >= 95 ? 9 : c >= 85 ? 8 : c >= 71 ? 7 : c === 65 || c === 82 ? 6 : c === 63 || c === 81 || c >= 66 && c <= 67 ? 5 : c === 61 || c === 80 ? 4 : c >= 51 && c <= 57 ? 3 : c >= 45 && c <= 48 ? 2 : c === 3 ? 1.5 : c === 2 ? 1 : c === 1 ? .5 : 0; }
+function mtLabel(c){ return MT_CODES[c] || "—"; }
+function mtPlace(){ var p = S.settings && S.settings.meteoPlace; return p && typeof p.lat === "number" ? p : MT_HOME; }
+function mtIsHome(p){ return Math.abs(p.lat - MT_HOME.lat) < .01 && Math.abs(p.lon - MT_HOME.lon) < .01; }
+/* icônes dessinées (light = version blanche pour le bandeau bleu) */
+function wIcon(c, day, size, light){
+  var sz = size || 24, cf = light ? "#FFFFFF" : "#E8EEF4", cs = light ? "rgba(255,255,255,0)" : "#8FA3B8", dk = light ? "#E4EEF6" : "#C9D4DF", ds = light ? "rgba(255,255,255,0)" : "#6E8399", dr = light ? "#9FD0F5" : "#2F7FC1";
+  var cloud = function(y, f, st){ return '<path d="M20 ' + (y + 20) + 'h26a10 10 0 0 0 0-20 14 14 0 0 0-27-3A11 11 0 0 0 20 ' + (y + 20) + 'z" fill="' + f + '" stroke="' + st + '" stroke-width="3" stroke-linejoin="round"/>'; };
+  var drops = function(xs, y, len){ return xs.map(function(x){ return '<path d="M' + x + ' ' + y + 'l-3 ' + len + '" stroke="' + dr + '" stroke-width="3.5" stroke-linecap="round"/>'; }).join(""); };
+  var sun = '<circle cx="32" cy="32" r="12" fill="#F7C65A" stroke="#E9A23B" stroke-width="3"/><path d="M32 8v6M32 50v6M8 32h6M50 32h6M15 15l4 4M45 45l4 4M15 49l4-4M45 19l4-4" stroke="#E9A23B" stroke-width="3.5" stroke-linecap="round"/>';
+  var moon = '<path d="M40 12a20 20 0 1 0 12 30A16 16 0 0 1 40 12z" fill="' + (light ? "#FFFFFF" : "#F3E3A6") + '" stroke="' + (light ? "#FFFFFF" : "#C9A94A") + '" stroke-width="3" stroke-linejoin="round"/>';
+  var small = day ? '<circle cx="42" cy="20" r="9" fill="#F7C65A" stroke="#E9A23B" stroke-width="3"/>' : '<path d="M44 10a10 10 0 1 0 8 15 8 8 0 0 1-8-15z" fill="' + (light ? "#FFFFFF" : "#F3E3A6") + '" stroke="' + (light ? "#FFFFFF" : "#C9A94A") + '" stroke-width="2.5"/>';
+  var g;
+  if (c === 0) g = day ? sun : moon;
+  else if (c === 1 || c === 2) g = small + '<path d="M18 46h24a9 9 0 0 0 0-18 13 13 0 0 0-25-2A10 10 0 0 0 18 46z" fill="' + cf + '" stroke="' + cs + '" stroke-width="3" stroke-linejoin="round"/>';
+  else if (c === 3) g = cloud(26, cf, cs);
+  else if (c === 45 || c === 48) g = cloud(16, cf, cs) + '<path d="M14 46h36M20 54h28" stroke="' + cs + '" stroke-width="3.5" stroke-linecap="round"/>';
+  else if (c >= 51 && c <= 57) g = cloud(18, cf, cs) + drops([26, 38], 46, 4);
+  else if (c === 61 || c === 63 || c === 66) g = cloud(18, cf, cs) + drops([24, 34, 44], 45, 7);
+  else if (c === 65 || c === 67 || c === 82) g = cloud(16, dk, ds) + drops([20, 29, 38, 47], 42, 9) + drops([25, 34, 43], 53, 5);
+  else if (c === 80 || c === 81) g = small + '<path d="M18 42h24a9 9 0 0 0 0-18 13 13 0 0 0-25-2A10 10 0 0 0 18 42z" fill="' + cf + '" stroke="' + cs + '" stroke-width="3" stroke-linejoin="round"/>' + drops([24, 35], 48, 7);
+  else if (c >= 71 && c <= 86) g = cloud(16, cf, cs) + [[22, 48], [34, 52], [46, 48]].map(function(q){ return '<path d="M' + q[0] + ' ' + (q[1] - 4) + 'v8M' + (q[0] - 4) + ' ' + q[1] + 'h8" stroke="' + dr + '" stroke-width="3" stroke-linecap="round"/>'; }).join("");
+  else if (c >= 95) g = cloud(16, dk, ds) + '<path d="M34 38l-7 11h8l-5 10" fill="none" stroke="#E9A23B" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>' + drops([45, 21], 42, 7);
+  else g = cloud(26, cf, cs);
+  return '<svg class="mtic" width="' + sz + '" height="' + sz + '" viewBox="0 0 64 64" aria-hidden="true">' + g + '</svg>';
+}
+function mtCacheGet(){ try { return JSON.parse(localStorage.getItem("meteoCache") || "null"); } catch(e){ return null; } }
+function mtCacheSet(v){ try { localStorage.setItem("meteoCache", JSON.stringify(v)); } catch(e){} }
+/* charge les prévisions si besoin (absentes, autre lieu, ou plus vieilles que 30 min) ; redessine la page à l'arrivée */
+function ensureMeteo(force){
+  var p = mtPlace(), key = p.lat.toFixed(3) + "," + p.lon.toFixed(3);
+  if (!S.meteo){ var c = mtCacheGet(); if (c && c.key) S.meteo = c; }
+  var m = S.meteo;
+  if (!force && m && m.key === key && m.data && Date.now() - m.at < 30 * 60000) return;
+  if (S.meteoBusy === key) return;
+  S.meteoBusy = key;
+  var url = "https://api.open-meteo.com/v1/forecast?latitude=" + p.lat + "&longitude=" + p.lon + "&timezone=Europe%2FParis&forecast_days=7"
+    + "&current=temperature_2m,apparent_temperature,weather_code,is_day,wind_speed_10m"
+    + "&hourly=temperature_2m,weather_code,precipitation_probability,is_day"
+    + "&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,precipitation_sum,wind_gusts_10m_max";
+  fetch(url).then(function(r){ if (!r.ok) throw new Error(r.status); return r.json(); }).then(function(d){
+    S.meteo = {key:key, at:Date.now(), data:d, place:p.name}; S.meteoErr = false; mtCacheSet(S.meteo);
+  }).catch(function(){ S.meteoErr = true; }).then(function(){ S.meteoBusy = null; if (S.view === "meteo" || S.view === "accueil") render(); });
+}
+function mtData(){ var p = mtPlace(), key = p.lat.toFixed(3) + "," + p.lon.toFixed(3); return S.meteo && S.meteo.key === key ? S.meteo.data : null; }
+function mtRound(x){ return Math.round(x) + "°"; }
+/* découpe des prochaines heures en moments de la journée */
+function mtParts(d){
+  var H = d.hourly, now = new Date(), nowH = d.current.time.slice(0, 13), i0 = H.time.findIndex(function(t){ return t.slice(0, 13) >= nowH; });
+  if (i0 < 0) return [];
+  var slot = function(hh){ return hh >= 6 && hh < 12 ? 0 : hh >= 12 && hh < 18 ? 1 : hh >= 18 && hh < 23 ? 2 : 3; };
+  var NAMES = [["Ce matin","Cet après-midi","Ce soir","Cette nuit"],["Demain matin","Demain après-midi","Demain soir","La nuit prochaine"]];
+  var out = [], cur = null, todayIso = iso(today());
+  for (var i = i0; i < H.time.length && out.length < 5; i++){
+    var t = H.time[i], hh = +t.slice(11, 13), sl = slot(hh), dayIso = t.slice(0, 10);
+    var base = sl === 3 && hh < 6 ? iso(addDays(parseISO(dayIso), -1)) : dayIso;   /* la nuit appartient au soir d'avant */
+    var k = base + "-" + sl;
+    if (!cur || cur.k !== k){ cur = {k:k, base:base, sl:sl, temps:[], codes:[], probs:[], day:[]}; out.push(cur); }
+    cur.temps.push(H.temperature_2m[i]); cur.codes.push(H.weather_code[i]); cur.probs.push(H.precipitation_probability[i] || 0); cur.day.push(H.is_day[i]);
+  }
+  return out.slice(0, 4).map(function(o){
+    var code = o.codes.reduce(function(a, c){ return mtSev(c) > mtSev(a) ? c : a; }, o.codes[0]);
+    var avg = o.temps.reduce(function(a, b){ return a + b; }, 0) / o.temps.length;
+    var rel = o.base === todayIso ? 0 : 1;
+    return {name: NAMES[rel][o.sl], temp: avg, code: code, prob: Math.max.apply(null, o.probs), day: o.day.filter(Boolean).length * 2 >= o.day.length};
+  });
+}
+function mtAlert(d){
+  var D = d.daily;
+  for (var i = 0; i < D.time.length; i++){
+    var mm = D.precipitation_sum[i] || 0, gust = D.wind_gusts_10m_max[i] || 0, c = D.weather_code[i], when = i === 0 ? "Aujourd'hui" : i === 1 ? "Demain" : cap(JOURS_LONG[parseISO(D.time[i]).getDay()]);
+    if (mm >= 20) return when + " : fortes pluies prévues, " + Math.round(mm) + " mm sur la journée.";
+    if (gust >= 70) return when + " : coups de vent prévus, rafales jusqu'à " + Math.round(gust) + " km/h.";
+    if (c >= 95 && i < 3) return when + " : risque d'orage.";
+  }
+  return "";
+}
+function viewMeteo(){
+  ensureMeteo();
+  var d = mtData(), html = '<div class="mt gut">';
+  if (!d){
+    html += '<div class="lt-empty">' + (S.meteoErr ? "La météo n'a pas pu être chargée. Vérifie ta connexion, puis réessaie." : "Chargement de la météo…") + '</div>';
+    if (S.meteoErr) html += '<button type="button" class="btn-ink mt-retry" data-act="mt-retry">Réessayer</button>';
+    return html + '</div>';
+  }
+  html += '<div class="mt-parts">' + mtParts(d).map(function(o){
+    return '<div class="mt-part"><span class="n">' + h(o.name) + '</span><span class="top"><b>' + mtRound(o.temp) + '</b>' + wIcon(o.code, o.day, 36) + '</span><span class="x">' + h(mtLabel(o.code)) + (o.prob >= 20 ? ' · <em>' + o.prob + ' %</em>' : "") + '</span></div>';
+  }).join("") + '</div>';
+  var al = mtAlert(d);
+  if (al) html += '<div class="mt-alert" role="note">' + wIcon(65, true, 26) + '<span>' + h(al) + '</span></div>';
+  var D = d.daily, bad = -1;
+  for (var j = 1; j < D.time.length; j++) if ((D.precipitation_sum[j] || 0) >= 20 || (D.wind_gusts_10m_max[j] || 0) >= 70) { bad = j; break; }
+  html += '<div class="mt-week" aria-label="Les prochains jours">' + D.time.slice(1).map(function(t, k){
+    var i = k + 1, dd = parseISO(t);
+    return '<div class="' + (i === bad ? "bad" : "") + '"><span>' + cap(JOURS[dd.getDay()]) + '</span>' + wIcon(D.weather_code[i], true, 26) + '<b>' + mtRound(D.temperature_2m_max[i]) + '</b><span>' + mtRound(D.temperature_2m_min[i]) + '</span>' + (D.precipitation_probability_max[i] >= 30 ? '<i>' + D.precipitation_probability_max[i] + ' %</i>' : '<i>&nbsp;</i>') + '</div>';
+  }).join("") + '</div>';
+  html += '<p class="mt-credit">Données météo : <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo.com</a> · mise à jour ' + h(ago(new Date(S.meteo.at).toISOString())) + '</p>';
+  return html + '</div>';
+}
+function meteoHero(date){
+  var p = mtPlace(), d = mtData(), now = "";
+  if (d){ var c = d.current, D = d.daily;
+    now = '<div class="mt-now"><span class="deg">' + mtRound(c.temperature_2m) + '</span>' + wIcon(c.weather_code, !!c.is_day, 50, true) + '<span class="d"><b>' + h(mtLabel(c.weather_code)) + '</b><span>Min ' + mtRound(D.temperature_2m_min[0]) + ' · Max ' + mtRound(D.temperature_2m_max[0]) + '</span></span></div>'; }
+  return '<div class="hd2 gut"><p class="eb">' + h(date) + '</p><h1>Météo</h1>'
+    + '<button type="button" class="mt-place" data-act="mt-place" aria-label="Changer de lieu, actuellement ' + h(p.name) + '"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-6.2 7-12a7 7 0 0 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>' + h(p.name) + '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg></button>'
+    + now + '</div>';
+}
+/* changer de lieu : recherche de ville (géocodage Open-Meteo) */
+function mtPlaceSheet(){
+  var p = mtPlace();
+  var body = '<form id="mtF" class="fgrid"><div class="field"><label for="mtQ">Ville</label><input id="mtQ" type="search" autocomplete="off" placeholder="Ex. Lyon, Annecy, Biarritz…" required></div><button class="btn green" type="submit">Chercher</button></form><div id="mtRes" class="mt-res" aria-live="polite"></div>'
+    + (mtIsHome(p) ? "" : '<div class="mt-home"><span>Lieu actuel : <b>' + h(p.name) + '</b></span><button type="button" class="btn" data-act="mt-home">Revenir à Cagnes-sur-Mer</button></div>');
+  openSheet("Changer de lieu", body, function(){
+    var f = document.getElementById("mtF"), q = document.getElementById("mtQ"), res = document.getElementById("mtRes");
+    f.onsubmit = function(e){ e.preventDefault(); var v = q.value.trim(); if (!v) return; res.innerHTML = '<p class="mt-msg">Recherche…</p>';
+      fetch("https://geocoding-api.open-meteo.com/v1/search?count=8&language=fr&name=" + encodeURIComponent(v)).then(function(r){ return r.json(); }).then(function(j){
+        var L = (j && j.results) || []; S.mtFound = L;
+        res.innerHTML = L.length ? L.map(function(x, i){ return '<button type="button" class="mt-hit" data-act="mt-pick" data-i="' + i + '"><b>' + h(x.name) + '</b><span>' + h([x.admin2 || x.admin1, x.country].filter(Boolean).join(", ")) + '</span></button>'; }).join("") : '<p class="mt-msg">Aucune ville trouvée. Vérifie l\'orthographe.</p>';
+      }).catch(function(){ res.innerHTML = '<p class="mt-msg">La recherche n\'a pas abouti. Vérifie ta connexion.</p>'; });
+    };
+    setTimeout(function(){ q.focus(); }, 60);
+  });
+}
 function viewGazette(){
   if (!S.gzDay) return viewGazetteDays();
   var topics = (S.settings && S.settings.topics) || [], batch = gzBatch(S.gzDay), read = gzRead();
@@ -1313,12 +1472,13 @@ function render(){
   var unseenN = v === "gazette" ? 0 : unseenGazette().length;
   document.getElementById("gazBadge").hidden = !unseenN;
   document.getElementById("gazBadgeSr").textContent = unseenN ? ", " + unseenN + " nouveauté" + (unseenN > 1 ? "s" : "") : "";
-  var html = v === "listes" ? viewListes() : v === "fiche" ? viewFiche() : v === "gazette" ? viewGazette() : v === "notes" ? viewNotes() : viewAccueil();
+  var html = v === "listes" ? viewListes() : v === "fiche" ? viewFiche() : v === "gazette" ? viewGazette() : v === "meteo" ? viewMeteo() : v === "notes" ? viewNotes() : viewAccueil();
   if (S.dbState === "off") html = '<section class="section gut" style="margin-top:24px"><div class="card soft-empty">Tes données ne sont pas disponibles pour l\'instant. Vérifie ta connexion, puis recharge l\'appli.</div></section>' + html;
   document.getElementById("view").innerHTML = html;
+  if (v === "meteo") document.getElementById("app").style.setProperty("--mtH", hero.offsetHeight + "px");
   if (v === "notes"){ afterNotesRender(); if (!S.purged && S.notesLoaded){ S.purged = true; purgeOldNotes(); } }
   if (S.evOpen && !document.getElementById("evRoot").hidden) openEvent(S.evOpen.gid, S.evOpen.did, S.evOpen.d, true);
-  document.querySelectorAll("nav.tabs a").forEach(function(a){ if (a.dataset.tab === v) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current"); }); var nap = document.querySelector(".nav-apps"); if (nap) nap.classList.toggle("cur", v === "listes" || v === "fiche" || v === "gazette");
+  document.querySelectorAll("nav.tabs a").forEach(function(a){ if (a.dataset.tab === v) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current"); }); var nap = document.querySelector(".nav-apps"); if (nap) nap.classList.toggle("cur", v === "listes" || v === "fiche" || v === "gazette" || v === "meteo");
 }
 
 
@@ -2874,6 +3034,10 @@ document.addEventListener("click", function(e){
   if (act === "gz-day"){ S.gzNum = 0; S.topicFilter = "Tout"; location.hash = "gazette-" + b.dataset.d; return; }
   if (act === "gz-days"){ if (S.hist.length > 1 && S.hist[S.hist.length - 2] === "gazette") history.back(); else location.hash = "gazette"; return; }
   if (act === "gz-open"){ gzOpen(b.dataset.id); return; }
+  if (act === "mt-place"){ mtPlaceSheet(); return; }
+  if (act === "mt-retry"){ S.meteoErr = false; ensureMeteo(true); render(); return; }
+  if (act === "mt-pick"){ var x = (S.mtFound || [])[+b.dataset.i]; if (!x) return; closeSheet(); saveSettings({meteoPlace:{name:x.name, lat:x.latitude, lon:x.longitude}}).then(function(){ ensureMeteo(true); render(); }); toast("Météo de " + x.name + "."); return; }
+  if (act === "mt-home"){ closeSheet(); saveSettings({meteoPlace:null}).then(function(){ ensureMeteo(true); render(); }); toast("Retour à la météo de Cagnes-sur-Mer."); return; }
   if (act === "gz-une"){ var u1 = gzUneOf(S.gzDay); if (u1) gzOpen(null, u1); return; }
   if (act === "gz-close"){ gzClose(); return; }
   if (act === "gz-num"){ S.gzNum = (S.gzNum || 0) + 1; render(); return; }
@@ -2918,7 +3082,7 @@ document.addEventListener("click", function(e){
 document.addEventListener("keydown", function(e){ if (e.key === "Escape") { closeSheet(); var l = document.querySelector(".levelup"); if (l) l.remove(); } });
 document.getElementById("captureForm").addEventListener("submit", onCapture);
 
-var TABS = ["accueil","notes","listes","fiche","gazette"];
+var TABS = ["accueil","notes","listes","fiche","gazette","meteo"];
 
 
 /* ===== MyWorld_0.13 : page « Tes listes » (À faire / Rappels) ===== */
@@ -3077,7 +3241,7 @@ var FAN_APPS = [
   {k:"fiche", n:"Fiche", bg:"#E3D3F7", ink:"#6640A6", ic:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 5-3.5 8-7 10-3.5-2-7-5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg>'},
   {k:"gazette", n:"Gazette", bg:"#FBE6B4", ink:"#8E6312", ic:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h13v14a1 1 0 0 0 1 1H5a1 1 0 0 1-1-1z"/><path d="M17 9h3v10a1 1 0 0 1-2 0M7 9h7M7 13h7M7 16h4"/></svg>'},
   {k:"reglages", n:"Réglages", bg:"#ECEDF1", ink:"#3E4250", ic:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M2 12h3M19 12h3M4.9 19.1L7 17M17 7l2.1-2.1"/></svg>'},
-  {k:"meteo", n:"Météo", bg:"#D2E8FA", ink:"#2C679C", ic:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18h10a4 4 0 0 0 .5-8 5.5 5.5 0 0 0-10.6 1.5A3.3 3.3 0 0 0 7 18z"/></svg>', soon:true},
+  {k:"meteo", n:"Météo", bg:"#D2E8FA", ink:"#2C679C", ic:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18h10a4 4 0 0 0 .5-8 5.5 5.5 0 0 0-10.6 1.5A3.3 3.3 0 0 0 7 18z"/></svg>'},
   {k:"drive", n:"Drive", bg:"#D4EED6", ink:"#2F7440", ic:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>', soon:true}
 ];
 /* place de chaque app autour du bouton : [rayon en px, angle en degrés] (2 arcs de 3) */
