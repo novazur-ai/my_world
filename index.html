@@ -698,6 +698,38 @@ body.fan-on nav.tabs a,body.fan-on .nav-add{opacity:.35;pointer-events:none;tran
 .fan-app.soon .fi{opacity:.6}
 .fan-app .nbadge{position:absolute;top:0;right:0;width:12px;height:12px;border-radius:50%;background:#E0533D;border:2px solid #fff}
 @media (prefers-reduced-motion: reduce){.fan-app,#appsFan.off .fan-app{transition:opacity .15s!important;transform:none!important}}
+/* MyWorld_0.13 : page « Tes listes » */
+.lt-wrap{display:flex;flex-direction:column;gap:14px;margin-top:22px;padding-bottom:30px}
+.lt-seg{display:grid;grid-template-columns:1fr 1fr;background:#E9EEF3;border-radius:14px;padding:4px}
+.lt-seg button{border:0;background:none;font:inherit;text-align:center;padding:10px;border-radius:11px;font-weight:800;color:#5B6B7C;cursor:pointer}
+.lt-seg button[aria-selected="true"]{background:#fff;color:#0B3A5C;box-shadow:0 2px 8px rgba(11,58,92,.12)}
+.lt-pills{display:flex;gap:8px;flex-wrap:wrap}
+.lt-pills button{font:inherit;padding:8px 14px;border-radius:999px;font-weight:800;font-size:13.5px;background:#fff;border:1.5px solid #E1E8EF;color:#5B6B7C;cursor:pointer;min-height:40px}
+.lt-pills button[aria-pressed="true"]{background:#0B4F7C;border-color:#0B4F7C;color:#fff}.lt-pills b{margin-left:5px;opacity:.7}
+.lt-card{background:#fff;border:1px solid #E6ECF2;border-radius:18px;box-shadow:0 6px 20px rgba(11,58,92,.06);overflow:hidden}
+.lt-row{box-sizing:border-box;display:flex;align-items:center;gap:10px;padding:8px 14px;min-height:56px;width:100%;border:0;background:none;font:inherit;text-align:left;color:inherit}
+.lt-row+.lt-row{border-top:1px solid #EEF1F5}
+.lt-ck{flex:0 0 auto;width:40px;height:40px;margin:-8px -8px -8px -8px;border:0;background:none;display:grid;place-items:center;cursor:pointer;position:relative}
+.lt-ck::before{content:"";position:absolute;width:24px;height:24px;border-radius:50%;border:2px solid var(--b);box-sizing:border-box}
+.lt-ck svg{position:relative;color:#fff}.lt-ck[aria-pressed="true"]::before{background:var(--b)}
+.lt-mid{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;border:0;background:none;font:inherit;text-align:left;padding:6px 0;cursor:pointer;color:inherit}
+.lt-t{font-weight:700;font-size:15px;color:#1E2530;overflow-wrap:anywhere}.lt-s{font-size:12.5px;font-weight:700;color:#7A7A85}
+.lt-row.done .lt-t{color:#9AA0AA;text-decoration:line-through;text-decoration-color:#C4C8CF}.lt-row.done .lt-chip,.lt-row.done .lt-xp{opacity:.5}
+.lt-row.late{background:#FFF7F5}.lt-row.late .lt-s{color:#C2412D}
+.lt-chip{flex:0 0 auto;font-size:11.5px;font-weight:800;padding:3px 9px;border-radius:999px}
+.lt-xp{flex:0 0 auto;font-size:11.5px;font-weight:800;color:#0B4F7C;background:#E4F1FA;padding:3px 8px;border-radius:999px}
+@media (max-width:380px){.lt-xp{display:none}}
+.lt-add{display:flex;align-items:center;gap:12px;padding:13px 14px;border-radius:16px;background:#fff;border:1.5px dashed #C9D6E2;color:#5B6B7C;font:inherit;font-weight:700;cursor:pointer;text-align:left}
+.lt-addi{width:26px;height:26px;border-radius:50%;background:#0B4F7C;color:#fff;display:grid;place-items:center}
+.lt-lbl{margin:8px 4px -4px;font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#5B6B7C}
+.lt-ev{cursor:pointer}.lt-when{flex:0 0 auto;text-align:right;font-weight:800;font-size:13px;color:#2C679C;line-height:1.25}.lt-when small{display:block;font-size:11.5px;color:#7A7A85}
+.lt-bell{flex:0 0 auto;width:30px;height:30px;border-radius:10px;background:#D2E8FA;color:#2C679C;display:grid;place-items:center}
+.lt-hint{margin:0 4px;font-size:13px;font-weight:700;color:#85858F;line-height:1.45}
+.lt-empty{margin:0;padding:18px 16px;border-radius:16px;background:#fff;border:1px solid #E6ECF2;color:#7A7A85;font-weight:700;font-size:14px}
+.lt-menu{display:flex;flex-direction:column;gap:10px;margin-top:6px}.lt-menu .danger{color:#C2412D}
+.nk-p{font-size:15px;line-height:1.5;color:#26262C;margin:0 0 6px}
+.kw-line{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #EEF1F5;font-size:14px}.kw-line b{min-width:110px;font-weight:800}.kw-line span{flex:1;color:var(--muted)}
+.kw-del{border:0;background:#F1F3F6;border-radius:50%;width:32px;height:32px;font-size:18px;color:#5B6B7C;cursor:pointer}
 </style>
 </head>
 <body>
@@ -717,7 +749,7 @@ body.fan-on nav.tabs a,body.fan-on .nav-add{opacity:.35;pointer-events:none;tran
   <div class="gut" id="captureZone">
     <div id="bubbleZone"></div>
     <form class="capture" id="captureForm" autocomplete="off">
-      <label for="captureInput" class="sr">Ajoute un rendez-vous, une quête, un anniversaire ou un exploit</label>
+      <label for="captureInput" class="sr">Ajoute un rendez-vous, un rappel, un « à faire », une note ou un anniversaire</label>
       <input id="captureInput" type="text" enterkeyhint="send" placeholder="Ajoute quelque chose…">
       <button class="btn-mic" id="micBtn" type="button" aria-label="Dicter" aria-pressed="false" hidden><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button>
       <button class="btn-add" id="captureBtn" type="submit" aria-label="Ajouter">
@@ -747,7 +779,7 @@ body.fan-on nav.tabs a,body.fan-on .nav-add{opacity:.35;pointer-events:none;tran
 
 
 <script>
-var APP_VERSION = "MyWorld_0.12";
+var APP_VERSION = "MyWorld_0.13";
 (function(){
 "use strict";
 var CAL = "t.mallet06@gmail.com";
@@ -807,11 +839,10 @@ function globalLevel(t){ return 1 + Math.floor(t/200); }
 function unlockedTitles(){
   var o = statXP(), list = [];
   ["cha","sag","force","dex","int","con"].forEach(function(k){ if (statLevel(o[k]) >= 3) list.push(STATS[k].title); });
-  if (S.items.some(function(i){ return i.kind === "quest" && i.done; })) list.push("Première quête");
+  if (S.log.some(function(l){ return /^À faire : /.test(l.label || ""); })) list.push("Premier « à faire » coché");
   return list;
 }
 function nextTitle(){ var o = statXP(), best = null; ["cha","sag","force","dex","int","con"].forEach(function(k){ if (statLevel(o[k]) < 3){ var rest = 160 - o[k]; if (!best || rest < best.rest) best = {k:k, rest:rest}; } }); return best; }
-function activeQuests(){ return S.items.filter(function(i){ return i.kind === "quest" && !i.done; }).sort(function(a,b){ return (a.createdAt||"") < (b.createdAt||"") ? -1 : 1; }); }
 function gcalAll(){ var ids = {}, out = S.gcal.slice(); S.gcal.forEach(function(e){ ids[e.id] = 1; }); Object.keys(S.gcalExtra).forEach(function(k){ S.gcalExtra[k].forEach(function(e){ if (!ids[e.id]){ ids[e.id] = 1; out.push(e); } }); }); return out; }
 /* ---------- domaines des rendez-vous (une couleur chacun, la même dans Google Agenda) ---------- */
 var CATS = {
@@ -911,7 +942,7 @@ function heroHTML(){
     if (/^Bonjour, /.test(g)) g = "Coucou " + NAME + " !"; else if (/^(Bonsoir|Bonne nuit), /.test(g)) g = g.replace(", ", " ") + " !";
     return '<div class="hd2 gut"><p class="eb">' + h(date) + '</p><h1>' + h(g) + '</h1><a class="av" href="#fiche" aria-label="Ta fiche">' + h((NAME || "A").charAt(0)) + '</a></div>';
   }
-  var title = S.view === "quetes" ? "Tes quêtes" : S.view === "fiche" ? "Ta fiche" : S.view === "notes" ? "Tes notes" : "La Gazette", sub = "";
+  var title = S.view === "listes" ? "Tes listes" : S.view === "fiche" ? "Ta fiche" : S.view === "notes" ? "Tes notes" : "La Gazette", sub = "";
   if (S.view === "gazette"){ var u = S.settings && S.settings.gazetteUpdatedAt; sub = '<p class="sub"><span class="pulse" aria-hidden="true" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#2F7440;margin-right:6px"></span>' + h(u ? "Mise à jour " + ago(u) : "En attente de la première mise à jour") + '</p>'; }
   return '<div class="hd2 gut"><p class="eb">' + h(date) + '</p><h1>' + title + '</h1>' + sub + '</div>';
 }
@@ -927,21 +958,6 @@ function calNotice(){
 function monday(d){ return addDays(d, -((d.getDay() + 6) % 7)); }
 var JOURS_LONG = ["dimanche","lundi","mardi","mercredi","jeudi","vendredi","samedi"];
 
-function questCardHTML(q, big){
-  var steps = q.steps || [], doneN = steps.filter(function(s){ return s.done; }).length;
-  var cur = steps.findIndex(function(s){ return !s.done; });
-  var st = STATS[q.stat] || STATS.sag, c = STAT_COL[q.stat] || STAT_COL.sag;
-  var check = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>';
-  var meta = (STAT_SHORT[q.stat] || "Quotidien") + (steps.length ? " · " + (doneN ? doneN + " étape" + (doneN > 1 ? "s" : "") + " sur " + steps.length : "pas encore commencée") : "");
-  var seg = steps.length ? '<div class="seg" aria-hidden="true">' + steps.map(function(s){ return '<i' + (s.done ? ' style="background:' + c[1] + '"' : "") + '></i>'; }).join("") + '</div>' : "";
-  var stepBtn = function(s, idx){
-    var cls = s.done ? " done" : idx === cur ? " next" : "";
-    var bx = s.done ? '<span class="bx" style="background:' + c[1] + ';border-color:' + c[1] + ';color:#FFFFFF">' + check + '</span>' : '<span class="bx" style="color:' + (idx === cur ? c[1] : "#C4C4CC") + '"></span>';
-    return '<button type="button" class="step2' + cls + '" data-act="step" data-id="' + h(q._id) + '" data-i="' + idx + '" aria-pressed="' + (s.done ? "true" : "false") + '">' + bx + '<span>' + h(s.t) + '</span>' + (!big && idx === cur ? '<span class="hint">Prochaine étape</span>' : "") + '</button>';
-  };
-  var stepsHTML = big ? steps.map(stepBtn).join("") : (cur >= 0 ? stepBtn(steps[cur], cur) : "");
-  return '<div class="card quest2"><div class="q2-head">' + statIc(q.stat) + '<span style="min-width:0"><span class="q2-t">' + h(q.title) + '</span><span class="q2-m" style="color:' + c[1] + '">' + h(meta) + '</span></span><span class="xp-pill">+' + (q.xp||40) + ' XP</span></div>' + seg + (stepsHTML ? '<div style="display:flex;flex-direction:column;gap:2px">' + stepsHTML + '</div>' : "") + (big ? '<div class="qtools"><button type="button" class="mini" data-act="del-item" data-id="' + h(q._id) + '">Supprimer</button>' + (!steps.length || doneN === steps.length ? '<button type="button" class="btn-ink" data-act="quest-done" data-id="' + h(q._id) + '">Quête accomplie</button>' : "") + '</div>' : "") + '</div>';
-}
 
 
 function whenBday(b){ if (b.days <= 45) return inDays(b.days); var mo = Math.round(b.days/30.4); return "Le " + b.date.getDate() + " " + MOIS[b.date.getMonth()] + " · dans " + mo + " mois"; }
@@ -965,7 +981,6 @@ function bdaysHTML(){
 var CAT_COL = {sport:["#E3D3F7","#6640A6","#AC8BE0"], sante:["#D4EED6","#2F7440","#86C892"], famille:["#FAD3CB","#A8402F","#E9998A"], admin:["#FBE6B4","#8E6312","#E3BC62"], boulot:["#D9DFF7","#33449A","#8E9BE0"], projets:["#FDDCC6","#AA4A1C","#EFA27A"], maison:["#E6EDC8","#56661A","#B3C46E"], rappel:["#D2E8FA","#2C679C","#7AB2E3"], neutre:["#FFFFFF","#66666F","#C4C4CC"]};
 var CAT_STAT = {sport:"force", sante:"con", famille:"cha", admin:"sag", boulot:"sag", projets:"int", maison:"dex", rappel:"int", neutre:"sag"};
 var STAT_CAT = {force:"sport", con:"sante", cha:"famille", sag:"admin", int:"projets", dex:"maison"};
-var FLAG_IC = '<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21V4h11l-2 4 2 4H5"/></svg>';
 var CAKE_IC2 = '<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21h16M5 21v-7h14v7M12 14V9M12 6.5c-.8-1-.3-2.2 0-3 .3.8.8 2 0 3z"/></svg>';
 var CHAT_IC = '<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg>';
 function doneEvs(){ try { return JSON.parse(localStorage.getItem("doneEvs") || "{}"); } catch(e){ return {}; } }
@@ -995,8 +1010,11 @@ function programmeHTML(){
   var di = selDay(), d = parseISO(di), isToday = di === iso(today()), rows = [], dn = doneEvs();
   if (isToday){
     upcomingBirthdays().filter(function(b){ return b.days === 0; }).forEach(function(b){ rows.push({cat:"famille", ic:CAKE_IC2, t:"Anniversaire de " + b.person, s:"C'est aujourd'hui !", tm:"Journée"}); });
-    var q = activeQuests()[0], stepI = q ? (q.steps || []).findIndex(function(st){ return !st.done; }) : -1;
-    if (q && stepI >= 0) rows.push({cat:STAT_CAT[q.stat] || "admin", ic:FLAG_IC, t:q.steps[stepI].t, s:"Quête « " + q.title + " »", act:'<span class="prbtn" role="button" tabindex="0" data-act="step" data-id="' + h(q._id) + '" data-i="' + stepI + '">C\'est fait</span>'});
+    /* tes « à faire » du jour (et ceux en retard) */
+    todosOpen().filter(function(x){ return todoMoment(x) === "auj"; }).forEach(function(x){
+      var late = todoLate(x);
+      rows.push({cat:x.cat || "neutre", t:x.title, s:late ? "À faire · en retard" : "À faire", act:'<span class="prbtn" role="button" tabindex="0" data-act="todo-check" data-id="' + h(x._id) + '">C\'est fait</span>'});
+    });
   }
   eventsOn(di).forEach(function(e){
     if (!isToday && e.src === "bday") return;
@@ -1061,19 +1079,6 @@ function evDone(){
   var sp = splitTitle(e.title, e.meta || e.place);
   award(sp.core, CAT_STAT[e.cat] || "sag", 15);
   closeEvent(); render(); toast("Bravo, c'est noté dans tes exploits.");
-}
-function viewQuetes(){
-  var act = activeQuests(), done = S.items.filter(function(i){ return i.kind === "quest" && i.done; });
-  var xpTot = totalXP(), f = S.questFilter && act.some(function(q){ return q.stat === S.questFilter; }) ? S.questFilter : null;
-  var stats = []; act.forEach(function(q){ if (stats.indexOf(q.stat) < 0) stats.push(q.stat); });
-  var html = '<div class="gut"><p class="qsum"><b>' + act.length + ' quête' + (act.length > 1 ? "s" : "") + ' en cours</b>' + (done.length ? ' · ' + done.length + ' accomplie' + (done.length > 1 ? "s" : "") : "") + (xpTot ? ' · ' + xpTot + ' XP gagnés' : "") + '</p>'
-    + (stats.length > 1 ? '<div class="qchips" role="toolbar" aria-label="Filtrer les quêtes"><button type="button" class="qchip" data-act="qfilter" data-k="" aria-pressed="' + !f + '">Toutes</button>' + stats.map(function(k){ var c = STAT_COL[k] || STAT_COL.sag; return '<button type="button" class="qchip" data-act="qfilter" data-k="' + k + '" aria-pressed="' + (f === k) + '"><i style="background:' + c[1] + '"></i>' + h(STAT_SHORT[k] || "Quotidien") + '</button>'; }).join("") + '</div>' : "") + '</div>';
-  var shown = f ? act.filter(function(q){ return q.stat === f; }) : act;
-  html += '<section class="section gut" aria-labelledby="qa" style="margin-top:22px"><h2 id="qa">En cours</h2>';
-  html += shown.length ? '<div class="qlist">' + shown.map(function(q){ return questCardHTML(q, true); }).join("") + '</div>' : '<div class="card quest2"><p class="soft-empty" style="padding:0">Aucune quête en cours. Ajoute-en une depuis l\'écran Aujourd\'hui.</p></div>';
-  html += '</section>';
-  if (done.length) html += '<section class="section gut" aria-labelledby="qd"><h2 id="qd">Accomplies</h2><div class="card" style="margin-top:12px;padding:12px;display:flex;flex-direction:column;gap:8px">' + done.slice(0, 12).map(function(q){ return '<div class="qdone"><span class="ic2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg></span><span style="font-size:14.5px;font-weight:800;color:var(--text);min-width:0">' + h(q.title) + '</span><span style="font-size:13px;font-weight:800;color:var(--text)">+' + (q.xp||40) + ' XP</span></div>'; }).join("") + '</div></section>';
-  return html;
 }
 function viewFiche(){
   var o = statXP(), tot = totalXP(), lvl = globalLevel(tot), into = tot - (lvl-1)*200;
@@ -1140,12 +1145,12 @@ function render(){
   var unseenN = v === "gazette" ? 0 : unseenGazette().length;
   document.getElementById("gazBadge").hidden = !unseenN;
   document.getElementById("gazBadgeSr").textContent = unseenN ? ", " + unseenN + " nouveauté" + (unseenN > 1 ? "s" : "") : "";
-  var html = v === "quetes" ? viewQuetes() : v === "fiche" ? viewFiche() : v === "gazette" ? viewGazette() : v === "notes" ? viewNotes() : viewAccueil();
+  var html = v === "listes" ? viewListes() : v === "fiche" ? viewFiche() : v === "gazette" ? viewGazette() : v === "notes" ? viewNotes() : viewAccueil();
   if (S.dbState === "off") html = '<section class="section gut" style="margin-top:24px"><div class="card soft-empty">Tes données ne sont pas disponibles pour l\'instant. Vérifie ta connexion, puis recharge l\'appli.</div></section>' + html;
   document.getElementById("view").innerHTML = html;
   if (v === "notes"){ afterNotesRender(); if (!S.purged && S.notesLoaded){ S.purged = true; purgeOldNotes(); } }
   if (S.evOpen && !document.getElementById("evRoot").hidden) openEvent(S.evOpen.gid, S.evOpen.did, S.evOpen.d, true);
-  document.querySelectorAll("nav.tabs a").forEach(function(a){ if (a.dataset.tab === v) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current"); }); var nap = document.querySelector(".nav-apps"); if (nap) nap.classList.toggle("cur", v === "quetes" || v === "fiche" || v === "gazette");
+  document.querySelectorAll("nav.tabs a").forEach(function(a){ if (a.dataset.tab === v) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current"); }); var nap = document.querySelector(".nav-apps"); if (nap) nap.classList.toggle("cur", v === "listes" || v === "fiche" || v === "gazette");
 }
 
 
@@ -1298,24 +1303,6 @@ var STAT_WORDS = [
   ["sag", /garage|voiture|controle technique|assurance|impot|banque|facture|papier|administr|dossier|resilier|abonnement|menage|ranger|rangement|lessive|courses|vaisselle|aspirateur|trier|demenag|maison|appartement|notaire|pret|budget|caf|mairie|passeport|carte d.identite|permis/]
 ];
 function guessStat(s){ var n = noAcc(s.toLowerCase()); for (var i=0;i<STAT_WORDS.length;i++) if (STAT_WORDS[i][1].test(n)) return STAT_WORDS[i][0]; return "sag"; }
-/* étapes d'une quête : de petites étapes concrètes, la première faisable en deux minutes */
-var QUEST_TPL = [
-  [/appeler|telephoner|rappeler/, function(t){ return ["Trouver le numéro", "Choisir un moment pour appeler", "Appeler (10 minutes suffisent)"]; }],
-  [/ecrire|mail|e-mail|message|repondre|courrier|lettre/, function(t){ return ["Ouvrir le message ou une page vide", "Écrire trois phrases, même imparfaites", "Relire et envoyer"]; }],
-  [/ranger|trier|menage|nettoyer|vider|desencombrer|placard|armoire/, function(t){ return ["Prendre un sac et vider une seule étagère", "Trier : garder, donner, jeter", "Ranger le reste (20 minutes max)"]; }],
-  [/acheter|commander|cadeau|courses/, function(t){ return ["Noter ce qu'il faut exactement", "Choisir où l'acheter", "Commander ou y aller"]; }],
-  [/impot|declaration|dossier|papier|formulaire|resilier|assurance|banque|mutuelle|caf|administr|passeport|carte d.identite|permis/, function(t){ return ["Rassembler les papiers nécessaires", "Ouvrir le site ou le formulaire", "Remplir et envoyer"]; }],
-  [/reparer|monter|bricol|peindre|installer|changer/, function(t){ return ["Regarder ce qu'il faut (outil, pièce)", "Préparer le matériel", "Faire la réparation"]; }],
-  [/organiser|preparer|planifier|voyage|vacances|fete|anniv|soiree/, function(t){ return ["Noter les idées en vrac (2 minutes)", "Choisir la date et les personnes", "Réserver ou envoyer les invitations"]; }],
-  [/lire|apprendre|reviser|cours|formation/, function(t){ return ["Ouvrir le livre ou le cours", "Faire une première session de 15 minutes", "Prévoir la prochaine session"]; }],
-  [/rendez.vous|rdv|medecin|docteur|dentiste|kine|osteo|ophtalmo|dermato|gyneco|coiffeur|garage|controle technique|revision|vidange|pneu/, function(t){ return ["Trouver le numéro ou le site", "Appeler ou réserver le créneau", "Noter la date dans l'appli"]; }]
-];
-function questSteps(title){
-  var n = noAcc(title.toLowerCase());
-  for (var i=0;i<QUEST_TPL.length;i++) if (QUEST_TPL[i][0].test(n)) return QUEST_TPL[i][1](title);
-  return ["Noter ce qu'il faut pour commencer (2 minutes)", "Faire la première vraie action", "Terminer et cocher"];
-}
-function questXP(title){ var n = noAcc(title.toLowerCase()); return /impot|declaration|demenag|dossier|administr|resilier|notaire|garage|voiture|dentiste/.test(n) ? 70 : /ranger|trier|menage|reparer|bricol/.test(n) ? 50 : 40; }
 function exploitXP(s){ var n = noAcc(s.toLowerCase()); var m = n.match(/(\d+(?:[.,]\d+)?)\s*h(?!\d)/), mn = n.match(/(\d+)\s*min/); var mins = m ? parseFloat(m[1].replace(",", "."))*60 : mn ? +mn[1] : 0; if (mins) return Math.max(10, Math.min(40, Math.round(mins/3))); return 15; }
 function skillOf(s){ var n = noAcc(s.toLowerCase());
   var map = [[/rugby/,"Rugby"],[/yoga/,"Yoga"],[/pilates/,"Pilates"],[/marche|randonn/,"Marche"],[/course|courir|footing/,"Course"],[/velo/,"Vélo"],[/\bnager|\bnage\b|natation|piscine/,"Natation"],[/lu |lire|lecture|livre/,"Lecture"],[/cuisin|recette/,"Cuisine"],[/patisserie|gateau/,"Pâtisserie"],[/plante|jardin|rempot|arros/,"Plantes"],[/menage|ranger|rangement|aspirateur/,"Maison"],[/anglais|italien|espagnol|langue/,"Langues"],[/dessin|peint/,"Dessin"],[/tricot|coud/,"Couture"]];
@@ -1441,8 +1428,65 @@ function wordsToDigits(t){
     var i = NUM_WORDS.indexOf(k); return i >= 0 ? (i + 1) + " " + mo : m;
   });
 }
+/* Mots-clés en début de phrase (MyWorld_0.13) : ils forcent le type. On enrichira la liste. */
+var KEYWORDS = [
+  {re:/^anniv(?:ersaire)?\b/i, k:"birthday", lbl:"anniv", d:"nouvel anniversaire"},
+  {re:/^(?:rdv|rendez[- ]vous)\b/i, k:"event", lbl:"rdv", d:"nouveau rendez-vous dans l'agenda"},
+  {re:/^(?:rappelle[- ]?moi|rappelles[- ]?moi|rappel)\b/i, k:"rappel", lbl:"rappel, rappelle-moi", d:"nouveau rappel"},
+  {re:/^note\b/i, k:"note", lbl:"note", d:"nouvelle note"},
+  {re:/^(?:todo|to-do|to do|à faire|a faire)\b/i, k:"todo", lbl:"todo", d:"nouvel « à faire »"}
+];
+function noteKeys(){ return ((S.settings && S.settings.noteKeys) || []).slice(); }
+function kwRest(text, re){ return text.trim().replace(re, "").replace(/^[\s:,.\-–]+/, "").replace(/^(?:de\s+|d['’]\s*|que\s+|qu['’]\s*|pour\s+)/i, "").trim(); }
+/* phrase sans date qui commence par un verbe à l'infinitif : clairement une chose à se rappeler */
+var VERB_START = /^(acheter|appeler|prendre|faire|envoyer|payer|reserver|rendre|ranger|nettoyer|laver|regarder|chercher|trouver|ecrire|repondre|commander|imprimer|reparer|changer|verifier|demander|preparer|recuperer|deposer|telecharger|installer|annuler|renouveler|resilier|planter|arroser|rempoter|tondre|sortir|vider|jeter|trier|penser|ne pas oublier|contacter|relancer|souhaiter|offrir|inviter|lire|finir|terminer|mettre|ramener|porter|passer|aller)\b/;
+function dateOf(n){
+  var t = today(), date = null;
+  if (/apres-demain/.test(n)) date = addDays(t,2); else if (/demain/.test(n)) date = addDays(t,1); else if (/aujourd|ce soir|ce matin/.test(n)) date = t;
+  var wd = n.match(/\b(lundi|mardi|mercredi|jeudi|vendredi|samedi|dimanche)\b/);
+  if (!date && wd){ var diff = (WD[wd[1]] - t.getDay() + 7) % 7 || 7; date = addDays(t, diff); }
+  var dm = n.match(/\b(\d{1,2})(?:er)?\s+(janvier|fevrier|mars|avril|mai|juin|juillet|aout|septembre|octobre|novembre|decembre)/);
+  if (dm){ var mi = MOIS_N.indexOf(dm[2]), dd = new Date(t.getFullYear(), mi, +dm[1]); if (dd < t) dd = new Date(t.getFullYear()+1, mi, +dm[1]); date = dd; }
+  if (!date && /semaine prochaine/.test(n)) date = addDays(t, 7);
+  return date;
+}
+function stripWhen(text){
+  return text.replace(/\b(apr[eè]s-demain|demain|aujourd['’]hui|ce soir|ce matin|plus tard|la semaine prochaine|semaine prochaine|cette semaine)\b/gi, "")
+    .replace(/\b(lundi|mardi|mercredi|jeudi|vendredi|samedi|dimanche)( prochain)?\b/gi, "")
+    .replace(/\b(?:le\s+)?\d{1,2}(?:er)?\s+(janvier|f[ée]vrier|mars|avril|mai|juin|juillet|ao[uû]t|septembre|octobre|novembre|d[ée]cembre)\b/gi, "")
+    .replace(/\s{2,}/g, " ").replace(/^[\s,]+|[\s,]+$/g, "").trim();
+}
+function parseTodo(rest){
+  var n = noAcc(rest.toLowerCase()), later = /plus tard|un jour|quand j'aurai le temps/.test(n), d = later ? null : dateOf(n);
+  var title = cap(stripWhen(rest) || rest);
+  return {kind:"todo", title:title, due: later ? null : iso(d || today()), later:later, cat:guessCat(title, "", [], false), forced:true};
+}
 function localParse(text){
   text = wordsToDigits(text);
+  /* titres de notes gardés comme mots-clés : « films à voir Dune » → ajoute Dune à la note */
+  var nt = noAcc(text.toLowerCase().trim());
+  var nks = noteKeys().sort(function(a, b){ return b.length - a.length; });
+  for (var ki = 0; ki < nks.length; ki++){
+    var key = noAcc(nks[ki].toLowerCase());
+    if (nt.indexOf(key) === 0 && (nt.length === key.length || /[\s:,]/.test(nt.charAt(key.length)))){
+      var what = text.trim().slice(key.length).replace(/^[\s:,\-–]+/, ""), hitN = findNoteByTitle(nks[ki]);
+      if (hitN && what) return {kind:"note-add", noteId:hitN._id, title:hitN.title, items:splitItems(what), raw:splitItems(what, true), forced:true};
+    }
+  }
+  for (var kw = 0; kw < KEYWORDS.length; kw++){
+    var K = KEYWORDS[kw]; if (!K.re.test(text.trim())) continue;
+    var rest = kwRest(text, K.re);
+    if (!rest) break;
+    if (K.k === "todo") return parseTodo(rest);
+    if (K.k === "note"){ var nc0 = parseNoteCmd(text); if (nc0 && nc0.kind === "note-add"){ nc0.forced = true; return nc0; } var tl = rest.match(/^([^:]{2,40}?)\s*:\s*([\s\S]+)$/); if (tl){ var its = splitItems(tl[2]); return its.length > 1 ? {kind:"note", title:cap(tl[1].trim()), text:"", items:its, todo:true, forced:true} : {kind:"note", title:cap(tl[1].trim()), text:cap(tl[2].trim()), items:[], forced:true}; } var fn = freeNote(rest); fn.forced = true; return fn; }
+    var r0 = localParse0(K.k === "birthday" ? "anniversaire de " + rest : K.k === "rappel" ? "rappelle-moi " + rest : rest);
+    if (K.k === "birthday"){ r0.forced = true; return r0; }
+    if (K.k === "event"){ if (r0.kind !== "event"){ var st3 = splitStructure(stripWords(rest) || rest); r0 = {kind:"event", core:st3.core, people:st3.people, place:st3.place, placeRaw:st3.placeRaw, title:eventTitle({core:st3.core, people:st3.people, place:st3.place, time:null}), date:null, time:null, xp:0, reminder:false}; } r0.forced = true; return r0; }
+    if (K.k === "rappel"){ if (r0.kind === "event"){ r0.reminder = true; r0.forced = true; return r0; } return {kind:"rappel", title:cap(stripWords(rest) || rest), forced:true}; }
+  }
+  return localParse0(text);
+}
+function localParse0(text){
   var nc = parseNoteCmd(text); if (nc) return nc;
   var s = text.toLowerCase().trim(), n = noAcc(s), t = today(), date = null, time = null, endTime = null;
   var tm = s.match(/(\d{1,2})\s*(?:heures?|h|:)\s*(\d{2})?(?:\s*(?:à|a|-)\s*(\d{1,2})\s*(?:heures?|h|:)\s*(\d{2})?)?/);
@@ -1482,14 +1526,16 @@ function localParse(text){
   if ((/^(j'ai|j’ai|jai|fait|fini|termine)\b|^\d+(?:[.,]\d+)?\s*(h|min)/.test(n)) && !/^(j'ai|j’ai|jai)\s+(un |une )?(rendez[- ]vous|rdv|rendez vous|cours|entrainement|match|vacation|reunion|dentiste|medecin|kine|rendez)/.test(n)){
     var st = guessStat(s); return {kind:"exploit", title:cap(text.trim()), xp:exploitXP(s), stat: st, skill:skillOf(s)};
   }
+  /* une heure sans jour : aujourd'hui, ou demain si l'heure est passée */
+  if (!date && time){ var nowD = new Date(), hm = time.split(":"); date = (+hm[0] * 60 + (+hm[1]||0)) > nowD.getHours() * 60 + nowD.getMinutes() ? t : addDays(t, 1); }
   /* rendez-vous daté */
   if (date){
     var rappel = /\brappel|\brappelle|fais[- ]moi penser|alarme/.test(n), st2 = splitStructure(stripWords(text) || text);
     return {kind:"event", core:st2.core, people:st2.people, place:st2.place, placeRaw:st2.placeRaw, title:eventTitle({core:st2.core, people:st2.people, place:st2.place, time:time}), date:iso(date), time:time, endTime:endTime, xp:0, reminder:rappel};
   }
-  /* sinon : une quête */
+  /* sinon : un rappel sans date (direct s'il commence par un verbe, sinon on demande) */
   title = rewriteCore(title);
-  return {kind:"quest", title:title, steps:questSteps(title), xp:questXP(title), stat:guessStat(s)};
+  return {kind:"rappel", title:title, clear:VERB_START.test(n.replace(/^(?:il faut|faut|je dois|dois|penser a|pense a)\s+/, ""))};
 }
 function understand(text){ return Promise.resolve(applyLearnedKind(localParse(text), text)); }
 
@@ -1587,7 +1633,11 @@ function fieldsOf(r, text){
   if (r.kind === "exploit" || r.kind === "contact") core = r.title || "";
   return {kind:r.kind, core:core, people:(r.people || []).join(", "), place:r.place || "", placeRaw:r.placeRaw || null, date:r.date || "", time:r.time || "", endTime:r.endTime || "", reminder:!!r.reminder,
     noteTitle:r.kind === "note" ? (r.title || "") : "", noteBody:r.kind === "note" ? (r.items && r.items.length ? r.items.join(", ") : (r.text || "")) : "", todo:!!(r.todo || (r.items && r.items.length)),
-    person:r.person || "", cat:r.cat || null, catManual:false, orig:r};
+    person:r.person || "", cat:r.cat || null, catManual:false, orig:r, later:!!r.later};
+}
+function fieldsFix(F, r){
+  if (r.kind === "todo"){ F.date = r.due || ""; }
+  return F;
 }
 function guessCatPlain(F){ return guessCat(F.core, F.place, splitPeople(F.people), F.reminder); }
 /* « Repas crêpes avec Alex et Sindija » + Avec = Alex, Sindija → « Repas crêpes » */
@@ -1605,7 +1655,14 @@ function buildFinal(F, text){
       var ppl = splitPeople(F.people), tm = F.time || null;
       t = stripWithFromCore(t, ppl);
       return {kind:"event", core:t, people:ppl, place:(F.place || "").trim(), title:eventTitle({core:t, people:ppl, place:(F.place || "").trim(), time:tm}), date:F.date || iso(today()), time:tm, endTime: tm && tm === (o.time || null) ? (o.endTime || null) : null, reminder:F.reminder, cat: F.catManual && F.cat ? F.cat : guessCatPlain(F), xp:0};
-    case "quest": return {kind:"quest", title:t, steps:questSteps(t), xp:questXP(t), stat:guessStat(text)};
+    case "quest":
+    case "todo":
+      var later = !!F.later && !F.date;
+      return {kind:"todo", title:t, due: later ? null : (F.date || iso(today())), later:later, cat: F.catManual && F.cat ? F.cat : guessCat(t, "", [], false)};
+    case "rappel":
+      if (F.date && F.time) return {kind:"event", core:t, people:[], place:"", title:t, date:F.date, time:F.time, endTime:null, reminder:true, cat:"rappel"};
+      if (F.date || F.time){ var dd = F.date || iso(today()); return {kind:"event", core:t, people:[], place:"", title:t, date:dd, time:F.time || "09:00", endTime:null, reminder:true, cat:"rappel"}; }
+      return {kind:"rappel", title:t};
     case "exploit": var st = guessStat(text); return {kind:"exploit", title:t, xp:exploitXP(text), stat:st, skill:skillOf(text)};
     case "birthday": return {kind:"birthday", person:cap((F.person || F.core || "").trim()), date:F.date || null, title:"Anniversaire", xp:0};
     case "note":
@@ -1638,7 +1695,7 @@ function learnFrom(F0, F, text){
     var wc = keyWords(F.core || F0.core || stripWords(text) || text);
     if (wc.length && F.cat !== guessCatPlain(F)){ L.cats = L.cats.filter(function(r){ return r.w.join(" ") !== wc.join(" "); }); L.cats.push({w:wc, c:F.cat}); learned.push("domaine"); }
   }
-  if ((F.kind === "event" || F.kind === "quest") && F.kind === F0.kind){
+  if ((F.kind === "event" || F.kind === "todo" || F.kind === "rappel") && F.kind === F0.kind){
     var a = (F0.core || "").trim(), b = (F.core || "").trim();
     if (a && b && normS(a) !== normS(b) && learned.indexOf("lieu") < 0 && a.length <= 80){ L.rewrites[normS(a)] = b; learned.push("titre"); }
   }
@@ -1652,7 +1709,8 @@ function describe(r){
   switch (r.kind){
     case "event": return "Rendez-vous « " + r.title + " » " + d + (r.time ? " à " + fmtTime(r.time) : "");
     case "birthday": return "Anniversaire de " + r.person + (d ? " · " + d : "");
-    case "quest": return "Nouvelle quête : " + r.title;
+    case "todo": return "À faire : " + r.title + (r.later ? " · plus tard" : r.due && r.due !== iso(today()) ? " · " + fmtDay(parseISO(r.due)) : " · aujourd'hui");
+    case "rappel": return "Rappel sans date : " + r.title;
     case "note": return "Nouvelle note" + (r.title ? " « " + r.title + " »" : "") + (r.items && r.items.length ? " · " + r.items.length + " élément" + (r.items.length > 1 ? "s" : "") : r.text ? " : " + r.text.replace(/\n/g, " · ").slice(0, 60) + (r.text.length > 60 ? "…" : "") : "");
     case "note-add": return "Ajouté à « " + (r.title || "ta note") + " » : " + r.items.join(", ").slice(0, 60);
     case "exploit": return "+" + (r.xp||15) + " XP en " + (STATS[r.stat] || STATS.sag).n;
@@ -1666,7 +1724,7 @@ function commit(r){
   var stat = STATS[r.stat] ? r.stat : "sag";
   var base = {title: cap(r.title || ""), createdAt: nowISO()};
   if (r.kind === "event"){
-    if (!r.date){ r.kind = "quest"; return commit(r); }
+    if (!r.date){ return commit({kind:"rappel", title:r.title}); }
     if (!r.time) return db.collection("items").add(Object.assign(base, {kind:"event", date:r.date, time:null, place:r.place || null, cat:r.cat || null})).then(function(ref){ toast("Noté. Il manque l'heure : touche « À compléter » quand tu la sais.", ref && ref.id ? {undo:function(){ db.collection("items").doc(ref.id).delete().catch(dbErr); }} : undefined); });
     return createCalEvent({title:base.title, date:r.date, time:r.time, endTime:r.endTime, reminder:r.reminder, place:r.place || null, cat:r.cat || null}).then(function(res){ var ev = res && res.payload; toast("Ajouté à ton agenda : " + base.title + ". " + remindersText(reminders(r.time, r.date, r.reminder)), ev && ev.id ? {undo:undoCal(ev.id)} : undefined); }).catch(function(e){
       toast(calWriteMsg(e)); if (e && (e.code === "server_unavailable" || e.code === "upstream_error")) return;
@@ -1684,7 +1742,7 @@ function commit(r){
   if (r.kind === "note"){
     var nid = db.collection("notes").newId(), now = nowISO();
     var html = (r.text ? String(r.text).split(/\n/).map(function(l){ return "<div>" + (l.trim() ? h(l) : "<br>") + "</div>"; }).join("") : "") + (r.items && r.items.length ? todoHTML(r.items) : r.todo ? todoHTML([""]) : "");
-    return db.collection("notes").doc(nid).set({title:r.title || "", html:html, text:textFromHTML(html), media:[], thumb:null, hasAudio:false, folder:null, bg:"papier", pinned:false, deleted:false, createdAt:now, updatedAt:now}).then(function(){ toast("Note ajoutée dans tes notes.", {undo:function(){ db.collection("notes").doc(nid).delete().catch(dbErr); }}); });
+    return db.collection("notes").doc(nid).set({title:r.title || "", html:html, text:textFromHTML(html), media:[], thumb:null, hasAudio:false, folder:null, bg:"papier", pinned:false, deleted:false, createdAt:now, updatedAt:now}).then(function(){ toast("Note ajoutée dans tes notes.", {undo:function(){ db.collection("notes").doc(nid).delete().catch(dbErr); }}); if (r.title) setTimeout(function(){ offerNoteKey(r.title); }, 900); });
   }
   if (r.kind === "note-add"){
     var tn = S.notes.find(function(n){ return n._id === r.noteId; }); if (!tn || !r.items.length) return;
@@ -1707,16 +1765,22 @@ function commit(r){
     return db.collection("notes").doc(tn._id).update({html:nh, text:textFromHTML(nh), updatedAt:nowISO(), deleted:false}).then(function(){ toast("Ajouté à « " + (tn.title || "ta note") + " »" + (placed.length ? " (ligne " + placed.join(", ") + ")" : "") + "."); });
   }
 
-  if (r.kind === "quest"){
-    var steps = (Array.isArray(r.steps) ? r.steps : []).slice(0,5).map(function(t){ return {t: cap(String(t)), done:false}; });
-    return db.collection("items").add(Object.assign(base, {kind:"quest", steps:steps, stat:stat, xp: Math.max(20, Math.min(100, +r.xp || 40)), done:false})).then(function(){ toast("Nouvelle quête. Première étape : " + (steps[0] ? steps[0].t.toLowerCase() : base.title.toLowerCase()) + "."); });
+  if (r.kind === "todo"){
+    return db.collection("items").add(Object.assign(base, {kind:"todo", cat:r.cat || "neutre", due:r.due || null, later:!!r.later, done:false})).then(function(ref){
+      toast("Ajouté à faire : " + base.title + (r.later ? " (plus tard)" : r.due && r.due !== iso(today()) ? " (" + fmtDay(parseISO(r.due)).toLowerCase() + ")" : "") + ".", ref && ref.id ? {undo:function(){ db.collection("items").doc(ref.id).delete().catch(dbErr); }} : undefined);
+    });
+  }
+  if (r.kind === "rappel"){
+    return db.collection("items").add(Object.assign(base, {kind:"rappel", done:false})).then(function(ref){
+      toast("Rappel noté : " + base.title + ".", ref && ref.id ? {undo:function(){ db.collection("items").doc(ref.id).delete().catch(dbErr); }} : undefined);
+    });
   }
   // exploit
   var xp = Math.max(5, Math.min(60, +r.xp || 15));
   return award(base.title, stat, xp, r.skill).then(function(){ toast("Bien joué. +" + xp + " XP en " + STATS[stat].n + "."); burst(window.innerWidth/2, window.innerHeight - 150); });
 }
 
-var KIND_LBL = {event:"Rendez-vous", quest:"Quête", exploit:"Exploit", note:"Note", birthday:"Anniversaire", "note-add":"Ajout à une note"};
+var KIND_LBL = {event:"Rendez-vous", todo:"À faire", rappel:"Rappel", exploit:"Exploit", note:"Note", birthday:"Anniversaire", "note-add":"Ajout à une note", quest:"À faire"};
 var CP = null;
 function onCapture(e){
   e.preventDefault();
@@ -1725,7 +1789,7 @@ function onCapture(e){
   if (!needDb()) return;
   understand(text).then(function(r){
     input.value = ""; hint.textContent = "";
-    var F = fieldsOf(r, text);
+    var F = fieldsFix(fieldsOf(r, text), r);
     if (isClear(F)){
       /* tout est compris : création directe, avec « Annuler » dans le message */
       CP = null; renderPreview();
@@ -1740,7 +1804,11 @@ function onCapture(e){
 /* La carte « J'ai compris » ne s'affiche qu'en cas de doute.
    Clair = rendez-vous avec quoi + jour + heure + domaine reconnu, anniversaire avec prénom + date, ou note. */
 function isClear(F){
-  if (F.kind === "event") return !!((F.core || "").trim() && F.date && F.time && (F.reminder || guessCatPlain(F) !== "neutre"));
+  var o = F.orig || {};
+  if (o.kind === "note-add" && o.forced) return true;
+  if (F.kind === "todo") return !!(F.core || "").trim();
+  if (F.kind === "rappel") return !!((F.core || "").trim() && (o.forced || o.clear));
+  if (F.kind === "event") return !!((F.core || "").trim() && F.date && F.time && (F.reminder || o.forced || guessCatPlain(F) !== "neutre"));
   if (F.kind === "birthday") return !!((F.person || F.core || "").trim() && F.date);
   if (F.kind === "note") return !!((F.noteTitle || "").trim() || (F.noteBody || "").trim() || (F.orig && F.orig.items && F.orig.items.length));
   return false;
@@ -1753,7 +1821,7 @@ function renderPreview(first){
   if (!CP){ if (box) box.remove(); return; }
   if (!box){ box = document.createElement("div"); box.id = "capPrev"; box.className = "cap-prev"; box.setAttribute("role", "group"); box.setAttribute("aria-label", "Ce que j'ai compris"); form.parentNode.insertBefore(box, form.nextSibling); }
   else if (!first) box.style.animation = "none";
-  var F = CP.F, kinds = ["event","quest","exploit","note","birthday"];
+  var F = CP.F, kinds = ["event","todo","rappel","note","birthday","exploit"];
   if (kinds.indexOf(CP.F0.kind) < 0) kinds.push(CP.F0.kind);
   var chips = kinds.map(function(k){ return '<button type="button" data-cpk="' + k + '" aria-pressed="' + (F.kind === k) + '">' + KIND_LBL[k] + '</button>'; }).join("");
   var f = "";
@@ -1764,6 +1832,9 @@ function renderPreview(first){
     + (F.todo ? cpField("cpNoteBody", "Éléments (séparés par des virgules)", F.noteBody, "text", true)
       : '<div class="field wide"><label for="cpNoteBody">Contenu</label><textarea id="cpNoteBody" rows="' + Math.min(9, Math.max(2, String(F.noteBody || "").split("\n").reduce(function(a, l){ return a + Math.max(1, Math.ceil(l.length / 34)); }, 0) + 1)) + '">' + h(F.noteBody || "") + '</textarea></div>');
   else if (F.kind === "note-add") f = "";
+  else if (F.kind === "todo") f = cpField("cpCore", "Quoi", F.core, "text", true) + cpField("cpDate", "Pour quand", F.later ? "" : F.date, "date")
+    + '<div class="wide"><p class="cat-lbl">Domaine</p><div class="cat-chips" id="cpCats">' + catChips(F.catManual && F.cat ? F.cat : guessCatPlain(F)) + '</div></div>';
+  else if (F.kind === "rappel") f = cpField("cpCore", "Quoi", F.core, "text", true) + cpField("cpDate", "Jour (facultatif)", F.date, "date") + cpField("cpTime", "Heure (facultatif)", F.time, "time");
   else f = cpField("cpCore", "Titre", F.core, "text", true);
   box.innerHTML = '<p class="cp-eyebrow">J\'ai compris' + (CP.learnedBefore ? ' <span class="cp-learned">· d\'après tes corrections</span>' : '') + '</p>'
     + '<div class="cp-kinds" role="group" aria-label="Type">' + chips + '</div>'
@@ -1771,7 +1842,7 @@ function renderPreview(first){
     + '<p class="cp-out" id="cpOut" aria-live="polite"></p>'
     + '<div class="cp-act"><button type="button" class="btn-line" data-cp="cancel">Annuler</button><button type="button" class="btn-ink" data-cp="ok">Valider</button></div>';
   updatePreviewOut();
-  box.querySelectorAll("[data-cpk]").forEach(function(b){ b.onclick = function(){ readPreview(); var k = b.dataset.cpk; F.kind = k; if ((k === "event" || k === "birthday") && !F.date) F.date = iso(today()); if (k === "birthday" && !F.person) F.person = F.core; if (k === "note" && !F.noteBody && CP.F0.kind !== "note"){ var fn = freeNote(stripPolite(CP.text).replace(/^(?:(?:cr[ée]{1,2}(?:r|s|z)?|fais|écris|ecris|prends|mets|ajoute)[\s-]+)?(?:moi\s+)?(?:une\s+)?(?:nouvelle\s+)?note\s*(?:pour\s+(?:noter|dire|retenir)\s+)?(?:que\s+|qu['’]\s*)?/i, "")); F.noteBody = fn.text; if (!F.noteTitle) F.noteTitle = fn.title; F.todo = false; } renderPreview(false); }; });
+  box.querySelectorAll("[data-cpk]").forEach(function(b){ b.onclick = function(){ readPreview(); var k = b.dataset.cpk; F.kind = k; if ((k === "event" || k === "birthday" || k === "todo") && !F.date) F.date = iso(today()); if (k === "todo") F.later = false; if (k === "birthday" && !F.person) F.person = F.core; if (k === "note" && !F.noteBody && CP.F0.kind !== "note"){ var fn = freeNote(stripPolite(CP.text).replace(/^(?:(?:cr[ée]{1,2}(?:r|s|z)?|fais|écris|ecris|prends|mets|ajoute)[\s-]+)?(?:moi\s+)?(?:une\s+)?(?:nouvelle\s+)?note\s*(?:pour\s+(?:noter|dire|retenir)\s+)?(?:que\s+|qu['’]\s*)?/i, "")); F.noteBody = fn.text; if (!F.noteTitle) F.noteTitle = fn.title; F.todo = false; } renderPreview(false); }; });
   box.querySelectorAll("input,textarea").forEach(function(inp){ inp.addEventListener("input", function(){ readPreview(); updatePreviewOut(); refreshCatChips(); }); if (inp.tagName === "INPUT") inp.addEventListener("keydown", function(e){ if (e.key === "Enter"){ e.preventDefault(); validatePreview(); } }); });
   box.querySelectorAll("[data-cat]").forEach(function(b){ b.onclick = function(){ readPreview(); F.cat = b.dataset.cat; F.catManual = true; refreshCatChips(); }; });
   box.querySelector('[data-cp="cancel"]').onclick = cancelPreview;
@@ -1968,8 +2039,8 @@ function mountSettings(){
 function learnSettingsHTML(){
   var L = learnData(), pk = Object.keys(L.places), rk = Object.keys(L.rewrites);
   var line = function(lbl, t, k){ return '<div class="list-line"><span>' + lbl + '</span><button type="button" class="mini" data-act="learn-del" data-t="' + t + '" data-k="' + h(k) + '">Retirer</button></div>'; };
-  var opts = ["event","quest","exploit","note","birthday"].map(function(k){ return '<option value="' + k + '">' + KIND_LBL[k] + '</option>'; }).join("");
-  return '<h3 style="margin:26px 0 6px">Ce que l\'appli a appris</h3><p style="font-size:13px;color:var(--muted);margin-bottom:6px">Quand tu corriges l\'aperçu avant de valider, l\'appli retient ta correction. Tu peux aussi lui apprendre tes mots ici.</p>'
+  var opts = ["event","todo","rappel","note","birthday","exploit"].map(function(k){ return '<option value="' + k + '">' + KIND_LBL[k] + '</option>'; }).join("");
+  return keywordsSettingsHTML() + '<h3 style="margin:26px 0 6px">Ce que l\'appli a appris</h3><p style="font-size:13px;color:var(--muted);margin-bottom:6px">Quand tu corriges l\'aperçu avant de valider, l\'appli retient ta correction. Tu peux aussi lui apprendre tes mots ici.</p>'
     + '<p class="learn-sub">Lieux</p>' + (pk.length ? pk.map(function(k){ return line("« " + h(k) + " » → " + h(L.places[k]), "place", k); }).join("") : '<p class="soft-empty" style="padding:0">Aucun pour l\'instant.</p>')
     + '<form id="fLp" class="fgrid" style="margin:8px 0 6px"><div class="field"><label for="lpRaw">Quand j\'écris</label><input id="lpRaw" type="text" required placeholder="l\'aéroport"></div><div class="field"><label for="lpVal">C\'est le lieu</label><input id="lpVal" type="text" required placeholder="Aéroport Nice Côte d\'Azur"></div><button class="btn green" type="submit" style="grid-column:1/-1">Ajouter ce lieu</button></form>'
     + '<p class="learn-sub">Types</p>' + (L.kinds.length ? L.kinds.map(function(r, i){ return line("« " + h(r.w.join(" ")) + " » → " + KIND_LBL[r.k], "kind", i); }).join("") : '<p class="soft-empty" style="padding:0">Aucun pour l\'instant.</p>')
@@ -2353,6 +2424,7 @@ function saveNote(){
 function closeNote(skipHistory){
   if (!NE) return;
   var ne = NE, wasSaved = ne.saved;
+  if (ne.isNew){ var tt0 = (collectNote(ne).title || "").trim(); if (tt0) setTimeout(function(){ offerNoteKey(tt0); }, 500); }
   saveNote().then(function(){
     var d = ne.saved ? (ne.last || collectNote(ne)) : {media: []};
     /* médias retirés de la note : on les efface */
@@ -2603,6 +2675,18 @@ document.addEventListener("click", function(e){
   if (act === "export"){ exportBackup(); return; }
   if (act === "bday-edit"){ bdayEditSheet(id); return; }
   if (act === "ev-edit"){ eventEditSheet(b.dataset.gid || null, b.dataset.id || null); return; }
+  if (act === "lt-tab"){ S.listTab = b.dataset.k; render(); return; }
+  if (act === "lt-mom"){ S.todoMom = b.dataset.k; render(); return; }
+  if (act === "todo-check"){ todoCheck(id, b); return; }
+  if (act === "todo-menu"){ todoMenu(id); return; }
+  if (act === "todo-move"){ var k2 = b.dataset.k, upd = k2 === "tard" ? {later:true, due:null} : {later:false, due: iso(k2 === "dem" ? addDays(today(), 1) : today())}; db.collection("items").doc(id).update(upd).then(closeSheet).catch(dbErr); return; }
+  if (act === "todo-del" || act === "rappel-del"){ var it2 = S.items.find(function(i){ return i._id === id; }); db.collection("items").doc(id).delete().then(function(){ closeSheet(); toast("Supprimé.", it2 ? {undo:function(){ var c2 = Object.assign({}, it2); delete c2._id; db.collection("items").doc(id).set(c2).catch(dbErr); }} : undefined); }).catch(dbErr); return; }
+  if (act === "rappel-check"){ db.collection("items").doc(id).update({done:true, doneAt:nowISO()}).then(function(){ toast("Rappel coché.", {undo:function(){ db.collection("items").doc(id).update({done:false, doneAt:null}).catch(dbErr); }}); }).catch(dbErr); return; }
+  if (act === "rappel-menu"){ var rx = S.items.find(function(i){ return i._id === id; }); if (rx) openSheet(rx.title, '<div class="lt-menu"><button type="button" class="btn-line danger" data-act="rappel-del" data-id="' + h(id) + '">Supprimer</button></div>'); return; }
+  if (act === "lt-add"){ addOpen("text"); var ci = document.getElementById("captureInput"); ci.value = b.dataset.k === "rappel" ? "rappel " : "todo "; setTimeout(function(){ ci.focus(); try { ci.setSelectionRange(ci.value.length, ci.value.length); } catch(e){} }, 80); return; }
+  if (act === "nk-yes"){ var tk = b.dataset.t, ks = noteKeys(); if (ks.indexOf(tk) < 0) ks.push(tk); saveSettings({noteKeys:ks}).then(function(){ closeSheet(); toast("Mot-clé « " + tk.toLowerCase() + " » ajouté."); }); return; }
+  if (act === "nk-no"){ var tn2 = b.dataset.t, nn = ((S.settings && S.settings.noteKeysNo) || []).slice(); nn.push(tn2); saveSettings({noteKeysNo:nn}).then(closeSheet); return; }
+  if (act === "nk-del"){ var td = b.dataset.t; saveSettings({noteKeys: noteKeys().filter(function(k){ return k !== td; })}).then(refreshSettings); return; }
   if (act === "apps"){ if (document.getElementById("appsFan").hidden) fanOpen(); else fanClose(); return; }
   if (act === "apps-close"){ fanClose(); return; }
   if (act === "fan-go"){ fanGo(b.dataset.app); return; }
@@ -2620,38 +2704,118 @@ document.addEventListener("click", function(e){
   if (act === "stat"){ statSheet(b.dataset.k); return; }
   if (act === "complete-event"){ completeEventSheet(id); return; }
   if (!needDb()) return;
-  if (act === "step"){
-    var q = S.items.find(function(i){ return i._id === id; }); if (!q) return;
-    var i = +b.dataset.i, steps = (q.steps||[]).map(function(s){ return {t:s.t, done:s.done}; });
-    if (steps[i].done){ steps[i].done = false; db.collection("items").doc(id).update({steps:steps}).catch(dbErr); return; }
-    steps[i].done = true;
-    var r = b.getBoundingClientRect(); burst(r.left + 24, r.top + 20);
-    var all = steps.every(function(s){ return s.done; });
-    var per = Math.max(5, Math.round((q.xp||40) / Math.max(steps.length,1) / 2));
-    db.collection("items").doc(id).update(all ? {steps:steps, done:true, doneAt:nowISO()} : {steps:steps}).then(function(){
-      if (all) return award("Quête : " + q.title, q.stat || "sag", q.xp || 40, null).then(function(){ toast("Mission accomplie, " + NAME + ". +" + (q.xp||40) + " XP en " + (STATS[q.stat]||STATS.sag).n + "."); });
-      var nx = steps.find(function(s){ return !s.done; });
-      return award(steps[i].t, q.stat || "sag", per, null).then(function(){ toast("Objectif validé. +" + per + " XP." + (nx ? " Prochaine étape : " + nx.t.toLowerCase() + "." : "")); });
-    }).catch(dbErr);
-    return;
-  }
-  if (act === "quest-done"){ var qq = S.items.find(function(i){ return i._id === id; }); if (!qq) return; db.collection("items").doc(id).update({done:true, doneAt:nowISO()}).then(function(){ return award("Quête : " + qq.title, qq.stat||"sag", qq.xp||40, null); }).then(function(){ toast("Mission accomplie. +" + (qq.xp||40) + " XP."); }).catch(dbErr); return; }
   if (act === "del-item"){ var it = S.items.find(function(i){ return i._id === id; }); db.collection("items").doc(id).delete().then(function(){ closeSheet(); toast("Supprimé.", {undo: it ? function(){ var c = Object.assign({}, it); delete c._id; db.collection("items").doc(id).set(c).catch(dbErr); } : null}); }).catch(dbErr); return; }
   if (act === "learn-del"){ var L = learnData(), t = b.dataset.t, k = b.dataset.k;
     if (t === "place"){ delete L.places[k]; if (DEFAULT_PLACES[k] && L.removed.indexOf(k) < 0) L.removed.push(k); }
     else if (t === "kind") L.kinds.splice(+k, 1); else if (t === "cat") L.cats.splice(+k, 1); else if (t === "rw") delete L.rewrites[k];
     saveLearn(L).then(refreshSettings); return; }
-  if (act === "qfilter"){ S.questFilter = b.dataset.k || null; render(); return; }
   if (act === "del-topic"){ var t = b.dataset.t, topics = ((S.settings && S.settings.topics) || []).filter(function(x){ return x !== t; }); saveSettings({topics:topics}).then(refreshSettings); return; }
 });
 document.addEventListener("keydown", function(e){ if (e.key === "Escape") { closeSheet(); var l = document.querySelector(".levelup"); if (l) l.remove(); } });
 document.getElementById("captureForm").addEventListener("submit", onCapture);
 
-var TABS = ["accueil","notes","quetes","fiche","gazette"];
+var TABS = ["accueil","notes","listes","fiche","gazette"];
 
+
+/* ===== MyWorld_0.13 : page « Tes listes » (À faire / Rappels) ===== */
+function todosAll(){ return S.items.filter(function(i){ return i.kind === "todo"; }); }
+function todosOpen(){ return todosAll().filter(function(i){ return !i.done; }); }
+function todoLate(x){ return !x.done && !x.later && x.due && x.due < iso(today()); }
+function todoMoment(x){
+  if (x.later || !x.due) return "tard";
+  var t = iso(today()), w = iso(addDays(today(), 7));
+  return x.due <= t ? "auj" : x.due <= w ? "sem" : "tard";
+}
+function rappelsDated(){
+  var now = new Date(), nowIso = iso(today()), hm = pad(now.getHours()) + ":" + pad(now.getMinutes());
+  return (S.gcal || []).filter(function(e){ return e.rappel && e.date && (e.date > nowIso || (e.date === nowIso && (!e.time || e.time >= hm))); })
+    .sort(function(a, b){ return (a.date + (a.time || "")).localeCompare(b.date + (b.time || "")); });
+}
+function rappelsOpen(){ return S.items.filter(function(i){ return i.kind === "rappel" && !i.done; }); }
+var LT_CK = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+var LT_PLUS = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>';
+var LT_BELL = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 8 3 8H3s3-1 3-8"/><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"/></svg>';
+function ltDay(isoD){
+  var d = parseISO(isoD), t = today(), diff = Math.round((d - t) / 86400000);
+  if (diff === 0) return "Aujourd'hui"; if (diff === 1) return "Demain"; if (diff === -1) return "hier";
+  if (diff > 1 && diff < 7) return cap(JOURS_LONG[d.getDay()]);
+  if (diff < -1 && diff > -7) return JOURS_LONG[d.getDay()];
+  return d.getDate() + " " + MOIS_COURT[d.getMonth()].toLowerCase();
+}
+function viewListes(){
+  var tab = S.listTab === "rappels" ? "rappels" : "todo", mom = S.todoMom || "auj";
+  var open = todosOpen(), nR = rappelsDated().length + rappelsOpen().length;
+  var cnt = {auj:0, sem:0, tard:0}; open.forEach(function(x){ cnt[todoMoment(x)]++; });
+  var html = '<div class="lt-wrap gut">'
+    + '<div class="lt-seg" role="tablist" aria-label="Tes listes">'
+    + '<button type="button" role="tab" data-act="lt-tab" data-k="todo" aria-selected="' + (tab === "todo") + '">À faire · ' + open.length + '</button>'
+    + '<button type="button" role="tab" data-act="lt-tab" data-k="rappels" aria-selected="' + (tab === "rappels") + '">Rappels · ' + nR + '</button></div>';
+  if (tab === "todo"){
+    html += '<div class="lt-pills" role="group" aria-label="Quand">' + [["auj","Aujourd'hui"],["sem","Semaine"],["tard","Plus tard"]].map(function(m){ return '<button type="button" data-act="lt-mom" data-k="' + m[0] + '" aria-pressed="' + (mom === m[0]) + '">' + m[1] + '<b>' + cnt[m[0]] + '</b></button>'; }).join("") + '</div>';
+    var t = iso(today());
+    var rows = todosAll().filter(function(x){ return x.done ? (mom === "auj" && (x.doneAt || "").slice(0,10) === t) : todoMoment(x) === mom; })
+      .sort(function(a, b){ return (a.done - b.done) || (todoLate(b) - todoLate(a)) || String(a.due || "9").localeCompare(String(b.due || "9")) || String(a.createdAt).localeCompare(String(b.createdAt)); });
+    html += rows.length ? '<div class="lt-card">' + rows.map(function(x){
+        var c = CAT_COL[x.cat] || CAT_COL.neutre, late = todoLate(x), sub = late ? "En retard · prévu " + ltDay(x.due).toLowerCase() : (mom === "sem" && x.due ? ltDay(x.due) : "");
+        return '<div class="lt-row' + (x.done ? " done" : "") + (late ? " late" : "") + '">'
+          + '<button type="button" class="lt-ck" data-act="todo-check" data-id="' + h(x._id) + '" style="--b:' + (late ? "#E0533D" : c[2]) + '" aria-pressed="' + !!x.done + '" aria-label="' + (x.done ? "Décocher" : "Cocher") + ' : ' + h(x.title) + '">' + (x.done ? LT_CK : "") + '</button>'
+          + '<button type="button" class="lt-mid" data-act="todo-menu" data-id="' + h(x._id) + '"><span class="lt-t">' + h(x.title) + '</span>' + (sub ? '<span class="lt-s">' + h(sub) + '</span>' : "") + '</button>'
+          + '<span class="lt-chip k-' + h(x.cat || "neutre") + '">' + h((CATS[x.cat] || CATS.neutre).n) + '</span><span class="lt-xp">+5 XP</span></div>';
+      }).join("") + '</div>'
+      : '<p class="lt-empty">' + (mom === "auj" ? "Rien à faire aujourd'hui. Profites-en !" : mom === "sem" ? "Rien de prévu cette semaine." : "Rien pour plus tard.") + '</p>';
+    html += '<button type="button" class="lt-add" data-act="lt-add" data-k="todo"><span class="lt-addi">' + LT_PLUS + '</span><span>Ajouter à faire…</span></button>'
+      + '<p class="lt-hint">Ce qui n\'est pas fait reste ici, marqué « en retard ». Dans le +, commence par « todo » pour ajouter ici.</p>';
+  } else {
+    var dated = rappelsDated(), und = rappelsOpen().sort(function(a, b){ return String(b.createdAt).localeCompare(String(a.createdAt)); });
+    html += '<p class="lt-lbl">À venir · avec notification</p>'
+      + (dated.length ? '<div class="lt-card">' + dated.slice(0, 20).map(function(e){
+          return '<button type="button" class="lt-row lt-ev" data-act="ev-open" data-gid="' + h(e.id) + '" data-d="' + h(e.date) + '"><span class="lt-bell">' + LT_BELL + '</span><span class="lt-mid"><span class="lt-t">' + h(e.title) + '</span></span><span class="lt-when">' + h(ltDay(e.date)) + (e.time ? '<small>' + h(fmtTime(e.time)) + '</small>' : "") + '</span></button>';
+        }).join("") + '</div>' : '<p class="lt-empty">Aucun rappel daté à venir.</p>')
+      + '<p class="lt-lbl">Sans date</p>'
+      + (und.length ? '<div class="lt-card">' + und.map(function(x){
+          return '<div class="lt-row"><button type="button" class="lt-ck" data-act="rappel-check" data-id="' + h(x._id) + '" style="--b:#7AB2E3" aria-label="Cocher : ' + h(x.title) + '"></button><button type="button" class="lt-mid" data-act="rappel-menu" data-id="' + h(x._id) + '"><span class="lt-t">' + h(x.title) + '</span><span class="lt-s">Ajouté ' + h(ltDay((x.createdAt || "").slice(0,10)).toLowerCase()) + '</span></button></div>';
+        }).join("") + '</div>' : '<p class="lt-empty">Aucun rappel sans date.</p>')
+      + '<button type="button" class="lt-add" data-act="lt-add" data-k="rappel"><span class="lt-addi">' + LT_PLUS + '</span><span>Ajouter un rappel…</span></button>'
+      + '<p class="lt-hint">Avec un jour et une heure, le rappel part dans ton agenda et te notifie. Sans date, il reste ici jusqu\'à ce que tu le coches.</p>';
+  }
+  return html + '</div>';
+}
+function todoCheck(id, el){
+  var x = S.items.find(function(i){ return i._id === id; }); if (!x) return;
+  if (x.done){
+    db.collection("items").doc(id).update({done:false, doneAt:null, logId:null}).catch(dbErr);
+    if (x.logId) db.collection("log").doc(x.logId).delete().catch(function(){});
+    return;
+  }
+  if (el){ var r = el.getBoundingClientRect(); burst(r.left + 12, r.top + 12); }
+  var stat = CAT_STAT[x.cat] || "sag";
+  db.collection("log").add({label:"À faire : " + x.title, stat:stat, xp:5, skill:null, at:nowISO()}).then(function(ref){
+    return db.collection("items").doc(id).update({done:true, doneAt:nowISO(), logId: ref && ref.id || null});
+  }).then(function(){ toast("Bien joué. +5 XP en " + STATS[stat].n + "."); }).catch(dbErr);
+}
+function todoMenu(id){
+  var x = S.items.find(function(i){ return i._id === id; }); if (!x) return;
+  var t = iso(today()), opt = function(k, l){ return '<button type="button" class="btn-line" data-act="todo-move" data-id="' + h(id) + '" data-k="' + k + '">' + l + '</button>'; };
+  openSheet(x.title, '<div class="lt-menu">' + opt("auj", "Pour aujourd'hui") + opt("dem", "Pour demain") + opt("tard", "Plus tard") + '<button type="button" class="btn-line danger" data-act="todo-del" data-id="' + h(id) + '">Supprimer</button></div>');
+}
+/* proposer le titre d'une nouvelle note comme mot-clé */
+function offerNoteKey(title){
+  title = String(title || "").trim(); if (!title || title.length > 40) return;
+  var st = S.settings || {}, keys = st.noteKeys || [], no = st.noteKeysNo || [], n0 = noAcc(title.toLowerCase());
+  if (keys.concat(no).some(function(k){ return noAcc(k.toLowerCase()) === n0; })) return;
+  if (KEYWORDS.some(function(K){ return K.re.test(title); })) return;
+  openSheet("Nouveau mot-clé ?", '<p class="nk-p">Garder « <b>' + h(title) + '</b> » comme mot-clé ? Ensuite, dans le +, « ' + h(title.toLowerCase()) + ' … » ajoutera directement à cette note.</p>'
+    + '<div class="lt-menu"><button type="button" class="btn-ink" data-act="nk-yes" data-t="' + h(title) + '">Oui, le garder</button><button type="button" class="btn-line" data-act="nk-no" data-t="' + h(title) + '">Non merci</button></div>');
+}
+function keywordsSettingsHTML(){
+  var nk = noteKeys();
+  return '<h3 style="margin:26px 0 6px">Mots-clés</h3><p style="font-size:13px;color:var(--muted);margin-bottom:6px">En début de phrase dans le +, ils forcent la compréhension.</p>'
+    + KEYWORDS.map(function(K){ return '<div class="kw-line"><b>' + h(K.lbl) + '</b><span>' + h(K.d) + '</span></div>'; }).join("")
+    + '<p class="learn-sub">Titres de notes</p>' + (nk.length ? nk.map(function(k){ return '<div class="kw-line"><b>' + h(k) + '</b><span>ajoute à cette note</span><button type="button" class="kw-del" data-act="nk-del" data-t="' + h(k) + '" aria-label="Retirer ' + h(k) + '">×</button></div>'; }).join("") : '<p class="soft-empty" style="padding:0">Aucun pour l\'instant. Ils te seront proposés à chaque nouvelle note.</p>');
+}
 /* ===== MyWorld_0.10 : bouton Apps et éventail ===== */
 var FAN_APPS = [
-  {k:"quetes", n:"Quêtes", bg:"#FDDCC6", ink:"#AA4A1C", ic:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4h11v14a2 2 0 0 1-2 2H6"/><path d="M7 4a2 2 0 0 0-2 2v2h2M6 20a2 2 0 0 1-2-2v-1h10v1a2 2 0 0 0 2 2M10 9h5M10 13h5"/></svg>'},
+  {k:"listes", n:"À faire", bg:"#FDDCC6", ink:"#AA4A1C", ic:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M3.5 6l1.2 1.2L7 4.8M3.5 12l1.2 1.2L7 10.8M3.5 18l1.2 1.2L7 16.8"/></svg>'},
   {k:"fiche", n:"Fiche", bg:"#E3D3F7", ink:"#6640A6", ic:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 5-3.5 8-7 10-3.5-2-7-5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg>'},
   {k:"gazette", n:"Gazette", bg:"#FBE6B4", ink:"#8E6312", ic:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h13v14a1 1 0 0 0 1 1H5a1 1 0 0 1-1-1z"/><path d="M17 9h3v10a1 1 0 0 1-2 0M7 9h7M7 13h7M7 16h4"/></svg>'},
   {k:"reglages", n:"Réglages", bg:"#ECEDF1", ink:"#3E4250", ic:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M2 12h3M19 12h3M4.9 19.1L7 17M17 7l2.1-2.1"/></svg>'},
