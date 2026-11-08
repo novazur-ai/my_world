@@ -874,6 +874,25 @@ body.scroll-lock{position:fixed;left:0;right:0;width:100%;overflow:hidden}
 .gz-une:focus-visible{outline:3px solid #F2B84B;outline-offset:2px}
 .gzd-une b{color:#C0392B}
 .gz-back{align-self:flex-start;display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:6px 14px 6px 10px;border-radius:999px;border:1.5px solid #E1E8EF;background:#fff;font:inherit;font-weight:800;font-size:13.5px;color:#0B3A5C;cursor:pointer}
+
+/* MyWorld_0.37 : planning de vacations */
+.svc{margin:0 0 10px;border-radius:18px;padding:14px 15px 13px;color:#fff;background:linear-gradient(135deg,var(--acc,#2D5F94),var(--acc-grad,#4E78B8));box-shadow:0 8px 22px rgba(20,40,70,.16)}
+.svc-top{display:flex;justify-content:space-between;align-items:center}.svc-top svg{opacity:.9}
+.svc-chip{font-size:11px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;background:rgba(255,255,255,.2);padding:3px 9px;border-radius:999px}
+.svc-big{font-size:26px;font-weight:900;line-height:1.1;margin:9px 0 2px;font-variant-numeric:tabular-nums}
+.svc-bar{height:6px;border-radius:6px;background:rgba(255,255,255,.25);overflow:hidden;margin-top:8px}.svc-bar i{display:block;height:100%;background:#fff;border-radius:6px;transition:width 1s}
+.svc-meta{display:flex;justify-content:space-between;gap:10px;font-size:12.5px;font-weight:800;margin-top:6px;opacity:.95}
+.svc-pill{display:flex;align-items:center;gap:10px;margin:0 0 10px;border-radius:16px;padding:12px 14px;background:#DFF3E8;color:#1F6B47;font-weight:800}
+.svc-pill small{margin-left:auto;font-weight:700;color:#3C7A5C;font-size:12.5px;text-align:right}
+.svc-pill.done{background:var(--acc-soft,#E3ECF6);color:var(--acc-ink,#1F3E6E)}.svc-pill.done small{color:var(--acc-ink,#1F3E6E);opacity:.8}
+.wsd .whr{font-size:10px;font-weight:900;line-height:12px;height:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.wsd.on .whr{color:rgba(255,255,255,.92)}.wsd.past .whr{opacity:.45}
+.month.pl .mcell{height:58px;gap:2px;justify-content:flex-start;padding-top:2px}
+.mcell .mh{font-size:9.5px;font-weight:900;line-height:11px;height:11px;color:var(--muted);font-variant-numeric:tabular-nums}.mcell .mh.cp{color:#2F8A5C}.mcell.past .mh{opacity:.5}
+.plan-at{display:block;color:var(--muted);font-size:12px;font-weight:600}
+.plan-box{margin:10px 0 0;padding:12px 14px;border-radius:14px;background:var(--acc-soft,#E3ECF6);font-size:14px;font-weight:600}.plan-box b{display:block;font-weight:900;margin-bottom:2px}.plan-box p{margin:0 0 10px}
+.plan-box.err{background:#FBE3DF;color:#8E2F22}
+.plan-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px}.plan-btns .btn{height:44px;min-height:0}
 </style>
 </head>
 <body>
@@ -1765,7 +1784,7 @@ var DECO = (function(){
 
 </script>
 <script>
-var APP_VERSION = "MyWorld_0.36";
+var APP_VERSION = "MyWorld_0.37";
 (function(){
 "use strict";
 var CAL = "t.mallet06@gmail.com";
@@ -1976,13 +1995,134 @@ var CHAT_IC = '<svg width="19" height="19" viewBox="0 0 24 24" fill="none" strok
 function doneEvs(){ try { return JSON.parse(localStorage.getItem("doneEvs") || "{}"); } catch(e){ return {}; } }
 function evKey(e){ return e.src === "gcal" ? "g:" + e.gid + ":" + (e.date || "") : "d:" + e.id; }
 function selDay(){ var t = iso(today()); if (!S.daySel || S.daySel < iso(monday(today()))) S.daySel = t; return S.daySel; }
+/* ---------- MyWorld_0.37 : planning de vacations (PDF « Planning individuel ») ---------- */
+/* lecture du PDF directement dans le téléphone : flux décompressés, texte et positions, puis case par case (mois = colonne, jour = ligne) */
+function pdfPlanning(buf){
+  var bytes = new Uint8Array(buf), txt = new TextDecoder("latin1").decode(bytes), jobs = [], re = /(\d+)\s+0\s+obj\s*<<([\s\S]*?)>>\s*stream\r?\n/g, m;
+  function inflate(b){
+    function run(fmt, x){ return new Response(new Blob([x]).stream().pipeThrough(new DecompressionStream(fmt))).arrayBuffer(); }
+    return run("deflate", b).catch(function(){ return run("deflate-raw", b.subarray(2)); });
+  }
+  while ((m = re.exec(txt))){
+    var dict = m[2]; if (!/FlateDecode/.test(dict) || /\/Subtype\s*\/Image|\/Length1/.test(dict)) continue;
+    var start = m.index + m[0].length, L = /\/Length\s+(\d+)(?!\s+\d+\s+R)/.exec(dict), end = L ? start + +L[1] : txt.indexOf("endstream", start);
+    if (!L){ while (end > start && (txt.charCodeAt(end - 1) === 10 || txt.charCodeAt(end - 1) === 13)) end--; }
+    jobs.push(inflate(bytes.subarray(start, end)).then(function(a){ return new TextDecoder("latin1").decode(new Uint8Array(a)); }, function(){ return ""; }));
+  }
+  return Promise.all(jobs).then(function(streams){
+    var items = [];
+    streams.forEach(function(s){
+      if (s.indexOf("BT") < 0) return;
+      var tk = /\((?:\\[\s\S]|[^\\)])*\)|\[|\]|\/[^\s\/\[\]()<>]+|[-+]?(?:\d+\.?\d*|\.\d+)|[A-Za-z*'"]+/g, t, st = [], strs = [], lx = 0, ly = 0, cur = null;
+      function unesc(x){ return x.slice(1, -1).replace(/\\([0-7]{1,3}|[\s\S])/g, function(_, c){ return /^[0-7]+$/.test(c) ? String.fromCharCode(parseInt(c, 8)) : c === "n" ? "\n" : c === "r" ? "" : c === "t" ? " " : c; }); }
+      function show(){ if (!strs.length) return; if (!cur) cur = { x: lx, y: ly, t: "" }; cur.t += strs.join(""); }
+      while ((t = tk.exec(s))){
+        var v = t[0];
+        if (v[0] === "("){ strs.push(unesc(v)); continue; }
+        if (/^[-+.\d]/.test(v)){ st.push(+v); continue; }
+        if (v === "[" || v === "]" || v[0] === "/") continue;
+        if (v === "BT"){ lx = ly = 0; cur = null; }
+        else if (v === "Td" || v === "TD"){ lx += st[st.length - 2] || 0; ly += st[st.length - 1] || 0; }
+        else if (v === "Tm"){ lx = st[st.length - 2] || 0; ly = st[st.length - 1] || 0; }
+        else if (v === "'" || v === "Tj" || v === "TJ" || v === '"') show();
+        else if (v === "ET"){ if (cur && cur.t.trim()) items.push({ x: cur.x, y: cur.y, t: cur.t.trim() }); cur = null; }
+        st = []; strs = [];
+      }
+    });
+    var all = items.map(function(i){ return i.t; }).join(" "), ym = /Ann\S{1,2}e\s*(\d{4})/.exec(all), who = /Employ\S{1,2}\s*:\s*(.+?)\s*(?:\(\d+\)|$)/.exec(all);
+    var who2 = items.filter(function(i){ return /\(\d+\)\s*$/.test(i.t); })[0];
+    var labels = items.filter(function(i){ return /^[LMJVSD] ?\d{1,2}$/.test(i.t); });
+    var col = labels.filter(function(l){ return +l.t.replace(/\D/g, "") === 1; }).map(function(l){ return l.x; }).sort(function(a, b){ return a - b; });
+    if (!ym || col.length !== 12) throw new Error("format");
+    var year = +ym[1];
+    function colOf(x){ var c = -1; for (var i = 0; i < 12; i++) if (x >= col[i] - 2) c = i; return c; }
+    var days = {}, n = { s: 0, r: 0, c: 0, a: 0 };
+    items.forEach(function(it){
+      if (!/^(\d{4}|[A-Z*]{1,5})$/.test(it.t) || /^[LMJVSD] ?\d/.test(it.t)) return;
+      var c = colOf(it.x); if (c < 0) return;
+      var lab = labels.filter(function(l){ return colOf(l.x) === c && Math.abs(l.y - it.y) < 2; })[0]; if (!lab) return;
+      var d = +lab.t.replace(/\D/g, ""), dt = new Date(year, c, d); if (dt.getMonth() !== c) return;
+      var v = it.t; if (v === "*C*") return;                              /* jours passés sans horaire : ignorés */
+      if (/^\d{4}$/.test(v) && (+v.slice(0, 2) > 23 || +v.slice(2) > 59)) return;
+      days[pad(c + 1) + "-" + pad(d)] = v;
+      if (/^\d{4}$/.test(v)) n.s++; else if (v === "RH") n.r++; else if (v === "CP") n.c++; else n.a++;
+    });
+    if (Object.keys(days).length < 7) throw new Error("vide");
+    return { year: year, days: days, n: n, who: who2 ? who2.t.replace(/\s*\(\d+\)\s*$/, "") : who ? who[1] : "" };
+  });
+}
+var VAC_LEN = 450;   /* une vacation = 7 h 30 */
+function hasPlanning(){ var p = S.settings && S.settings.planning; return !!(p && Object.keys(p).length); }
+function vacOf(di){ var p = S.settings && S.settings.planning, Y = p && p[di.slice(0, 4)]; return Y && Y.d ? Y.d[di.slice(5)] || null : null; }
+function vacSpan(di){ var v = vacOf(di); if (!v || !/^\d{4}$/.test(v)) return null; var d = parseISO(di), s = +v.slice(0, 2) * 60 + +v.slice(2);
+  return { di: di, sm: s, em: s + VAC_LEN, s: new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, s), e: new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, s + VAC_LEN) }; }
+function fmtVac(min, full){ min = ((min % 1440) + 1440) % 1440; var m = min % 60; return Math.floor(min / 60) + "h" + (m ? pad(m) : full ? "00" : ""); }
+function hmOf(min){ min = ((min % 1440) + 1440) % 1440; return pad(Math.floor(min / 60)) + ":" + pad(min % 60); }
+function vacShort(di){ var v = vacOf(di); return !v ? "" : /^\d{4}$/.test(v) ? fmtVac(+v.slice(0, 2) * 60 + +v.slice(2)) : v === "CP" ? "CP" : v === "RH" ? "" : v; }
+function vacDur(min){ min = Math.max(1, Math.round(min)); var hh = Math.floor(min / 60), mm = min % 60; return hh ? hh + " h" + (mm ? " " + pad(mm) : "") : mm + " min"; }
+function vacRel(di){ var d = parseISO(di), k = Math.round((d - today()) / 864e5); return k === 0 ? "aujourd'hui" : k === 1 ? "demain" : k < 7 ? JOURS[d.getDay()] : JOURS[d.getDay()] + " " + d.getDate(); }
+function vacNext(di){ for (var i = 1; i <= 40; i++){ var x = iso(addDays(parseISO(di), i)), sp = vacSpan(x); if (sp) return sp; } return null; }
+var PLANE_IC = '<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z"/></svg>';
+var LEAF_IC = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6"/></svg>';
+var DONE_IC = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>';
+/* carte de service en tête du programme (version 1B) */
+function svcCardHTML(di){
+  if (!hasPlanning()) return "";
+  var now = new Date(), isToday = di === iso(today()), sp = vacSpan(di), v = vacOf(di);
+  if (isToday){ var y = vacSpan(iso(addDays(today(), -1))); if (y && now < y.e) sp = y; }
+  function nxt(after){ var n = vacNext(after); return n ? vacRel(n.di) + " " + fmtVac(n.sm) : ""; }
+  if (sp){
+    var stt = !isToday ? "plan" : now < sp.s ? "avant" : now < sp.e ? "en" : "fini";
+    if (stt === "fini"){ var n1 = nxt(sp.di); return '<div class="svc-pill done" id="svcCard">' + DONE_IC + '<span>Service terminé</span>' + (n1 ? '<small>Prochain : ' + h(n1) + '</small>' : '') + '</div>'; }
+    var chip = stt === "en" ? "En service" : stt === "avant" ? "Aujourd'hui" : "Service", pct = stt === "en" ? Math.round((now - sp.s) / (sp.e - sp.s) * 100) : 0;
+    var meta = stt === "en" ? '<span>Encore ' + vacDur((sp.e - now) / 6e4) + '</span><span>' + h(cap(nxt(sp.di))) + '</span>' : stt === "avant" ? '<span>Dans ' + vacDur((sp.s - now) / 6e4) + '</span><span></span>' : "";
+    return '<div class="svc" id="svcCard" role="group" aria-label="' + h(chip + ", " + fmtVac(sp.sm, 1) + " à " + fmtVac(sp.em, 1)) + '"><div class="svc-top"><span class="svc-chip">' + chip + '</span>' + PLANE_IC + '</div><div class="svc-big">' + fmtVac(sp.sm, 1) + ' – ' + fmtVac(sp.em, 1) + '</div>'
+      + (meta ? '<div class="svc-bar"><i style="width:' + pct + '%"></i></div><div class="svc-meta">' + meta + '</div>' : '') + '</div>';
+  }
+  if (v === "RH" || v === "CP"){ var n2 = nxt(di); return '<div class="svc-pill" id="svcCard">' + LEAF_IC + '<span>' + (v === "CP" ? "Congé" : "Repos") + (isToday ? " aujourd'hui" : "") + '</span>' + (n2 ? '<small>Reprise ' + h(n2) + '</small>' : '') + '</div>'; }
+  return "";
+}
+setInterval(function(){
+  var c = document.getElementById("svcCard"); if (!c || S.view !== "accueil") return;
+  var html = svcCardHTML(selDay()); if (!html){ c.remove(); return; }
+  var tmp = document.createElement("div"); tmp.innerHTML = html; if (tmp.firstChild.outerHTML !== c.outerHTML) c.replaceWith(tmp.firstChild);
+}, 30000);
+/* réglages : import du PDF */
+function planningSettingsHTML(){
+  var P = (S.settings && S.settings.planning) || {}, ys = Object.keys(P).sort();
+  return '<h3 style="margin:26px 0 6px">Mon planning</h3><p style="font-size:13px;color:var(--muted);margin-bottom:6px">Importe ton PDF « Planning individuel » : tes vacations s\'affichent sur l\'accueil et dans le mois. Le fichier est lu sur ton téléphone, rien n\'est envoyé ailleurs.</p>'
+    + ys.map(function(y){ var n = P[y].n || {}, at = P[y].at ? new Date(P[y].at) : null;
+        return '<div class="list-line"><span>' + y + ' · ' + (n.s || 0) + ' services, ' + (n.r || 0) + ' repos, ' + (n.c || 0) + ' congés' + (at ? '<small class="plan-at">Importé le ' + at.getDate() + ' ' + MOIS[at.getMonth()] + '</small>' : '') + '</span><button type="button" class="mini" data-act="plan-del" data-y="' + h(y) + '">Retirer</button></div>'; }).join("")
+    + '<div id="planPrev"></div><div class="bk-row" style="margin-top:10px"><button type="button" class="btn light" data-act="plan-imp">Importer un PDF</button>' + (ys.length ? '<button type="button" class="btn light" data-act="month">Vérifier les jours</button>' : '') + '</div><input type="file" id="planFile" accept="application/pdf,.pdf" hidden>';
+}
+function mountPlanning(){
+  var f = document.getElementById("planFile"); if (!f) return;
+  f.onchange = function(){
+    var file = f.files && f.files[0]; f.value = ""; if (!file) return;
+    var box = document.getElementById("planPrev"); box.innerHTML = '<p class="plan-box">Lecture du PDF…</p>';
+    file.arrayBuffer().then(pdfPlanning).then(function(r){
+      S.planPending = r; var had = !!(S.settings && S.settings.planning && S.settings.planning[r.year]);
+      box.innerHTML = '<div class="plan-box"><b>Planning ' + r.year + (r.who ? ' · ' + h(r.who) : '') + '</b><p>' + Object.keys(r.days).length + ' jours lus : ' + r.n.s + ' services, ' + r.n.r + ' repos, ' + r.n.c + ' congés' + (r.n.a ? ', ' + r.n.a + ' autres' : '') + '.' + (had ? ' Il remplace le planning ' + r.year + ' déjà enregistré.' : '') + '</p>'
+        + '<div class="plan-btns"><button type="button" class="btn light" data-act="plan-cancel">Annuler</button><button type="button" class="btn green" data-act="plan-save">Enregistrer</button></div></div>';
+    }).catch(function(){ S.planPending = null; box.innerHTML = '<p class="plan-box err">Ce PDF ne ressemble pas à un « Planning individuel ». Exporte le planning de l\'année depuis l\'outil de ton travail, puis réessaie.</p>'; });
+  };
+}
+function planningSave(){
+  var r = S.planPending; if (!r) return;
+  var P = Object.assign({}, (S.settings && S.settings.planning) || {}); P[r.year] = { d: r.days, n: r.n, at: nowISO() };
+  saveSettings({ planning: P }).then(function(){ S.planPending = null; toast("Planning " + r.year + " enregistré."); refreshSettings(); render(); });
+}
+function planningDel(y){
+  var P = Object.assign({}, (S.settings && S.settings.planning) || {}), old = P[y]; delete P[y];
+  saveSettings({ planning: P }).then(function(){ refreshSettings(); render(); toast("Planning " + y + " retiré.", { undo: function(){ var Q = Object.assign({}, (S.settings && S.settings.planning) || {}); Q[y] = old; saveSettings({ planning: Q }).then(function(){ refreshSettings(); render(); }); } }); });
+}
 function weekStripHTML(){
   var t = today(), m = addDays(monday(t), 7 * (S.weekOff || 0)), sel = selDay(), out = "";
   for (var i = 0; i < 7; i++){
     var d = addDays(m, i), di = iso(d), evs = eventsOn(di), cats = [];
     evs.forEach(function(e){ var c = e.cat || "neutre"; if (cats.indexOf(c) < 0) cats.push(c); });
     var dots = cats.slice(0, 3).map(function(c){ return '<i style="background:' + (CAT_COL[c] || CAT_COL.neutre)[2] + '"></i>'; }).join("");
-    out += '<button type="button" class="wsd' + (di === sel ? " on" : "") + (di === iso(t) ? " today" : "") + (d < t ? " past" : "") + '" data-act="day-sel" data-d="' + di + '" aria-pressed="' + (di === sel) + '" aria-label="' + h(cap(JOURS_LONG[d.getDay()]) + " " + d.getDate() + (evs.length ? ", " + evs.length + " rendez-vous" : "")) + '"><small>' + cap(JOURS[d.getDay()].replace(".", "")) + '</small><b>' + d.getDate() + '</b><span class="pts">' + dots + '</span></button>';
+    out += '<button type="button" class="wsd' + (di === sel ? " on" : "") + (di === iso(t) ? " today" : "") + (d < t ? " past" : "") + '" data-act="day-sel" data-d="' + di + '" aria-pressed="' + (di === sel) + '" aria-label="' + h(cap(JOURS_LONG[d.getDay()]) + " " + d.getDate() + (evs.length ? ", " + evs.length + " rendez-vous" : "") + (vacSpan(di) ? ", service à " + vacShort(di) : "")) + '"><small>' + cap(JOURS[d.getDay()].replace(".", "")) + '</small><b>' + d.getDate() + '</b>' + (hasPlanning() ? '<span class="whr">' + vacShort(di) + '</span>' : '') + '<span class="pts">' + dots + '</span></button>';
   }
   var nav = '<button type="button" class="wsnav" data-act="week-off" data-n="-1" aria-label="Semaine précédente"' + ((S.weekOff || 0) <= 0 ? " disabled" : "") + '><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>'
     + '<button type="button" class="wsnav" data-act="week-off" data-n="1" aria-label="Semaine suivante"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>';
@@ -2016,7 +2156,7 @@ function programmeHTML(){
   });
   var title = isToday ? "Programme du jour" : di === iso(addDays(today(), 1)) ? "Demain" : cap(JOURS_LONG[d.getDay()]) + " " + d.getDate();
   var body = rows.length ? rows.map(progRow).join("") : '<div class="prow empty"><span class="prt"><b>Rien de prévu</b><em>' + (isToday ? "Repose-toi, c'est aussi une mission." : "Journée libre pour l'instant.") + '</em></span></div>';
-  return '<section class="section gut" aria-labelledby="pg"><div class="section-head"><h2 id="pg">' + h(title) + '</h2><button type="button" class="link-btn" data-act="month">Voir le mois</button></div>' + calNotice() + '<div class="prows">' + body + '</div></section>';
+  return '<section class="section gut" aria-labelledby="pg"><div class="section-head"><h2 id="pg">' + h(title) + '</h2><button type="button" class="link-btn" data-act="month">Voir le mois</button></div>' + calNotice() + svcCardHTML(di) + '<div class="prows">' + body + '</div></section>';
 }
 function viewAccueil(){
   return weekStripHTML() + programmeHTML() + bdaysHTML();
@@ -3339,7 +3479,7 @@ function monthHTML(){
   var t = today(), m0 = new Date(t.getFullYear(), t.getMonth() + S.monthOffset, 1), dim = new Date(m0.getFullYear(), m0.getMonth()+1, 0).getDate();
   var key = monthKey(m0); ensureMonth(m0);
   if (!S.monthSel || S.monthSel.slice(0,7) !== key) S.monthSel = (monthKey(t) === key) ? iso(t) : iso(m0);
-  var lead = (m0.getDay() + 6) % 7, cells = [];
+  var lead = (m0.getDay() + 6) % 7, cells = [], plan = hasPlanning();
   ["lun","mar","mer","jeu","ven","sam","dim"].forEach(function(d){ cells.push('<div class="h" aria-hidden="true">' + d + '</div>'); });
   var nEv = 0, nBd = 0;
   for (var i=0;i<lead;i++) cells.push('<div class="mcell blank" aria-hidden="true"></div>');
@@ -3347,15 +3487,17 @@ function monthHTML(){
     var dt = new Date(m0.getFullYear(), m0.getMonth(), d), di = iso(dt), evs = eventsOn(di);
     evs.forEach(function(e){ if (e.src === "bday" || /^anniversaire/i.test(e.title)) nBd++; else nEv++; });
     var cls = "mcell" + (di === iso(t) ? " today" : "") + (di === S.monthSel ? " sel" : "") + (dt < t ? " past" : "");
-    cells.push('<button type="button" class="' + cls + '" data-act="mday" data-d="' + di + '" aria-pressed="' + (di === S.monthSel) + '" aria-label="' + h(fmtDay(dt) + (evs.length ? ", " + evs.length + " événement" + (evs.length>1?"s":"") : ", rien de prévu")) + '"><span class="mn">' + d + '</span><span class="dots" aria-hidden="true">' + evs.slice(0,3).map(function(e){ return '<i class="k-' + (CATS[e.cat] ? e.cat : "neutre") + '"' + (dt < t ? ' style="opacity:.55"' : "") + '></i>'; }).join("") + '</span></button>');
+    cells.push('<button type="button" class="' + cls + '" data-act="mday" data-d="' + di + '" aria-pressed="' + (di === S.monthSel) + '" aria-label="' + h(fmtDay(dt) + (evs.length ? ", " + evs.length + " événement" + (evs.length>1?"s":"") : ", rien de prévu")) + '"><span class="mn">' + d + '</span>' + (plan ? '<span class="mh' + (vacOf(di) === "CP" ? " cp" : "") + '">' + vacShort(di) + '</span>' : '') + '<span class="dots" aria-hidden="true">' + evs.slice(0,3).map(function(e){ return '<i class="k-' + (CATS[e.cat] ? e.cat : "neutre") + '"' + (dt < t ? ' style="opacity:.55"' : "") + '></i>'; }).join("") + '</span></button>');
   }
-  var sel = parseISO(S.monthSel), selEvs = eventsOn(S.monthSel);
+  var sel = parseISO(S.monthSel), selEvs = eventsOn(S.monthSel), vsp = vacSpan(S.monthSel), vv = vacOf(S.monthSel);
+  if (vsp) selEvs = [{title:"Vacation", time:hmOf(vsp.sm), endTime:hmOf(vsp.em), cat:"boulot", src:"vac"}].concat(selEvs);
+  else if (vv === "CP") selEvs = [{title:"Congé", cat:"boulot", src:"vac"}].concat(selEvs);
   var panel = '<div class="mpanel"><div class="wdate' + (S.monthSel === iso(t) ? " today" : "") + '"><small>' + JOURS[sel.getDay()].replace(".","") + '</small><b>' + sel.getDate() + '</b></div><div style="min-width:0">'
     + (S.monthLoading[key] ? '<p class="wfree">Je récupère ton agenda…</p>' : selEvs.length ? '<div class="wevs">' + selEvs.map(evCard).join("") + '</div>' : '<p class="wfree" style="padding-top:10px">Libre</p>')
     + (S.monthErr[key] ? '<p class="notice" style="margin:8px 0 0">' + h(S.monthErr[key]) + '</p>' : "") + '</div></div>';
   return '<div class="row" style="justify-content:space-between"><button type="button" class="btn light" data-act="mprev" aria-label="Mois précédent">‹</button><h3 style="font-size:20px;font-weight:800;color:var(--ink);letter-spacing:-.01em">' + cap(MOIS[m0.getMonth()]) + ' ' + m0.getFullYear() + '</h3><button type="button" class="btn light" data-act="mnext" aria-label="Mois suivant">›</button></div>'
     + (nEv || nBd ? '<p class="msum"><span>' + (nEv ? nEv + " rendez-vous" : "") + (nEv && nBd ? "</span> ce mois · " : nEv ? "</span> ce mois" : "") + (nBd ? (nEv ? "" : "<span>") + nBd + " anniversaire" + (nBd > 1 ? "s" : "") + (nEv ? "" : "</span> ce mois") : "") + '</p>' : "")
-    + '<div class="month">' + cells.join("") + '</div>' + panel;
+    + '<div class="month' + (plan ? ' pl' : '') + '">' + cells.join("") + '</div>' + panel;
 }
 function settingsHTML(){
   var st = S.settings || {}, topics = st.topics || [];
@@ -3366,6 +3508,7 @@ function settingsHTML(){
     + (function(){ var miss = Object.keys(GZ_RUB).filter(function(r){ return !topics.some(function(t){ return gzRub(t) === r; }); }); return miss.length ? '<p class="learn-sub">Rubriques prêtes</p><div class="gz-quick">' + miss.map(function(r){ return '<button type="button" data-act="topic-quick" data-t="' + h(GZ_RUB[r].n) + '">+ ' + h(GZ_RUB[r].n) + '</button>'; }).join("") + '</div>' : ""; })()
     + '<form id="fT" class="fgrid" style="margin-top:12px"><div class="field"><label for="tName">Nouveau sujet</label><input id="tName" type="text" required placeholder="Un acteur, une série, un lieu…"></div><button class="btn green" type="submit">Ajouter</button></form>'
     + learnSettingsHTML()
+    + planningSettingsHTML()
     + '<h3 style="margin:26px 0 6px">Google Agenda</h3>' + gcalSettingsHTML()
     + '<h3 style="margin:26px 0 6px">Sauvegarde</h3><p style="font-size:13px;color:var(--muted);margin-bottom:10px">Télécharge une copie de toutes tes données, ou importe une sauvegarde.</p><div class="bk-row"><button type="button" class="btn light" data-act="export">Télécharger</button><button type="button" class="btn light" data-act="import">Importer</button><input type="file" id="impFile" accept="application/json,.json" hidden></div>'
     + '<div style="margin-top:26px"><button type="button" class="mini" data-act="signout">Se déconnecter</button></div>'
@@ -3375,7 +3518,7 @@ function mountSettings(){
   var imp = document.getElementById("impFile"); if (imp) imp.onchange = function(){ var f = imp.files && imp.files[0]; if (!f || !needDb()) return; f.text().then(function(t){ var j = JSON.parse(t); if (!j || !j.collections) throw new Error("format"); return db.importAll(j); }).then(function(n){ toast("Sauvegarde importée (" + n + " éléments)."); closeSheet(); }).catch(function(){ toast("Ce fichier n'est pas une sauvegarde valide."); }); };
   var fb = document.getElementById("fBd"), ft = document.getElementById("fT");
   if (fb) fb.onsubmit = function(e){ e.preventDefault(); var v = document.getElementById("bdIn").value; saveSettings({birthday: v ? v.slice(5) : null}).then(function(){ toast(v ? "Ton anniversaire est noté." : "Date retirée."); render(); }); };
-  mountLearn();
+  mountLearn(); mountPlanning();
   ft.onsubmit = function(e){ e.preventDefault(); var n = document.getElementById("tName").value.trim(); if (!n) return; var topics = ((S.settings && S.settings.topics) || []).slice(); if (topics.indexOf(n) < 0) topics.push(n); saveSettings({topics:topics}).then(function(){ toast("Sujet ajouté. Il apparaîtra dès qu'il y aura du nouveau."); refreshSettings(); }); };
 }
 function learnSettingsHTML(){
@@ -4016,6 +4159,10 @@ document.addEventListener("click", function(e){
   if (act === "gcal-off"){ if (mcp && mcp.disconnect){ mcp.disconnect(); S.gcal = []; toast("Google Agenda est déconnecté."); refreshSettings(); } return; }
   if (act === "gcal-connect"){ if (mcp && mcp.connect) mcp.connect().then(function(){ toast("Google Agenda est synchronisé."); refreshSettings(); }).catch(function(){ toast(navigator.onLine ? "La connexion à Google Agenda n'a pas abouti." : "Pas de connexion internet pour l'instant."); }); return; }
   if (act === "export"){ exportBackup(); return; }
+  if (act === "plan-imp"){ var pf = document.getElementById("planFile"); if (pf) pf.click(); return; }
+  if (act === "plan-save"){ planningSave(); return; }
+  if (act === "plan-cancel"){ S.planPending = null; var pp = document.getElementById("planPrev"); if (pp) pp.innerHTML = ""; return; }
+  if (act === "plan-del"){ planningDel(b.dataset.y); return; }
   if (act === "bday-edit"){ bdayEditSheet(id); return; }
   if (act === "ev-edit"){ eventEditSheet(b.dataset.gid || null, b.dataset.id || null); return; }
   if (act === "gz-day"){ S.gzNum = 0; S.topicFilter = "Tout"; location.hash = "gazette-" + b.dataset.d; return; }
