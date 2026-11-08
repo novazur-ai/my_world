@@ -1,4 +1,4 @@
-// Gazette du matin (MyWorld_0.19) : sans IA ni clé d'API.
+// Gazette du matin (MyWorld_0.20) : sans IA ni clé d'API.
 // Pour chaque sujet choisi dans les Réglages, on lit des flux RSS de sites d'info français
 // (résumé écrit par la rédaction), on extrait 2 ou 3 phrases clés de l'article quand le site le permet
 // (calcul de fréquence des mots, pas d'IA), et on repère les chiffres du jour.
@@ -30,6 +30,7 @@ const FEEDS = {
   /* sites spécialisés : servent aux sujets libres (on y cherche les articles qui parlent du sujet) */
   figaro: ["Le Figaro", "https://www.lefigaro.fr/rss/figaro_actualites.xml"],
   libe: ["Libération", "https://www.liberation.fr/arc/outboundfeeds/rss-all/?outputType=xml"],
+  parisien: ["Le Parisien", "https://feeds.leparisien.fr/leparisien/rss"],
   jdc: ["Journal du Coin", "https://journalducoin.com/feed/"],
   cryptoast: ["Cryptoast", "https://cryptoast.fr/feed/"],
   coinacademy: ["Coin Academy", "https://coinacademy.fr/feed/"],
@@ -184,6 +185,36 @@ export function keyNumbers(items, n = 3){
   return out.sort((a, b) => b.score - a.score).filter((x) => !seen.has(x.topic) && seen.add(x.topic)).slice(0, n).map(({ score, ...x }) => x);
 }
 
+/* ---------- « À la une » : l'info reprise par le plus de journaux nationaux ---------- */
+const UNES = ["fi_titres", "lm_une", "vm_une", "bfm_info", "figaro", "libe", "of_une", "parisien", "echos"];
+const USTOP = new Set("les des une pour dans avec sur par est sont aux qui que pas plus son ses leur leurs ont ete etre cette ces apres avant entre selon contre sans sous lors ainsi alors comme dont tout tous mais fait faire deux trois nouveau nouvelle nouvelles premier premiere france francais francaise direct video photos images quoi comment pourquoi depuis encore deja tres bien vers chez annonce veut".split(" "));
+const uw = (s) => new Set((norm(s).match(/[a-z0-9]{4,}/g) || []).filter((w) => !USTOP.has(w)).map((w) => w.replace(/s$/, "")));
+export async function topStory(){
+  const now = Date.now(), arts = [];
+  for (const k of UNES){
+    const src = FEEDS[k][0]; let n = 0;
+    for (const i of await readFeed(k)){ if (i.ts && now - i.ts > 18 * 3600e3) continue; if (n++ >= 25) break; arts.push({ ...i, src, w: uw(i.title + " " + i.lead), tw: uw(i.title) }); }
+  }
+  if (arts.length < 10) return null;
+  const df = new Map(); arts.forEach((a) => a.w.forEach((w) => df.set(w, (df.get(w) || 0) + 1)));
+  const idf = (w) => Math.log(arts.length / (df.get(w) || 1));
+  /* même événement = au moins 2 mots de titre rares (noms de lieux, de personnes…) en commun */
+  const sim = (a, b) => { const sh = new Set([...a.tw].filter((w) => b.w.has(w)).concat([...b.tw].filter((w) => a.w.has(w)))); const rare = [...sh].filter((w) => (df.get(w) || 0) <= 6); return rare.length >= 2 ? rare.reduce((x, w) => x + idf(w), 0) : 0; };
+  const cl = [];
+  for (const a of arts){ let best = null, bs = 0; for (const c of cl){ const v = sim(a, c[0]); if (v > bs){ bs = v; best = c; } } if (best && bs >= 6) best.push(a); else cl.push([a]); }
+  const ranked = cl.map((c) => {
+    const ok = c.length < 3 ? c : c.filter((a) => c.filter((b) => b !== a && sim(a, b) >= 6).length >= 2);      /* écarte un article rattaché par erreur */
+    return { items: ok, srcs: new Set(ok.map((a) => a.src)) };
+  }).sort((a, b) => b.srcs.size - a.srcs.size || b.items.length - a.items.length);
+  const top = ranked[0]; if (!top || top.srcs.size < 3) return null;
+  /* article retenu : le plus central, de préférence avec un résumé et lisible sans abonnement */
+  const pick = top.items.map((a) => ({ a, sc: top.items.reduce((x, b) => x + (b === a ? 0 : sim(a, b)), 0) + (a.lead.length >= 80 ? 8 : 0) + (NO_FETCH.test(a.url) ? 0 : 4) })).sort((x, y) => y.sc - x.sc)[0].a;
+  const it = { title: pick.title, lead: pick.lead, url: pick.url, source: pick.source, ts: pick.ts };
+  await enrich(it); dropSiteDescs([it]);
+  console.log(`À la une (${top.srcs.size} journaux sur ${UNES.length}) : ${it.title}`);
+  return { title: it.title, lead: it.lead || "", more: it.more || "", url: it.url, source: it.source || "", ts: it.ts || null, papers: top.srcs.size };
+}
+
 /* ---------- construction des rubriques ---------- */
 export function rubriqueOf(topic){ const t = norm(topic); return Object.keys(RUBRIQUES).find((k) => RUBRIQUES[k].alias.includes(t)) || null; }
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -215,7 +246,8 @@ export async function build(topics, seen = new Set()){
   }
   const all = sections.flatMap((s) => s.items);
   await pool(all, 3, enrich); dropSiteDescs(all);
-  return { sections, numbers: keyNumbers(all) };
+  let une = null; try { une = await topStory(); } catch (e) { console.warn("À la une : " + e.message); }
+  return { sections, numbers: keyNumbers(all), une };
 }
 
 /* ---------- exécution ---------- */
@@ -242,7 +274,7 @@ if (process.env.ESSAI){
   const topics = settings.topics || [];
   const gazRef = base.collection("gazette"), existing = await gazRef.get(), seen = new Set();
   existing.forEach((d) => { const g = d.data(); if (g.url) seen.add(g.url); if (g.title) seen.add(norm(g.title)); });
-  const { sections, numbers } = await build(topics, seen);
+  const { sections, numbers, une } = await build(topics, seen);
   const batch = db.batch(), addedAt = new Date().toISOString(); let added = 0;
   /* les infos déjà publiées aujourd'hui sans résumé (titre seul) sont complétées */
   const bare = []; existing.forEach((d) => { const g = d.data(); if ((!g.lead || GENERIC.test(g.lead)) && g.addedAt && parisDay(g.addedAt) === day) bare.push({ ref: d.ref, old: g.lead || "", it: { title: g.title, url: g.url, lead: "" } }); });
@@ -259,7 +291,7 @@ if (process.env.ESSAI){
   /* chiffres du jour gardés jour par jour (30 jours) ; une 2e mise à jour le même jour ne les efface pas */
   const days = settings.gazDays || {}, prev = days[day] || {};
   const dayNums = numbers.length ? numbers : (prev.numbers || []);
-  const upd = { gazetteUpdatedAt: addedAt, gazNumbers: dayNums, gazDays: { [day]: { numbers: dayNums, count: (prev.count || 0) + added, at: addedAt } } };
+  const upd = { gazetteUpdatedAt: addedAt, gazNumbers: dayNums, gazDays: { [day]: { numbers: dayNums, count: (prev.count || 0) + added, at: addedAt, une: une || prev.une || null } } };
   const { FieldValue } = await import("firebase-admin/firestore");
   const limitDay = new Date(Date.now() - 30 * 86400000).toISOString().slice(0, 10);
   Object.keys(days).filter((k) => k < limitDay).forEach((k) => { upd["gazDays." + k] = FieldValue.delete(); });
