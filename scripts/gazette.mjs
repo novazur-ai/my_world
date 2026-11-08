@@ -207,8 +207,8 @@ export async function topStory(){
     return { items: ok, srcs: new Set(ok.map((a) => a.src)) };
   }).sort((a, b) => b.srcs.size - a.srcs.size || b.items.length - a.items.length);
   const top = ranked[0]; if (!top || top.srcs.size < 3) return null;
-  /* article retenu : le plus central, de préférence avec un résumé et lisible sans abonnement */
-  const pick = top.items.map((a) => ({ a, sc: top.items.reduce((x, b) => x + (b === a ? 0 : sim(a, b)), 0) + (a.lead.length >= 80 ? 8 : 0) + (NO_FETCH.test(a.url) ? 0 : 4) })).sort((x, y) => y.sc - x.sc)[0].a;
+  /* article retenu : le plus central, de préférence avec un résumé, un titre court et lisible sans abonnement */
+  const pick = top.items.map((a) => ({ a, sc: top.items.reduce((x, b) => x + (b === a ? 0 : sim(a, b)), 0) + (a.lead.length >= 80 ? 8 : 0) + (NO_FETCH.test(a.url) ? 0 : 4) - (a.title.length > 110 ? 8 : 0) })).sort((x, y) => y.sc - x.sc)[0].a;
   const it = { title: pick.title, lead: pick.lead, url: pick.url, source: pick.source, ts: pick.ts };
   await enrich(it); dropSiteDescs([it]);
   console.log(`À la une (${top.srcs.size} journaux sur ${UNES.length}) : ${it.title}`);
