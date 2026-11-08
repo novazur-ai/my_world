@@ -1,4 +1,4 @@
-// Gazette du matin (MyWorld_0.16) : sans IA ni clé d'API.
+// Gazette du matin (MyWorld_0.19) : sans IA ni clé d'API.
 // Pour chaque sujet choisi dans les Réglages, on lit des flux RSS de sites d'info français
 // (résumé écrit par la rédaction), on extrait 2 ou 3 phrases clés de l'article quand le site le permet
 // (calcul de fréquence des mots, pas d'IA), et on repère les chiffres du jour.
@@ -26,7 +26,19 @@ const FEEDS = {
   numerama: ["Numerama", "https://www.numerama.com/feed/"],
   frandroid: ["Frandroid", "https://www.frandroid.com/feed"],
   lequipe: ["L'Équipe", "https://dwh.lequipe.fr/api/edito/rss?path=/"],
-  of_une: ["Ouest-France", "https://www.ouest-france.fr/rss/une"]
+  of_une: ["Ouest-France", "https://www.ouest-france.fr/rss/une"],
+  /* sites spécialisés : servent aux sujets libres (on y cherche les articles qui parlent du sujet) */
+  figaro: ["Le Figaro", "https://www.lefigaro.fr/rss/figaro_actualites.xml"],
+  libe: ["Libération", "https://www.liberation.fr/arc/outboundfeeds/rss-all/?outputType=xml"],
+  jdc: ["Journal du Coin", "https://journalducoin.com/feed/"],
+  cryptoast: ["Cryptoast", "https://cryptoast.fr/feed/"],
+  coinacademy: ["Coin Academy", "https://coinacademy.fr/feed/"],
+  cointribune: ["Cointribune", "https://www.cointribune.com/feed/"],
+  cryptonaute: ["Cryptonaute", "https://cryptonaute.fr/feed/"],
+  jvcom: ["Jeuxvideo.com", "https://www.jeuxvideo.com/rss/rss.xml"],
+  gamekult: ["Gamekult", "https://www.gamekult.com/feed.xml"],
+  pokebip: ["Pokébip", "https://www.pokebip.com/news.rss"],
+  pktrash: ["Pokémon Trash", "https://www.pokemontrash.com/flux.rss"]
 };
 export const RUBRIQUES = {
   monde: { feeds: ["fi_monde", "lm_inter"], alias: ["monde", "international", "internationale", "le monde"] },
@@ -39,6 +51,7 @@ export const RUBRIQUES = {
 const NO_FETCH = /lemonde\.fr|lequipe\.fr|news\.google\./;            /* articles payants ou bloqués : résumé seul */
 const PROMO = /bon plan|bons plans|promo|black friday|soldes|\bprix\b|brade|réduction|-\s?\d+\s?%|code promo|meilleure offre|à moins de \d+|sous les \d/i;
 const UA = { "User-Agent": "Mozilla/5.0 (compatible; MyWorldGazette/1.0)", "Accept-Language": "fr-FR,fr;q=0.9" };
+const NAV = { "User-Agent": "Mozilla/5.0 (Linux; Android 14; Pixel 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Mobile Safari/537.36", "Accept-Language": "fr-FR,fr;q=0.9" };
 
 /* ---------- outils texte ---------- */
 const ENT = { amp: "&", lt: "<", gt: ">", quot: '"', apos: "'", nbsp: " ", rsquo: "’", lsquo: "‘", ldquo: "“", rdquo: "”", laquo: "«", raquo: "»", hellip: "…", eacute: "é", egrave: "è", agrave: "à", ccedil: "ç", ecirc: "ê", ocirc: "ô", ucirc: "û", icirc: "î", oelig: "œ", ndash: "–", mdash: "—", euro: "€", copy: "©" };
@@ -49,9 +62,14 @@ const clean = (s) => decode(decode(s)).replace(/<[^>]+>/g, " ").replace(/ /g, "
 const norm = (s) => String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[’']/g, "'").trim();
 const tag = (b, t) => { const m = b.match(new RegExp("<" + t + "[^>]*>([\\s\\S]*?)</" + t + ">", "i")); return m ? clean(m[1]) : ""; };
 
-async function get(url, ms = 15000){
+async function get(url, ms = 15000, opt = {}){
   const c = new AbortController(); const to = setTimeout(() => c.abort(), ms);
-  try { const r = await fetch(url, { headers: UA, signal: c.signal, redirect: "follow" }); return { ok: r.ok, status: r.status, text: r.ok ? await r.text() : "" }; }
+  try {
+    const go = (h) => fetch(url, { method: opt.method || "GET", body: opt.body, headers: { ...h, ...(opt.headers || {}) }, signal: c.signal, redirect: "follow" });
+    let r = await go(opt.nav ? NAV : UA);
+    if (!r.ok && !opt.nav && [403, 406, 429].includes(r.status)) r = await go(NAV);     /* certains sites refusent les robots : on se présente comme un navigateur */
+    return { ok: r.ok, status: r.status, url: r.url, text: r.ok ? await r.text() : "" };
+  }
   catch (e) { return { ok: false, status: 0, text: "" }; } finally { clearTimeout(to); }
 }
 const feedCache = new Map();
@@ -80,6 +98,21 @@ async function googleNews(topic){
   }).filter((i) => i.title && i.url && !PROMO.test(i.title));
 }
 
+/* Les liens Google Actualités cachent l'adresse du vrai article : on la récupère auprès de Google
+   (même méthode que la page Google Actualités elle-même), pour pouvoir lire le résumé du site. */
+async function googleReal(link){
+  try {
+    const id = (link.split("/articles/")[1] || "").split("?")[0]; if (!id) return "";
+    const p = await get("https://news.google.com/articles/" + id, 12000, { nav: true });
+    const sg = (p.text.match(/data-n-a-sg="([^"]+)"/) || [])[1], ts = (p.text.match(/data-n-a-ts="([^"]+)"/) || [])[1];
+    if (!sg || !ts) return "";
+    const req = [[["Fbv4je", JSON.stringify(["garturlreq", [["X", "X", ["X", "X"], null, null, 1, 1, "US:en", null, 1, null, null, null, null, null, 0, 1], "X", "X", 1, [1, 1, 1], 1, 1, null, 0, 0, null, 0], id, +ts, sg]), null, "generic"]]];
+    const r = await get("https://news.google.com/_/DotsSplashUi/data/batchexecute", 12000, { nav: true, method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" }, body: "f.req=" + encodeURIComponent(JSON.stringify(req)) });
+    const url = JSON.parse(JSON.parse(r.text.split("\n\n")[1])[0][2])[1];
+    return /^https?:\/\//.test(url) ? url : "";
+  } catch (e) { return ""; }
+}
+
 /* ---------- résumé extractif (sans IA) ---------- */
 const STOP = new Set(("a au aux avec ce ces cet cette dans de des du elle elles en et eux il ils je la le les leur leurs lui ma mais me meme mes moi mon ne nos notre nous on ou par pas pour qu que qui sa se ses son sur ta te tes toi ton tu un une vos votre vous ete etre avoir ai as avons avez ont est sont etait etaient sera seront fait faire plus moins tres tout tous toute toutes aussi alors ainsi comme dont donc car si sans sous entre apres avant depuis encore deja selon chez lors puis cela ceci celui celle ceux celles quand comment pourquoi quoi quel quelle quels quelles autre autres peu bien non oui ici cet ans fois deux trois").split(" "));
 const words = (s) => (norm(s).match(/[a-z0-9]{3,}/g) || []).filter((w) => !STOP.has(w));
@@ -101,13 +134,22 @@ export function summarize(paras, lead, max = 3, maxChars = 460){
   let out = ""; for (const p of pick){ if ((out + " " + p.s).length > maxChars) break; out = (out ? out + " " : "") + p.s; }
   return out;
 }
-async function articleMore(it){
-  if (NO_FETCH.test(it.url)) return "";
-  const r = await get(it.url, 12000); if (!r.ok) return "";
+/* résumé écrit par le site lui-même, présent dans chaque page d'article (balise « description ») */
+function pageDesc(html){
+  const m = (n) => html.match(new RegExp('<meta[^>]+(?:property|name)=["\']' + n + '["\'][^>]*content=["\']([^"\']+)', "i")) || html.match(new RegExp('<meta[^>]+content=["\']([^"\']+)["\'][^>]*(?:property|name)=["\']' + n + '["\']', "i"));
+  return clean((m("og:description") || m("description") || [])[1] || "");
+}
+async function enrich(it){
+  if (/news\.google\./.test(it.url)){ const real = await googleReal(it.url); if (real) it.url = real; await sleep(300); }
+  if (NO_FETCH.test(it.url)) return;
+  const r = await get(it.url, 12000); if (!r.ok) return;
+  if (!it.lead || it.lead.length < 100){
+    let d = pageDesc(r.text);
+    if (d.length >= 60 && norm(d) !== norm(it.title) && !PROMO.test(d)){ if (d.length > 420) d = d.slice(0, 417).replace(/\s+\S*$/, "") + "…"; it.lead = d; }
+  }
   const main = (r.text.match(/<article[\s\S]*?<\/article>/i) || [r.text])[0];
   const paras = (main.match(/<p[\s>][\s\S]*?<\/p>/gi) || []).map(clean).filter((p) => p.length > 80 && !/©|cookie|abonnez-vous|newsletter/i.test(p));
-  if (paras.join(" ").length < 500) return "";
-  return summarize(paras, it.lead);
+  if (paras.join(" ").length >= 500) it.more = summarize(paras, it.lead);
 }
 
 /* ---------- chiffres du jour ---------- */
@@ -165,7 +207,7 @@ export async function build(topics, seen = new Set()){
     console.log(`${topic}${rub ? " (rubrique " + rub + ")" : ""} : ${picked.length} article(s)`);
   }
   const all = sections.flatMap((s) => s.items);
-  await pool(all, 4, async (it) => { it.more = await articleMore(it); });
+  await pool(all, 3, enrich);
   return { sections, numbers: keyNumbers(all) };
 }
 
@@ -195,6 +237,11 @@ if (process.env.ESSAI){
   existing.forEach((d) => { const g = d.data(); if (g.url) seen.add(g.url); if (g.title) seen.add(norm(g.title)); });
   const { sections, numbers } = await build(topics, seen);
   const batch = db.batch(), addedAt = new Date().toISOString(); let added = 0;
+  /* les infos déjà publiées aujourd'hui sans résumé (titre seul) sont complétées */
+  const bare = []; existing.forEach((d) => { const g = d.data(); if (!g.lead && g.addedAt && parisDay(g.addedAt) === day) bare.push({ ref: d.ref, it: { title: g.title, url: g.url, lead: "" } }); });
+  await pool(bare, 3, (b) => enrich(b.it));
+  let fixed = 0; for (const b of bare) if (b.it.lead){ batch.update(b.ref, { lead: b.it.lead, more: b.it.more || "", url: b.it.url }); fixed++; }
+  if (bare.length) console.log(`Infos d'aujourd'hui sans résumé : ${bare.length}, complétées : ${fixed}`);
   for (const s of sections) for (const i of s.items){
     const id = "g-" + createHash("sha1").update(i.url).digest("hex").slice(0, 16);
     batch.set(gazRef.doc(id), { topic: s.topic, title: i.title, lead: i.lead || "", more: i.more || "", url: i.url, source: i.source, date: i.ts ? new Date(i.ts).toISOString().slice(0, 10) : null, ts: i.ts || null, lang: "fr", addedAt });
