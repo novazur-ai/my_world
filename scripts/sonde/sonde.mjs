@@ -1,6 +1,6 @@
 const NAV = "Mozilla/5.0 (Linux; Android 14; Pixel 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Mobile Safari/537.36";
 const UNES = { "franceinfo": "https://www.francetvinfo.fr/titres.rss", "Le Monde": "https://www.lemonde.fr/rss/une.xml", "20 Minutes": "https://www.20minutes.fr/feeds/rss-une.xml", "BFM": "https://www.bfmtv.com/rss/news-24-7/", "Le Figaro": "https://www.lefigaro.fr/rss/figaro_actualites.xml", "Libération": "https://www.liberation.fr/arc/outboundfeeds/rss-all/?outputType=xml", "Ouest-France": "https://www.ouest-france.fr/rss/une", "Le Parisien": "https://feeds.leparisien.fr/leparisien/rss", "Les Échos": "https://services.lesechos.fr/rss/les-echos-economie.xml" };
-async function get(u){ try { const r = await fetch(u, { headers: { "User-Agent": NAV } }); return await r.text(); } catch (e) { return ""; } }
+async function get(u){ try { const r = await fetch(u, { headers: { "User-Agent": "Mozilla/5.0 (compatible; MyWorldGazette/1.0)" } }); return await r.text(); } catch (e) { return ""; } }
 const clean = (s) => String(s||"").replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g,"$1").replace(/<[^>]+>/g," ").replace(/&#0?39;|&rsquo;/g,"'").replace(/&[a-z#0-9]+;/gi," ").replace(/\s+/g," ").trim();
 const tag = (b,t) => { const m = b.match(new RegExp("<"+t+"[^>]*>([\\s\\S]*?)</"+t+">","i")); return m ? clean(m[1]) : ""; };
 const norm = (s) => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"");
@@ -17,9 +17,9 @@ for (const [src,u] of Object.entries(UNES)){
 const df = new Map(); arts.forEach(a => a.w.forEach(w => df.set(w, (df.get(w)||0)+1)));
 const N = arts.length, idf = (w) => Math.log(N / (df.get(w)||1));
 /* deux articles parlent du même sujet s'ils partagent au moins 2 mots de titre distinctifs (rares dans l'ensemble des unes) */
-const sim = (a,b) => { const sh = new Set([...a.tw].filter(w=>b.w.has(w)).concat([...b.tw].filter(w=>a.w.has(w)))); const rare = [...sh].filter(w => (df.get(w)||0) <= 12); return rare.length >= 2 ? rare.reduce((x,w)=>x+idf(w),0) : 0; };
+const sim = (a,b) => { const sh = new Set([...a.tw].filter(w=>b.w.has(w)).concat([...b.tw].filter(w=>a.w.has(w)))); const rare = [...sh].filter(w => (df.get(w)||0) <= 6); return rare.length >= 2 ? rare.reduce((x,w)=>x+idf(w),0) : 0; };
 const clusters = [];
-for (const a of arts){ let best=null, bs=0; for (const c of clusters){ const s = sim(a, c.items[0]); if (s>bs){bs=s;best=c;} } if (best && bs>=5) best.items.push(a); else clusters.push({ items:[a] }); }
+for (const a of arts){ let best=null, bs=0; for (const c of clusters){ const s = sim(a, c.items[0]); if (s>bs){bs=s;best=c;} } if (best && bs>=6) best.items.push(a); else clusters.push({ items:[a] }); }
 for (const c of clusters){ c.srcs = new Set(c.items.map(x=>x.src)); c.score = c.srcs.size*10 + c.items.length; }
 clusters.sort((a,b)=>b.score-a.score);
 for (const c of clusters.slice(0,6)){ console.log(`\n=== ${c.srcs.size} journaux, ${c.items.length} articles : ${[...c.srcs].join(", ")}`); c.items.slice(0,7).forEach(x=>console.log(`   [${x.src}] ${x.title.slice(0,110)}`)); }
