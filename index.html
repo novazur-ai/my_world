@@ -667,7 +667,7 @@ body.add-on{overflow:hidden}
 #addSlot .cap-prev~.add-tip,#addSlot:has(.cap-prev)+.add-tip{display:none}
 
 /* MyWorld_0.2 : ambiance Riviera. Grand bandeau bleu Méditerranée, texte blanc, semaine qui flotte dessus */
-html{background:#F5F8FB!important}
+html{background:var(--page,#F5F8FB)!important;transition:background-color 1.5s linear}
 :root{--ink:#0B3A5C;--text:#10263D;--muted:#5B6B7C;--line:#E1E8EF}
 #app::before{content:"";position:absolute;left:0;right:0;top:0;height:calc(180px + env(safe-area-inset-top,0px));background:linear-gradient(160deg,#0B4F7C 0%,#1677B3 55%,#3FA7DB 100%);border-radius:0 0 32px 32px;z-index:-1}
 .hd2 .eb,.hd2 .sub{color:rgba(255,255,255,.82)!important}
@@ -676,16 +676,16 @@ html{background:#F5F8FB!important}
 .wsh>span:first-child{color:rgba(255,255,255,.85)!important}
 .wsnav{background:rgba(255,255,255,.18)!important;border-color:rgba(255,255,255,.4)!important;color:#FFFFFF!important}
 .wstrip{box-shadow:0 14px 30px rgba(11,58,92,.18)!important;border-color:transparent!important}
-.wsd.on{background:#0B4F7C!important}.wsd.on .pts i{box-shadow:0 0 0 1.5px #0B4F7C}
-.prbtn,.btn-ink{background:#0B4F7C!important}
-.nav-add{background:linear-gradient(160deg,#0B4F7C,#1F8FCB)!important;border-color:#FFFFFF!important}
+.wsd.on{background:var(--acc,#0B4F7C)!important;transition:background-color 1.5s linear}.wsd.on .pts i{box-shadow:0 0 0 1.5px var(--acc,#0B4F7C)}
+.prbtn,.btn-ink{background:var(--acc,#0B4F7C)!important;transition:background-color 1.5s linear}
+.nav-add{background:linear-gradient(160deg,var(--acc,#0B4F7C),var(--acc-grad,#1F8FCB))!important;border-color:#FFFFFF!important}
 body[data-view="accueil"] .hd2 h1{font-size:26px!important}
 body[data-view="accueil"] .hd2 .av{width:40px!important;height:40px!important;top:0!important}
 body:not([data-view="accueil"]) #app::before{height:calc(104px + env(safe-area-inset-top,0px));border-radius:0 0 28px 28px}
 body[data-view="gazette"] #app::before{height:calc(124px + env(safe-area-inset-top,0px))}
-.fab{background:#0B4F7C!important}
+.fab{background:var(--acc,#0B4F7C)!important}
 .prow,.card{border-color:#E6ECF2!important;box-shadow:0 6px 20px rgba(11,58,92,.06)!important}
-nav.tabs a[aria-current="page"]{background:#E4F1FA!important;color:#0B3A5C!important}
+nav.tabs a[aria-current="page"]{background:var(--acc-soft,#E4F1FA)!important;color:var(--acc-ink,#0B3A5C)!important;transition:background-color 1.5s linear,color 1.5s linear}
 /* MyWorld_0.23 : Météo */
 body[data-view="meteo"] #app::before{height:calc(var(--mtH,250px) + 8px)}
 .mt-place{display:inline-flex;align-items:center;gap:6px;margin-top:8px;min-height:36px;padding:5px 12px;border-radius:999px;border:1.5px solid rgba(255,255,255,.4);background:rgba(255,255,255,.14);color:#fff;font:inherit;font-size:13.5px;font-weight:800;cursor:pointer}
@@ -733,12 +733,32 @@ body[data-view="accueil"] .hd2 h1{padding-right:122px}
 .wpill.tm .wp-p{color:#2F7FC1}
 .wpill.empty{display:grid;place-items:center}.wp-dots{font-size:22px;font-weight:900;letter-spacing:2px;opacity:.7}
 @media (prefers-reduced-motion: reduce){.wp-track,.wpill{transition:none}}
+/* MyWorld_0.34 : bandeau « ciel vivant » (réaliste), plus fin, sans « Bonsoir Théo » */
+.sky{position:absolute;left:0;right:0;top:0;height:var(--bandH,calc(104px + env(safe-area-inset-top,0px)));border-radius:0 0 28px 28px;overflow:hidden;z-index:-1;pointer-events:none;background:linear-gradient(160deg,#0B4F7C 0%,#1677B3 55%,#3FA7DB 100%)}
+body[data-view="accueil"] .sky{border-radius:0 0 32px 32px}
+.sky canvas{display:block;width:100%;height:100%}
+#app::before{height:var(--bandH,calc(104px + env(safe-area-inset-top,0px)))!important}
+.hd2.hd-home{display:flex;align-items:center;justify-content:space-between;min-height:42px}
+.hd2.hd-home .eb{margin:0}
+.hd-home .wpill{position:static;height:42px;width:100px}
+.hd-home .wp-face{gap:5px;padding:0 9px 0 6px}.hd-home .wp-face .mtic{width:30px;height:30px}.hd-home .wp-n b{font-size:18px}
+body[data-view="accueil"] .wstrip-sec{margin-top:6px}
+.hd2 .eb,.hd2 h1,.hd2 .sub,.wsh>span:first-child{text-shadow:0 1px 8px rgba(0,0,0,.28)}
+body.sky-light .hd2 .eb,body.sky-light .hd2 .sub,body.sky-light .wsh>span:first-child{color:rgba(30,37,48,.82)!important;text-shadow:0 1px 6px rgba(255,255,255,.4)}
+body.sky-light .hd2 h1{color:#1E2530!important;text-shadow:0 1px 6px rgba(255,255,255,.4)}
+/* bandeau très fin : en-tête resserré, flèches de la semaine sur la ligne de la date, date plus petite */
+body .hd,body .hd.small{padding:calc(12px + env(safe-area-inset-top,0px)) 0 8px!important}
+body[data-view="accueil"] .wstrip-sec{margin-top:8px}
+body[data-view="accueil"] .wstrip-sec{position:relative}
+body[data-view="accueil"] .wsh{position:absolute;top:-45px;right:calc(max(18px,env(safe-area-inset-right,0px)) + 110px);margin:0;z-index:2}
+body[data-view="accueil"] .wsh>span:first-child{display:none}
+.hd2 .eb{font-size:9.5px!important;letter-spacing:.15em!important}
 /* MyWorld_0.10 : barre Accueil · Notes · + · Apps, et éventail des apps */
 nav.tabs .in{display:grid!important;grid-template-columns:1fr 1fr 64px 2fr!important;align-items:center}
 .nav-apps{display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 0;border:0;background:transparent;border-radius:14px;color:var(--muted);font:inherit;font-size:11.5px;font-weight:700;justify-self:center;width:50%;min-width:64px;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .nav-apps .ic{position:relative;display:grid}
 .nav-apps .nbadge{position:absolute;top:-2px;right:-4px;width:9px;height:9px;border-radius:50%;background:#E0533D;border:2px solid #fff}
-.nav-apps.cur{background:#E4F1FA;color:#0B3A5C;font-weight:800}
+.nav-apps.cur{background:var(--acc-soft,#E4F1FA);color:var(--acc-ink,#0B3A5C);font-weight:800}
 .nav-apps svg .ap-grid,.nav-apps svg .ap-x{transition:opacity .22s ease,transform .32s cubic-bezier(.34,1.56,.64,1);transform-origin:12px 12px}
 .nav-apps svg .ap-x{opacity:0;transform:rotate(-90deg) scale(.4)}
 .nav-apps[aria-expanded="true"]{background:#0B4F7C;color:#fff;position:relative;z-index:32}
@@ -868,6 +888,7 @@ body.scroll-lock{position:fixed;left:0;right:0;width:100%;overflow:hidden}
 <div id="paper" aria-hidden="true"></div>
 
 <div id="app">
+  <div class="sky" id="sky" aria-hidden="true"><canvas id="skyCv"></canvas></div>
   <header class="hd" id="hero"></header>
 
   <div class="gut" id="captureZone">
@@ -903,7 +924,263 @@ body.scroll-lock{position:fixed;left:0;right:0;width:100%;overflow:hidden}
 
 
 <script>
-var APP_VERSION = "MyWorld_0.33";
+/* Soleil et lune, sans connexion (formules astronomiques classiques, précision de l'ordre de la minute). */
+var ASTRO = (function(){
+  var PI = Math.PI, rad = PI / 180, dayMs = 864e5, J1970 = 2440588, J2000 = 2451545, e = rad * 23.4397;
+  function toDays(date){ return date.valueOf() / dayMs - 0.5 + J1970 - J2000; }
+  function ra(l, b){ return Math.atan2(Math.sin(l) * Math.cos(e) - Math.tan(b) * Math.sin(e), Math.cos(l)); }
+  function dec(l, b){ return Math.asin(Math.sin(b) * Math.cos(e) + Math.cos(b) * Math.sin(e) * Math.sin(l)); }
+  function sidereal(d, lw){ return rad * (280.16 + 360.9856235 * d) - lw; }
+  function alt(H, phi, dc){ return Math.asin(Math.sin(phi) * Math.sin(dc) + Math.cos(phi) * Math.cos(dc) * Math.cos(H)); }
+  function azi(H, phi, dc){ return Math.atan2(Math.sin(H), Math.cos(H) * Math.sin(phi) - Math.tan(dc) * Math.cos(phi)); }
+  function sunCoords(d){
+    var M = rad * (357.5291 + 0.98560028 * d), C = rad * (1.9148 * Math.sin(M) + 0.02 * Math.sin(2 * M) + 0.0003 * Math.sin(3 * M));
+    var L = M + C + rad * 102.9372 + PI; return { dec: dec(L, 0), ra: ra(L, 0) };
+  }
+  function moonCoords(d){
+    var L = rad * (218.316 + 13.176396 * d), M = rad * (134.963 + 13.064993 * d), F = rad * (93.272 + 13.229350 * d);
+    var l = L + rad * 6.289 * Math.sin(M), b = rad * 5.128 * Math.sin(F), dt = 385001 - 20905 * Math.cos(M);
+    return { ra: ra(l, b), dec: dec(l, b), dist: dt };
+  }
+  /* altitude en degrés ; azimut en degrés depuis le sud, positif vers l'ouest */
+  function sun(date, lat, lon){
+    var lw = rad * -lon, phi = rad * lat, d = toDays(date), c = sunCoords(d), H = sidereal(d, lw) - c.ra;
+    return { alt: alt(H, phi, c.dec) / rad, az: azi(H, phi, c.dec) / rad };
+  }
+  function moon(date, lat, lon){
+    var lw = rad * -lon, phi = rad * lat, d = toDays(date), c = moonCoords(d), H = sidereal(d, lw) - c.ra;
+    var h = alt(H, phi, c.dec); h = h + rad * 0.017 / Math.tan(h + rad * 10.26 / (h + rad * 5.10));   /* réfraction */
+    return { alt: h / rad, az: azi(H, phi, c.dec) / rad };
+  }
+  /* phase : 0 = nouvelle lune, 0,25 = premier quartier, 0,5 = pleine, 0,75 = dernier quartier ; fraction éclairée 0..1 */
+  function moonPhase(date){
+    var d = toDays(date), s = sunCoords(d), m = moonCoords(d), sdist = 149598000;
+    var phi = Math.acos(Math.sin(s.dec) * Math.sin(m.dec) + Math.cos(s.dec) * Math.cos(m.dec) * Math.cos(s.ra - m.ra));
+    var inc = Math.atan2(sdist * Math.sin(phi), m.dist - sdist * Math.cos(phi));
+    var angle = Math.atan2(Math.cos(s.dec) * Math.sin(s.ra - m.ra), Math.sin(s.dec) * Math.cos(m.dec) - Math.cos(s.dec) * Math.sin(m.dec) * Math.cos(s.ra - m.ra));
+    return { fraction: (1 + Math.cos(inc)) / 2, phase: 0.5 + 0.5 * inc * (angle < 0 ? -1 : 1) / PI };
+  }
+  /* lever et coucher du soleil (recherche minute par minute, assez rapide une fois par jour) */
+  function sunTimes(day, lat, lon){
+    var start = new Date(day.getFullYear(), day.getMonth(), day.getDate()).getTime(), rise = null, set = null, prev = sun(new Date(start), lat, lon).alt;
+    for (var m = 1; m <= 1440; m++){
+      var a = sun(new Date(start + m * 60000), lat, lon).alt;
+      if (prev < -0.833 && a >= -0.833) rise = new Date(start + m * 60000);
+      if (prev >= -0.833 && a < -0.833) set = new Date(start + m * 60000);
+      prev = a;
+    }
+    return { rise: rise, set: set };
+  }
+  return { sun: sun, moon: moon, moonPhase: moonPhase, sunTimes: sunTimes };
+})();
+
+
+/* Lune réaliste dessinée par calcul (pas de photo) :
+   - carte de la face visible : mers (maria) aux vraies positions, terres claires, cratères, rayons de Tycho et Copernic ;
+   - éclairage d'une vraie sphère selon la phase : terminateur doux, lumière cendrée sur la partie sombre. */
+var LUNE = (function(){
+  var rad = Math.PI / 180;
+  /* bruit lissé reproductible */
+  function hash(x, y, z){ var h = Math.sin(x * 127.1 + y * 311.7 + z * 74.7) * 43758.5453; return h - Math.floor(h); }
+  function noise(x, y, z){
+    var ix = Math.floor(x), iy = Math.floor(y), iz = Math.floor(z), fx = x - ix, fy = y - iy, fz = z - iz;
+    var u = fx * fx * (3 - 2 * fx), v = fy * fy * (3 - 2 * fy), w = fz * fz * (3 - 2 * fz);
+    function L(a, b, t){ return a + (b - a) * t; }
+    return L(L(L(hash(ix,iy,iz), hash(ix+1,iy,iz), u), L(hash(ix,iy+1,iz), hash(ix+1,iy+1,iz), u), v),
+             L(L(hash(ix,iy,iz+1), hash(ix+1,iy,iz+1), u), L(hash(ix,iy+1,iz+1), hash(ix+1,iy+1,iz+1), u), v), w);
+  }
+  function fbm(x, y, z, o){ var s = 0, a = .5, f = 1; for (var i = 0; i < o; i++){ s += a * noise(x * f, y * f, z * f); a *= .5; f *= 2.03; } return s; }
+  /* mers : longitude, latitude (degrés), rayon (degrés), allongement nord-sud */
+  /* mers : longitude, latitude, rayon (degrés), allongement nord-sud, teinte (1 = très sombre) */
+  var MARIA = [
+    [-60, 10, 22, 1.8, .9], [-55, 30, 15, 1, .88], [-68, -5, 14, 1.3, .86], [-45, 0, 12, 1, .88],   /* Océan des Tempêtes */
+    [-16, 34, 17, 1, .9], [-25, 5, 9, 1, .8], [-22, -10, 8, 1, .78], [-15, -21, 11, 1, .82], [-39, -24, 6, 1, .85],
+    [3, 13, 5, 1, .8], [-1, 3, 4, 1, .7], [18, 28, 10, 1, .88], [31, 8, 12, 1.15, 1], [23, 4, 6, 1, .95],
+    [52, -6, 9, 1.6, .9], [34, -15, 5.5, 1, .85], [59, 17, 7.5, .85, 1],
+    [-30, 57, 5, 1, .7], [0, 57, 5, 1, .7], [25, 57, 4.5, 1, .65], [-45, 52, 4, 1, .6]
+  ];
+  var LOBES = []; (function(){ var s = 11; function R(){ s = (s * 16807) % 2147483647; return s / 2147483647; }
+    MARIA.forEach(function(m){ var n = Math.max(3, Math.round(m[2] / 2.2));
+      for (var k = 0; k < n; k++){ var an = R() * 6.283, dist = Math.sqrt(R()) * m[2] * .7, r = m[2] * 1.12 * (.38 + R() * .3);
+        LOBES.push([m[0] + Math.cos(an) * dist / Math.cos(m[1] * rad), m[1] + Math.sin(an) * dist * m[3], r, m[4]]); }
+      LOBES.push([m[0], m[1], m[2] * .72, m[4]]); }); })();
+  var CRATERS_RAYS = [[-11, -43, 1, 6], [-20, 10, .8, 4.5], [-38, 8, .55, 3], [-47, 24, .45, 2.2]];  /* Tycho, Copernic, Kepler, Aristarque */
+  function toVec(lon, lat){ return [Math.cos(lat * rad) * Math.sin(lon * rad), Math.sin(lat * rad), Math.cos(lat * rad) * Math.cos(lon * rad)]; }
+  var MV = MARIA.map(function(m){ return { v: toVec(m[0], m[1]), r: m[2] * rad, e: m[3] }; });
+  var RV = CRATERS_RAYS.map(function(c){ return { v: toVec(c[0], c[1]), s: c[2], r: c[3] * rad }; });
+  var cr = []; (function(){ var s = 3; function R(){ s = (s * 16807) % 2147483647; return s / 2147483647; } for (var i = 0; i < 240; i++){ var lon = (R() * 2 - 1) * 88, lat = Math.asin(R() * 2 - 1) / rad * .95; cr.push({ v: toVec(lon, lat), r: (.6 + Math.pow(R(), 3) * 4.5) * rad, d: .5 + R() * .5 }); } })();
+  function dot(a, b){ return a[0] * b[0] + a[1] * b[1] + a[2] * b[2]; }
+
+  /* albédo (0..1) d'un point de la face visible, donné par son vecteur unitaire */
+  function sstep(a, b, x){ var t = Math.max(0, Math.min(1, (x - a) / (b - a))); return t * t * (3 - 2 * t); }
+  function albedo(p){
+    /* terres claires : marbrures à plusieurs échelles */
+    var hi = .78 + (fbm(p[0] * 4 + 9, p[1] * 4 + 2, p[2] * 4, 4) - .5) * .22 + (fbm(p[0] * 20, p[1] * 20 + 7, p[2] * 20, 3) - .5) * .2 + (fbm(p[0] * 60, p[1] * 60, p[2] * 60, 2) - .5) * .1;
+    /* mers : distance déformée par du bruit, bords irréguliers et fondus */
+    var w0 = fbm(p[0] * 5 + 1, p[1] * 5 + 4, p[2] * 5, 3) - .5, w1 = fbm(p[0] * 5 + 7, p[1] * 5 + 1, p[2] * 5 + 3, 3) - .5;
+    var q = [p[0] + w0 * .08, p[1] + w1 * .08, p[2]], lat = Math.asin(Math.max(-1, Math.min(1, q[1]))), lon = Math.atan2(q[0], q[2]), mare = 0;
+    for (var i = 0; i < LOBES.length; i++){
+      var m = LOBES[i], dx = (lon - m[0] * rad) * Math.cos(lat), dy = lat - m[1] * rad, d = Math.sqrt(dx * dx + dy * dy) / (m[2] * rad);
+      if (d < 1.6) mare = Math.max(mare, (1 - sstep(.45, 1.5, d)) * m[3]);
+    }
+    var mo = .42 + (fbm(p[0] * 4 + 3, p[1] * 4, p[2] * 4 + 5, 4) - .5) * .26 + (fbm(p[0] * 26, p[1] * 26, p[2] * 26 + 1, 2) - .5) * .08;
+    var a = hi * (1 - mare) + mo * mare;
+    /* petits cratères : points clairs très discrets */
+    for (i = 0; i < cr.length; i++){ var c = cr[i], dd = Math.acos(Math.max(-1, Math.min(1, dot(p, c.v)))) / c.r; if (dd < 1) a += .09 * c.d * (1 - dd) * (1 - mare * .4); }
+    /* Tycho, Copernic, Kepler, Aristarque : point brillant et rayons doux */
+    for (i = 0; i < RV.length; i++){ var rr = RV[i], dc = Math.acos(Math.max(-1, Math.min(1, dot(p, rr.v))));
+      a += .35 * rr.s * (1 - sstep(0, rr.r * .35, dc));
+      if (dc < rr.r * 7){ var ang = Math.atan2(p[0] - rr.v[0], p[1] - rr.v[1]), st = Math.pow(fbm(Math.cos(ang) * 6 + i, Math.sin(ang) * 6, i, 3), 3) * 2.2;
+        a += st * .12 * rr.s * (1 - dc / (rr.r * 7)) * (1 - sstep(rr.r * 5, rr.r * 7, dc)); } }
+    return Math.max(.12, Math.min(1, a));
+  }
+  /* carte de la face visible, calculée une seule fois */
+  var MAP = null, MS = 160;
+  function map(){
+    if (MAP) return MAP;
+    MAP = new Float32Array(MS * MS);
+    for (var y = 0; y < MS; y++) for (var x = 0; x < MS; x++){
+      var nx = (x + .5) / MS * 2 - 1, ny = 1 - (y + .5) / MS * 2, r2 = nx * nx + ny * ny;
+      MAP[y * MS + x] = r2 > 1 ? 0 : albedo([nx, ny, Math.sqrt(1 - r2)]);
+    }
+    return MAP;
+  }
+  /* image de la lune pour une phase (0 nouvelle, 0,5 pleine) et un diamètre en pixels ; mise en cache */
+  var cache = {};
+  function sprite(phase, size){
+    var key = Math.round(phase * 200) + ":" + size; if (cache[key]) return cache[key];
+    var M = map(), c = document.createElement("canvas"); c.width = c.height = size;
+    var x = c.getContext("2d"), img = x.createImageData(size, size), e = phase * 2 * Math.PI, L = [Math.sin(e), 0, -Math.cos(e)];
+    for (var py = 0; py < size; py++) for (var px = 0; px < size; px++){
+      var nx = (px + .5) / size * 2 - 1, ny = 1 - (py + .5) / size * 2, r2 = nx * nx + ny * ny, i = (py * size + px) * 4;
+      if (r2 > 1){ img.data[i + 3] = 0; continue; }
+      var nz = Math.sqrt(1 - r2), d = nx * L[0] + ny * L[1] + nz * L[2];
+      var lit = Math.min(1, Math.max(0, (d + .04) / .16)); lit = lit * lit * (3 - 2 * lit);
+      var tx = Math.min(MS - 1, Math.floor((px + .5) / size * MS)), ty = Math.min(MS - 1, Math.floor((py + .5) / size * MS)), al = M[ty * MS + tx];
+      var limb = .82 + .18 * Math.sqrt(nz);                       /* léger assombrissement du bord */
+      var v = al * limb * (lit * (.9 + .1 * Math.max(0, d)) + .045 * (1 - lit));   /* + lumière cendrée */
+      var edge = Math.min(1, (1 - Math.sqrt(r2)) * size * .5);     /* bord lissé */
+      img.data[i] = Math.min(255, v * 262); img.data[i + 1] = Math.min(255, v * 258); img.data[i + 2] = Math.min(255, v * 250);
+      img.data[i + 3] = 255 * edge * Math.min(1, .25 + lit * 1.5 + (1 - lit) * .35);
+    }
+    x.putImageData(img, 0, 0);
+    return (cache[key] = c);
+  }
+  return { sprite: sprite };
+})();
+
+/* MyWorld_0.34 : bandeau « ciel vivant » réaliste.
+   Le vrai soleil et la vraie lune de Cagnes-sur-Mer (calcul local), la mer, les étoiles, la météo du moment ;
+   les couleurs de l'appli suivent le ciel. Redessiné ~12 fois par seconde au plus, figé si « réduire les animations ». */
+var SKY = (function(){
+  function hex(h){ h = h.replace("#",""); return [parseInt(h.slice(0,2),16), parseInt(h.slice(2,4),16), parseInt(h.slice(4,6),16)]; }
+  function mix(a, b, t){ return [a[0]+(b[0]-a[0])*t, a[1]+(b[1]-a[1])*t, a[2]+(b[2]-a[2])*t]; }
+  function css(c, a){ return a === undefined ? "rgb(" + (c[0]|0) + "," + (c[1]|0) + "," + (c[2]|0) + ")" : "rgba(" + (c[0]|0) + "," + (c[1]|0) + "," + (c[2]|0) + "," + a + ")"; }
+  function toHex(c){ return "#" + c.map(function(v){ return ("0" + Math.round(Math.max(0, Math.min(255, v))).toString(16)).slice(-2); }).join(""); }
+  function lum(c){ return (0.2126*c[0] + 0.7152*c[1] + 0.0722*c[2]) / 255; }
+  function toHsl(c){ var r=c[0]/255,g=c[1]/255,b=c[2]/255,mx=Math.max(r,g,b),mn=Math.min(r,g,b),l=(mx+mn)/2,h=0,s=0; if(mx!==mn){var d=mx-mn; s=l>.5?d/(2-mx-mn):d/(mx+mn); h=mx===r?(g-b)/d+(g<b?6:0):mx===g?(b-r)/d+2:(r-g)/d+4; h/=6;} return [h,s,l]; }
+  function fromHsl(h,s,l){ function f(p,q,t){ if(t<0)t+=1; if(t>1)t-=1; if(t<1/6)return p+(q-p)*6*t; if(t<1/2)return q; if(t<2/3)return p+(q-p)*(2/3-t)*6; return p; } if(!s) return [l*255,l*255,l*255]; var q=l<.5?l*(1+s):l+s-l*s,p=2*l-q; return [f(p,q,h+1/3)*255,f(p,q,h)*255,f(p,q,h-1/3)*255]; }
+  function smooth(a, b, x){ var t = Math.max(0, Math.min(1, (x - a) / (b - a))); return t*t*(3-2*t); }
+  function rng(seed){ var s = seed >>> 0; return function(){ s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; }; }
+  var KEYS = [
+    [-18, "#060914", "#0B1226", "#16203A", "#05080F", "#2A3350"],
+    [-10, "#0B1530", "#1C2B55", "#3B3F68", "#0A1124", "#5A5A88"],
+    [-5,  "#162A58", "#40507F", "#B0686A", "#14203E", "#E58560"],
+    [-1,  "#25427E", "#7A86B3", "#F09A62", "#23355E", "#FFAA60"],
+    [3,   "#2F5E9E", "#97AFD6", "#F7BE7E", "#2C4B7A", "#FFC27A"],
+    [10,  "#3A79C0", "#8FBEE6", "#F3DDB8", "#2D5F94", "#FFE2A8"],
+    [25,  "#2F7ACB", "#79B5E8", "#C9E3F5", "#2A6AA8", "#FFF3D6"],
+    [60,  "#2370C4", "#68ACE8", "#BFE0F7", "#22609F", "#FFFFFF"]
+  ].map(function(k){ return [k[0]].concat(k.slice(1).map(hex)); });
+  function palette(a){
+    var k = KEYS[KEYS.length - 1];
+    if (a <= KEYS[0][0]) k = KEYS[0];
+    else for (var i = 1; i < KEYS.length; i++) if (a <= KEYS[i][0]){ var t = (a - KEYS[i-1][0]) / (KEYS[i][0] - KEYS[i-1][0]); k = KEYS[i-1].map(function(v, j){ return j ? mix(v, KEYS[i][j], t) : v; }); break; }
+    return { top:k[1], mid:k[2], hor:k[3], sea:k[4], light:k[5] };
+  }
+  function veil(w){ return w === "rain" ? .12 : w === "cloudy" ? .55 : 1; }
+  function weatherize(p, st){
+    if (st.weather === "clear") return p;
+    var g = st.weather === "rain" ? .55 : .3, dark = mix(hex("#8A939E"), hex("#1A1E25"), st.night), r = {};
+    for (var k in p) r[k] = mix(p[k], k === "light" ? p[k] : mix(dark, p[k], .35), g); return r;
+  }
+  function state(date, lat, lon, weather){
+    var s = ASTRO.sun(date, lat, lon), m = ASTRO.moon(date, lat, lon), ph = ASTRO.moonPhase(date);
+    return { sunAlt: s.alt, sunAz: s.az, moonAlt: m.alt, moonAz: m.az, phase: ph.phase, lit: ph.fraction, weather: weather || "clear",
+      night: 1 - smooth(-12, -3, s.alt), golden: smooth(-6, 0, s.alt) * (1 - smooth(4, 14, s.alt)) };
+  }
+  /* on regarde la mer, vers le sud : est à gauche, ouest à droite ; au plus haut, l'astre monte jusque sous la barre d'état */
+  function place(az, alt, W, hy, top){
+    var x = W * .58 + (az / 130) * (W * .44), f = alt > 0 ? Math.pow(Math.sin(alt * Math.PI / 180), .7) : alt / 30;
+    return [x, hy - f * (hy - top)];
+  }
+  function draw(ctx, W, H, hy, top, st, t){
+    var p = weatherize(palette(st.sunAlt), st);
+    var g = ctx.createLinearGradient(0, 0, 0, hy); g.addColorStop(0, css(p.top)); g.addColorStop(.62, css(p.mid)); g.addColorStop(1, css(p.hor));
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, hy);
+    /* étoiles */
+    if (st.night > .02 && st.weather !== "rain"){
+      var R = rng(7), a0 = st.night * (st.weather === "cloudy" ? .35 : 1);
+      for (var i = 0; i < Math.round(W / 3.4); i++){ var x = R() * W, y = R() * (hy - 6), s = R(), tw = .55 + .45 * Math.sin(t * (.6 + R() * 1.4) + i), a = a0 * tw * (.35 + .65 * (1 - y / hy));
+        ctx.fillStyle = "rgba(255,255,255," + Math.min(1, a * 1.3).toFixed(3) + ")"; ctx.fillRect(x, y, s > .9 ? 1.7 : 1.1, s > .9 ? 1.7 : 1.1); }
+      var lp = ctx.createLinearGradient(0, hy - 30, 0, hy); lp.addColorStop(0, "rgba(120,110,150,0)"); lp.addColorStop(1, "rgba(120,110,150," + (.22 * st.night) + ")"); ctx.fillStyle = lp; ctx.fillRect(0, hy - 30, W, 30);
+    }
+    var sp = place(st.sunAz, st.sunAlt, W, hy, top), mp = place(st.moonAz, st.moonAlt, W, hy, top);
+    if (st.sunAlt > -10){
+      var gy = Math.min(sp[1], hy), gr = ctx.createRadialGradient(sp[0], gy, 0, sp[0], gy, W * .55);
+      gr.addColorStop(0, css(p.light, .55 * (1 - st.night))); gr.addColorStop(1, css(p.light, 0)); ctx.fillStyle = gr; ctx.fillRect(0, 0, W, hy);
+    }
+    ctx.save(); ctx.beginPath(); ctx.rect(0, 0, W, hy); ctx.clip();
+    if (st.moonAlt > -2 && st.lit > .02){
+      var mr = 11, mg = ctx.createRadialGradient(mp[0], mp[1], 0, mp[0], mp[1], mr * 3.6);
+      mg.addColorStop(0, "rgba(220,230,255," + (.22 * st.lit * st.night) + ")"); mg.addColorStop(1, "rgba(220,230,255,0)"); ctx.fillStyle = mg; ctx.fillRect(mp[0] - mr * 4, mp[1] - mr * 4, mr * 8, mr * 8);
+      var d = Math.min(2, window.devicePixelRatio || 1), spr = LUNE.sprite(st.phase, Math.round(mr * 2 * d));
+      ctx.globalAlpha = (.35 + .65 * st.night) * veil(st.weather) * (st.weather === "rain" ? 0 : 1); ctx.drawImage(spr, mp[0] - mr, mp[1] - mr, mr * 2, mr * 2); ctx.globalAlpha = 1;
+    }
+    if (st.sunAlt > -1.5){
+      var sg = ctx.createRadialGradient(sp[0], sp[1], 0, sp[0], sp[1], 24); sg.addColorStop(0, "rgba(255,255,250,1)"); sg.addColorStop(.32, "rgba(255,250,235,.95)"); sg.addColorStop(.4, css(p.light, .45)); sg.addColorStop(1, css(p.light, 0));
+      ctx.globalAlpha = veil(st.weather); ctx.fillStyle = sg; ctx.beginPath(); ctx.arc(sp[0], sp[1], 24, 0, 7); ctx.fill(); ctx.globalAlpha = 1;
+    }
+    ctx.restore();
+    /* nuages (seulement si le temps est couvert) */
+    if (st.weather !== "clear"){
+      var Rc = rng(st.weather === "rain" ? 31 : 17), n = st.weather === "cloudy" ? 4 : 6;
+      for (i = 0; i < n; i++){ var cx0 = Rc() * W * 1.4 - W * .2, cy = top + 6 + Rc() * Math.max(10, hy - top - 22), cw = 60 + Rc() * 70, csp = 2 + Rc() * 4, cx = ((cx0 + t * csp) % (W + cw * 2)) - cw;
+        ctx.save(); ctx.filter = "blur(7px)"; var cg = ctx.createLinearGradient(0, cy - 12, 0, cy + 14);
+        cg.addColorStop(0, css(mix(p.light, [255,255,255], .5), .85 * (1 - .5 * st.night))); cg.addColorStop(1, css(mix(p.mid, [90,96,110], .4), .8 * (1 - .5 * st.night)));
+        ctx.fillStyle = cg; ctx.beginPath(); ctx.ellipse(cx, cy, cw * .5, 11, 0, 0, 7); ctx.ellipse(cx + cw * .22, cy - 6, cw * .3, 10, 0, 0, 7); ctx.fill(); ctx.restore(); }
+    }
+    /* mer */
+    var s2 = ctx.createLinearGradient(0, hy, 0, H); s2.addColorStop(0, css(mix(p.hor, p.sea, .55))); s2.addColorStop(1, css(mix(p.sea, [0,0,0], .25)));
+    ctx.fillStyle = s2; ctx.fillRect(0, hy, W, H - hy);
+    var Rw = rng(11); ctx.strokeStyle = css(mix(p.mid, [255,255,255], .2), .07); ctx.lineWidth = 1;
+    for (i = 0; i < 18; i++){ var wy = hy + 3 + Math.pow(Rw(), 1.6) * (H - hy); ctx.beginPath(); ctx.moveTo(0, wy); for (var wx = 0; wx <= W; wx += 14) ctx.lineTo(wx, wy + Math.sin(wx * .05 + t * .4 + i) * .8); ctx.stroke(); }
+    function glitter(x0, strength, seed, col, tt){
+      if (strength < .02) return; var Rg = rng(seed); ctx.fillStyle = col;
+      for (var k = 0; k < 60; k++){ var dd = Rg(), yy = hy + 3 + dd * dd * (H - hy - 3), spread = 6 + (yy - hy) * .55, xx = x0 + (Rg() - .5) * 2 * spread, ww = 2 + (yy - hy) * .12 * (.5 + Rg()), aa = strength * Math.max(0, Math.sin(tt * (1 + Rg() * 2) + k * 1.7)) * (1 - dd * .5);
+        if (aa < .03) continue; ctx.globalAlpha = aa; ctx.fillRect(xx - ww / 2, yy, ww, 1.3); }
+      ctx.globalAlpha = 1;
+    }
+    glitter(sp[0], st.sunAlt > -1 ? .9 * (st.weather === "clear" ? 1 : .35) : 0, 3, css(mix(p.light, [255,255,255], .5)), t);
+    glitter(mp[0], st.moonAlt > 0 && st.weather !== "rain" ? .5 * st.lit * st.night : 0, 9, "rgba(230,236,255,1)", t * .7);
+    var hz = ctx.createLinearGradient(0, hy - 9, 0, hy + 7); hz.addColorStop(0, css(p.hor, 0)); hz.addColorStop(.6, css(mix(p.hor, [255,255,255], .15), .55)); hz.addColorStop(1, css(p.hor, 0));
+    ctx.fillStyle = hz; ctx.fillRect(0, hy - 9, W, 16);
+    if (st.weather === "rain"){ var Rr = rng(5); ctx.strokeStyle = "rgba(220,228,240,.9)"; ctx.lineWidth = 1; for (i = 0; i < 60; i++){ var rx = Rr() * W, rs = 90 + Rr() * 60, ry = ((Rr() * H + t * rs) % (H + 20)) - 10; ctx.globalAlpha = .25 + Rr() * .25; ctx.beginPath(); ctx.moveTo(rx, ry); ctx.lineTo(rx - 3, ry + 9); ctx.stroke(); } ctx.globalAlpha = 1; }
+    return p;
+  }
+  /* couleurs de l'appli d'après le ciel du moment */
+  function tones(p, st){
+    var a = mix(p.top, p.sea, .35), h = toHsl(a); h[2] = Math.max(.24, Math.min(.38, h[2])); h[1] = Math.min(.75, h[1] * 1.05);
+    a = fromHsl(h[0], h[1], h[2]); a = mix(a, mix(p.light, hex("#C9622F"), .5), st.golden * .45);
+    return { acc: toHex(a), accInk: toHex(mix(a, [0,0,0], .25)), soft: toHex(mix(a, [255,255,255], .86)), page: toHex(mix(a, [255,255,255], .955 - st.night * .03)),
+      grad: toHex(mix(a, p.mid, .45)), bar: toHex(p.top), light: lum(p.top) > .62 };
+  }
+  return { state: state, draw: draw, tones: tones };
+})();
+
+</script>
+<script>
+var APP_VERSION = "MyWorld_0.34";
 (function(){
 "use strict";
 var CAL = "t.mallet06@gmail.com";
@@ -1065,7 +1342,7 @@ function heroHTML(){
     var hr = new Date().getHours(), g = greetText().split(" · ")[0];
     if (/^Bonjour, /.test(g)) g = "Coucou " + NAME + " !"; else if (/^(Bonsoir|Bonne nuit), /.test(g)) g = g.replace(", ", " ") + " !";
     ensureMeteo();
-    return '<div class="hd2 gut"><p class="eb">' + h(date) + '</p><h1>' + h(g) + '</h1>' + wPillHTML() + '</div>';
+    return '<div class="hd2 gut hd-home"><p class="eb">' + h(date) + '</p>' + wPillHTML() + '</div>';
   }
   if (S.view === "meteo") return meteoHero(date);
   var title = S.view === "listes" ? "Tes listes" : S.view === "fiche" ? "Ta fiche" : S.view === "notes" ? "Tes notes" : "La Gazette", sub = "";
@@ -1552,6 +1829,43 @@ function render(){
   document.querySelectorAll("nav.tabs a").forEach(function(a){ if (a.dataset.tab === v) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current"); }); var nap = document.querySelector(".nav-apps"); if (nap) nap.classList.toggle("cur", v === "listes" || v === "fiche" || v === "gazette" || v === "meteo");
 }
 
+
+/* ---------- bandeau « ciel vivant » ---------- */
+(function(){
+  var wrap = document.getElementById("sky"), cv = document.getElementById("skyCv"); if (!wrap || !cv || !window.SKY) return;
+  var ctx = cv.getContext("2d"), last = 0, lastTone = 0, tone = null, reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function weather(){ var d = mtData(); if (!d || !d.current) return "clear"; var c = d.current.weather_code; return c >= 51 ? "rain" : (c === 3 || c === 45 || c === 48) ? "cloudy" : "clear"; }
+  function band(){
+    var app = document.getElementById("app"), hero = document.getElementById("hero"), top = app.getBoundingClientRect().top + window.scrollY, H;
+    if (S.view === "accueil"){ var st = document.querySelector(".wstrip"); H = st ? st.getBoundingClientRect().top + window.scrollY - top + st.offsetHeight * .5 : hero.offsetHeight + 60; }
+    else if (S.view === "meteo") H = hero.offsetHeight + 8;
+    else H = hero.offsetHeight + 10;
+    H = Math.round(H); if (app._bandH !== H){ app._bandH = H; app.style.setProperty("--bandH", H + "px"); }
+    return H;
+  }
+  function frame(now){
+    requestAnimationFrame(frame);
+    if (document.hidden) return;
+    if (now - last < (reduce ? 30000 : 83)) return; last = now;
+    var H = band(), W = wrap.clientWidth, d = Math.min(2, window.devicePixelRatio || 1);
+    if (cv.width !== Math.round(W * d) || cv.height !== Math.round(H * d)){ cv.width = Math.round(W * d); cv.height = Math.round(H * d); }
+    var hero = document.getElementById("hero"), safe = Math.max(0, parseFloat(getComputedStyle(hero).paddingTop) - 26), top = safe + 8;
+    var vis = H; if (S.view === "accueil"){ var st = document.querySelector(".wstrip"); if (st) vis = H - st.offsetHeight * .5; }
+    var hy = Math.round(top + (vis - top) * (S.view === "accueil" ? .8 : .7));
+    var p = mtPlace(), state = SKY.state(new Date(), p.lat, p.lon, weather());
+    ctx.setTransform(d, 0, 0, d, 0, 0);
+    var pal = SKY.draw(ctx, W, H, hy, top, state, reduce ? 0 : now / 1000);
+    var spl = !!document.getElementById("splash"); if (frame.spl && !spl) tone = null; frame.spl = spl;
+    if (!tone || now - lastTone > 20000){
+      lastTone = now; tone = SKY.tones(pal, state); var r = document.documentElement.style;
+      r.setProperty("--acc", tone.acc); r.setProperty("--acc-ink", tone.accInk); r.setProperty("--acc-soft", tone.soft); r.setProperty("--page", tone.page); r.setProperty("--acc-grad", tone.grad);
+      document.body.classList.toggle("sky-light", tone.light);
+      if (!document.getElementById("splash")){ var meta = document.querySelector('meta[name="theme-color"]'); if (meta) meta.content = tone.bar; }
+    }
+  }
+  requestAnimationFrame(frame);
+  window.SKY_SET_TONE_NOW = function(){ tone = null; };
+})();
 
 /* ---------- toasts, célébrations ---------- */
 /* notification : monte en douceur, reste, redescend en s'effaçant ; on peut la faire glisser sur le côté pour la fermer */
