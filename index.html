@@ -730,6 +730,13 @@ body.fan-on nav.tabs a,body.fan-on .nav-add{opacity:.35;pointer-events:none;tran
 .nk-p{font-size:15px;line-height:1.5;color:#26262C;margin:0 0 6px}
 .kw-line{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #EEF1F5;font-size:14px}.kw-line b{min-width:110px;font-weight:800}.kw-line span{flex:1;color:var(--muted)}
 .kw-del{border:0;background:#F1F3F6;border-radius:50%;width:32px;height:32px;font-size:18px;color:#5B6B7C;cursor:pointer}
+/* MyWorld_0.15 : import de notes */
+.imp-tip{font-size:14px;line-height:1.5;color:var(--muted);margin:0 0 12px}
+.imp-form{display:flex;flex-direction:column;gap:10px}.imp-form textarea{width:100%;box-sizing:border-box;min-height:160px;font:inherit;font-size:15px;line-height:1.45}
+.imp-lbl{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.imp-kw{display:flex;align-items:center;gap:10px;min-height:44px;font-weight:700;font-size:14.5px}.imp-kw input{width:20px;height:20px;accent-color:#0B4F7C}
+.imp-files{margin-top:18px;padding-top:14px;border-top:1px solid #EEF1F5;display:flex;flex-direction:column;gap:8px}.imp-files p{margin:0;font-size:13.5px;color:var(--muted)}
+.imp-pick{display:flex;align-items:center;justify-content:center;cursor:pointer}
 </style>
 </head>
 <body>
@@ -779,7 +786,7 @@ body.fan-on nav.tabs a,body.fan-on .nav-add{opacity:.35;pointer-events:none;tran
 
 
 <script>
-var APP_VERSION = "MyWorld_0.14";
+var APP_VERSION = "MyWorld_0.15";
 (function(){
 "use strict";
 var CAL = "t.mallet06@gmail.com";
@@ -1319,7 +1326,7 @@ function stripWords(text){
     .replace(/(^|\s)(du soir|de l['’]apr[eè]s-midi|de l['’]aprem|du matin)(?![\wà-ÿ])/ig,"$1")
     .replace(/\brdv\b/ig,"rendez-vous").replace(/\bdoc\b/ig,"docteur")
     .replace(/^\s*(j'ai|j’ai|jai)\s+(?=(un |une )?(rendez-vous|rendez vous|cours|entra[iî]nement|match|vacation|r[ée]union)\b)/i,"")
-    .replace(/^\s*(peux-tu |tu peux |merci de )?((fais|fait|mets|met|ajoute|cr[ée]e|programme)[- ]moi |(fais|fait|mets|met|ajoute|cr[ée]e|programme) )?(un )?(rappel(?!le)|petit rappel|alarme)\s*/i,"")
+    .replace(/^\s*(peux-tu |tu peux |merci de )?((fais|fait|mets|met|ajoute|cr[ée]e|programme)[- ]moi |(fais|fait|mets|met|ajoute|cr[ée]e|programme) )?(un )?(rappel(?![a-zàâéèêëîïôûùç])|petit rappel|alarme)\s*/i,"")
     .replace(/^\s*rappelle[- ]moi\s*/i,"")
     .replace(/^\s*(je dois|penser à|penser a|ne pas oublier de|ne pas oublier d')\s*/i,"")
     .replace(/\s+/g," ").replace(/^[\s,.;:-]+|[\s,.;:-]+$/g,"").replace(/\s+(à|a|vers|de|le|la|pour)$/i,"").trim().replace(/^.*$/, function(x){ return tidyTitle(x) || x; });
@@ -1436,6 +1443,34 @@ var KEYWORDS = [
   {re:/^note\b/i, k:"note", lbl:"note", d:"nouvelle note"},
   {re:/^(?:à faire|a faire|todo|to-do|to do)\b/i, k:"todo", lbl:"à faire", d:"nouvel « à faire »"}
 ];
+/* Reconnaissance tolérante du premier mot (dictée rapide : « affaire » pour « à faire »…).
+   On compare les 1 à 3 premiers mots collés, sans accents ni ponctuation, à des formes connues ;
+   une lettre d'écart est acceptée pour les formes longues (6 lettres et plus). */
+var KW_FORMS = {
+  todo:["afaire","todo","toudou","afer","afere","affer"],
+  rappel:["rappel","rappelle","rappelles","rappellemoi","rappellesmoi","rappelmoi","rapelmoi","rapel","rapelle","rappelezmoi"],
+  birthday:["anniv","anniversaire","aniv","anif","aniversaire","annif"],
+  event:["rdv","rendezvous","rendevous","rdvs","erdv"],
+  note:["note","notes"]
+};
+function kwDist(a, b){
+  if (Math.abs(a.length - b.length) > 1) return 9;
+  var p = [], i, j; for (j = 0; j <= b.length; j++) p[j] = j;
+  for (i = 1; i <= a.length; i++){ var c = [i]; for (j = 1; j <= b.length; j++) c[j] = Math.min(p[j] + 1, c[j-1] + 1, p[j-1] + (a[i-1] === b[j-1] ? 0 : 1)); p = c; }
+  return p[b.length];
+}
+function matchKeyword(text){
+  var words = text.trim().split(/\s+/);
+  for (var n = Math.min(3, words.length); n >= 1; n--){
+    var cand = noAcc(words.slice(0, n).join("").toLowerCase()).replace(/[^a-z]/g, "");
+    if (!cand) continue;
+    for (var k in KW_FORMS){
+      var ok = KW_FORMS[k].some(function(f){ return f === cand || (f.length >= 6 && kwDist(f, cand) <= 1); });
+      if (ok){ var rest = words.slice(n).join(" ").replace(/^[\s:,.\-–]+/, "").replace(/^(?:de\s+|d['’]\s*|que\s+|qu['’]\s*|pour\s+)/i, "").trim(); return {k:k, rest:rest}; }
+    }
+  }
+  return null;
+}
 function noteKeys(){ return ((S.settings && S.settings.noteKeys) || []).slice(); }
 function kwRest(text, re){ return text.trim().replace(re, "").replace(/^[\s:,.\-–]+/, "").replace(/^(?:de\s+|d['’]\s*|que\s+|qu['’]\s*|pour\s+)/i, "").trim(); }
 /* phrase sans date qui commence par un verbe à l'infinitif : clairement une chose à se rappeler */
@@ -1473,10 +1508,8 @@ function localParse(text){
       if (hitN && what) return {kind:"note-add", noteId:hitN._id, title:hitN.title, items:splitItems(what), raw:splitItems(what, true), forced:true};
     }
   }
-  for (var kw = 0; kw < KEYWORDS.length; kw++){
-    var K = KEYWORDS[kw]; if (!K.re.test(text.trim())) continue;
-    var rest = kwRest(text, K.re);
-    if (!rest) break;
+  var MK = matchKeyword(text), K = MK ? {k:MK.k} : null, rest = MK ? MK.rest : "";
+  if (K && rest){
     if (K.k === "todo") return parseTodo(rest);
     if (K.k === "note"){ var nc0 = parseNoteCmd(text); if (nc0 && nc0.kind === "note-add"){ nc0.forced = true; return nc0; } var tl = rest.match(/^([^:]{2,40}?)\s*:\s*([\s\S]+)$/); if (tl){ var its = splitItems(tl[2]); return its.length > 1 ? {kind:"note", title:cap(tl[1].trim()), text:"", items:its, todo:true, forced:true} : {kind:"note", title:cap(tl[1].trim()), text:cap(tl[2].trim()), items:[], forced:true}; } var fn = freeNote(rest); fn.forced = true; return fn; }
     var r0 = localParse0(K.k === "birthday" ? "anniversaire de " + rest : K.k === "rappel" ? "rappelle-moi " + rest : rest);
@@ -1742,7 +1775,7 @@ function commit(r){
   if (r.kind === "note"){
     var nid = db.collection("notes").newId(), now = nowISO();
     var html = (r.text ? String(r.text).split(/\n/).map(function(l){ return "<div>" + (l.trim() ? h(l) : "<br>") + "</div>"; }).join("") : "") + (r.items && r.items.length ? todoHTML(r.items) : r.todo ? todoHTML([""]) : "");
-    return db.collection("notes").doc(nid).set({title:r.title || "", html:html, text:textFromHTML(html), media:[], thumb:null, hasAudio:false, folder:null, bg:"papier", pinned:false, deleted:false, createdAt:now, updatedAt:now}).then(function(){ toast("Note ajoutée dans tes notes.", {undo:function(){ db.collection("notes").doc(nid).delete().catch(dbErr); }}); if (r.title) setTimeout(function(){ offerNoteKey(r.title); }, 900); });
+    return db.collection("notes").doc(nid).set({title:r.title || "", html:html, text:textFromHTML(html), media:[], thumb:null, hasAudio:false, folder:null, bg:"papier", pinned:false, deleted:false, createdAt:now, updatedAt:now}).then(function(){ if (r.quiet) return nid; toast("Note ajoutée dans tes notes.", {undo:function(){ db.collection("notes").doc(nid).delete().catch(dbErr); }}); if (r.title) setTimeout(function(){ offerNoteKey(r.title); }, 900); return nid; });
   }
   if (r.kind === "note-add"){
     var tn = S.notes.find(function(n){ return n._id === r.noteId; }); if (!tn || !r.items.length) return;
@@ -2241,6 +2274,7 @@ function notePrefsSheet(){
   function sel(id, label, opts, cur){ return '<div class="field"><label for="' + id + '">' + label + '</label><select id="' + id + '">' + opts.map(function(o){ return '<option value="' + o[0] + '"' + (o[0] === cur ? " selected" : "") + '>' + o[1] + '</option>'; }).join("") + '</select></div>'; }
   var nDel = S.notes.filter(function(n){ return n.deleted; }).length;
   openSheet("Options des notes", sel("npSize", "Taille du texte", [["petite","Petite"],["moyenne","Moyenne"],["grande","Grande"]], pr.size) + sel("npSort", "Trier", [["modif","Par date de modification"],["creation","Par date de création"]], pr.sort) + sel("npLayout", "Disposition", [["grille","Affichage grille"],["liste","Affichage liste"]], pr.layout)
+    + '<button type="button" class="btn light" data-act="note-import" style="width:100%;margin-top:6px">Importer une note</button>'
     + '<button type="button" class="btn light" data-act="note-trash" style="width:100%;margin-top:6px">Éléments supprimés récemment' + (nDel ? " (" + nDel + ")" : "") + '</button>', function(){
     ["npSize","npSort","npLayout"].forEach(function(k){ document.getElementById(k).onchange = function(){ var p = {}; p[{npSize:"size", npSort:"sort", npLayout:"layout"}[k]] = this.value; saveNotePrefs(p).then(render); }; });
   });
@@ -2675,6 +2709,7 @@ document.addEventListener("click", function(e){
   if (act === "export"){ exportBackup(); return; }
   if (act === "bday-edit"){ bdayEditSheet(id); return; }
   if (act === "ev-edit"){ eventEditSheet(b.dataset.gid || null, b.dataset.id || null); return; }
+  if (act === "note-import"){ noteImportSheet(); return; }
   if (act === "lt-tab"){ S.listTab = b.dataset.k; render(); return; }
   if (act === "lt-mom"){ S.todoMom = b.dataset.k; render(); return; }
   if (act === "todo-check"){ todoCheck(id, b); return; }
@@ -2812,6 +2847,60 @@ function keywordsSettingsHTML(){
   return '<h3 style="margin:26px 0 6px">Mots-clés</h3><p style="font-size:13px;color:var(--muted);margin-bottom:6px">En début de phrase dans le +, ils forcent la compréhension.</p>'
     + KEYWORDS.map(function(K){ return '<div class="kw-line"><b>' + h(K.lbl) + '</b><span>' + h(K.d) + '</span></div>'; }).join("")
     + '<p class="learn-sub">Titres de notes</p>' + (nk.length ? nk.map(function(k){ return '<div class="kw-line"><b>' + h(k) + '</b><span>ajoute à cette note</span><button type="button" class="kw-del" data-act="nk-del" data-t="' + h(k) + '" aria-label="Retirer ' + h(k) + '">×</button></div>'; }).join("") : '<p class="soft-empty" style="padding:0">Aucun pour l\'instant. Ils te seront proposés à chaque nouvelle note.</p>');
+}
+
+/* ===== MyWorld_0.15 : importer une note (copier-coller ou fichiers .txt) ===== */
+function splitImported(title, text){
+  text = String(text || "").replace(/\r\n?/g, "\n").replace(/ /g, " ").replace(/^\s+|\s+$/g, "");
+  title = String(title || "").trim();
+  var lines = text.split("\n");
+  if (title && normS(title) === normS(lines[0] || "")) lines.shift();
+  if (!title && lines.length > 1 && lines[0].trim().length <= 60) title = lines.shift().trim();
+  if (!title && lines.length === 1 && lines[0].length <= 40){ title = lines[0]; lines = []; }
+  return {title:cap(title), text:lines.join("\n").replace(/^\s+|\s+$/g, "")};
+}
+function addNoteKey(t){ var ks = noteKeys(); if (t && ks.indexOf(t) < 0){ ks.push(t); return saveSettings({noteKeys:ks}); } return Promise.resolve(); }
+function noteImportSheet(){
+  openSheet("Importer une note", '<p class="imp-tip">Dans Notes Xiaomi, ouvre la note, garde le doigt appuyé sur le texte, puis <b>Tout sélectionner → Copier</b>. Colle-la ici. Le titre est facultatif : sinon, la première ligne sert de titre.</p>'
+    + '<form id="fImp" class="imp-form"><div class="field"><label for="impTitle">Titre (facultatif)</label><input id="impTitle" type="text" autocomplete="off" placeholder="Films à voir"></div>'
+    + '<div class="field"><div class="imp-lbl"><label for="impText">Contenu</label><button type="button" class="mini" id="impPaste">Coller</button></div><textarea id="impText" rows="8" placeholder="Colle le texte de ta note ici"></textarea></div>'
+    + '<label class="imp-kw"><input type="checkbox" id="impKw"> <span id="impKwL">Garder le titre comme mot-clé</span></label>'
+    + '<div class="bd-actions"><button class="btn light" type="button" data-act="close">Fermer</button><button class="btn green" type="submit">Importer</button></div></form>'
+    + '<div class="imp-files"><p>Tu as des fichiers texte (.txt, .md) ? Chacun devient une note.</p><label class="btn light imp-pick" for="impFiles">Choisir des fichiers</label><input id="impFiles" type="file" accept=".txt,.md,text/plain,text/markdown" multiple hidden></div>', function(){
+    var ti = document.getElementById("impTitle"), tx = document.getElementById("impText"), kl = document.getElementById("impKwL"), kw = document.getElementById("impKw");
+    var upd = function(){ var t = splitImported(ti.value, tx.value).title; kl.textContent = t ? "Garder « " + t + " » comme mot-clé" : "Garder le titre comme mot-clé"; kw.disabled = !t; };
+    ti.oninput = upd; tx.oninput = upd;
+    document.getElementById("impPaste").onclick = function(){
+      if (!navigator.clipboard || !navigator.clipboard.readText){ tx.focus(); toast("Garde le doigt appuyé dans le champ, puis Coller."); return; }
+      navigator.clipboard.readText().then(function(v){ if (v){ tx.value = v; upd(); } else toast("Le presse-papiers est vide."); }).catch(function(){ tx.focus(); toast("Garde le doigt appuyé dans le champ, puis Coller."); });
+    };
+    document.getElementById("fImp").onsubmit = function(e){
+      e.preventDefault(); if (!needDb()) return;
+      var n = splitImported(ti.value, tx.value); if (!n.title && !n.text){ toast("Colle d'abord le texte de ta note."); return; }
+      var keep = kw.checked && n.title;
+      commit({kind:"note", title:n.title, text:n.text, items:[], quiet:true}).then(function(){ return keep ? addNoteKey(n.title) : null; }).then(function(){
+        toast("Note « " + (n.title || "sans titre") + " » importée" + (keep ? ", mot-clé ajouté" : "") + ". Tu peux coller la suivante.");
+        ti.value = ""; tx.value = ""; kw.checked = false; upd(); ti.focus();
+      }).catch(dbErr);
+    };
+    document.getElementById("impFiles").onchange = function(){
+      var files = Array.prototype.slice.call(this.files || []); if (!files.length || !needDb()) return;
+      Promise.all(files.map(function(f){ return f.text().then(function(t){ var fn = f.name.replace(/\.(txt|md|markdown)$/i, "").replace(/[_-]+/g, " ").trim(); if (/^(note|notes|nouvelle note|sans titre|untitled|memo|mémo)?\s*\d*$/i.test(fn)) fn = ""; return splitImported(fn, t); }); })).then(function(list){
+        list = list.filter(function(n){ return n.title || n.text; });
+        return Promise.all(list.map(function(n){ return commit({kind:"note", title:n.title, text:n.text, items:[], quiet:true}); })).then(function(){ return list; });
+      }).then(function(list){
+        var titles = list.map(function(n){ return n.title; }).filter(Boolean);
+        if (!titles.length){ closeSheet(); toast(list.length + " note" + (list.length > 1 ? "s" : "") + " importée" + (list.length > 1 ? "s" : "") + "."); return; }
+        openSheet(list.length + " note" + (list.length > 1 ? "s" : "") + " importée" + (list.length > 1 ? "s" : ""), '<p class="imp-tip">Lesquels de ces titres veux-tu garder comme mots-clés ? Ensuite, « titre … » dans le + ajoutera directement à la note.</p><form id="fImpKw">'
+          + titles.map(function(t, i){ return '<label class="imp-kw"><input type="checkbox" name="k" value="' + h(t) + '"> <span>' + h(t) + '</span></label>'; }).join("")
+          + '<div class="bd-actions"><button class="btn light" type="button" data-act="close">Aucun</button><button class="btn green" type="submit">Enregistrer</button></div></form>', function(){
+          document.getElementById("fImpKw").onsubmit = function(e){ e.preventDefault(); var sel = Array.prototype.slice.call(this.querySelectorAll('input[name="k"]:checked')).map(function(i){ return i.value; });
+            var ks = noteKeys(); sel.forEach(function(t){ if (ks.indexOf(t) < 0) ks.push(t); });
+            (sel.length ? saveSettings({noteKeys:ks}) : Promise.resolve()).then(function(){ closeSheet(); toast(sel.length ? sel.length + " mot" + (sel.length > 1 ? "s" : "") + "-clé" + (sel.length > 1 ? "s" : "") + " ajouté" + (sel.length > 1 ? "s" : "") + "." : "Notes importées."); }); };
+        });
+      }).catch(function(){ toast("Ces fichiers n'ont pas pu être lus."); });
+    };
+  });
 }
 /* ===== MyWorld_0.10 : bouton Apps et éventail ===== */
 var FAN_APPS = [
