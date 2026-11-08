@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="My World">
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" href="icons/icon-192-v4.png">
+<link rel="icon" href="icons/favicon-192-v5.png">
 <link rel="apple-touch-icon" href="icons/apple-touch-180-v4.png">
 <style>
 @font-face{font-family:Nunito;font-weight:400;font-display:swap;src:url(fonts/nunito-latin-400-normal.woff2) format("woff2")}
@@ -89,9 +89,9 @@ html:has(#splash),html:has(#splash) body{overflow:hidden}
 /* MyWorld_0.27 : écran de lancement = même fond et même logo que l'écran d'Android (passage invisible) ;
    pendant le chargement les anneaux tournent et les lunes orbitent ; à la fin les applis montent dans l'appli */
 #splash{position:fixed;inset:0;z-index:200;display:grid;place-items:center;background:#DCE1E6}
-#splash .sp-lg{width:min(64vw,64vh,440px);height:auto;overflow:visible;transform:translateY(-.2vh);animation:spIn .6s cubic-bezier(.3,.7,.3,1) .05s both}
+#splash .sp-lg{width:min(64vw,64vh,440px);height:auto;overflow:visible;transform:translateY(-.2vh);animation:spIn .7s cubic-bezier(.3,.7,.3,1) .05s both}
 /* respiration : on repart du fond seul, puis le logo apparaît en douceur (le passage depuis l'écran d'Android ne se voit plus) */
-@keyframes spIn{from{opacity:0;transform:translateY(-.2vh) scale(.97)}to{opacity:1;transform:translateY(-.2vh) scale(1)}} /* taille et place mesurées sur les vidéos de Théo (Xiaomi 11T Pro) : pile sur le logo d'Android */
+@keyframes spIn{from{opacity:0;transform:translateY(-.2vh) scale(.9)}to{opacity:1;transform:translateY(-.2vh) scale(1)}} /* taille et place mesurées sur les vidéos de Théo (Xiaomi 11T Pro) : pile sur le logo d'Android */
 #splash .sp-spin,#splash .sp-out,#splash .sp-roof{transform-box:view-box;transform-origin:256px 256px}
 #splash .sp-t{transform-box:fill-box;transform-origin:center}
 #splash .sp-spin{animation:spSpin 3.2s linear infinite}
@@ -903,7 +903,7 @@ body.scroll-lock{position:fixed;left:0;right:0;width:100%;overflow:hidden}
 
 
 <script>
-var APP_VERSION = "MyWorld_0.30";
+var APP_VERSION = "MyWorld_0.31";
 (function(){
 "use strict";
 var CAL = "t.mallet06@gmail.com";
