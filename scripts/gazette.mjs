@@ -139,13 +139,19 @@ function pageDesc(html){
   const m = (n) => html.match(new RegExp('<meta[^>]+(?:property|name)=["\']' + n + '["\'][^>]*content=["\']([^"\']+)', "i")) || html.match(new RegExp('<meta[^>]+content=["\']([^"\']+)["\'][^>]*(?:property|name)=["\']' + n + '["\']', "i"));
   return clean((m("og:description") || m("description") || [])[1] || "");
 }
+/* description générique d'un site (« Toute l'actualité Pokémon… ») : ce n'est pas un résumé */
+const GENERIC = /^(toute l'actu|toute l’actu|retrouvez (toute|tous|l'actu)|découvrez (toute|tous)|l'actualité (de|du|des) |site officiel|bienvenue sur)|pokédex, guides/i;
+function dropSiteDescs(items){
+  const n = new Map(); items.forEach((it) => { if (it._desc) n.set(norm(it.lead), (n.get(norm(it.lead)) || 0) + 1); });
+  items.forEach((it) => { if (it._desc && n.get(norm(it.lead)) > 1){ it.lead = it._rss || ""; } delete it._desc; delete it._rss; });
+}
 async function enrich(it){
   if (/news\.google\./.test(it.url)){ const real = await googleReal(it.url); if (real) it.url = real; await sleep(300); }
   if (NO_FETCH.test(it.url)) return;
   const r = await get(it.url, 12000); if (!r.ok) return;
   if (!it.lead || it.lead.length < 100){
     let d = pageDesc(r.text);
-    if (d.length >= 60 && norm(d) !== norm(it.title) && !PROMO.test(d)){ if (d.length > 420) d = d.slice(0, 417).replace(/\s+\S*$/, "") + "…"; it.lead = d; }
+    if (d.length >= 60 && norm(d) !== norm(it.title) && !PROMO.test(d) && !GENERIC.test(d)){ if (d.length > 420) d = d.slice(0, 417).replace(/\s+\S*$/, "") + "…"; it._rss = it.lead; it.lead = d; it._desc = true; }
   }
   const main = (r.text.match(/<article[\s\S]*?<\/article>/i) || [r.text])[0];
   const paras = (main.match(/<p[\s>][\s\S]*?<\/p>/gi) || []).map(clean).filter((p) => p.length > 80 && !/©|cookie|abonnez-vous|newsletter/i.test(p));
@@ -207,7 +213,7 @@ export async function build(topics, seen = new Set()){
     console.log(`${topic}${rub ? " (rubrique " + rub + ")" : ""} : ${picked.length} article(s)`);
   }
   const all = sections.flatMap((s) => s.items);
-  await pool(all, 3, enrich);
+  await pool(all, 3, enrich); dropSiteDescs(all);
   return { sections, numbers: keyNumbers(all) };
 }
 
@@ -238,9 +244,9 @@ if (process.env.ESSAI){
   const { sections, numbers } = await build(topics, seen);
   const batch = db.batch(), addedAt = new Date().toISOString(); let added = 0;
   /* les infos déjà publiées aujourd'hui sans résumé (titre seul) sont complétées */
-  const bare = []; existing.forEach((d) => { const g = d.data(); if (!g.lead && g.addedAt && parisDay(g.addedAt) === day) bare.push({ ref: d.ref, it: { title: g.title, url: g.url, lead: "" } }); });
-  await pool(bare, 3, (b) => enrich(b.it));
-  let fixed = 0; for (const b of bare) if (b.it.lead){ batch.update(b.ref, { lead: b.it.lead, more: b.it.more || "", url: b.it.url }); fixed++; }
+  const bare = []; existing.forEach((d) => { const g = d.data(); if ((!g.lead || GENERIC.test(g.lead)) && g.addedAt && parisDay(g.addedAt) === day) bare.push({ ref: d.ref, old: g.lead || "", it: { title: g.title, url: g.url, lead: "" } }); });
+  await pool(bare, 3, (b) => enrich(b.it)); dropSiteDescs(bare.map((b) => b.it));
+  let fixed = 0; for (const b of bare) if (b.it.lead || b.old){ batch.update(b.ref, { lead: b.it.lead || "", more: b.it.more || "", url: b.it.url }); if (b.it.lead) fixed++; }
   if (bare.length) console.log(`Infos d'aujourd'hui sans résumé : ${bare.length}, complétées : ${fixed}`);
   for (const s of sections) for (const i of s.items){
     const id = "g-" + createHash("sha1").update(i.url).digest("hex").slice(0, 16);

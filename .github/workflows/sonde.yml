@@ -7,4 +7,4 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: { node-version: 22 }
-      - run: ESSAI=1 ESSAI_SUJETS="Crypto,Pokémon,Nice" node scripts/gazette.mjs && node scripts/sonde/sonde.mjs
+      - run: ESSAI=1 ESSAI_SUJETS="Pokémon,Cagnes sur mer" node scripts/gazette.mjs && node scripts/sonde/sonde.mjs
