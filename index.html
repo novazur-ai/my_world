@@ -779,7 +779,7 @@ body.fan-on nav.tabs a,body.fan-on .nav-add{opacity:.35;pointer-events:none;tran
 
 
 <script>
-var APP_VERSION = "MyWorld_0.13";
+var APP_VERSION = "MyWorld_0.14";
 (function(){
 "use strict";
 var CAL = "t.mallet06@gmail.com";
@@ -1434,7 +1434,7 @@ var KEYWORDS = [
   {re:/^(?:rdv|rendez[- ]vous)\b/i, k:"event", lbl:"rdv", d:"nouveau rendez-vous dans l'agenda"},
   {re:/^(?:rappelle[- ]?moi|rappelles[- ]?moi|rappel)\b/i, k:"rappel", lbl:"rappel, rappelle-moi", d:"nouveau rappel"},
   {re:/^note\b/i, k:"note", lbl:"note", d:"nouvelle note"},
-  {re:/^(?:todo|to-do|to do|à faire|a faire)\b/i, k:"todo", lbl:"todo", d:"nouvel « à faire »"}
+  {re:/^(?:à faire|a faire|todo|to-do|to do)\b/i, k:"todo", lbl:"à faire", d:"nouvel « à faire »"}
 ];
 function noteKeys(){ return ((S.settings && S.settings.noteKeys) || []).slice(); }
 function kwRest(text, re){ return text.trim().replace(re, "").replace(/^[\s:,.\-–]+/, "").replace(/^(?:de\s+|d['’]\s*|que\s+|qu['’]\s*|pour\s+)/i, "").trim(); }
@@ -1952,7 +1952,7 @@ function eventEditSheet(gid, did){
   var sp0 = splitTitle(ev.title, ev.place), cat0 = g ? (catFromColor(g.colorId, g.rappel) || guessCat(sp0.core, sp0.place, sp0.people, g.rappel)) : (it.cat || guessCat(sp0.core, sp0.place, sp0.people)), catSel = cat0;
   var note = g && g.recurring ? '<p style="font-size:13px;color:var(--muted);margin-bottom:12px">Événement qui se répète : seule cette date sera modifiée.</p>' : "";
   var back = document.getElementById("mBody") ? function(){ openSheet("Le mois", '<div id="mBody">' + monthHTML() + '</div>'); } : closeSheet;
-  openSheet("Modifier l'événement", note + '<form id="fEvEdit"><div class="field"><label for="eTitle">Titre</label><input id="eTitle" type="text" required value="' + h(ev.title) + '"></div><div class="field"><label for="eDate">Date</label><input id="eDate" type="date" required value="' + h(ev.date) + '"></div><div class="ev-time"><div class="field"><label for="eStart">Début</label><input id="eStart" type="time" value="' + h(ev.time) + '"></div><div class="field"><label for="eEnd">Fin</label><input id="eEnd" type="time" value="' + h(ev.end) + '"></div></div><p style="font-size:12px;color:var(--muted);margin:-6px 0 12px">Sans heure de début, l\'événement dure toute la journée.</p><div class="field"><label for="ePlace">Lieu</label><input id="ePlace" type="text" value="' + h(ev.place) + '" placeholder="Facultatif"></div><div class="field"><p class="cat-lbl" style="margin:0">Domaine</p><div class="cat-chips" id="eCats">' + catChips(cat0) + '</div></div><div class="bd-actions"><button class="btn green" type="submit">Enregistrer</button><button class="btn light" type="button" id="eDel">Supprimer</button></div></form>', function(){
+  openSheet("Modifier l'événement", note + '<form id="fEvEdit"><div class="field"><label for="eTitle">Titre</label><input id="eTitle" type="text" required value="' + h(ev.title) + '"></div><div class="field"><label for="eDate">Date</label><input id="eDate" type="date" required value="' + h(ev.date) + '"></div><div class="ev-time"><div class="field"><label for="eStart">Début</label><input id="eStart" type="time" value="' + h(ev.time) + '"></div><div class="field"><label for="eEnd">Fin</label><input id="eEnd" type="time" value="' + h(ev.end) + '"></div></div><p style="font-size:12px;color:var(--muted);margin:-6px 0 12px">Sans heure de début, l\'événement dure toute la journée.</p><div class="field"><label for="ePlace">Lieu</label><input id="ePlace" type="text" value="' + h(ev.place) + '" placeholder="Facultatif"></div><div class="field"><p class="cat-lbl" style="margin:0">Domaine</p><div class="cat-chips" id="eCats">' + catChips(cat0) + '</div></div><div class="bd-actions"><button class="btn light" type="button" id="eDel">Supprimer</button><button class="btn green" type="submit">Enregistrer</button></div></form>', function(){
     document.querySelectorAll("#eCats [data-cat]").forEach(function(b){ b.onclick = function(){ catSel = b.dataset.cat; document.querySelectorAll("#eCats [data-cat]").forEach(function(x){ x.setAttribute("aria-pressed", String(x.dataset.cat === catSel)); }); }; });
     document.getElementById("fEvEdit").onsubmit = function(e){
       e.preventDefault();
@@ -2094,7 +2094,7 @@ function bdayEditSheet(id){
   var d = it.md ? +it.md.slice(3) : 0, m = it.md ? +it.md.slice(0,2) : 0;
   var days = '<option value="">—</option>'; for (var k=1;k<=31;k++) days += '<option value="' + k + '"' + (k === d ? " selected" : "") + '>' + k + '</option>';
   var months = '<option value="">—</option>' + MOIS.map(function(nm, i){ return '<option value="' + (i+1) + '"' + (i+1 === m ? " selected" : "") + '>' + nm + '</option>'; }).join("");
-  openSheet("Anniversaire", '<form id="fBday"><div class="field"><label for="bdName">Prénom</label><input id="bdName" type="text" required value="' + h(it.person || "") + '"></div><div class="bd-date"><div class="field"><label for="bdDay">Jour</label><select id="bdDay">' + days + '</select></div><div class="field"><label for="bdMonth">Mois</label><select id="bdMonth">' + months + '</select></div></div><div class="bd-actions"><button class="btn green" type="submit">Enregistrer</button><button class="btn light" type="button" id="bdDel">Supprimer</button></div></form>', function(){
+  openSheet("Anniversaire", '<form id="fBday"><div class="field"><label for="bdName">Prénom</label><input id="bdName" type="text" required value="' + h(it.person || "") + '"></div><div class="bd-date"><div class="field"><label for="bdDay">Jour</label><select id="bdDay">' + days + '</select></div><div class="field"><label for="bdMonth">Mois</label><select id="bdMonth">' + months + '</select></div></div><div class="bd-actions"><button class="btn light" type="button" id="bdDel">Supprimer</button><button class="btn green" type="submit">Enregistrer</button></div></form>', function(){
     document.getElementById("fBday").onsubmit = function(e){
       e.preventDefault(); if (!needDb()) return;
       var name = cap(document.getElementById("bdName").value.trim()), dd = +document.getElementById("bdDay").value, mm = +document.getElementById("bdMonth").value;
@@ -2129,7 +2129,7 @@ function bdayEditSheet(id){
 }
 function completeEventSheet(id){
   var it = S.items.find(function(i){ return i._id === id; }); if (!it) return;
-  openSheet("Compléter le rendez-vous", '<p style="margin-bottom:14px"><b>' + h(it.title) + '</b> · ' + h(fmtDay(parseISO(it.date))) + '</p><form id="fEv"><div class="row"><div class="field" style="flex:1"><label for="evT">Heure de début</label><input id="evT" type="time" required></div><div class="field" style="flex:1"><label for="evE">Heure de fin (facultatif)</label><input id="evE" type="time"></div></div><div class="row"><button class="btn green" type="submit">Ajouter à mon agenda</button><button class="btn light" type="button" id="evAll">Toute la journée</button><button class="btn light" type="button" data-act="del-item" data-id="' + h(id) + '">Supprimer</button></div></form>', function(){
+  openSheet("Compléter le rendez-vous", '<p style="margin-bottom:14px"><b>' + h(it.title) + '</b> · ' + h(fmtDay(parseISO(it.date))) + '</p><form id="fEv"><div class="row"><div class="field" style="flex:1"><label for="evT">Heure de début</label><input id="evT" type="time" required></div><div class="field" style="flex:1"><label for="evE">Heure de fin (facultatif)</label><input id="evE" type="time"></div></div><button class="btn light" type="button" id="evAll" style="width:100%;margin-bottom:10px">Toute la journée</button><div class="bd-actions"><button class="btn light" type="button" data-act="del-item" data-id="' + h(id) + '">Supprimer</button><button class="btn green" type="submit">Ajouter à mon agenda</button></div></form>', function(){
     function go(time, end){
       createCalEvent({title:it.title, date:it.date, time:time, endTime:end}).then(function(){ return db.collection("items").doc(id).delete(); }).then(function(){ closeSheet(); toast("Ajouté à ton agenda avec tes rappels."); }).catch(function(e){ if (e && e.code && !/^(invalid_argument|unavailable)$/.test(e.code)){ toast(calWriteMsg(e)); if (e.code === "server_unavailable" || e.code === "upstream_error") return; db.collection("items").doc(id).update({time:time, unsynced:true}).then(closeSheet).catch(dbErr); } else dbErr(e); });
     }
@@ -2683,7 +2683,7 @@ document.addEventListener("click", function(e){
   if (act === "todo-del" || act === "rappel-del"){ var it2 = S.items.find(function(i){ return i._id === id; }); db.collection("items").doc(id).delete().then(function(){ closeSheet(); toast("Supprimé.", it2 ? {undo:function(){ var c2 = Object.assign({}, it2); delete c2._id; db.collection("items").doc(id).set(c2).catch(dbErr); }} : undefined); }).catch(dbErr); return; }
   if (act === "rappel-check"){ db.collection("items").doc(id).update({done:true, doneAt:nowISO()}).then(function(){ toast("Rappel coché.", {undo:function(){ db.collection("items").doc(id).update({done:false, doneAt:null}).catch(dbErr); }}); }).catch(dbErr); return; }
   if (act === "rappel-menu"){ var rx = S.items.find(function(i){ return i._id === id; }); if (rx) openSheet(rx.title, '<div class="lt-menu"><button type="button" class="btn-line danger" data-act="rappel-del" data-id="' + h(id) + '">Supprimer</button></div>'); return; }
-  if (act === "lt-add"){ addOpen("text"); var ci = document.getElementById("captureInput"); ci.value = b.dataset.k === "rappel" ? "rappel " : "todo "; setTimeout(function(){ ci.focus(); try { ci.setSelectionRange(ci.value.length, ci.value.length); } catch(e){} }, 80); return; }
+  if (act === "lt-add"){ addOpen("text"); var ci = document.getElementById("captureInput"); ci.value = b.dataset.k === "rappel" ? "rappel " : "à faire "; setTimeout(function(){ ci.focus(); try { ci.setSelectionRange(ci.value.length, ci.value.length); } catch(e){} }, 80); return; }
   if (act === "nk-yes"){ var tk = b.dataset.t, ks = noteKeys(); if (ks.indexOf(tk) < 0) ks.push(tk); saveSettings({noteKeys:ks}).then(function(){ closeSheet(); toast("Mot-clé « " + tk.toLowerCase() + " » ajouté."); }); return; }
   if (act === "nk-no"){ var tn2 = b.dataset.t, nn = ((S.settings && S.settings.noteKeysNo) || []).slice(); nn.push(tn2); saveSettings({noteKeysNo:nn}).then(closeSheet); return; }
   if (act === "nk-del"){ var td = b.dataset.t; saveSettings({noteKeys: noteKeys().filter(function(k){ return k !== td; })}).then(refreshSettings); return; }
@@ -2764,7 +2764,7 @@ function viewListes(){
       }).join("") + '</div>'
       : '<p class="lt-empty">' + (mom === "auj" ? "Rien à faire aujourd'hui. Profites-en !" : mom === "sem" ? "Rien de prévu cette semaine." : "Rien pour plus tard.") + '</p>';
     html += '<button type="button" class="lt-add" data-act="lt-add" data-k="todo"><span class="lt-addi">' + LT_PLUS + '</span><span>Ajouter à faire…</span></button>'
-      + '<p class="lt-hint">Ce qui n\'est pas fait reste ici, marqué « en retard ». Dans le +, commence par « todo » pour ajouter ici.</p>';
+      + '<p class="lt-hint">Ce qui n\'est pas fait reste ici, marqué « en retard ». Dans le +, commence par « à faire » pour ajouter ici.</p>';
   } else {
     var dated = rappelsDated(), und = rappelsOpen().sort(function(a, b){ return String(b.createdAt).localeCompare(String(a.createdAt)); });
     html += '<p class="lt-lbl">À venir · avec notification</p>'
@@ -2986,6 +2986,28 @@ setInterval(render, 600000);
 
 var readyParts = {items:0, notes:0, settings:0}, readySent = false;
 function markReady(k){ readyParts[k] = 1; if (!readySent && readyParts.items && readyParts.notes && readyParts.settings){ readySent = true; window.dispatchEvent(new Event("carnet-ready")); } }
+/* Partage depuis une autre appli (ex. Notes Xiaomi → Partager → My World) : la note arrive dans tes notes */
+(function(){
+  try {
+    var q = new URLSearchParams(location.search);
+    if (!q.has("share_text") && !q.has("share_title") && !q.has("share_url")) return;
+    S.pendingShare = {title:(q.get("share_title") || "").trim(), text:(q.get("share_text") || "").trim(), url:(q.get("share_url") || "").trim()};
+    history.replaceState(null, "", location.pathname + "#notes");
+  } catch(e){}
+})();
+function processShare(){
+  var sh = S.pendingShare; if (!sh || !db) return; S.pendingShare = null;
+  var text = sh.text.replace(/\r\n?/g, "\n");
+  if (sh.url && text.indexOf(sh.url) < 0) text = (text ? text + "\n" : "") + sh.url;
+  var title = sh.title, lines = text.split("\n");
+  if (title && normS(title) === normS(lines[0] || "")) lines.shift();
+  if (!title && lines.length > 1 && lines[0].trim().length <= 60){ title = lines.shift().trim(); }
+  var body = lines.join("\n").replace(/^\s+|\s+$/g, "");
+  if (!title && !body) { toast("Rien à importer dans ce partage."); return; }
+  location.hash = "notes";
+  commit({kind:"note", title:cap(title), text:body, items:[]});
+}
+window.addEventListener("carnet-ready", function(){ setTimeout(processShare, 300); });
 window.startData = function(dbApi, calApi){
   db = dbApi; mcp = calApi;
   snap("items","items"); snap("log","log"); snap("gazette","gazette",["addedAt","desc",80]); snap("notes","notes");

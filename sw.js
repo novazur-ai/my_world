@@ -27,6 +27,7 @@ self.addEventListener("fetch", (e) => {
   }
   if (sameOrigin){
     /* page et code : d'abord le réseau (pour les mises à jour), sinon le cache */
-    e.respondWith(fetch(req, { cache: "no-cache" }).then((res) => { const copy = res.clone(); caches.open(VERSION).then((c) => c.put(req, copy)); return res; }).catch(() => caches.match(req).then((hit) => hit || caches.match("index.html"))));
+    /* une adresse avec paramètres (ex. partage reçu) n'est pas gardée en cache ; hors ligne, on sert la page */
+    e.respondWith(fetch(req, { cache: "no-cache" }).then((res) => { if (!url.search){ const copy = res.clone(); caches.open(VERSION).then((c) => c.put(req, copy)); } return res; }).catch(() => caches.match(req, { ignoreSearch: true }).then((hit) => hit || caches.match("index.html"))));
   }
 });

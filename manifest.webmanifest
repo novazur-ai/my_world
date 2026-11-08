@@ -30,5 +30,14 @@
   "display_override": [
     "fullscreen",
     "standalone"
-  ]
+  ],
+  "share_target": {
+    "action": "./",
+    "method": "GET",
+    "params": {
+      "title": "share_title",
+      "text": "share_text",
+      "url": "share_url"
+    }
+  }
 }
