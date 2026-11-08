@@ -682,11 +682,11 @@ nav.tabs .in{display:grid!important;grid-template-columns:1fr 1fr 64px 2fr!impor
 body.fan-on nav.tabs{z-index:32}
 body.fan-on nav.tabs a,body.fan-on .nav-add{opacity:.35;pointer-events:none;transition:opacity .2s}
 #appsFan{position:fixed;inset:0;z-index:31}
-.fan-veil{position:absolute;inset:0;background:rgba(8,28,48,.78);opacity:0;transition:opacity .28s ease;-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px)}
+.fan-veil{position:absolute;inset:0;background:rgba(8,28,48,.78);opacity:0;transition:opacity .16s ease;-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px)}
 #appsFan.on .fan-veil{opacity:1}
 .fan{position:absolute;inset:0;pointer-events:none}
 .fan-app{position:absolute;pointer-events:auto;display:flex;flex-direction:column;align-items:center;gap:5px;width:84px;margin:-28px 0 0 -42px;padding:0;border:0;background:none;font:inherit;color:#fff;cursor:pointer;-webkit-tap-highlight-color:transparent;
-  opacity:0;transform:translate(var(--dx),var(--dy)) scale(.2);transition:transform .46s cubic-bezier(.34,1.56,.64,1),opacity .2s ease;transition-delay:calc(var(--i) * 38ms)}
+  opacity:0;transform:translate(var(--dx),var(--dy)) scale(.2);transition:transform .26s cubic-bezier(.34,1.45,.64,1),opacity .12s ease;transition-delay:calc(var(--i) * 16ms)}
 #appsFan.on .fan-app{opacity:1;transform:none}
 #appsFan.off .fan-app{opacity:0;transform:translate(var(--dx),var(--dy)) scale(.2);transition:transform .24s cubic-bezier(.5,0,.75,0),opacity .2s ease .06s;transition-delay:calc((5 - var(--i)) * 22ms)}
 #appsFan.off .fan-veil{opacity:0;transition-delay:.08s}
@@ -747,7 +747,7 @@ body.fan-on nav.tabs a,body.fan-on .nav-add{opacity:.35;pointer-events:none;tran
 
 
 <script>
-var APP_VERSION = "MyWorld_0.10";
+var APP_VERSION = "MyWorld_0.11";
 (function(){
 "use strict";
 var CAL = "t.mallet06@gmail.com";
@@ -2682,7 +2682,7 @@ function fanOpen(){
   });
   root.hidden = false; document.body.classList.add("fan-on");
   btn.setAttribute("aria-expanded", "true"); btn.setAttribute("aria-label", "Fermer les apps");
-  requestAnimationFrame(function(){ requestAnimationFrame(function(){ root.classList.add("on"); }); });
+  requestAnimationFrame(function(){ root.offsetWidth; root.classList.add("on"); });
   setTimeout(function(){ var f = fan.querySelector(".fan-app"); if (f) f.focus({preventScroll:true}); }, 60);
 }
 function fanClose(then){
