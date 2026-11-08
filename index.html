@@ -667,6 +667,37 @@ body[data-view="gazette"] #app::before{height:calc(124px + env(safe-area-inset-t
 .fab{background:#0B4F7C!important}
 .prow,.card{border-color:#E6ECF2!important;box-shadow:0 6px 20px rgba(11,58,92,.06)!important}
 nav.tabs a[aria-current="page"]{background:#E4F1FA!important;color:#0B3A5C!important}
+/* MyWorld_0.10 : barre Accueil · Notes · + · Apps, et éventail des apps */
+nav.tabs .in{display:grid!important;grid-template-columns:1fr 1fr 64px 2fr!important;align-items:center}
+.nav-apps{display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 0;border:0;background:transparent;border-radius:14px;color:var(--muted);font:inherit;font-size:11.5px;font-weight:700;justify-self:center;width:50%;min-width:64px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.nav-apps .ic{position:relative;display:grid}
+.nav-apps .nbadge{position:absolute;top:-2px;right:-4px;width:9px;height:9px;border-radius:50%;background:#E0533D;border:2px solid #fff}
+.nav-apps.cur{background:#E4F1FA;color:#0B3A5C;font-weight:800}
+.nav-apps svg .ap-grid,.nav-apps svg .ap-x{transition:opacity .22s ease,transform .32s cubic-bezier(.34,1.56,.64,1);transform-origin:12px 12px}
+.nav-apps svg .ap-x{opacity:0;transform:rotate(-90deg) scale(.4)}
+.nav-apps[aria-expanded="true"]{background:#0B4F7C;color:#fff;position:relative;z-index:32}
+.nav-apps[aria-expanded="true"] svg .ap-grid{opacity:0;transform:rotate(90deg) scale(.4)}
+.nav-apps[aria-expanded="true"] svg .ap-x{opacity:1;transform:none}
+.nav-apps[aria-expanded="true"] .nbadge{display:none}
+body.fan-on nav.tabs{z-index:32}
+body.fan-on nav.tabs a,body.fan-on .nav-add{opacity:.35;pointer-events:none;transition:opacity .2s}
+#appsFan{position:fixed;inset:0;z-index:31}
+.fan-veil{position:absolute;inset:0;background:rgba(8,28,48,.78);opacity:0;transition:opacity .28s ease;-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px)}
+#appsFan.on .fan-veil{opacity:1}
+.fan{position:absolute;inset:0;pointer-events:none}
+.fan-app{position:absolute;pointer-events:auto;display:flex;flex-direction:column;align-items:center;gap:5px;width:84px;margin:-28px 0 0 -42px;padding:0;border:0;background:none;font:inherit;color:#fff;cursor:pointer;-webkit-tap-highlight-color:transparent;
+  opacity:0;transform:translate(var(--dx),var(--dy)) scale(.2);transition:transform .46s cubic-bezier(.34,1.56,.64,1),opacity .2s ease;transition-delay:calc(var(--i) * 38ms)}
+#appsFan.on .fan-app{opacity:1;transform:none}
+#appsFan.off .fan-app{opacity:0;transform:translate(var(--dx),var(--dy)) scale(.2);transition:transform .24s cubic-bezier(.5,0,.75,0),opacity .2s ease .06s;transition-delay:calc((5 - var(--i)) * 22ms)}
+#appsFan.off .fan-veil{opacity:0;transition-delay:.08s}
+.fan-app .fi{position:relative;width:56px;height:56px;border-radius:50%;display:grid;place-items:center;background:var(--bg);color:var(--ink);box-shadow:0 8px 20px rgba(0,0,0,.28);transition:transform .15s ease}
+.fan-app:active .fi{transform:scale(.9)}
+.fan-app:focus-visible{outline:none}.fan-app:focus-visible .fi{box-shadow:0 0 0 3px #fff,0 0 0 6px #3FA7DB}
+.fan-app b{font-size:12.5px;font-weight:800;text-shadow:0 1px 4px rgba(0,0,0,.5)}
+.fan-app small{margin-top:-4px;font-size:9.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;opacity:.75}
+.fan-app.soon .fi{opacity:.6}
+.fan-app .nbadge{position:absolute;top:0;right:0;width:12px;height:12px;border-radius:50%;background:#E0533D;border:2px solid #fff}
+@media (prefers-reduced-motion: reduce){.fan-app,#appsFan.off .fan-app{transition:opacity .15s!important;transform:none!important}}
 </style>
 </head>
 <body>
@@ -702,14 +733,13 @@ nav.tabs a[aria-current="page"]{background:#E4F1FA!important;color:#0B3A5C!impor
 <div id="evRoot" hidden></div>
 <nav class="tabs" aria-label="Navigation">
   <div class="in">
-    <a href="#accueil" data-tab="accueil"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11l8-6 8 6v9H4z"/><path d="M10 20v-5h4v5"/></svg>Aujourd'hui</a>
-    <a href="#quetes" data-tab="quetes"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4h11v14a2 2 0 0 1-2 2H6"/><path d="M7 4a2 2 0 0 0-2 2v2h2M6 20a2 2 0 0 1-2-2v-1h10v1a2 2 0 0 0 2 2M10 9h5M10 13h5"/></svg>Quêtes</a>
-    <button type="button" class="nav-add" data-act="add-open" aria-label="Ajouter en parlant (appui long : écrire)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
-    <a href="#fiche" data-tab="fiche"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 5-3.5 8-7 10-3.5-2-7-5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg>Fiche</a>
-    <a href="#gazette" data-tab="gazette"><span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h13v14a1 1 0 0 0 1 1H5a1 1 0 0 1-1-1z"/><path d="M17 9h3v10a1 1 0 0 1-2 0M7 9h7M7 13h7M7 16h4"/></svg><i class="nbadge" id="gazBadge" hidden></i></span>Gazette<span class="sr" id="gazBadgeSr"></span></a>
+    <a href="#accueil" data-tab="accueil"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg>Accueil</a>
     <a href="#notes" data-tab="notes"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 12h7M9 16h5"/></svg>Notes</a>
+    <button type="button" class="nav-add" data-act="add-open" aria-label="Ajouter en parlant (appui long : écrire)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
+    <button type="button" class="nav-apps" data-act="apps" aria-label="Toutes les apps" aria-expanded="false" aria-controls="appsFan"><span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g class="ap-grid"><rect x="4" y="4" width="6.5" height="6.5" rx="2"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="2"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="2"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="2"/></g><path class="ap-x" d="M6 6l12 12M18 6L6 18"/></svg><i class="nbadge" id="gazBadge" hidden></i></span>Apps<span class="sr" id="gazBadgeSr"></span></button>
   </div>
 </nav>
+<div id="appsFan" hidden><div class="fan-veil" data-act="apps-close"></div><div class="fan" role="dialog" aria-modal="true" aria-label="Toutes les apps"></div></div>
 
 <div id="addRoot" hidden><div class="add-wrap" id="addWrap"><div class="add-sheet" id="addSheet" role="dialog" aria-modal="true" aria-labelledby="addT"><span class="add-grab" aria-hidden="true"></span><div class="add-head"><h2 id="addT">Ajouter</h2><button type="button" class="close" data-act="add-close" aria-label="Fermer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div><div id="addSlot"></div><p class="add-tip" id="addTip">Écris ou dicte, comme tu le dirais : « dentiste mardi 14h », « rappelle-moi d'appeler maman », « note : idées cadeaux »…</p></div></div></div>
 <div id="sheetRoot"></div>
@@ -717,7 +747,7 @@ nav.tabs a[aria-current="page"]{background:#E4F1FA!important;color:#0B3A5C!impor
 
 
 <script>
-var APP_VERSION = "MyWorld_0.9";
+var APP_VERSION = "MyWorld_0.10";
 (function(){
 "use strict";
 var CAL = "t.mallet06@gmail.com";
@@ -1111,12 +1141,11 @@ function render(){
   document.getElementById("gazBadge").hidden = !unseenN;
   document.getElementById("gazBadgeSr").textContent = unseenN ? ", " + unseenN + " nouveauté" + (unseenN > 1 ? "s" : "") : "";
   var html = v === "quetes" ? viewQuetes() : v === "fiche" ? viewFiche() : v === "gazette" ? viewGazette() : v === "notes" ? viewNotes() : viewAccueil();
-  html += '<div class="settings-link"><button type="button" data-act="settings">' + GEAR_ICON + 'Paramètres</button></div>';
   if (S.dbState === "off") html = '<section class="section gut" style="margin-top:24px"><div class="card soft-empty">Tes données ne sont pas disponibles pour l\'instant. Vérifie ta connexion, puis recharge l\'appli.</div></section>' + html;
   document.getElementById("view").innerHTML = html;
   if (v === "notes"){ afterNotesRender(); if (!S.purged && S.notesLoaded){ S.purged = true; purgeOldNotes(); } }
   if (S.evOpen && !document.getElementById("evRoot").hidden) openEvent(S.evOpen.gid, S.evOpen.did, S.evOpen.d, true);
-  document.querySelectorAll("nav.tabs a").forEach(function(a){ if (a.dataset.tab === v) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current"); });
+  document.querySelectorAll("nav.tabs a").forEach(function(a){ if (a.dataset.tab === v) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current"); }); var nap = document.querySelector(".nav-apps"); if (nap) nap.classList.toggle("cur", v === "quetes" || v === "fiche" || v === "gazette");
 }
 
 
@@ -2574,6 +2603,9 @@ document.addEventListener("click", function(e){
   if (act === "export"){ exportBackup(); return; }
   if (act === "bday-edit"){ bdayEditSheet(id); return; }
   if (act === "ev-edit"){ eventEditSheet(b.dataset.gid || null, b.dataset.id || null); return; }
+  if (act === "apps"){ if (document.getElementById("appsFan").hidden) fanOpen(); else fanClose(); return; }
+  if (act === "apps-close"){ fanClose(); return; }
+  if (act === "fan-go"){ fanGo(b.dataset.app); return; }
   if (act === "add-open"){ if (S.lpFired){ S.lpFired = false; return; } addOpen("voice"); return; }
   if (act === "add-close"){ addClose(); return; }
   if (act === "ev-open"){ openEvent(b.dataset.gid || null, b.dataset.id || null, b.dataset.d || null); return; }
@@ -2615,7 +2647,76 @@ document.addEventListener("click", function(e){
 document.addEventListener("keydown", function(e){ if (e.key === "Escape") { closeSheet(); var l = document.querySelector(".levelup"); if (l) l.remove(); } });
 document.getElementById("captureForm").addEventListener("submit", onCapture);
 
-var TABS = ["accueil","quetes","fiche","gazette","notes"];
+var TABS = ["accueil","notes","quetes","fiche","gazette"];
+
+/* ===== MyWorld_0.10 : bouton Apps et éventail ===== */
+var FAN_APPS = [
+  {k:"quetes", n:"Quêtes", bg:"#FDDCC6", ink:"#AA4A1C", ic:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4h11v14a2 2 0 0 1-2 2H6"/><path d="M7 4a2 2 0 0 0-2 2v2h2M6 20a2 2 0 0 1-2-2v-1h10v1a2 2 0 0 0 2 2M10 9h5M10 13h5"/></svg>'},
+  {k:"fiche", n:"Fiche", bg:"#E3D3F7", ink:"#6640A6", ic:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 5-3.5 8-7 10-3.5-2-7-5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg>'},
+  {k:"gazette", n:"Gazette", bg:"#FBE6B4", ink:"#8E6312", ic:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h13v14a1 1 0 0 0 1 1H5a1 1 0 0 1-1-1z"/><path d="M17 9h3v10a1 1 0 0 1-2 0M7 9h7M7 13h7M7 16h4"/></svg>'},
+  {k:"reglages", n:"Réglages", bg:"#ECEDF1", ink:"#3E4250", ic:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M2 12h3M19 12h3M4.9 19.1L7 17M17 7l2.1-2.1"/></svg>'},
+  {k:"meteo", n:"Météo", bg:"#D2E8FA", ink:"#2C679C", ic:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18h10a4 4 0 0 0 .5-8 5.5 5.5 0 0 0-10.6 1.5A3.3 3.3 0 0 0 7 18z"/></svg>', soon:true},
+  {k:"drive", n:"Drive", bg:"#D4EED6", ink:"#2F7440", ic:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>', soon:true}
+];
+/* place de chaque app autour du bouton : [rayon en px, angle en degrés] (2 arcs de 3) */
+var FAN_SPOTS = [[124,95],[124,135],[124,172],[228,102],[228,128],[228,154]];
+var fanTimer = null;
+function fanOpen(){
+  var root = document.getElementById("appsFan"), fan = root.querySelector(".fan"), btn = document.querySelector(".nav-apps");
+  if (!root.hidden && root.classList.contains("on")) return;
+  clearTimeout(fanTimer);
+  var gazNew = !document.getElementById("gazBadge").hidden;
+  fan.innerHTML = FAN_APPS.map(function(a, i){
+    return '<button type="button" class="fan-app' + (a.soon ? " soon" : "") + '" data-act="fan-go" data-app="' + a.k + '" style="--bg:' + a.bg + ';--ink:' + a.ink + ';--i:' + i + '"'
+      + (a.soon ? ' aria-label="' + a.n + ', bientôt disponible"' : (a.k === "gazette" && gazNew ? ' aria-label="Gazette, nouveautés"' : "")) + '>'
+      + '<span class="fi">' + a.ic + (a.k === "gazette" && gazNew ? '<i class="nbadge"></i>' : "") + '</span><b>' + a.n + '</b>' + (a.soon ? '<small>Bientôt</small>' : "") + '</button>';
+  }).join("");
+  var r = btn.getBoundingClientRect(), cx = r.left + r.width/2, cy = r.top + r.height/2;
+  /* l'arc démarre au-dessus du bouton ; il se resserre sur un écran étroit */
+  var k = Math.min(1, (cx - 20) / 250);
+  fan.querySelectorAll(".fan-app").forEach(function(t, i){
+    var ang = FAN_SPOTS[i][1] * Math.PI / 180, R = FAN_SPOTS[i][0] * (i < 3 ? 1 : k);
+    var x = cx + R * Math.cos(ang), y = (cy - 86) - R * Math.sin(ang);
+    t.style.left = x + "px"; t.style.top = y + "px";
+    t.style.setProperty("--dx", (cx - x) + "px"); t.style.setProperty("--dy", (cy - y) + "px");
+  });
+  root.hidden = false; document.body.classList.add("fan-on");
+  btn.setAttribute("aria-expanded", "true"); btn.setAttribute("aria-label", "Fermer les apps");
+  requestAnimationFrame(function(){ requestAnimationFrame(function(){ root.classList.add("on"); }); });
+  setTimeout(function(){ var f = fan.querySelector(".fan-app"); if (f) f.focus({preventScroll:true}); }, 60);
+}
+function fanClose(then){
+  var root = document.getElementById("appsFan"), btn = document.querySelector(".nav-apps");
+  if (root.hidden){ if (then) then(); return; }
+  root.classList.remove("on"); root.classList.add("off");
+  btn.setAttribute("aria-expanded", "false"); btn.setAttribute("aria-label", "Toutes les apps");
+  var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  clearTimeout(fanTimer);
+  fanTimer = setTimeout(function(){ root.hidden = true; root.classList.remove("off"); document.body.classList.remove("fan-on"); root.querySelector(".fan").innerHTML = ""; if (then) then(); }, reduce ? 0 : 300);
+  if (!then) btn.focus({preventScroll:true});
+}
+function fanGo(k){
+  var a = FAN_APPS.filter(function(x){ return x.k === k; })[0];
+  if (!a) return;
+  if (a.soon){ toast(a.n + " arrive bientôt dans My World."); return; }
+  fanClose(function(){
+    if (k === "reglages") openSheet("Réglages", settingsHTML(), mountSettings);
+    else location.hash = k;
+  });
+}
+document.addEventListener("keydown", function(e){
+  var root = document.getElementById("appsFan");
+  if (root.hidden) return;
+  if (e.key === "Escape"){ e.preventDefault(); fanClose(); return; }
+  if (e.key === "Tab"){ /* le focus reste dans l'éventail */
+    var b = root.querySelectorAll(".fan-app"); if (!b.length) return;
+    var f = b[0], l = b[b.length-1];
+    if (e.shiftKey && document.activeElement === f){ e.preventDefault(); l.focus(); }
+    else if (!e.shiftKey && document.activeElement === l){ e.preventDefault(); f.focus(); }
+  }
+});
+window.addEventListener("resize", function(){ if (!document.getElementById("appsFan").hidden) fanClose(); });
+
 function route(){
   var hsh = (location.hash || "").replace("#",""), prev = S.view;
   S.view = TABS.indexOf(hsh) >= 0 ? hsh : "accueil";
