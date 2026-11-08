@@ -156,6 +156,7 @@ async function enrich(it){
   const main = (r.text.match(/<article[\s\S]*?<\/article>/i) || [r.text])[0];
   const paras = (main.match(/<p[\s>][\s\S]*?<\/p>/gi) || []).map(clean).filter((p) => p.length > 80 && !/©|cookie|abonnez-vous|newsletter/i.test(p));
   if (paras.join(" ").length >= 500) it.more = summarize(paras, it.lead);
+  if (!it.lead && it.more){ it.lead = it.more; it.more = ""; }        /* pas de description : les phrases clés deviennent « L'essentiel » */
 }
 
 /* ---------- chiffres du jour ---------- */
