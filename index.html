@@ -786,7 +786,7 @@ body.fan-on nav.tabs a,body.fan-on .nav-add{opacity:.35;pointer-events:none;tran
 @media (prefers-reduced-motion: reduce){.fan-app,#appsFan.off .fan-app{transition:opacity .15s!important;transform:none!important}}
 /* MyWorld_0.13 : page « Tes listes » */
 .lt-wrap{display:flex;flex-direction:column;gap:14px;margin-top:22px;padding-bottom:30px}
-.lt-seg{display:grid;grid-template-columns:1fr 1fr;background:#E9EEF3;border-radius:14px;padding:4px}
+.lt-seg{display:grid;grid-template-columns:1fr 1fr 1fr;background:#E9EEF3;border-radius:14px;padding:4px}
 .lt-seg button{border:0;background:none;font:inherit;text-align:center;padding:10px;border-radius:11px;font-weight:800;color:#5B6B7C;cursor:pointer}
 .lt-seg button[aria-selected="true"]{background:#fff;color:#0B3A5C;box-shadow:0 2px 8px rgba(11,58,92,.12)}
 .lt-pills{display:flex;gap:8px;flex-wrap:wrap}
@@ -893,6 +893,36 @@ body.scroll-lock{position:fixed;left:0;right:0;width:100%;overflow:hidden}
 .plan-box{margin:10px 0 0;padding:12px 14px;border-radius:14px;background:var(--acc-soft,#E3ECF6);font-size:14px;font-weight:600}.plan-box b{display:block;font-weight:900;margin-bottom:2px}.plan-box p{margin:0 0 10px}
 .plan-box.err{background:#FBE3DF;color:#8E2F22}
 .plan-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px}.plan-btns .btn{height:44px;min-height:0}
+
+/* MyWorld_0.38 : liste de courses */
+.lt-seg button{padding:10px 4px;font-size:14px}
+.co-add{display:flex;gap:8px;align-items:center;background:#fff;border:1.5px solid #E1E8EF;border-radius:16px;padding:6px 6px 6px 14px}
+.co-add input{flex:1;min-width:0;border:0;outline:0;background:transparent;font:inherit;font-weight:700;font-size:16px;color:var(--ink);padding:8px 0}
+.co-add button{flex:none;width:42px;height:42px;border:0;border-radius:12px;display:grid;place-items:center;cursor:pointer}
+.co-mic{background:var(--acc-soft,#E3ECF6);color:var(--acc,#2D5F94)}.co-plus{background:var(--ink,#16202C);color:#fff}
+.co-prog{display:flex;align-items:center;gap:10px;margin:2px 4px -4px;font-weight:800;font-size:13px;color:#5B6B7C;font-variant-numeric:tabular-nums}
+.co-bar{flex:1;height:6px;border-radius:6px;background:#E2E8EF;overflow:hidden}.co-bar i{display:block;height:100%;background:#3FAE7A;border-radius:6px;transition:width .3s}
+.co-grp{margin:0;padding:12px 16px 4px;font-size:11.5px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#5B6B7C;display:flex;align-items:center;gap:7px}
+.co-grp span{font-size:15px;letter-spacing:0}
+.co-it{box-sizing:border-box;display:flex;align-items:center;gap:12px;width:100%;min-height:50px;padding:8px 16px;border:0;border-top:1px solid #EEF1F5;background:none;font:inherit;text-align:left;color:inherit;cursor:pointer;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.co-grp + .co-it{border-top:0}
+.co-ck{flex:none;width:24px;height:24px;border-radius:8px;border:2px solid #C3CFDB;display:grid;place-items:center;transition:background .15s,border-color .15s}
+.co-it.done .co-ck{background:#3FAE7A;border-color:#3FAE7A}
+.co-t{flex:1;min-width:0;font-weight:800;font-size:16px;overflow-wrap:anywhere}.co-it.done .co-t{color:#A3ADBA;text-decoration:line-through}
+.co-q{font-size:12px;font-weight:900;background:var(--acc-soft,#E3ECF6);color:var(--acc,#2D5F94);padding:2px 8px;border-radius:999px;font-variant-numeric:tabular-nums}
+.co-bk{display:flex;align-items:center;justify-content:space-between;width:100%;border:0;border-top:1px solid #EEF1F5;background:#F7FAF8;padding:12px 16px;font:inherit;font-size:12px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:#2F8A5C;cursor:pointer}
+.co-all{margin:0;padding:16px;font-weight:800;color:#5B6B7C}
+.co-foot{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.co-clear{border:0;background:none;font:inherit;font-weight:800;font-size:14px;color:#85858F;padding:10px 4px;cursor:pointer}
+.co-go{padding:0 20px;height:46px}
+.co-rev{font-size:13px;font-weight:800;color:var(--acc,#2D5F94);background:var(--acc-soft,#E3ECF6);padding:6px 12px;border-radius:999px;flex:none}
+.co-edit{display:grid;gap:14px}
+.co-qty{display:flex;align-items:center;gap:12px;font-weight:800}.co-qty span{flex:1}
+.co-qty button{width:42px;height:42px;border-radius:12px;border:1.5px solid #E1E8EF;background:#fff;font:inherit;font-size:20px;font-weight:900;cursor:pointer;color:var(--ink)}
+.co-qty b{min-width:28px;text-align:center;font-size:18px;font-variant-numeric:tabular-nums}
+.co-rays{display:flex;flex-wrap:wrap;gap:6px}.co-rays button{border:1.5px solid #E1E8EF;background:#fff;border-radius:999px;padding:7px 11px;font:inherit;font-size:13px;font-weight:800;cursor:pointer;color:var(--ink)}
+.co-rays button[aria-pressed="true"]{background:var(--ink,#16202C);border-color:var(--ink,#16202C);color:#fff}
+.co-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px}.co-btns button{height:48px}
 </style>
 </head>
 <body>
@@ -1784,7 +1814,7 @@ var DECO = (function(){
 
 </script>
 <script>
-var APP_VERSION = "MyWorld_0.37";
+var APP_VERSION = "MyWorld_0.38";
 (function(){
 "use strict";
 var CAL = "t.mallet06@gmail.com";
@@ -2945,6 +2975,7 @@ function parseTodo(rest){
   return {kind:"todo", title:title, due: later ? null : iso(d || today()), later:later, cat:guessCat(title, "", [], false), forced:true};
 }
 function localParse(text){
+  var co0 = parseCourses(text); if (co0) return co0;
   text = wordsToDigits(text);
   /* titres de notes gardés comme mots-clés : « films à voir Dune » → ajoute Dune à la note */
   var nt = noAcc(text.toLowerCase().trim());
@@ -3097,7 +3128,7 @@ function kindRuleMatch(rule, words){
   return rule.w.length === 1 ? common === 1 : score >= 2;
 }
 function applyLearnedKind(r, text){
-  if (!r || r.kind === "note-add" || r.kind === "note") return r;
+  if (!r || r.kind === "note-add" || r.kind === "note" || r.kind === "courses") return r;
   var words = keyWords(stripWords(text) || text), L = learnData();
   for (var i = L.kinds.length - 1; i >= 0; i--){
     var rule = L.kinds[i];
@@ -3193,6 +3224,7 @@ function describe(r){
     case "todo": return "À faire : " + r.title + (r.later ? " · plus tard" : r.due && r.due !== iso(today()) ? " · " + fmtDay(parseISO(r.due)) : " · aujourd'hui");
     case "rappel": return "Rappel sans date : " + r.title;
     case "note": return "Nouvelle note" + (r.title ? " « " + r.title + " »" : "") + (r.items && r.items.length ? " · " + r.items.length + " élément" + (r.items.length > 1 ? "s" : "") : r.text ? " : " + r.text.replace(/\n/g, " · ").slice(0, 60) + (r.text.length > 60 ? "…" : "") : "");
+    case "courses": return "Courses : " + (r.items || []).map(function(i){ return i.t + (i.q > 1 ? " ×" + i.q : ""); }).join(", ");
     case "note-add": return "Ajouté à « " + (r.title || "ta note") + " » : " + r.items.join(", ").slice(0, 60);
     case "exploit": return "+" + (r.xp||15) + " XP en " + (STATS[r.stat] || STATS.sag).n;
     case "contact": return "Lien entretenu" + (r.person ? " avec " + r.person : "") + " · +15 XP";
@@ -3219,6 +3251,10 @@ function commit(r){
     return db.collection("items").add(Object.assign(base, {kind:"birthday", person:person, md:md})).then(function(ref){
       return createCalEvent({title:"Anniversaire de " + person, date: iso(nextOccurrence(md)), time:null, yearly:true}).then(function(res){ var ev = res && res.payload; if (ref && ref.id && ev && ev.id) db.collection("items").doc(ref.id).update({gcalId: ev.id}).catch(function(){}); toast("Anniversaire de " + person + " noté. Rappel la veille à 20 h.", {undo:function(){ if (ref && ref.id) db.collection("items").doc(ref.id).delete().catch(dbErr); if (ev && ev.id) undoCal(ev.id)(); }}); }).catch(function(e){ toast("Anniversaire noté dans l'appli. " + calWriteMsg(e).replace(/le rendez-vous est gardé dans l'appli\.?/,"")); });
     });
+  }
+  if (r.kind === "courses"){
+    return coAdd(r.items || []).then(function(made){ var n = (r.items || []).length;
+      toast("Ajouté aux courses : " + r.items.map(function(i){ return i.t; }).join(", ").slice(0, 70) + ".", made.length ? {undo:function(){ Promise.all(made.map(function(id){ return db.collection("items").doc(id).delete(); })).catch(dbErr); }} : undefined); });
   }
   if (r.kind === "note"){
     var nid = db.collection("notes").newId(), now = nowISO();
@@ -3261,7 +3297,7 @@ function commit(r){
   return award(base.title, stat, xp, r.skill).then(function(){ toast("Bien joué. +" + xp + " XP en " + STATS[stat].n + "."); burst(window.innerWidth/2, window.innerHeight - 150); });
 }
 
-var KIND_LBL = {event:"Rendez-vous", todo:"À faire", rappel:"Rappel", exploit:"Exploit", note:"Note", birthday:"Anniversaire", "note-add":"Ajout à une note", quest:"À faire"};
+var KIND_LBL = {courses:"Courses", event:"Rendez-vous", todo:"À faire", rappel:"Rappel", exploit:"Exploit", note:"Note", birthday:"Anniversaire", "note-add":"Ajout à une note", quest:"À faire"};
 var CP = null;
 function onCapture(e){
   e.preventDefault();
@@ -3287,6 +3323,7 @@ function onCapture(e){
 function isClear(F){
   var o = F.orig || {};
   if (o.kind === "note-add" && o.forced) return true;
+  if (o.kind === "courses") return true;
   if (F.kind === "todo") return !!(F.core || "").trim();
   if (F.kind === "rappel") return !!((F.core || "").trim() && (o.forced || o.clear));
   if (F.kind === "event") return !!((F.core || "").trim() && F.date && F.time && (F.reminder || o.forced || guessCatPlain(F) !== "neutre"));
@@ -4177,6 +4214,7 @@ document.addEventListener("click", function(e){
   if (act === "gz-num"){ S.gzNum = (S.gzNum || 0) + 1; render(); return; }
   if (act === "topic-quick"){ var tq = b.dataset.t, tl = ((S.settings && S.settings.topics) || []).slice(); if (tl.indexOf(tq) < 0) tl.push(tq); saveSettings({topics:tl}).then(refreshSettings); return; }
   if (act === "note-import"){ noteImportSheet(); return; }
+  if (act.indexOf("co-") === 0 && coAct(act, b)) return;
   if (act === "lt-tab"){ S.listTab = b.dataset.k; render(); return; }
   if (act === "lt-mom"){ S.todoMom = b.dataset.k; render(); return; }
   if (act === "todo-check"){ todoCheck(id, b); return; }
@@ -4244,14 +4282,174 @@ function ltDay(isoD){
   if (diff < -1 && diff > -7) return JOURS_LONG[d.getDay()];
   return d.getDate() + " " + MOIS_COURT[d.getMonth()].toLowerCase();
 }
+/* ---------- MyWorld_0.38 : liste de courses (onglet Courses de Listes, version B « rangée par rayon ») ---------- */
+var CO_RAY = [["🥕","Fruits et légumes"],["🥖","Boulangerie"],["🧀","Frais"],["❄️","Surgelés"],["🍝","Épicerie"],["🥤","Boissons"],["🧴","Hygiène et beauté"],["🧽","Maison"],["🛒","Autre"]];
+/* dictionnaire intégré (sans IA), testé dans l'ordre : le plus précis d'abord */
+var CO_RULES = [
+  [/creme (hydratante|solaire|pour les mains|mains|de jour|de nuit)|lait (corps|demaquillant)/, 6],
+  [/vinaigre blanc|liquide vaisselle|tablette|pastille lave/, 7],
+  [/lait de coco|lait vegetal|lait d'amande|lait d'avoine|lait de soja/, 4],
+  [/pate (a tarte|brisee|feuilletee|sablee|a pizza)|pates fraiches|gnocchi|ravioli|tortellini/, 2],
+  [/\b(pommes? de terre|patates?|fruits?|legumes?|pommes?|poires?|bananes?|oranges?|clementines?|mandarines?|citrons?|kiwis?|raisins?|fraises?|framboises?|myrtilles?|cerises?|peches?|abricots?|ananas|mangues?|melons?|pasteques?|avocats?|tomates?|salades?|laitues?|roquette|epinards?|carottes?|oignons?|echalotes?|ail|poireaux?|courgettes?|aubergines?|poivrons?|concombres?|radis|brocolis?|choux?|chou-fleur|haricots? verts?|champignons?|persil|basilic|coriandre|menthe|ciboulette|gingembre|betteraves?|celeri|navets?|potirons?|courges?|herbes|patate douce)\b/, 0],
+  [/\b(pains?|baguettes?|brioches?|croissants?|chocolatines?|pains? au chocolat|viennoiseries?|biscottes?|pain de mie|wraps?|tortillas?)\b/, 1],
+  [/\b(surgeles?|glaces?|frites|poelees?|pizzas? surgelees?|nuggets|congeles?|batonnets de poisson|legumes surgeles)\b/, 3],
+  [/\b(lait|beurre|yaourts?|yogourts?|skyr|fromages?|fromage rape|emmental|mozzarella|parmesan|comte|camembert|chevre|feta|ricotta|mascarpone|creme fraiche|creme|oeufs?|œufs?|jambon|bacon|lardons?|saucisses?|saucisson|chorizo|poulet|dinde|boeuf|bœuf|steaks?|hache|viande|porc|veau|agneau|saumon|poissons?|crevettes?|cabillaud|surimi|houmous|tofu|pizza|quiche|dessert|flan|tiramisu)\b/, 2],
+  [/\b(eau|eaux|eau gazeuse|jus|bieres?|vins?|sodas?|coca|limonade|sirops?|ice tea|champagne|whisky|rhum|perrier|schweppes|cafe en canette)\b/, 5],
+  [/\b(savon|shampo\w*|apres-shampo\w*|gel douche|dentifrice|brosse a dents|deodorant|rasoirs?|mousse a raser|cotons?|cotons-tiges?|coton-tige|maquillage|serviettes? hygieniques?|tampons?|protege-slips?|mouchoirs?|papier toilette|pq|lingettes?|creme solaire)\b/, 6],
+  [/\b(lessive|adoucissant|vaisselle|eponges?|sacs? poubelle|essuie-tout|sopalin|papier alu|aluminium|film alimentaire|nettoyant|javel|ampoules?|piles?|allumettes?|bougies?|desodorisant|sacs? congelation)\b/, 7],
+  [/\b(pates|spaghetti|tagliatelles?|penne|riz|farine|sucre|sel|poivre|huile|vinaigre|moutarde|mayonnaise|mayo|ketchup|sauces?|epices?|cafe|the|tisanes?|chocolat|cacao|cereales?|muesli|flocons|biscuits?|gateaux?|bonbons?|chips|cacahuetes?|amandes?|noix|conserves?|thon|sardines?|mais|lentilles?|pois chiches?|haricots?|soupes?|bouillon|confiture|miel|pate a tartiner|nutella|compotes?|levure|chapelure|olives?|cornichons?|semoule|quinoa|boulgour|puree|croquettes?|capsules?|dosettes?)\b/, 4]
+];
+function coKey(t){ return normS(t).replace(/^(?:du|de la|de l'|des|un|une|le|la|les|l')\s+/, "").replace(/s\b/g, ""); }
+function coRay(t){
+  var L = S.settings && S.settings.coursesRay, k = coKey(t); if (L && L[k] != null) return +L[k];
+  var n = " " + normS(t).replace(/œ/g, "oe") + " ";
+  for (var i = 0; i < CO_RULES.length; i++) if (CO_RULES[i][0].test(n)) return CO_RULES[i][1];
+  return 8;
+}
+/* « 2 baguettes, du lait et des œufs » → [{t:"Baguettes", q:2}, {t:"Lait", q:1}, {t:"Œufs", q:1}] */
+function coItems(str){
+  return String(wordsToDigits(str)).replace(/\b(etc\.?)\b/gi, "").split(/\s*(?:,|;|\n|\s\+\s|\bet\b|\bpuis\b|\bainsi que\b)\s*/i).map(function(x){
+    x = x.replace(/^[\s\-–•.:]+|[\s\-–•.:!?]+$/g, ""); if (!x) return null;
+    var NB = {un:1,une:1,deux:2,trois:3,quatre:4,cinq:5,six:6,sept:7,huit:8,neuf:9,dix:10,onze:11,douze:12,quinze:15,vingt:20};
+    x = x.replace(/^(un|une|deux|trois|quatre|cinq|six|sept|huit|neuf|dix|onze|douze|quinze|vingt)\s+/i, function(_, w){ return NB[w.toLowerCase()] + " "; });
+    var q = 1, m = /^(\d{1,3})\s*(?:x\s+)?(.+)$/i.exec(x); if (m){ q = +m[1]; x = m[2]; }
+    var m2 = /^(.+?)\s*[x×]\s*(\d{1,3})$/i.exec(x); if (m2){ x = m2[1]; q = +m2[2]; }
+    x = x.replace(/^(?:(?:de l|d|l)['’]\s*|(?:du|de la|des|de|le|la|les)\s+)/i, "").replace(/\s+pour\s+(?:demain|ce soir|ce midi|ce week-?end|la semaine|samedi|dimanche)$/i, "").replace(/^oeuf/i, "œuf").trim();
+    return x ? { t: cap(x), q: Math.max(1, Math.min(99, q)) } : null;
+  }).filter(Boolean);
+}
+/* phrases du + : « courses : … », « acheter … », « ajoute … aux courses », « il faut racheter … » */
+function parseCourses(text){
+  var t = stripPolite(String(text).trim().replace(/[.!]+$/, "")), m, what = null;
+  if ((m = /^(?:(?:ma\s+|la\s+)?liste\s+de\s+)?courses?\s*[:,\-]?\s+([\s\S]+)$/i.exec(t))) what = m[1];
+  else if ((m = /^(?:(?:il\s+)?faut\s+|je\s+dois\s+|penser\s+[àa]\s+)?(?:r?acheter|r?ach[eè]te)\s+([\s\S]+)$/i.exec(t)) && !/\b(cadeaux?|billets?|places?|tickets?|voiture|v[ée]lo|appart\w*|maison|t[ée]l[ée]phone|ordi\w*|cin[ée]ma|concert)\b|\bpour\s+(?!le\s|la\s|les\s|l['’]|demain|ce\s|cette\s|la\s+semaine)[A-ZÉÈÀ]/.test(m[1])) what = m[1];
+  else if ((m = /^(?:ajoute|ajouter|rajoute|rajouter|mets|mettre|met|note|noter)\s+([\s\S]+?)\s+(?:aux|dans\s+les|[àa]\s+(?:la|ma)\s+liste\s+de|dans\s+(?:la|ma)\s+liste\s+de|sur\s+(?:la|ma)\s+liste\s+de)\s+courses?$/i.exec(t))) what = m[1];
+  else if ((m = /^(?:ajoute|ajouter|rajoute|rajouter|mets|mettre)\s+(?:aux|dans\s+les|[àa]\s+(?:la|ma)\s+liste\s+de)\s+courses?\s*[:,]?\s+([\s\S]+)$/i.exec(t))) what = m[1];
+  if (!what) return null;
+  var items = coItems(what); return items.length ? { kind: "courses", items: items, title: "Courses" } : null;
+}
+function coOpen(){ return S.items.filter(function(i){ return i.kind === "course"; }); }
+function coArch(){ return S.items.filter(function(i){ return i.kind === "course-arch"; }).sort(function(a, b){ return String(b.at).localeCompare(String(a.at)); }); }
+/* ajoute sans doublon ; renvoie les identifiants créés (pour « Annuler ») */
+function coAdd(items){
+  var have = coOpen(), made = [], jobs = [];
+  items.forEach(function(it){
+    var k = coKey(it.t), ex = have.find(function(x){ return coKey(x.title) === k; });
+    if (ex){ var up = {}; if (ex.done) up.done = false; if (it.q > 1 && it.q !== ex.qty) up.qty = it.q; if (Object.keys(up).length) jobs.push(db.collection("items").doc(ex._id).update(up)); return; }
+    jobs.push(db.collection("items").add({ kind: "course", title: it.t, qty: it.q, done: false, createdAt: nowISO() }).then(function(ref){ if (ref && ref.id) made.push(ref.id); }));
+    have.push({ title: it.t });
+  });
+  return Promise.all(jobs).then(function(){ return made; });
+}
+function coRow(x){
+  return '<button type="button" class="co-it' + (x.done ? ' done' : '') + '" data-act="co-tog" data-id="' + h(x._id) + '" aria-pressed="' + !!x.done + '"><span class="co-ck" aria-hidden="true">' + (x.done ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>' : '') + '</span><span class="co-t">' + h(x.title) + '</span>' + (x.qty > 1 ? '<span class="co-q">×' + x.qty + '</span>' : '') + '</button>';
+}
+function coursesHTML(){
+  var all = coOpen().sort(function(a, b){ return String(a.createdAt).localeCompare(String(b.createdAt)); }), todo = all.filter(function(x){ return !x.done; }), done = all.filter(function(x){ return x.done; });
+  var html = '<form class="co-add" id="fCo" autocomplete="off"><input id="coIn" type="text" placeholder="Ajouter un article…" aria-label="Ajouter un article" enterkeyhint="done"><button type="button" class="co-mic" data-act="co-mic" aria-label="Dicter des articles"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0M12 17v4"/></svg></button><button type="submit" class="co-plus" aria-label="Ajouter">' + LT_PLUS + '</button></form>';
+  if (all.length){
+    html += '<div class="co-prog" aria-label="' + done.length + ' sur ' + all.length + ' dans le panier"><span>' + done.length + ' / ' + all.length + '</span><span class="co-bar"><i style="width:' + Math.round(done.length / all.length * 100) + '%"></i></span></div>';
+    var groups = "";
+    CO_RAY.forEach(function(r, ri){ var its = todo.filter(function(x){ return coRay(x.title) === ri; }); if (!its.length) return;
+      groups += '<p class="co-grp"><span aria-hidden="true">' + r[0] + '</span>' + r[1] + '</p>' + its.map(coRow).join(""); });
+    html += '<div class="lt-card co-card">' + (groups || '<p class="co-all">Tout est dans le panier 👌</p>')
+      + (done.length ? '<button type="button" class="co-bk" data-act="co-basket" aria-expanded="' + !!S.coBasket + '">Dans le panier · ' + done.length + '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="' + (S.coBasket ? 'M6 15l6-6 6 6' : 'M6 9l6 6 6-6') + '"/></svg></button>' + (S.coBasket ? done.map(coRow).join("") : '') : '')
+      + '</div>';
+    html += '<div class="co-foot"><button type="button" class="co-clear" data-act="co-clear">Tout effacer</button><button type="button" class="btn-ink co-go" data-act="co-done">Courses faites</button></div>'
+      + '<p class="lt-hint">Touche un article pour le mettre dans le panier, appui long pour le modifier ou changer de rayon.</p>';
+  } else {
+    html += '<p class="lt-empty">Ta liste est vide. Ajoute un article ci-dessus, ou dis au + : « courses : du lait et des œufs ».</p>';
+  }
+  var note = coNoteSrc();
+  if (note && !all.length) html += '<button type="button" class="lt-add" data-act="co-note"><span class="lt-addi">' + LT_PLUS + '</span><span>Récupérer ta note « ' + h(note.n.title || "Liste de courses") + ' » (' + note.items.length + ' article' + (note.items.length > 1 ? 's' : '') + ')</span></button>';
+  var A = coArch().slice(0, 6);
+  if (A.length) html += '<p class="lt-lbl">Courses précédentes</p><div class="lt-card">' + A.map(function(a){ var d = new Date(a.at); return '<button type="button" class="lt-row co-h" data-act="co-hist" data-id="' + h(a._id) + '"><span class="lt-mid"><span class="lt-t">' + h(cap(JOURS_LONG[d.getDay()]) + " " + d.getDate() + " " + MOIS[d.getMonth()]) + '</span><span class="lt-s">' + (a.list || []).length + ' article' + ((a.list || []).length > 1 ? 's' : '') + '</span></span><span class="co-rev">Revoir</span></button>'; }).join("") + '</div>';
+  return html;
+}
+/* note « Liste de courses » existante : ses cases non cochées */
+function coNoteSrc(){
+  var n = liveNotes().find(function(x){ return /courses?/i.test(x.title || ""); }); if (!n || !n.html) return null;
+  var d = document.createElement("div"); d.innerHTML = n.html;
+  var its = Array.prototype.slice.call(d.querySelectorAll("li")).filter(function(li){ return li.dataset.done !== "1"; }).map(function(li){ return (li.textContent || "").replace(/​/g, "").trim(); }).filter(Boolean);
+  if (!its.length) its = (n.text || "").split(/\n/).map(function(l){ return l.trim(); }).filter(Boolean).slice(0, 60);
+  return its.length ? { n: n, items: its } : null;
+}
+function coFlash(msg){ toast(msg); }
+function coMenu(id){
+  var x = S.items.find(function(i){ return i._id === id; }); if (!x) return;
+  var cur = coRay(x.title);
+  openSheet(x.title, '<div class="co-edit"><div class="field"><label for="coName">Article</label><input id="coName" type="text" value="' + h(x.title) + '"></div>'
+    + '<div class="co-qty"><span>Quantité</span><button type="button" data-q="-1" aria-label="Moins">−</button><b id="coQ">' + (x.qty || 1) + '</b><button type="button" data-q="1" aria-label="Plus">+</button></div>'
+    + '<p class="cat-lbl">Rayon</p><div class="co-rays" id="coRays">' + CO_RAY.map(function(r, i){ return '<button type="button" data-r="' + i + '" aria-pressed="' + (i === cur) + '">' + r[0] + ' ' + r[1] + '</button>'; }).join("") + '</div>'
+    + '<div class="co-btns"><button type="button" class="btn-line danger" id="coDel">Supprimer</button><button type="button" class="btn-ink" id="coSave">Enregistrer</button></div></div>', function(){
+    var q = x.qty || 1, ray = cur;
+    document.querySelectorAll(".co-qty [data-q]").forEach(function(b){ b.onclick = function(){ q = Math.max(1, Math.min(99, q + +b.dataset.q)); document.getElementById("coQ").textContent = q; }; });
+    document.querySelectorAll("#coRays [data-r]").forEach(function(b){ b.onclick = function(){ ray = +b.dataset.r; document.querySelectorAll("#coRays [data-r]").forEach(function(c){ c.setAttribute("aria-pressed", String(c === b)); }); }; });
+    document.getElementById("coDel").onclick = function(){ var copy = Object.assign({}, x); delete copy._id; db.collection("items").doc(id).delete().then(function(){ closeSheet(); toast("« " + x.title + " » retiré.", { undo: function(){ db.collection("items").add(copy).catch(dbErr); } }); }).catch(dbErr); };
+    document.getElementById("coSave").onclick = function(){
+      var name = cap(document.getElementById("coName").value.trim()) || x.title, jobs = [db.collection("items").doc(id).update({ title: name, qty: q })];
+      if (ray !== coRay(name)){ var L = Object.assign({}, (S.settings && S.settings.coursesRay) || {}); L[coKey(name)] = ray; jobs.push(saveSettings({ coursesRay: L })); }
+      Promise.all(jobs).then(function(){ closeSheet(); render(); if (ray !== cur) toast("Rangé dans « " + CO_RAY[ray][1] + " », je m'en souviendrai."); }).catch(dbErr);
+    };
+  });
+}
+function coHist(id){
+  var a = S.items.find(function(i){ return i._id === id; }); if (!a) return;
+  var d = new Date(a.at), L = a.list || [];
+  openSheet("Courses du " + d.getDate() + " " + MOIS[d.getMonth()], '<div class="lt-card">' + L.map(function(it, i){ return '<div class="lt-row"><span class="lt-mid"><span class="lt-t">' + h(it.t) + (it.q > 1 ? ' <span class="co-q">×' + it.q + '</span>' : '') + '</span>' + (it.d ? '' : '<span class="lt-s">pas pris</span>') + '</span><button type="button" class="mini" data-act="co-readd" data-id="' + h(id) + '" data-i="' + i + '">Ajouter</button></div>'; }).join("") + '</div>'
+    + '<div class="co-btns"><button type="button" class="btn-line danger" data-act="co-hdel" data-id="' + h(id) + '">Supprimer</button><button type="button" class="btn-ink" data-act="co-readd" data-id="' + h(id) + '" data-i="all">Tout reprendre</button></div>');
+}
+function coAct(act, b){
+  if (act === "co-tog"){ if (S.coLP){ S.coLP = false; return true; } var x = S.items.find(function(i){ return i._id === b.dataset.id; }); if (x) db.collection("items").doc(x._id).update({ done: !x.done }).catch(dbErr); return true; }
+  if (act === "co-basket"){ S.coBasket = !S.coBasket; render(); return true; }
+  if (act === "co-mic"){ addOpen("text"); var ci = document.getElementById("captureInput"); ci.value = "courses "; if (S.dictate) S.dictate(true); return true; }
+  if (act === "co-done"){
+    var all = coOpen(); if (!all.length) return true;
+    var list = all.map(function(x){ return { t: x.title, q: x.qty || 1, d: !!x.done }; }), copies = all.map(function(x){ var c = Object.assign({}, x); delete c._id; return c; });
+    db.collection("items").add({ kind: "course-arch", at: nowISO(), list: list, createdAt: nowISO() }).then(function(ref){
+      return Promise.all(all.map(function(x){ return db.collection("items").doc(x._id).delete(); })).then(function(){
+        S.coBasket = false; render();
+        toast("Courses archivées · " + list.length + " article" + (list.length > 1 ? "s" : "") + ". Nouvelle liste prête.", { undo: function(){ Promise.all(copies.map(function(c){ return db.collection("items").add(c); }).concat(ref && ref.id ? [db.collection("items").doc(ref.id).delete()] : [])).catch(dbErr); } });
+      });
+    }).catch(dbErr);
+    return true;
+  }
+  if (act === "co-clear"){
+    var all2 = coOpen(), copies2 = all2.map(function(x){ var c = Object.assign({}, x); delete c._id; return c; }); if (!all2.length) return true;
+    Promise.all(all2.map(function(x){ return db.collection("items").doc(x._id).delete(); })).then(function(){ toast("Liste effacée.", { undo: function(){ Promise.all(copies2.map(function(c){ return db.collection("items").add(c); })).catch(dbErr); } }); }).catch(dbErr);
+    return true;
+  }
+  if (act === "co-note"){ var src = coNoteSrc(); if (src) coAdd(coItems(src.items.join(", "))).then(function(made){ toast(made.length + " article" + (made.length > 1 ? "s" : "") + " récupéré" + (made.length > 1 ? "s" : "") + ". Ta note n'a pas été modifiée, tu peux la supprimer quand tu veux."); }).catch(dbErr); return true; }
+  if (act === "co-hist"){ coHist(b.dataset.id); return true; }
+  if (act === "co-readd"){ var a = S.items.find(function(i){ return i._id === b.dataset.id; }); if (!a) return true; var L = a.list || [], pick = b.dataset.i === "all" ? L : [L[+b.dataset.i]];
+    coAdd(pick.filter(Boolean).map(function(it){ return { t: it.t, q: it.q || 1 }; })).then(function(made){ if (b.dataset.i === "all") closeSheet(); else { b.textContent = "Ajouté"; b.disabled = true; } toast(made.length ? made.length + " article" + (made.length > 1 ? "s" : "") + " remis dans la liste." : "Déjà dans ta liste."); render(); }).catch(dbErr); return true; }
+  if (act === "co-hdel"){ var id = b.dataset.id, a2 = S.items.find(function(i){ return i._id === id; }), c2 = a2 && Object.assign({}, a2); if (c2) delete c2._id;
+    db.collection("items").doc(id).delete().then(function(){ closeSheet(); toast("Courses retirées de l'historique.", c2 ? { undo: function(){ db.collection("items").add(c2).catch(dbErr); } } : undefined); }).catch(dbErr); return true; }
+  return false;
+}
+/* ajout depuis le champ de l'onglet, et appui long sur un article */
+document.addEventListener("submit", function(e){
+  if (!e.target || e.target.id !== "fCo") return; e.preventDefault(); if (!needDb()) return;
+  var inp = document.getElementById("coIn"), its = coItems(inp.value); if (!its.length) return;
+  inp.value = ""; coAdd(its).then(function(){ setTimeout(function(){ var i2 = document.getElementById("coIn"); if (i2) i2.focus(); }, 60); }).catch(dbErr);
+});
+(function(){
+  var t = null;
+  document.addEventListener("pointerdown", function(e){ var it = e.target.closest && e.target.closest(".co-it"); if (!it) return; clearTimeout(t); S.coLP = false;
+    t = setTimeout(function(){ S.coLP = true; try { navigator.vibrate && navigator.vibrate(15); } catch(er){} coMenu(it.dataset.id); }, 500); });
+  ["pointerup","pointercancel","pointerleave","scroll"].forEach(function(ev){ document.addEventListener(ev, function(){ clearTimeout(t); }, true); });
+  document.addEventListener("contextmenu", function(e){ if (e.target.closest && e.target.closest(".co-it")) e.preventDefault(); });
+})();
 function viewListes(){
-  var tab = S.listTab === "rappels" ? "rappels" : "todo", mom = S.todoMom || "auj";
+  var tab = S.listTab === "rappels" ? "rappels" : S.listTab === "courses" ? "courses" : "todo", mom = S.todoMom || "auj";
   var open = todosOpen(), nR = rappelsDated().length + rappelsOpen().length;
   var cnt = {auj:0, sem:0, tard:0}; open.forEach(function(x){ cnt[todoMoment(x)]++; });
   var html = '<div class="lt-wrap gut">'
     + '<div class="lt-seg" role="tablist" aria-label="Tes listes">'
     + '<button type="button" role="tab" data-act="lt-tab" data-k="todo" aria-selected="' + (tab === "todo") + '">À faire · ' + open.length + '</button>'
-    + '<button type="button" role="tab" data-act="lt-tab" data-k="rappels" aria-selected="' + (tab === "rappels") + '">Rappels · ' + nR + '</button></div>';
+    + '<button type="button" role="tab" data-act="lt-tab" data-k="rappels" aria-selected="' + (tab === "rappels") + '">Rappels · ' + nR + '</button>'
+    + '<button type="button" role="tab" data-act="lt-tab" data-k="courses" aria-selected="' + (tab === "courses") + '">Courses · ' + coOpen().filter(function(x){ return !x.done; }).length + '</button></div>';
+  if (tab === "courses") html += coursesHTML(); else
   if (tab === "todo"){
     html += '<div class="lt-pills" role="group" aria-label="Quand">' + [["auj","Aujourd'hui"],["sem","Semaine"],["tard","Plus tard"]].map(function(m){ return '<button type="button" data-act="lt-mom" data-k="' + m[0] + '" aria-pressed="' + (mom === m[0]) + '">' + m[1] + '<b>' + cnt[m[0]] + '</b></button>'; }).join("") + '</div>';
     var t = iso(today());
