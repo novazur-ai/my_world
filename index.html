@@ -1008,6 +1008,10 @@ nav.tabs .isl-b .nbadge{top:-3px;right:-5px}
 /* MyWorld_0.46 : même animation pour Home et Apps (le fond, le texte et le libellé apparaissent ensemble) */
 nav.tabs .isl-b,nav.tabs a.isl-b[aria-current="page"],nav.tabs .nav-apps.isl-b.cur,nav.tabs .nav-apps.isl-b[aria-expanded="true"]{transition:background-color .3s ease,color .3s ease,gap .3s ease!important}
 nav.tabs .isl-b .lb{transition:max-width .3s ease,opacity .3s ease!important}
+/* MyWorld_1.2 : lanceur ouvert = le texte « Home » se replie (il revient à la fermeture) */
+body.apps-open nav.tabs a.isl-b[aria-current="page"]{gap:0;min-width:0}
+body.apps-open nav.tabs a.isl-b .lb{max-width:0;opacity:0}
+body.ivy-measure nav.tabs .isl-b,body.ivy-measure nav.tabs .isl-b .lb,body.ivy-measure nav.tabs .in{transition:none!important}
 /* MyWorld_0.48 : lanceur « lierre » dessiné sur canevas (fluide), applis déplaçables par appui long */
 #appsFan .fan-veil{background:radial-gradient(120% 90% at 66% 100%,rgba(16,34,20,.74),rgba(10,22,32,.58));-webkit-backdrop-filter:none;backdrop-filter:none}
 body.fan-on nav.tabs a,body.fan-on .nav-add{opacity:1!important}
@@ -1927,7 +1931,7 @@ var DECO = (function(){
 
 </script>
 <script>
-var APP_VERSION = "MyWorld_1.1";
+var APP_VERSION = "MyWorld_1.2";
 (function(){
 "use strict";
 var CAL = "t.mallet06@gmail.com";
@@ -5076,8 +5080,13 @@ function fanOpen(){
   clearTimeout(fanTimer); if (IVYS && IVYS.raf) cancelAnimationFrame(IVYS.raf);
   var gazNew = !document.getElementById("gazBadge").hidden, pos = (S.settings && S.settings.ivyPos) || {};
   var apps = IVY_ORDER.map(function(k){ var a = FAN_APPS.filter(function(x){ return x.k === k; })[0]; return a ? { k: a.k, n: a.n, bg: a.bg, ink: a.ink, ic: a.ic, soon: a.soon, badge: k === "gazette" && gazNew } : null; }).filter(Boolean);
-  root.hidden = false; rimEl.hidden = false; document.body.classList.add("fan-on");
-  var r = btn.getBoundingClientRect(), isl = document.querySelector("nav.tabs .in").getBoundingClientRect(), W = window.innerWidth, H = window.innerHeight;
+  root.hidden = false; rimEl.hidden = false;
+  /* la barre change de largeur à l'ouverture (« Home » se replie, « Apps » s'affiche) : on mesure sa place finale sans animation, puis on laisse l'animation se faire */
+  var bd = document.body, navIn = document.querySelector("nav.tabs .in");
+  bd.classList.add("ivy-measure", "fan-on", "apps-open"); btn.setAttribute("aria-expanded", "true"); navIn.offsetWidth;
+  var r = btn.getBoundingClientRect(), isl = navIn.getBoundingClientRect(), W = window.innerWidth, H = window.innerHeight;
+  bd.classList.remove("apps-open"); btn.setAttribute("aria-expanded", "false"); navIn.offsetWidth;
+  bd.classList.remove("ivy-measure"); bd.classList.add("apps-open");
   var bx = r.left + r.width / 2, by = r.top + 6, dpr = Math.min(1.5, window.devicePixelRatio || 1);
   var md = IVY.model({ W: W, H: H, bx: bx, by: by, isl: { L: isl.left, T: isl.top, R: isl.right, B: isl.bottom }, apps: apps, pos: pos });
   fan.innerHTML = '<canvas class="iv-cv" aria-hidden="true"></canvas>' + md.fl.map(ivyFlowerHTML).join("")
@@ -5105,7 +5114,7 @@ function fanOpen(){
 function fanClose(then){
   var root = document.getElementById("appsFan"), btn = document.querySelector(".nav-apps");
   if (root.hidden){ if (then) then(); return; }
-  root.classList.remove("on"); root.classList.add("off");
+  root.classList.remove("on"); root.classList.add("off"); document.body.classList.remove("apps-open");
   btn.setAttribute("aria-expanded", "false"); btn.setAttribute("aria-label", "Toutes les apps");
   var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches, s = IVYS;
   if (s){ clearTimeout(s.swayT); clearTimeout(s.shT); s.fan.classList.remove("sway");
