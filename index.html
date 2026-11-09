@@ -979,6 +979,20 @@ body.scroll-lock{position:fixed;left:0;right:0;width:100%;overflow:hidden}
 .ws-slider .wsd{-webkit-touch-callout:none}
 .eb.eb-gz{display:inline-block;text-decoration:none;cursor:pointer;padding:6px 0;-webkit-tap-highlight-color:transparent}
 .eb.eb-gz:active{opacity:.7}
+
+/* MyWorld_0.43 : Gazette classée + notes de pertinence */
+.gz-lbl{margin:4px 2px 0;font-size:11px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.gz-list{display:grid;gap:10px}
+.gz-tp{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;margin-bottom:2px}
+.gz-tp svg{flex:none}
+.gz-rt{margin-left:auto;width:8px;height:8px;border-radius:50%;flex:none}.gz-rt.r0{background:#E0533D}.gz-rt.r1{background:#E3A72F}.gz-rt.r2{background:#3FAE7A}
+.gz-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.gz-rate{display:flex;gap:2px;flex:none;margin:-4px -6px 0 0}
+.gzf{width:34px;height:34px;border:0;border-radius:50%;background:transparent;color:#B3BCC8;display:grid;place-items:center;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:color .15s,background .15s,transform .15s}
+.gzf.r0[aria-pressed="true"]{color:#D9472F;background:#FBE3DF}.gzf.r1[aria-pressed="true"]{color:#C98A1E;background:#FDF0D5}.gzf.r2[aria-pressed="true"]{color:#2F9E6A;background:#DFF3E8}
+.gzf.pop{animation:gzfPop .3s ease}
+@keyframes gzfPop{0%{transform:scale(1)}45%{transform:scale(1.25)}100%{transform:scale(1)}}
+@media (prefers-reduced-motion:reduce){.gzf.pop{animation:none}}
 </style>
 </head>
 <body>
@@ -1870,7 +1884,7 @@ var DECO = (function(){
 
 </script>
 <script>
-var APP_VERSION = "MyWorld_0.42";
+var APP_VERSION = "MyWorld_0.43";
 (function(){
 "use strict";
 var CAL = "t.mallet06@gmail.com";
@@ -2659,18 +2673,33 @@ function viewGazette(){
     var x = nums[ni], rl = topics.filter(function(t){ return t === x.topic; })[0] || x.topic || "";
     html += '<button type="button" class="gz-num" data-act="gz-num" aria-label="Chiffre du jour suivant"><span class="top"><span>Chiffre du jour' + (rl ? " · " + h(rl) : "") + '</span>' + (nums.length > 1 ? '<span class="dots">' + nums.map(function(_, i){ return '<i' + (i === ni ? ' class="on"' : "") + '></i>'; }).join("") + '</span>' : "") + '</span><span class="n">' + h(x.n) + '</span><span class="p">' + h(x.text) + '</span>' + (nums.length > 1 ? '<span class="hint">Touche pour le suivant →</span>' : "") + '</button>';
   }
-  if (withNews.length > 1) html += '<div class="gz-chips" role="toolbar" aria-label="Filtrer par sujet"><button type="button" data-act="topic" data-t="Tout" aria-pressed="' + (f === "Tout") + '">Tout</button>' + withNews.map(function(t){ return '<button type="button" data-act="topic" data-t="' + h(t) + '" aria-pressed="' + (f === t) + '"><i style="background:' + gzCol(t)[1] + '"></i>' + h(t) + '</button>'; }).join("") + '</div>';
-  var shown = f === "Tout" ? withNews.concat(Object.keys(groups).filter(function(t){ return topics.indexOf(t) < 0; })) : [f];
-  if (!shown.length){
+  /* MyWorld_0.43 : les infos du jour classées par importance (calculée chaque matin), sans filtre par sujet */
+  var list = batch.slice(), ranked = list.some(function(g){ return g.rank != null; });
+  if (ranked) list = list.filter(function(g){ return g.rank != null; }).sort(function(a, b){ return ((b.score != null ? b.score : -99) - (a.score != null ? a.score : -99)) || (a.rank - b.rank); }).slice(0, 6);
+  else list.sort(function(a, b){ return (b.ts || 0) - (a.ts || 0); });
+  if (!list.length){
     html += '<div class="lt-empty">' + (topics.length ? "Pas encore d'infos pour tes sujets. La Gazette se met à jour chaque matin vers 6 h." : "Choisis tes sujets pour recevoir ta Gazette chaque matin.") + '</div>';
+  } else {
+    var rates = (S.settings && S.settings.gazRates) || {};
+    html += (ranked ? '<p class="gz-lbl">Tes ' + list.length + ' infos du jour</p>' : '') + '<div class="gz-list">' + list.map(function(g){ var c = gzCol(g.topic), rt = rates[g._id];
+      return '<button type="button" class="gz-card' + (read.indexOf(g._id) >= 0 ? " read" : "") + '" data-act="gz-open" data-id="' + h(g._id) + '"><span class="gz-tp" style="color:' + c[1] + '">' + gzIcon(g.topic, 13) + h(g.topic || "") + (rt ? '<i class="gz-rt r' + (rt.r + 1) + '" aria-label="Noté"></i>' : '') + '</span><span class="t">' + h(g.title) + '</span>' + (g.lead ? '<span class="l">' + h(g.lead) + '</span>' : "") + '<span class="meta">' + h(g.source || "") + (gzWhen(g) ? " · " + h(gzWhen(g)) : "") + '</span></button>'; }).join("") + '</div>';
   }
-  html += shown.map(function(t){
-    var c = gzCol(t), gs = groups[t].slice().sort(function(a, b){ return (b.ts || 0) - (a.ts || 0); });
-    return '<section class="gz-sec" aria-label="' + h(t) + '"><div class="gz-sh"><span class="gz-ic" style="background:' + c[0] + ';color:' + c[1] + '">' + gzIcon(t) + '</span><h2>' + h(t) + '</h2></div>'
-      + gs.map(function(g){ return '<button type="button" class="gz-card' + (read.indexOf(g._id) >= 0 ? " read" : "") + '" data-act="gz-open" data-id="' + h(g._id) + '"><span class="t">' + h(g.title) + '</span>' + (g.lead ? '<span class="l">' + h(g.lead) + '</span>' : "") + '<span class="meta">' + h(g.source || "") + (gzWhen(g) ? " · " + h(gzWhen(g)) : "") + (S.gazNew && S.gazNew[g._id] ? ' · <em>Nouveau</em>' : "") + '</span></button>'; }).join("") + '</section>';
-  }).join("");
   html += '<button type="button" class="lt-add" data-act="settings"><span class="lt-addi">' + LT_PLUS + '</span><span>Gérer mes sujets</span></button></div>';
   return html;
+}
+var GZ_FACES = [[-1, "Pas pertinent", "M8.5 16.6c.9-1.2 2.1-1.9 3.5-1.9s2.6.7 3.5 1.9"], [0, "Moyen", "M9 15.6h6"], [1, "Pertinent", "M8.5 14.2c.9 1.4 2.1 2.1 3.5 2.1s2.6-.7 3.5-2.1"]];
+function gzRateHTML(id){
+  var cur = ((S.settings && S.settings.gazRates) || {})[id];
+  return '<div class="gz-rate" role="group" aria-label="Cette info t\'intéresse ?">' + GZ_FACES.map(function(f){
+    return '<button type="button" class="gzf r' + (f[0] + 1) + '" data-act="gz-rate" data-id="' + h(id) + '" data-r="' + f[0] + '" aria-label="' + f[1] + '" aria-pressed="' + !!(cur && cur.r === f[0]) + '"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="9" cy="10" r=".6" fill="currentColor"/><circle cx="15" cy="10" r=".6" fill="currentColor"/><path d="' + f[2] + '"/></svg></button>'; }).join("") + '</div>';
+}
+function gzRate(b){
+  var id = b.dataset.id, r = +b.dataset.r, g = S.gazette.find(function(x){ return x._id === id; }); if (!g) return;
+  var R = Object.assign({}, (S.settings && S.settings.gazRates) || {});
+  if (R[id] && R[id].r === r) delete R[id]; else R[id] = { r: r, t: g.topic || "", s: g.source || "", ti: g.title || "", at: nowISO() };
+  var ks = Object.keys(R); if (ks.length > 1500) ks.sort(function(a, c){ return String(R[a].at).localeCompare(String(R[c].at)); }).slice(0, ks.length - 1500).forEach(function(k){ delete R[k]; });
+  document.querySelectorAll('.gzf[data-id="' + id + '"]').forEach(function(x){ var on = !!(R[id] && R[id].r === +x.dataset.r); x.setAttribute("aria-pressed", String(on)); x.classList.toggle("pop", on); });
+  saveSettings({ gazRates: R }).catch(dbErr);
 }
 function gzOpen(id, obj){
   var g = obj || S.gazette.find(function(x){ return x._id === id; }); if (!g) return;
@@ -2678,7 +2707,7 @@ function gzOpen(id, obj){
   var c = obj ? ["#E3EDF6", "#0B3A5C"] : gzCol(g.topic);
   var el = document.createElement("div"); el.id = "gzPop";
   el.innerHTML = '<div class="gz-veil" data-act="gz-close"></div><div class="gz-pop" role="dialog" aria-modal="true" aria-labelledby="gzT"><span class="grab" aria-hidden="true"></span>'
-    + '<span class="tag" style="background:' + c[0] + ';color:' + c[1] + '">' + (obj ? "" : gzIcon(g.topic, 14)) + h(obj ? "À la une" : g.topic) + '</span><h2 id="gzT">' + h(g.title) + '</h2><span class="meta">' + h(g.source || "") + (gzWhen(g) ? " · " + h(gzWhen(g)) : "") + '</span>'
+    + '<div class="gz-top"><span class="tag" style="background:' + c[0] + ';color:' + c[1] + '">' + (obj ? "" : gzIcon(g.topic, 14)) + h(obj ? "À la une" : g.topic) + '</span>' + (obj ? '' : gzRateHTML(g._id)) + '</div><h2 id="gzT">' + h(g.title) + '</h2><span class="meta">' + h(g.source || "") + (gzWhen(g) ? " · " + h(gzWhen(g)) : "") + '</span>'
     + (g.lead ? '<h4>L\'essentiel</h4><p>' + h(g.lead) + '</p>' : "")
     + (g.more ? '<h4>En quelques phrases</h4><p class="more">' + h(g.more) + '</p>' : "")
     + (!g.lead && !g.more ? '<p class="more">Pas de résumé pour cet article : le site ne le fournit pas.</p>' : "")
@@ -4372,6 +4401,7 @@ document.addEventListener("click", function(e){
   if (act === "mt-home"){ closeSheet(); saveSettings({meteoPlace:null}).then(function(){ ensureMeteo(true); render(); }); toast("Retour à la météo de Cagnes-sur-Mer."); return; }
   if (act === "gz-une"){ var u1 = gzUneOf(S.gzDay); if (u1) gzOpen(null, u1); return; }
   if (act === "gz-close"){ gzClose(); return; }
+  if (act === "gz-rate"){ gzRate(b); return; }
   if (act === "gz-num"){ S.gzNum = (S.gzNum || 0) + 1; render(); return; }
   if (act === "topic-quick"){ var tq = b.dataset.t, tl = ((S.settings && S.settings.topics) || []).slice(); if (tl.indexOf(tq) < 0) tl.push(tq); saveSettings({topics:tl}).then(refreshSettings); return; }
   if (act === "note-import"){ noteImportSheet(); return; }
