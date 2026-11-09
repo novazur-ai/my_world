@@ -1004,6 +1004,10 @@ nav.tabs a.isl-b[aria-current="page"] .lb,nav.tabs .nav-apps.isl-b.cur .lb,nav.t
 nav.tabs .nav-apps.isl-b[aria-expanded="true"]{background:var(--acc-ink,#0B3A5C)!important;color:#fff!important;gap:7px}
 nav.tabs .nav-add{width:58px!important;height:58px!important;margin:-12px 4px!important;border:0!important;box-shadow:0 8px 18px rgba(20,60,110,.4)!important;justify-self:auto}
 nav.tabs .isl-b .nbadge{top:-3px;right:-5px}
+
+/* MyWorld_0.46 : même animation pour Home et Apps (le fond, le texte et le libellé apparaissent ensemble) */
+nav.tabs .isl-b,nav.tabs a.isl-b[aria-current="page"],nav.tabs .nav-apps.isl-b.cur,nav.tabs .nav-apps.isl-b[aria-expanded="true"]{transition:background-color .3s ease,color .3s ease,gap .3s ease!important}
+nav.tabs .isl-b .lb{transition:max-width .3s ease,opacity .3s ease!important}
 </style>
 </head>
 <body>
@@ -1894,7 +1898,7 @@ var DECO = (function(){
 
 </script>
 <script>
-var APP_VERSION = "MyWorld_0.45";
+var APP_VERSION = "MyWorld_0.46";
 (function(){
 "use strict";
 var CAL = "t.mallet06@gmail.com";
