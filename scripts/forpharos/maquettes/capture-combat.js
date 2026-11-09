@@ -1,0 +1,11 @@
+const { chromium } = require('playwright');
+(async () => { const b = await chromium.launch({ executablePath: '/usr/bin/google-chrome', args:['--use-angle=swiftshader','--enable-unsafe-swiftshader','--ignore-gpu-blocklist'] });
+ const p = await b.newPage({ viewport:{width:1300,height:1000}, deviceScaleFactor: +(process.argv[4]||1) });
+ p.on('pageerror', e => console.log('ERR', e.message.slice(0,800))); p.on('console', m => { const t = m.text(); if (['error','warning'].includes(m.type()) && !/TUNNEL|ReadPixels/.test(t)) console.log('CON', t.slice(0,400)); });
+ const t0 = Date.now();
+ await p.goto('http://127.0.0.1:8765/forpharos-maquettes.html?still=' + (process.argv[2]||1.9) + '&q=' + (process.argv[3]||'equilibree') + (process.argv[6] ? '&vit=' + process.argv[6] : ''), {waitUntil:'commit', timeout: 120000});
+ await p.waitForFunction(() => document.body && document.body.dataset.ready === "1", null, {timeout: 200000, polling: 500});
+ console.log('ms', Date.now() - t0);
+ const box = await p.evaluate(() => { const r = document.querySelector('.phone').getBoundingClientRect(); return {x:r.x, y:r.y, width:r.width, height:r.height}; });
+ await p.screenshot({ path: process.argv[5] || 'e.png', clip: box });
+ await b.close(); })();
