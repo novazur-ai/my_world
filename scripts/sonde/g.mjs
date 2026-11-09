@@ -237,7 +237,9 @@ async function national(){
   const df = new Map(); arts.forEach((a) => a.w.forEach((w) => df.set(w, (df.get(w) || 0) + 1)));
   const idf = (w) => Math.log((arts.length + 1) / (df.get(w) || 1));
   const sim = (a, b) => { const sh = new Set([...a.tw].filter((w) => b.w.has(w)).concat([...b.tw].filter((w) => a.w.has(w)))); const rare = [...sh].filter((w) => (df.get(w) || 0) <= 6); return rare.length >= 2 ? rare.reduce((x, w) => x + idf(w), 0) : 0; };
-  return (NAT = { arts, sim });
+  /* même info pour compter les journaux : au moins 2 mots rares en commun entre les deux titres */
+  const cov = (a, b) => [...a.tw].filter((w) => b.tw.has(w) && (df.get(w) || 0) <= 6).length >= 2;
+  return (NAT = { arts, sim, cov });
 }
 /* goûts appris : notes de Théo (pertinent +1, moyen 0, pas pertinent -1) par sujet, par site et par mot du titre */
 export function learnModel(rates){
@@ -276,7 +278,7 @@ export async function build(topics, seen = new Set(), rates = {}, N_PICK = 6){
   const N = await national(), uneA = une ? { w: uw(une.title + " " + une.lead), tw: uw(une.title) } : null;
   for (const it of C){
     it.w = uw(it.title + " " + it.lead); it.tw = uw(it.title);
-    const srcs = new Set([it.source]); for (const a of N.arts) if (N.sim(it, a) >= 6) srcs.add(a.src);
+    const srcs = new Set([it.source]); for (const a of N.arts) if (N.cov(it, a)) srcs.add(a.src);
     const t = norm(it.title), l = norm(it.lead), age = it.ts ? (now - it.ts) / 3600e3 : 30;
     const gt = new Set(t.match(GRAVE) || []).size, gl = new Set(l.match(GRAVE) || []).size;
     it.parts = {
