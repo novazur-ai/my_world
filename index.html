@@ -1870,7 +1870,7 @@ var DECO = (function(){
 
 </script>
 <script>
-var APP_VERSION = "MyWorld_0.41";
+var APP_VERSION = "MyWorld_0.42";
 (function(){
 "use strict";
 var CAL = "t.mallet06@gmail.com";
@@ -4838,10 +4838,11 @@ function route(){
     setTimeout(function(){ app.classList.remove(cls); }, 300);
   }
 }
-/* glisser : entre Accueil et Notes ; dans une app, glisser vers la droite = retour */
+/* glisser : dans une app, glisser vers la droite = retour (MyWorld_0.42 : plus de glissement entre Accueil et Notes, il gênait la semaine qui glisse) */
 (function(){
   var x0 = null, y0 = 0, t0 = 0;
   document.addEventListener("touchstart", function(e){
+    if (!isApp(S.view)) { x0 = null; return; }
     if (e.touches.length !== 1 || document.querySelector(".sheet-wrap,.levelup,.note-editor,.draw-pad,#gzPop")) { x0 = null; return; }
     if (e.target.closest(".bubbles-wrap,.topics,input,select,textarea,.month,.ncard2")) { x0 = null; return; }
     x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; t0 = Date.now();
