@@ -1,4 +1,4 @@
-// Gazette du matin (MyWorld_0.43) : sans IA ni clé d'API.
+// Gazette du matin (MyWorld_0.44) : sans IA ni clé d'API.
 // On lit les flux RSS de sites d'info français pour tous les sujets choisis dans les Réglages,
 // on note chaque article (importance de l'info + goûts appris des notes de Théo), et on garde les 6 meilleurs,
 // tous sujets confondus, rangés du plus important au moins important.
@@ -296,12 +296,16 @@ export async function build(topics, seen = new Set(), rates = {}, N_PICK = 6){
   /* les meilleurs, une seule fois par événement, sans reprendre « À la une », et un peu de variété entre sujets */
   const same = (a, b) => norm(a.title) === norm(b.title) || N.sim(a, b) >= 6, picked = [], per = {};
   const pool0 = C.filter((it) => !(uneA && N.sim(it, uneA) >= 6)).sort((a, b) => b.score - a.score);
+  /* au moins 3 sujets différents (ou tous ceux qui ont des articles s'il y en a moins) : les dernières places leur sont réservées */
+  const need = Math.min(3, new Set(pool0.map((it) => it.topic)).size);
   while (picked.length < N_PICK){
+    const missing = need - Object.keys(per).length, onlyNew = missing > 0 && missing >= N_PICK - picked.length;
     let best = null, bs = -1e9;
-    for (const it of pool0){ if (it.used || picked.some((p) => same(p, it))) continue; const s = it.score - (per[it.topic] || 0); if (s > bs){ bs = s; best = it; } }
+    for (const it of pool0){ if (it.used || picked.some((p) => same(p, it)) || (onlyNew && per[it.topic])) continue; const s = it.score - (per[it.topic] || 0); if (s > bs){ bs = s; best = it; } }
     if (!best) break;
     best.used = true; best.final = r1(bs); per[best.topic] = (per[best.topic] || 0) + 1; picked.push(best);
   }
+  picked.sort((a, b) => b.final - a.final);             /* toujours rangées de la plus importante à la moins importante */
   await pool(picked, 3, enrich); dropSiteDescs(picked);
   console.log(`\nCandidats : ${C.length} · notes apprises : ${model.n}`);
   picked.forEach((it, i) => console.log(`${i + 1}. [${it.final}] ${it.topic} · ${it.source} · ${it.title}\n     ${JSON.stringify(it.parts)} (${it.srcs} journal/aux)`));
