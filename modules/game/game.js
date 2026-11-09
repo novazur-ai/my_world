@@ -1,4 +1,4 @@
-/* Forpharos : point d'entrée du jeu (MyWorld_1.1).
+/* La Veille de Forpharos : point d'entrée du jeu (MyWorld_1.1, nom du jeu depuis 1.4 ; Forpharos est le nom du village).
    My World charge ce module à la demande (import()) et l'installe dans le calque #gameRoot, hors de #view.
    mount(root, opts) → { unmount }. Aucune variable globale ; tout est nettoyé à la sortie (images, minuteries, écouteurs).
    Le jeu lit l'XP de My World sans jamais la modifier, et n'écrit que sous users/{uid}/game/…. */
@@ -30,17 +30,17 @@ export function mount(root, opts){
   if (!document.getElementById("mw-game-css")){ const l = document.createElement("link"); l.id = "mw-game-css"; l.rel = "stylesheet"; l.href = CSS; document.head.appendChild(l); }
   const meta = document.querySelector('meta[name="theme-color"]'), prevTheme = meta && meta.content; if (meta) meta.content = "#1A130E";
 
-  root.innerHTML = '<div class="mw-game" role="application" aria-label="Forpharos, le jeu de My World">'
+  root.innerHTML = '<div class="mw-game" role="application" aria-label="La Veille de Forpharos, le jeu de My World">'
     + '<div class="mg-screen mg-vil">'
     + '<header class="mg-bar wood"><button type="button" class="mg-ibtn" data-g="exit" aria-label="Revenir à My World">' + pixSVG("X") + '</button>'
     + '<div class="mg-res" aria-label="Ressources"></div><button type="button" class="mg-ibtn" data-g="menu" aria-label="Menu du jeu">' + gearSVG() + "</button></header>"
-    + '<div class="mg-vwrap"><canvas class="mg-vcv" role="img" aria-label="Le village de Forpharos"></canvas><div class="mg-ribbon" hidden>' + pixSVG("MODE TEST", { shadow: "#3A1410" }) + '</div><div class="mg-chant parch" hidden></div></div>'
+    + '<div class="mg-vwrap"><h1 class="mg-title">' + pixSVG("LA VEILLE DE FORPHAROS", { shadow: "#1A120C" }) + '</h1><canvas class="mg-vcv" role="img" aria-label="Le village de Forpharos"></canvas><div class="mg-ribbon" hidden>' + pixSVG("MODE TEST", { shadow: "#3A1410" }) + '</div><div class="mg-chant parch" hidden></div></div>'
     + '<div class="mg-info"><div class="mg-day parch"></div><button type="button" class="mg-fight" data-g="fight"><span class="mg-fl">' + pixSVG("COMBATTRE", { shadow: "#5E2019" }) + '</span><small></small></button></div>'
     + '<section class="mg-blds" aria-label="Bâtiments"></section>'
     + '<p class="mg-foot"></p>'
     + "</div>"
     + '<div class="mg-layer" hidden></div>'
-    + '<div class="mg-turn">' + pixSVG("TOURNE TON TELEPHONE", { shadow: "#000" }) + "<p>Forpharos se joue en hauteur.</p></div>"
+    + '<div class="mg-turn">' + pixSVG("TOURNE TON TELEPHONE", { shadow: "#000" }) + "<p>La Veille de Forpharos se joue en hauteur.</p></div>"
     + "</div>";
   const G = root.firstChild, $ = s => G.querySelector(s), layerEl = $(".mg-layer");
   const V = createVillage($(".mg-vcv"));
@@ -101,7 +101,7 @@ export function mount(root, opts){
     el.hidden = false; el.innerHTML = "<b>Chantier : " + esc(b.name) + "</b><span>" + esc(b.phases[ph.i]) + " · " + left + " s</span>";
   }
   function renderAll(){ renderRes(); renderInfo(); renderBlds(); renderChantier(); $(".mg-ribbon").hidden = slot !== "debug";
-    $(".mg-foot").textContent = "Forpharos · " + (opts.version || "") + (slot === "debug" ? " · partie de test (séparée)" : ""); }
+    $(".mg-foot").textContent = "La Veille de Forpharos · " + (opts.version || "") + (slot === "debug" ? " · partie de test (séparée)" : ""); }
 
   /* ---------- boucle du village (60 i/s, arrêtée pendant un combat ou en arrière-plan) ---------- */
   let last = performance.now();
@@ -153,13 +153,13 @@ export function mount(root, opts){
       const done = tickBuilds(st, Date.now()); if (done.length) news.push({ t: "built", done });
       save(); renderAll();
       if (news.length) await showNews(news, first);
-    } catch (e) { console.warn("[Forpharos]", e); toast("Les données du jeu n'ont pas pu se charger. Réessaie dans un instant."); }
+    } catch (e) { console.warn("[La Veille de Forpharos]", e); toast("Les données du jeu n'ont pas pu se charger. Réessaie dans un instant."); }
     finally { busy = false; }
   }
   async function showNews(news, first){
     let html = "";
     news.forEach(n => {
-      if (n.t === "start") html += "<h3>Bienvenue à Forpharos</h3><p>Tito veille sur le phare. Chaque jour, la Horde du Plus-Tard attaque : ce que tu fais dans la vraie vie (l'XP de My World) devient de l'or, du bois, de la pierre et des vivres pour défendre le village.</p>";
+      if (n.t === "start") html += "<h3>Bienvenue dans La Veille de Forpharos</h3><p>Tito veille sur le phare. Chaque jour, la Horde du Plus-Tard attaque : ce que tu fais dans la vraie vie (l'XP de My World) devient de l'or, du bois, de la pierre et des vivres pour défendre le village.</p>";
       if (n.t === "month") html += "<h3>Nouveau mois, nouveau village</h3><p>La partie de " + esc(n.prev) + " est terminée. Forpharos repart de zéro ; tes trophées sont gardés.</p>";
       if (n.t === "days"){ const a = n.adv;
         a.nights.forEach(x => { html += "<h3>Nuit du " + (+x.day.slice(8, 10)) + "</h3>" + (x.ok ? "<p>La horde s'est brisée sur les défenses du village (" + x.def + " contre " + Math.round(x.pow) + "). Demi-butin : " + resLine(x.gain, "+") + "</p>" : "<p>La horde a forcé les défenses (" + x.def + " contre " + Math.round(x.pow) + ") et pillé 10 % des réserves : " + resLine(x.lost, "−") + "</p>"); });

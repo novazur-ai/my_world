@@ -1931,7 +1931,7 @@ var DECO = (function(){
 
 </script>
 <script>
-var APP_VERSION = "MyWorld_1.3";
+var APP_VERSION = "MyWorld_1.4";
 (function(){
 "use strict";
 var CAL = "t.mallet06@gmail.com";
@@ -2285,9 +2285,9 @@ function homeTilesHTML(){
     + '</section>';
 }
 function homeGameHTML(){
-  return '<section class="section gut"><button type="button" class="hgame" data-act="home-game" aria-label="Jouer à Forpharos, le jeu de My World">'
+  return '<section class="section gut"><button type="button" class="hgame" data-act="home-game" aria-label="Jouer à La Veille de Forpharos, le jeu de My World">'
     + '<span class="hg-stars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="hg-shine" aria-hidden="true"></span>'
-    + '<span class="hg-ic">' + HOME_IC.castle + '</span><span class="hg-tx"><b>My World · le jeu</b><small>Forpharos t\'attend</small></span><span class="hg-soon">Jouer</span></button></section>';
+    + '<span class="hg-ic">' + HOME_IC.castle + '</span><span class="hg-tx"><b>La Veille de Forpharos</b><small>Le phare t\'attend</small></span><span class="hg-soon">Jouer</span></button></section>';
 }
 /* notes les plus utilisées : épinglées, puis les plus ouvertes sur ce téléphone, puis les plus récentes */
 function noteOpens(){ try { return JSON.parse(localStorage.getItem("mw-nopen") || "{}") || {}; } catch(e){ return {}; } }
@@ -2821,7 +2821,7 @@ function render(){
   if (window.SKY_REMEASURE) SKY_REMEASURE();
   gameSync();
 }
-/* ===== MyWorld_1.1 : jeu Forpharos =====
+/* ===== MyWorld_1.1 : jeu « La Veille de Forpharos » (nom donné en 1.4) =====
    Module à part (modules/game/), chargé seulement quand on ouvre le jeu, installé dans le calque #gameRoot (hors de #view, que render() réécrit).
    Le jeu lit l'XP (collection log) sans jamais la modifier ; il n'écrit que sous users/{uid}/game/… */
 var GAME = { inst: null, loading: false };
@@ -4844,8 +4844,8 @@ var FAN_APPS = [
   {k:"courses", n:"Courses", bg:"#D3EFEA", ink:"#1E6B60", ic:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2.2l2.3 11.2a1.5 1.5 0 0 0 1.5 1.2h8.6a1.5 1.5 0 0 0 1.5-1.1L21 8H6.1"/><circle cx="9.5" cy="20" r="1.3"/><circle cx="17.5" cy="20" r="1.3"/></svg>'},
   {k:"reglages", n:"Réglages", bg:"#ECEDF1", ink:"#3E4250", ic:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M2 12h3M19 12h3M4.9 19.1L7 17M17 7l2.1-2.1"/></svg>'},
   {k:"meteo", n:"Météo", bg:"#D2E8FA", ink:"#2C679C", ic:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18h10a4 4 0 0 0 .5-8 5.5 5.5 0 0 0-10.6 1.5A3.3 3.3 0 0 0 7 18z"/></svg>'},
-  /* MyWorld_1.1 : le jeu Forpharos remplace la tuile Drive (« Bientôt ») */
-  {k:"jeu", n:"Forpharos", bg:"#F3E1C7", ink:"#8A3328", ic:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21l1.2-11h3.6L15 21z"/><path d="M8.5 10h7M10 6.5h4V10h-4z"/><path d="M12 3.5v3"/><path d="M14 8.2l6-2.2M10 8.2L4 6"/><path d="M5 21h14"/></svg>'}
+  /* MyWorld_1.1 : le jeu (La Veille de Forpharos depuis 1.4) remplace la tuile Drive (« Bientôt ») */
+  {k:"jeu", n:"La Veille de Forpharos", bg:"#F3E1C7", ink:"#8A3328", ic:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21l1.2-11h3.6L15 21z"/><path d="M8.5 10h7M10 6.5h4V10h-4z"/><path d="M12 3.5v3"/><path d="M14 8.2l6-2.2M10 8.2L4 6"/><path d="M5 21h14"/></svg>'}
 ];
 /* ===== MyWorld_0.48 : lanceur « lierre », dessiné sur canevas =====
    Le lierre part du bouton Apps, s'agrippe au bout droit de l'îlot (cascade) et la tige principale porte une appli au bout de chaque branche.
