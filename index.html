@@ -1931,7 +1931,7 @@ var DECO = (function(){
 
 </script>
 <script>
-var APP_VERSION = "MyWorld_1.2";
+var APP_VERSION = "MyWorld_1.3";
 (function(){
 "use strict";
 var CAL = "t.mallet06@gmail.com";
@@ -5059,9 +5059,11 @@ var IVY = (function(){
 
 /* ===== ouverture / fermeture du lanceur ===== */
 var fanTimer = null, IVYS = null, ivyNoClick = false;
+/* MyWorld_1.3 : la plante pousse 1,8 fois plus vite (≈ 1,45 s au lieu de 2,6 s) ; les durées du modèle restent celles d'origine, c'est l'horloge qui va plus vite */
+var IVY_SPEED = 1.8;
 function ivyFrame(now){
   var s = IVYS; if (!s) return;
-  var t = now - s.start;
+  var t = (now - s.start) * IVY_SPEED;
   if (s.dir < 0) t = Math.max(0, s.from * Math.pow(1 - Math.min(1, (now - s.start) / 300), 1.6));
   s.t = t; IVY.draw(s, t, s.dir > 0);
   if ((s.dir > 0 && t < s.md.total) || (s.dir < 0 && t > 0)) s.raf = requestAnimationFrame(ivyFrame); else s.raf = 0;
@@ -5105,9 +5107,9 @@ function fanOpen(){
     /* les fleurs éclosent quand leur branche arrive : animation gérée par le navigateur, sans recalcul de page */
     fan.querySelectorAll(".iv-fl,.iv-bud").forEach(function(b){ var bl = b.querySelector(".iv-bl"), f = s.md.fl.filter(function(x){ return x.a.k === b.dataset.app; })[0], d = f ? f.d : s.md.budD;
       if (reduce){ bl.style.transform = "none"; return; }
-      s.anims.push(bl.animate([{ transform: "scale(0) rotate(-30deg)" }, { transform: "scale(1.08) rotate(4deg)", offset: .7 }, { transform: "none" }], { duration: 620, delay: d, easing: "cubic-bezier(.25,.8,.35,1)", fill: "both" })); });
+      s.anims.push(bl.animate([{ transform: "scale(0) rotate(-30deg)" }, { transform: "scale(1.08) rotate(4deg)", offset: .7 }, { transform: "none" }], { duration: 450, delay: d / IVY_SPEED, easing: "cubic-bezier(.25,.8,.35,1)", fill: "both" })); });
     if (reduce){ s.t = md.total; IVY.draw(s, md.total + 1000, false); }
-    else { s.raf = requestAnimationFrame(ivyFrame); s.swayT = setTimeout(function(){ fan.classList.add("sway"); }, md.total + 450); }
+    else { s.raf = requestAnimationFrame(ivyFrame); s.swayT = setTimeout(function(){ fan.classList.add("sway"); }, md.total / IVY_SPEED + 350); }
   });
   setTimeout(function(){ var f = fan.querySelector(".iv-fl"); if (f) f.focus({preventScroll:true}); }, 60);
 }
