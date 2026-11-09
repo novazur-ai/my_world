@@ -971,6 +971,14 @@ body.scroll-lock{position:fixed;left:0;right:0;width:100%;overflow:hidden}
 .hn-card span{font-size:12px;line-height:1.35;color:var(--muted);white-space:pre-line;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
 .hn-card.dark span{color:rgba(255,255,255,.8)}.hn-card.dark{color:#fff}
 .hn-pin{position:absolute;top:8px;right:8px;opacity:.6}.hn-pin svg{width:13px;height:13px}
+
+/* MyWorld_0.41 : semaine qui glisse, date = Gazette du jour */
+.wstrip.ws-slider{display:block;padding:7px 0;overflow:hidden;touch-action:pan-y;-webkit-user-select:none;user-select:none}
+.ws-track{display:flex;width:300%;transform:translateX(-33.3333%);will-change:transform}
+.ws-pane{width:33.3333%;flex:none;display:flex;justify-content:space-between;gap:2px;padding:0 7px;box-sizing:border-box}
+.ws-slider .wsd{-webkit-touch-callout:none}
+.eb.eb-gz{display:inline-block;text-decoration:none;cursor:pointer;padding:6px 0;-webkit-tap-highlight-color:transparent}
+.eb.eb-gz:active{opacity:.7}
 </style>
 </head>
 <body>
@@ -1862,7 +1870,7 @@ var DECO = (function(){
 
 </script>
 <script>
-var APP_VERSION = "MyWorld_0.40";
+var APP_VERSION = "MyWorld_0.41";
 (function(){
 "use strict";
 var CAL = "t.mallet06@gmail.com";
@@ -2024,7 +2032,7 @@ function heroHTML(){
     var hr = new Date().getHours(), g = greetText().split(" · ")[0];
     if (/^Bonjour, /.test(g)) g = "Coucou " + NAME + " !"; else if (/^(Bonsoir|Bonne nuit), /.test(g)) g = g.replace(", ", " ") + " !";
     ensureMeteo();
-    return '<div class="hd2 gut hd-home"><p class="eb">' + h(date) + '</p>' + wPillHTML() + '</div>';
+    return '<div class="hd2 gut hd-home"><a class="eb eb-gz" href="#gazette-' + iso(d) + '" aria-label="' + h(date) + ' : ouvrir la Gazette du jour">' + h(date) + '</a>' + wPillHTML() + '</div>';
   }
   if (S.view === "meteo") return meteoHero(date);
   var sub = "";
@@ -2264,20 +2272,53 @@ function planningDel(y){
   var P = Object.assign({}, (S.settings && S.settings.planning) || {}), old = P[y]; delete P[y];
   saveSettings({ planning: P }).then(function(){ refreshSettings(); render(); toast("Planning " + y + " retiré.", { undo: function(){ var Q = Object.assign({}, (S.settings && S.settings.planning) || {}); Q[y] = old; saveSettings({ planning: Q }).then(function(){ refreshSettings(); render(); }); } }); });
 }
-function weekStripHTML(){
-  var t = today(), m = addDays(monday(t), 7 * (S.weekOff || 0)), sel = selDay(), out = "";
+/* semaine (MyWorld_0.41) : glisser du doigt pour changer de semaine, appui long sur un jour = le mois */
+function weekDaysHTML(off){
+  var t = today(), m = addDays(monday(t), 7 * off), sel = selDay(), out = "";
   for (var i = 0; i < 7; i++){
     var d = addDays(m, i), di = iso(d), evs = eventsOn(di), cats = [];
     evs.forEach(function(e){ var c = e.cat || "neutre"; if (cats.indexOf(c) < 0) cats.push(c); });
     var dots = cats.slice(0, 3).map(function(c){ return '<i style="background:' + (CAT_COL[c] || CAT_COL.neutre)[2] + '"></i>'; }).join("");
-    out += '<button type="button" class="wsd' + (di === sel ? " on" : "") + (di === iso(t) ? " today" : "") + (d < t ? " past" : "") + '" data-act="day-sel" data-d="' + di + '" aria-pressed="' + (di === sel) + '" aria-label="' + h(cap(JOURS_LONG[d.getDay()]) + " " + d.getDate() + (evs.length ? ", " + evs.length + " rendez-vous" : "") + (vacSpan(di) ? ", service à " + vacShort(di) : "")) + '"><small>' + cap(JOURS[d.getDay()].replace(".", "")) + '</small><b>' + d.getDate() + '</b>' + (hasPlanning() ? '<span class="whr">' + vacShort(di) + '</span>' : '') + '<span class="pts">' + dots + '</span></button>';
+    out += '<button type="button" class="wsd' + (di === sel ? " on" : "") + (di === iso(t) ? " today" : "") + (d < t ? " past" : "") + '" data-act="day-sel" data-d="' + di + '" aria-pressed="' + (di === sel) + '" aria-label="' + h(cap(JOURS_LONG[d.getDay()]) + " " + d.getDate() + (evs.length ? ", " + evs.length + " rendez-vous" : "") + (vacSpan(di) ? ", service à " + vacShort(di) : "") + ". Appui long : voir le mois") + '"' + (off !== (S.weekOff || 0) ? ' tabindex="-1"' : '') + '><small>' + cap(JOURS[d.getDay()].replace(".", "")) + '</small><b>' + d.getDate() + '</b>' + (hasPlanning() ? '<span class="whr">' + vacShort(di) + '</span>' : '') + '<span class="pts">' + dots + '</span></button>';
   }
-  var nav = '<button type="button" class="wsnav wsmonth" data-act="month" aria-label="Voir le mois"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></button>'
-    + '<button type="button" class="wsnav" data-act="week-off" data-n="-1" aria-label="Semaine précédente"' + ((S.weekOff || 0) <= 0 ? " disabled" : "") + '><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>'
-    + '<button type="button" class="wsnav" data-act="week-off" data-n="1" aria-label="Semaine suivante"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>';
-  var lbl = (S.weekOff || 0) === 0 ? "Cette semaine" : (S.weekOff === 1 ? "Semaine prochaine" : "Semaine du " + m.getDate() + " " + MOIS[m.getMonth()]);
-  return '<section class="section gut wstrip-sec" aria-label="Choisir un jour"><div class="wsh"><span>' + h(lbl) + '</span><span class="wsnavs">' + nav + '</span></div><div class="wstrip">' + out + '</div></section>';
+  return out;
 }
+function weekStripHTML(){
+  var off = S.weekOff || 0;
+  var sr = '<button type="button" class="sr" data-act="week-off" data-n="-1"' + (off <= 0 ? " disabled" : "") + '>Semaine précédente</button><button type="button" class="sr" data-act="week-off" data-n="1">Semaine suivante</button>';
+  return '<section class="section gut wstrip-sec" aria-label="Choisir un jour (glisse pour changer de semaine)">' + sr + '<div class="wstrip ws-slider"><div class="ws-track" id="wsTrack">'
+    + '<div class="ws-pane" aria-hidden="true">' + (off > 0 ? weekDaysHTML(off - 1) : '') + '</div><div class="ws-pane">' + weekDaysHTML(off) + '</div><div class="ws-pane" aria-hidden="true">' + weekDaysHTML(off + 1) + '</div>'
+    + '</div></div></section>';
+}
+function weekGo(n){ S.weekOff = Math.max(0, (S.weekOff || 0) + n); var m0 = addDays(monday(today()), 7 * S.weekOff); S.daySel = S.weekOff ? iso(m0) : iso(today()); render(); }
+function monthAt(di){ var hd = parseISO(di), t0 = today(); S.monthOffset = (hd.getFullYear() - t0.getFullYear()) * 12 + hd.getMonth() - t0.getMonth(); S.monthSel = di; openSheet("Le mois", '<div id="mBody">' + monthHTML() + '</div>'); }
+(function(){
+  var st = null, lp = null;
+  function track(){ return document.getElementById("wsTrack"); }
+  function setX(px, anim){ var t = track(); if (!t) return; t.style.transition = anim ? "transform .26s cubic-bezier(.22,.8,.3,1)" : "none"; t.style.transform = "translateX(calc(-33.3333% + " + px + "px))"; }
+  document.addEventListener("pointerdown", function(e){
+    var sl = e.target.closest && e.target.closest(".ws-slider"); if (!sl || (e.pointerType === "mouse" && e.button !== 0)) return;
+    var day = e.target.closest(".wsd");
+    st = { x: e.clientX, y: e.clientY, dx: 0, drag: false, dead: false, w: sl.clientWidth };
+    clearTimeout(lp); if (day) lp = setTimeout(function(){ if (!st || st.drag) return; st.dead = true; S.wsNoClick = true; try { navigator.vibrate && navigator.vibrate(15); } catch(er){} monthAt(day.dataset.d); }, 520);
+  });
+  document.addEventListener("pointermove", function(e){
+    if (!st || st.dead) return; var dx = e.clientX - st.x, dy = e.clientY - st.y;
+    if (!st.drag){ if (Math.abs(dy) > 10 && Math.abs(dy) > Math.abs(dx)){ clearTimeout(lp); st = null; return; } if (Math.abs(dx) < 8) return; st.drag = true; clearTimeout(lp); }
+    if (dx > 0 && (S.weekOff || 0) <= 0) dx *= .25;          /* pas de semaine passée : petit rebond */
+    st.dx = dx; setX(dx, false);
+  });
+  function end(){
+    clearTimeout(lp); if (!st) return; var s = st; st = null; if (!s.drag) return;
+    S.wsNoClick = true; setTimeout(function(){ S.wsNoClick = false; }, 60);
+    var go = s.dx < -Math.min(60, s.w * .18) ? 1 : s.dx > Math.min(60, s.w * .18) && (S.weekOff || 0) > 0 ? -1 : 0;
+    if (!go){ setX(0, true); return; }
+    setX(go > 0 ? -s.w : s.w, true);
+    setTimeout(function(){ weekGo(go); }, 240);
+  }
+  document.addEventListener("pointerup", end); document.addEventListener("pointercancel", end);
+  document.addEventListener("contextmenu", function(e){ if (e.target.closest && e.target.closest(".ws-slider")) e.preventDefault(); });
+})();
 function progRow(o){
   var C = CAT_COL[o.cat] || CAT_COL.neutre, ic = o.ic || (CATS[o.cat] || CATS.neutre).ic;
   var inner = '<span class="pri" style="background:' + C[0] + ';color:' + C[1] + ';box-shadow:inset 0 0 0 1.5px ' + C[2] + '">' + ic + '</span><span class="prt"><b>' + h(o.t) + '</b>' + (o.s ? '<em>' + h(o.s) + '</em>' : "") + '</span>';
@@ -4361,8 +4402,8 @@ document.addEventListener("click", function(e){
   if (act === "ev-open"){ openEvent(b.dataset.gid || null, b.dataset.id || null, b.dataset.d || null); return; }
   if (act === "ev-close"){ closeEvent(); return; }
   if (act === "ev-done"){ evDone(); return; }
-  if (act === "day-sel"){ S.daySel = b.dataset.d; render(); return; }
-  if (act === "week-off"){ S.weekOff = Math.max(0, (S.weekOff || 0) + (+b.dataset.n)); var m0 = addDays(monday(today()), 7 * S.weekOff); S.daySel = S.weekOff ? iso(m0) : iso(today()); render(); return; }
+  if (act === "day-sel"){ if (S.wsNoClick){ S.wsNoClick = false; return; } S.daySel = b.dataset.d; render(); return; }
+  if (act === "week-off"){ weekGo(+b.dataset.n); return; }
   if (act === "bday-all"){ bdayAllSheet(); return; }
   if (act === "import"){ var fi = document.getElementById("impFile"); if (fi) fi.click(); return; }
   if (act === "signout"){ if (window.APP_SIGNOUT) window.APP_SIGNOUT(); return; }
