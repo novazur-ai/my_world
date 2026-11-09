@@ -6,6 +6,7 @@ const ASSETS = "carnet-assets-1"; /* images, stickers, polices, SDK : gardés d'
 const SHELL = [
   "./", "index.html", "app-firebase.js", "firebase-config.js", "manifest.webmanifest",
   "icons/icon-192-v6.png", "icons/maskable-512-v6.png", "icons/apple-touch-180-v6.png",
+  "lib/jsbarcode.min.js", "lib/qrcode.min.js",
   "fonts/nunito-latin-400-normal.woff2", "fonts/nunito-latin-600-normal.woff2", "fonts/nunito-latin-700-normal.woff2", "fonts/nunito-latin-800-normal.woff2",
   "fonts/dancing-script-latin-600-normal.woff2", "fonts/dancing-script-latin-700-normal.woff2"
 ];
@@ -20,7 +21,9 @@ self.addEventListener("fetch", (e) => {
   const sameOrigin = url.origin === self.location.origin;
   const isAsset = sameOrigin && /\/(img|stk|fonts|icons)\//.test(url.pathname);
   const isSdk = url.host === "www.gstatic.com";
-  if (isAsset || isSdk){
+  /* MyWorld_1.4 : logos des enseignes (icônes de Google) et bwip-js (codes 2D rares) : gardés pour être affichés hors ligne à la caisse */
+  const isExt = (url.host === "www.google.com" && url.pathname.indexOf("/s2/favicons") === 0) || url.host === "cdn.jsdelivr.net";
+  if (isAsset || isSdk || isExt){
     /* images, polices, SDK Firebase : d'abord le cache */
     e.respondWith(caches.match(req).then((hit) => hit || fetch(req).then((res) => { const copy = res.clone(); caches.open(ASSETS).then((c) => c.put(req, copy)); return res; })));
     return;

@@ -41,5 +41,25 @@
       "text": "share_text",
       "url": "share_url"
     }
-  }
+  },
+  "shortcuts": [
+    {
+      "name": "Mes cartes de fidélité",
+      "short_name": "Mes cartes",
+      "description": "Afficher tes cartes de fidélité",
+      "url": "./#cartes",
+      "icons": [
+        {
+          "src": "icons/sc-cartes-96.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        },
+        {
+          "src": "icons/sc-cartes-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    }
+  ]
 }

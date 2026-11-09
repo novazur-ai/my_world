@@ -8,7 +8,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="My World">
-<link rel="manifest" href="manifest.webmanifest?v=33">
+<link rel="manifest" href="manifest.webmanifest?v=34">
 <link rel="icon" href="icons/icon-192-v6.png">
 <link rel="apple-touch-icon" href="icons/apple-touch-180-v6.png">
 <style>
@@ -1039,6 +1039,63 @@ body.fan-on nav.tabs a,body.fan-on .nav-add{opacity:1!important}
 .iv-gb{position:absolute;left:50%;top:22px;transform:translate(-50%,-50%);width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,.88);display:grid;place-items:center;color:#4E6A44}
 .iv-bud:focus-visible{outline:3px solid #3FA7DB;outline-offset:2px;border-radius:12px}
 @media (prefers-reduced-motion: reduce){.iv-plant.sway{animation:none}}
+/* MyWorld_1.4 : cartes de fidélité (portefeuille, mode caisse, scan) */
+.fid-page{max-width:460px;margin-left:auto;margin-right:auto}
+.fid-stack{position:relative}
+.fid-card{position:absolute;left:0;right:0;width:100%;aspect-ratio:1.586/1;border:0;border-radius:18px;padding:16px 18px;color:#fff;text-align:left;font:inherit;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;align-items:stretch;
+  background:linear-gradient(135deg,var(--c),color-mix(in srgb,var(--c) 70%,#000));box-shadow:0 -3px 12px rgba(10,30,50,.18),inset 0 1px 0 rgba(255,255,255,.25);-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;user-select:none;transition:transform .15s ease}
+.fid-card.front{position:relative;box-shadow:0 10px 26px rgba(10,30,50,.25),inset 0 1px 0 rgba(255,255,255,.25)}
+.fid-card:active{transform:scale(.985)}
+.fid-card:focus-visible{outline:3px solid #2F7FB5;outline-offset:3px}
+.fid-hd{display:flex;align-items:center;gap:12px;min-width:0}
+.fid-logo{position:relative;flex:none;width:44px;height:44px;border-radius:12px;background:#fff;display:grid;place-items:center;font-weight:900;font-size:20px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.18)}
+.fid-logo img{position:absolute;inset:6px;width:32px;height:32px;object-fit:contain;z-index:1;background:#fff}
+.fid-tx{display:flex;flex-direction:column;min-width:0}
+.fid-tx b{font-size:18px;font-weight:900;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fid-tx small{font-size:13px;font-weight:700;opacity:.88;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fid-ft{display:flex;justify-content:space-between;align-items:center}
+.fid-last{font-size:15px;font-weight:800;letter-spacing:.12em;font-variant-numeric:tabular-nums;opacity:.95}
+.fid-tag{font-size:11.5px;font-weight:900;background:rgba(255,255,255,.22);border-radius:999px;padding:3px 9px}
+#fidRoot{position:fixed;inset:0;z-index:90}
+#fidRoot *,#fidRoot *::before,#fidRoot *::after,.fid-card,.fid-cob{box-sizing:border-box}
+body.fid-on{overflow:hidden}
+.fid-cs{position:absolute;inset:0;background:#FFFFFF;color:#16202C;display:flex;flex-direction:column}
+.fid-cs-top{display:flex;justify-content:space-between;align-items:center;padding:calc(12px + env(safe-area-inset-top,0px)) 16px 4px}
+.fid-wake{font-size:12.5px;font-weight:800;color:#2F7440;background:#E3F3E5;border-radius:999px;padding:5px 11px}
+.fid-cs-top .fid-wake[hidden]+.fid-x{margin-left:auto}
+.fid-x{width:44px;height:44px;border-radius:50%;border:0;background:#EEF2F5;color:#16202C;display:grid;place-items:center;cursor:pointer;margin-left:auto}
+.fid-x.light{position:absolute;top:calc(14px + env(safe-area-inset-top,0px));right:14px;background:rgba(255,255,255,.18);color:#fff}
+.fid-vp{flex:1;overflow:hidden;touch-action:pan-y}
+.fid-track{display:flex;height:100%;transition:transform .32s cubic-bezier(.25,.8,.3,1)}
+.fid-pane{flex:0 0 100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:12px 20px 20px;min-width:0}
+.fid-ph{display:flex;align-items:center;gap:14px;align-self:stretch;max-width:440px;margin:0 auto;width:100%}
+.fid-ph .fid-logo{width:56px;height:56px;border-radius:16px;font-size:24px;box-shadow:0 1px 6px rgba(0,0,0,.15)}.fid-ph .fid-logo img{inset:8px;width:40px;height:40px}
+.fid-ph h2{margin:0;font-size:22px;font-weight:900;line-height:1.2}.fid-ph p{margin:2px 0 0;font-size:14px;font-weight:700;color:#5B6B7C}
+.fid-code{display:flex;justify-content:center;align-items:center;min-height:130px;width:100%;background:#FFFFFF}
+.fid-code svg{display:block;max-width:100%;height:auto}
+.fid-n{margin:0;font-size:19px;font-weight:800;letter-spacing:.16em;font-variant-numeric:tabular-nums;text-align:center;word-break:break-all;color:#16202C}
+.fid-err{margin:0;font-size:14px;font-weight:700;color:#8A4B12;text-align:center;max-width:300px}
+.fid-nav{display:flex;align-items:center;justify-content:center;gap:16px;padding:6px 16px calc(22px + env(safe-area-inset-bottom,0px))}
+.fid-ar{width:44px;height:44px;border-radius:50%;border:0;background:#E3EEF6;color:#0B4F7C;font-family:inherit;font-weight:900;font-size:22px;line-height:1;cursor:pointer}
+.fid-dots{display:flex;gap:7px}.fid-dots i{width:8px;height:8px;border-radius:50%;background:#CFD8E0;transition:width .2s,background-color .2s}.fid-dots i.on{width:22px;border-radius:5px;background:#0B4F7C}
+.fid-scan{position:absolute;inset:0;background:#000;color:#fff;overflow:hidden}
+.fid-scan video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.fid-vf{position:absolute;left:50%;top:42%;width:min(80vw,340px);aspect-ratio:1.586/1;transform:translate(-50%,-50%);border-radius:18px;box-shadow:0 0 0 200vmax rgba(0,0,0,.45);outline:3px solid rgba(126,224,138,.9);outline-offset:4px}
+.fid-laser{position:absolute;left:8%;right:8%;top:50%;height:2px;background:#7EE08A;box-shadow:0 0 12px #7EE08A;animation:fidScan 2.2s ease-in-out infinite}
+@keyframes fidScan{0%,100%{transform:translateY(-40px)}50%{transform:translateY(40px)}}
+.fid-st{position:absolute;left:16px;right:16px;top:calc(42% + min(80vw,340px)/3.17 + 26px);text-align:center;font-weight:800;font-size:15px;text-shadow:0 1px 4px rgba(0,0,0,.6)}
+.fid-sb{position:absolute;left:16px;right:16px;bottom:calc(24px + env(safe-area-inset-bottom,0px));display:flex;gap:10px}
+.fid-sbb{flex:1;height:50px;border-radius:14px;border:0;background:rgba(255,255,255,.18);color:#fff;font-family:inherit;font-weight:800;font-size:14.5px;display:grid;place-items:center;cursor:pointer;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.fid-ed{display:grid;gap:2px}
+.fid-prev{display:flex;justify-content:center;min-height:0;margin:-4px 0 12px}.fid-prev:empty{display:none}.fid-prev svg{max-width:100%;height:auto;border:1px solid #E1E8EF;border-radius:10px}
+.fid-sw{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px}
+.fid-sw button{width:32px;height:32px;border-radius:50%;border:0;cursor:pointer}
+.fid-sw button[aria-pressed="true"]{box-shadow:0 0 0 3px #fff,0 0 0 5px var(--ink,#16202C)}
+.fid-tg{display:flex;align-items:center;gap:10px;font-weight:800;font-size:14.5px;margin:0 0 14px;cursor:pointer}
+.fid-tg input{width:22px;height:22px;accent-color:#0B4F7C}
+.fid-co{display:flex;flex-wrap:wrap;gap:8px}
+.fid-cob{display:inline-flex;align-items:center;gap:8px;height:46px;padding:0 16px;border:0;border-radius:999px;background:var(--c);color:#fff;font:inherit;font-weight:900;font-size:14.5px;cursor:pointer;box-shadow:0 4px 12px color-mix(in srgb,var(--c) 35%,transparent)}
+@media (prefers-reduced-motion: reduce){.fid-laser{animation:none}.fid-track{transition:none}}
 </style>
 </head>
 <body>
@@ -1074,6 +1131,7 @@ body.fan-on nav.tabs a,body.fan-on .nav-add{opacity:1!important}
 
 <div id="evRoot" hidden></div>
 <div id="gameRoot" hidden></div>
+<div id="fidRoot" hidden></div>
 <nav class="tabs" aria-label="Navigation">
   <div class="in">
     <a href="#accueil" data-tab="accueil" class="isl-b"><span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg></span><span class="lb">Home</span></a>
@@ -1931,7 +1989,7 @@ var DECO = (function(){
 
 </script>
 <script>
-var APP_VERSION = "MyWorld_1.3";
+var APP_VERSION = "MyWorld_1.4";
 (function(){
 "use strict";
 var CAL = "t.mallet06@gmail.com";
@@ -2098,7 +2156,8 @@ function heroHTML(){
   if (S.view === "meteo") return meteoHero(date);
   var sub = "";
   if (S.view === "courses"){ var nc = coOpen().filter(function(x){ return !x.done; }).length; sub = '<p class="sub">' + (nc ? nc + " article" + (nc > 1 ? "s" : "") + " à prendre" : "Liste vide") + '</p>'; }
-  var title = S.view === "listes" ? "Tes listes" : S.view === "courses" ? "Tes courses" : S.view === "fiche" ? "Ta fiche" : S.view === "notes" ? "Tes notes" : "La Gazette";
+  if (S.view === "cartes"){ var nf = fidAll().length; sub = '<p class="sub">' + (nf ? nf + " carte" + (nf > 1 ? "s" : "") + " de fidélité" : "Aucune carte pour l'instant") + '</p>'; }
+  var title = S.view === "cartes" ? "Tes cartes" : S.view === "listes" ? "Tes listes" : S.view === "courses" ? "Tes courses" : S.view === "fiche" ? "Ta fiche" : S.view === "notes" ? "Tes notes" : "La Gazette";
   if (S.view === "gazette"){ var u = S.settings && S.settings.gazetteUpdatedAt, ds0 = gzDays();
     if (S.gzDay){ var nb = gzBatch(S.gzDay).length; title = "La Gazette"; sub = '<p class="sub">' + h(gzDayLabel(S.gzDay) + (S.gzDay === iso(today()) || S.gzDay === iso(addDays(today(), -1)) ? " · " + parseISO(S.gzDay).getDate() + " " + MOIS[parseISO(S.gzDay).getMonth()] : "") + " · " + nb + " info" + (nb > 1 ? "s" : "")) + '</p>'; }
     else sub = '<p class="sub"><span class="pulse" aria-hidden="true" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#2F7440;margin-right:6px"></span>' + h(u ? (iso(new Date(u)) === iso(today()) ? "Mise à jour à " + new Date(u).getHours() + " h " + pad(new Date(u).getMinutes()) : "Mise à jour " + ago(u)) + " · " + ds0.length + " jour" + (ds0.length > 1 ? "s" : "") + " d'archives" : "En attente de la première mise à jour") + '</p>'; }
@@ -2811,7 +2870,7 @@ function render(){
   var unseenN = v === "gazette" ? 0 : unseenGazette().length;
   document.getElementById("gazBadge").hidden = !unseenN;
   document.getElementById("gazBadgeSr").textContent = unseenN ? ", " + unseenN + " nouveauté" + (unseenN > 1 ? "s" : "") : "";
-  var html = v === "jeu" ? "" : v === "listes" ? viewListes() : v === "courses" ? viewCourses() : v === "fiche" ? viewFiche() : v === "gazette" ? viewGazette() : v === "meteo" ? viewMeteo() : v === "notes" ? viewNotes() : viewAccueil();
+  var html = v === "jeu" ? "" : v === "listes" ? viewListes() : v === "courses" ? viewCourses() : v === "cartes" ? viewCartes() : v === "fiche" ? viewFiche() : v === "gazette" ? viewGazette() : v === "meteo" ? viewMeteo() : v === "notes" ? viewNotes() : viewAccueil();
   if (S.dbState === "off") html = '<section class="section gut" style="margin-top:24px"><div class="card soft-empty">Tes données ne sont pas disponibles pour l\'instant. Vérifie ta connexion, puis recharge l\'appli.</div></section>' + html;
   document.getElementById("view").innerHTML = html;
   if (v === "meteo") document.getElementById("app").style.setProperty("--mtH", hero.offsetHeight + "px");
@@ -3563,6 +3622,8 @@ function onCapture(e){
   var input = document.getElementById("captureInput"), hint = document.getElementById("captureHint");
   var text = input.value.trim(); if (!text) return;
   if (!needDb()) return;
+  /* MyWorld_1.4 : « carte Casto » ouvre directement la carte en mode caisse */
+  var fc = fidFind(text); if (fc){ input.value = ""; hint.textContent = ""; if (!document.getElementById("addRoot").hidden) addClose(); fidOpen(fc._id); return; }
   understand(text).then(function(r){
     input.value = ""; hint.textContent = "";
     var F = fieldsFix(fieldsOf(r, text), r);
@@ -4448,6 +4509,7 @@ document.addEventListener("click", function(e){
   var b = e.target.closest("[data-act]"); if (!b) return;
   var act = b.dataset.act, id = b.dataset.id;
   if (act === "close"){ closeSheet(); return; }
+  if (/^fid-/.test(act) && fidAct(act, b)) return;
   if (/^(note-|ne-|fmt$|fig-|aud-|rec-|dp-|pick-folder$|folder-)/.test(act) && noteAction(act, b)) return;
   if (act === "mday"){ S.monthSel = b.dataset.d; document.getElementById("mBody").innerHTML = monthHTML(); var fb2 = document.querySelector('.mcell[data-d="' + S.monthSel + '"]'); if (fb2) fb2.focus({preventScroll:true}); return; }
   if (act === "month"){ S.monthOffset = 0; S.monthSel = null; openSheet("Le mois", '<div id="mBody">' + monthHTML() + '</div>'); return; }
@@ -4523,7 +4585,7 @@ document.addEventListener("click", function(e){
 document.addEventListener("keydown", function(e){ if (e.key === "Escape") { closeSheet(); var l = document.querySelector(".levelup"); if (l) l.remove(); } });
 document.getElementById("captureForm").addEventListener("submit", onCapture);
 
-var TABS = ["accueil","notes","listes","courses","fiche","gazette","meteo","jeu"];
+var TABS = ["accueil","notes","listes","courses","fiche","gazette","meteo","jeu","cartes"];
 
 
 /* ===== MyWorld_0.13 : page « Tes listes » (À faire / Rappels) ===== */
@@ -4629,6 +4691,7 @@ function coursesHTML(){
   } else {
     html += '<p class="lt-empty">Ta liste est vide. Ajoute un article ci-dessus, ou dis au + : « courses : du lait et des œufs ».</p>';
   }
+  html += fidCoursesHTML();
   var note = coNoteSrc();
   if (note && !all.length) html += '<button type="button" class="lt-add" data-act="co-note"><span class="lt-addi">' + LT_PLUS + '</span><span>Récupérer ta note « ' + h(note.n.title || "Liste de courses") + ' » (' + note.items.length + ' article' + (note.items.length > 1 ? 's' : '') + ')</span></button>';
   var A = coArch().slice(0, 6);
@@ -4836,6 +4899,248 @@ function noteImportSheet(){
   });
 }
 /* ===== MyWorld_0.10 : bouton Apps et éventail ===== */
+/* ===== MyWorld_1.4 : cartes de fidélité =====
+   Une carte = item kind « fid » {name, desc, code, fmt, color, domain, courses, uses, lastUse, createdAt}.
+   Page #cartes = portefeuille (cartes empilées, la plus utilisée devant) ; toucher = mode caisse (code-barres en grand,
+   écran gardé allumé, on glisse d'une carte à l'autre) ; appui long = fiche. Ajout : appareil photo (BarcodeDetector de Chrome),
+   photo de la carte, ou numéro tapé. Codes dessinés dans l'appli : JsBarcode (codes à barres) et qrcode-generator (QR),
+   fichiers lib/ gardés hors ligne ; Data Matrix, PDF417 et Aztec avec bwip-js, chargé seulement si une carte en a besoin.
+   Logo = icône du site de l'enseigne (service d'icônes de Google, sans clé), sinon l'initiale. */
+var FID_BRANDS = [
+  [/intermarch/, "intermarche.com", "#E2001A"], [/casto/, "castorama.fr", "#0066B3"], [/leroy|merlin/, "leroymerlin.fr", "#78BE20"],
+  [/decat/, "decathlon.fr", "#0082C3"], [/carrefour/, "carrefour.fr", "#004E9F"], [/auchan/, "auchan.fr", "#D6180B"],
+  [/leclerc/, "e.leclerc", "#0066B2"], [/lidl/, "lidl.fr", "#0050AA"], [/monoprix/, "monoprix.fr", "#1F1F1F"], [/picard/, "picard.fr", "#0B2A5B"],
+  [/^(super |hyper |u express|magasins? u\b|systeme u)/, "magasins-u.com", "#0059A8"], [/franprix/, "franprix.fr", "#E85412"],
+  [/bricomarch/, "bricomarche.com", "#E30613"], [/brico ?depot/, "bricodepot.fr", "#F39200"], [/bricolage|mr\.? ?brico/, "mr-bricolage.fr", "#E2001A"],
+  [/ikea/, "ikea.com", "#0058A3"], [/fnac/, "fnac.com", "#E1A925"], [/darty/, "darty.com", "#E30613"], [/boulanger/, "boulanger.com", "#EA5B0C"],
+  [/sephora/, "sephora.fr", "#1A1A1A"], [/nocib/, "nocibe.fr", "#E6007E"], [/marionnaud/, "marionnaud.fr", "#1A1A1A"], [/^action\b/, "action.com", "#004B93"],
+  [/gifi/, "gifi.fr", "#E4007C"], [/^but\b/, "but.fr", "#E30613"], [/conforama/, "conforama.fr", "#E30613"], [/truffaut/, "truffaut.com", "#00843D"],
+  [/jardiland/, "jardiland.com", "#6DB33F"], [/botanic/, "botanic.com", "#6E9C33"], [/intersport/, "intersport.fr", "#003DA5"], [/go ?sport/, "go-sport.com", "#E30613"],
+  [/kiabi/, "kiabi.com", "#2DA8E0"], [/cultura/, "cultura.com", "#6A2C8E"], [/grand frais/, "grandfrais.com", "#2E7D32"], [/netto/, "netto.fr", "#E2001A"],
+  [/aldi/, "aldi.fr", "#00005F"], [/biocoop/, "biocoop.fr", "#6AA84F"], [/naturalia/, "naturalia.fr", "#7AA93C"], [/norauto/, "norauto.fr", "#0057A6"],
+  [/feu vert/, "feuvert.fr", "#00A651"], [/pharmac/, "", "#2E8B3A"]
+];
+var FID_COLORS = ["#E2001A", "#0066B3", "#2E8B3A", "#F39200", "#6640A6", "#0B2A5B", "#C2185B", "#3A4A57"];
+var FID_FMTS = [["", "Automatique"], ["ean_13", "EAN-13"], ["ean_8", "EAN-8"], ["upc_a", "UPC-A"], ["upc_e", "UPC-E"], ["code_128", "Code 128"], ["code_39", "Code 39"], ["code_93", "Code 93"], ["codabar", "Codabar"], ["itf", "ITF"], ["qr_code", "QR code"], ["data_matrix", "Data Matrix"], ["pdf417", "PDF417"], ["aztec", "Aztec"]];
+var FID_JSB = {ean_13:"EAN13", ean_8:"EAN8", upc_a:"UPC", upc_e:"UPCE", code_128:"CODE128", code_39:"CODE39", code_93:"CODE93", codabar:"codabar", itf:"ITF"};
+var FID_BWIP = {data_matrix:"datamatrix", pdf417:"pdf417", aztec:"azteccode"};
+var FID_CARD = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M6 9v6M8.5 9v6M11 9v6M14.5 9v6M17 9v6"/></svg>';
+function fidAll(){ return S.items.filter(function(i){ return i.kind === "fid"; }); }
+function fidSorted(){ return fidAll().sort(function(a, b){ return (b.uses || 0) - (a.uses || 0) || String(b.lastUse || "").localeCompare(String(a.lastUse || "")) || String(a.name || "").localeCompare(String(b.name || "")); }); }
+function fidBrand(name){ var n = noAcc(String(name || "").toLowerCase()).trim(); for (var i = 0; i < FID_BRANDS.length; i++) if (FID_BRANDS[i][0].test(n)) return { domain: FID_BRANDS[i][1], color: FID_BRANDS[i][2] }; return null; }
+function fidLogo(c, size){ var ini = h(String(c.name || "?").trim().charAt(0).toUpperCase() || "?");
+  if (!c.domain) return '<span class="fid-logo" style="color:' + h(c.color || "#3A4A57") + '">' + ini + '</span>';
+  return '<span class="fid-logo" style="color:' + h(c.color || "#3A4A57") + '"><img src="https://www.google.com/s2/favicons?domain=' + encodeURIComponent(c.domain) + '&sz=' + (size || 128) + '" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()"><b>' + ini + '</b></span>'; }
+/* --- codes : contrôle des chiffres, type deviné, numéro lisible --- */
+function fidEanOk(d){ if (!/^\d+$/.test(d)) return false; var s = 0, n = d.length; for (var i = 0; i < n - 1; i++) s += (+d[n - 2 - i]) * (i % 2 ? 1 : 3); return (10 - s % 10) % 10 === +d[n - 1]; }
+function fidAuto(code){ var c = String(code || "").trim();
+  if (/^\d{13}$/.test(c) && fidEanOk(c)) return "ean_13"; if (/^\d{8}$/.test(c) && fidEanOk(c)) return "ean_8"; if (/^\d{12}$/.test(c) && fidEanOk(c)) return "upc_a";
+  return "code_128"; }
+function fidFmtOf(c){ return c.fmt || fidAuto(c.code); }
+function fidNum(code, fmt){ var c = String(code || "");
+  if (fmt === "ean_13" && c.length === 13) return c[0] + " " + c.slice(1, 7) + " " + c.slice(7);
+  if (/^\d{9,}$/.test(c)) return c.replace(/(\d{4})(?=\d)/g, "$1 ");
+  return c; }
+function fidLast(code){ var c = String(code || "").replace(/\s/g, ""); return c.length > 4 ? "•••• " + c.slice(-4) : c; }
+/* --- dessin des codes --- */
+function fidScript(src){ return new Promise(function(res, rej){ var s = document.createElement("script"); s.src = src; s.async = true; s.onload = res; s.onerror = function(){ rej(new Error(src)); }; document.head.appendChild(s); }); }
+function fidLibs(){ return S.fidLibs || (S.fidLibs = Promise.all([window.JsBarcode ? 0 : fidScript("lib/jsbarcode.min.js"), window.qrcode ? 0 : fidScript("lib/qrcode.min.js")]).catch(function(e){ S.fidLibs = null; throw e; })); }
+function fidBwip(){ return S.fidBwip || (S.fidBwip = (window.bwipjs ? Promise.resolve() : fidScript("https://cdn.jsdelivr.net/npm/bwip-js@4.11.4/dist/bwip-js-min.js")).catch(function(e){ S.fidBwip = null; throw e; })); }
+var SVGNS = "http://www.w3.org/2000/svg";
+/* dessine le code dans el (largeur max W, hauteur H pour les codes à barres) ; des modules de taille entière pour que la caisse le lise bien */
+function fidDraw(el, code, fmt, W, H){
+  fmt = fmt || fidAuto(code); el.innerHTML = "";
+  if (FID_BWIP[fmt]) return fidBwip().then(function(){
+    el.innerHTML = bwipjs.toSVG({ bcid: FID_BWIP[fmt], text: String(code), scale: 3, paddingwidth: 3, paddingheight: 3, backgroundcolor: "FFFFFF" });
+    var s = el.querySelector("svg"); if (s){ var vb = (s.getAttribute("viewBox") || "0 0 100 100").split(/\s+/).map(Number), sq = fmt !== "pdf417", w = sq ? Math.min(W, 230) : W; s.setAttribute("width", w); s.setAttribute("height", Math.round(w * vb[3] / vb[2])); }
+  }).catch(function(){ el.innerHTML = '<p class="fid-err">Il faut une connexion la première fois pour dessiner ce type de code.</p>'; });
+  return fidLibs().then(function(){
+    if (fmt === "qr_code"){
+      var q = qrcode(0, "M"); q.addData(String(code)); q.make();
+      var n = q.getModuleCount(), cell = Math.max(2, Math.floor(Math.min(W, 240) / (n + 8))), side = (n + 8) * cell, r = "";
+      for (var y = 0; y < n; y++) for (var x = 0; x < n; x++) if (q.isDark(y, x)) r += "M" + ((x + 4) * cell) + " " + ((y + 4) * cell) + "h" + cell + "v" + cell + "h-" + cell + "z";
+      el.innerHTML = '<svg xmlns="' + SVGNS + '" width="' + side + '" height="' + side + '" viewBox="0 0 ' + side + " " + side + '" shape-rendering="crispEdges" role="img" aria-label="QR code"><rect width="100%" height="100%" fill="#fff"/><path d="' + r + '" fill="#000"/></svg>';
+      return;
+    }
+    function make(fm, mod){ var s = document.createElementNS(SVGNS, "svg"); JsBarcode(s, String(code), { format: FID_JSB[fm] || "CODE128", displayValue: false, margin: 12, width: mod, height: H, background: "#ffffff", lineColor: "#000000" }); return s; }
+    var f2 = fmt, s1;
+    try { s1 = make(f2, 1); } catch (e){ f2 = "code_128"; try { s1 = make(f2, 1); } catch (e2){ el.innerHTML = '<p class="fid-err">Ce numéro ne peut pas être dessiné avec ce type de code.</p>'; return; } }
+    var w1 = parseFloat(s1.getAttribute("width")) || 100, mod = Math.max(1, Math.min(4, Math.floor(W / w1)));
+    var s2 = make(f2, mod), w2 = parseFloat(s2.getAttribute("width")) || w1 * mod, h2 = parseFloat(s2.getAttribute("height")) || H;
+    /* code étroit (beaucoup de place perdue) : on l'étire à la largeur disponible, les barres gardent leurs proportions */
+    if (w2 < W * .75){ s2.setAttribute("viewBox", "0 0 " + w2 + " " + h2); s2.setAttribute("preserveAspectRatio", "none"); s2.setAttribute("width", Math.round(W)); s2.setAttribute("height", Math.round(h2)); }
+    s2.setAttribute("role", "img"); s2.setAttribute("aria-label", "Code-barres"); s2.setAttribute("shape-rendering", "crispEdges"); el.appendChild(s2);
+  }).catch(function(){ el.innerHTML = '<p class="fid-err">Le dessin du code n\'a pas pu se charger. Le numéro reste affiché.</p>'; });
+}
+/* --- la page : le portefeuille --- */
+function viewCartes(){
+  var L = fidSorted(), n = L.length, STEP = 58;
+  var html = '<div class="lt-wrap gut fid-page">';
+  if (!n) html += '<p class="lt-empty">Range ici tes cartes de fidélité : vise le code-barres avec l\'appareil photo, My World s\'occupe du reste.</p>';
+  else {
+    /* la plus utilisée est devant (en bas, entière) ; les autres dépassent au-dessus */
+    var back = L.slice(1).reverse();
+    html += '<div class="fid-stack">' + back.map(function(c, i){ return fidCardHTML(c, 'top:' + (i * STEP) + 'px;z-index:' + (i + 1)); }).join("")
+      + fidCardHTML(L[0], 'margin-top:' + (back.length * STEP) + 'px;z-index:' + (n + 1), true) + '</div>';
+  }
+  html += '<button type="button" class="lt-add" data-act="fid-add"><span class="lt-addi">' + LT_PLUS + '</span><span>Ajouter une carte</span></button>';
+  if (n) html += '<p class="lt-hint">Touche une carte pour l\'afficher en caisse, appui long pour la modifier. Les plus utilisées passent devant.</p>';
+  return html + '</div>';
+}
+function fidCardHTML(c, attr, front){
+  return '<button type="button" class="fid-card' + (front ? " front" : "") + '" data-act="fid-open" data-id="' + h(c._id) + '" aria-label="Carte ' + h(c.name) + '" style="--c:' + h(c.color || "#3A4A57") + ';' + attr + '">'
+    + '<span class="fid-hd">' + fidLogo(c) + '<span class="fid-tx"><b>' + h(c.name) + '</b>' + (c.desc ? '<small>' + h(c.desc) + '</small>' : '') + '</span></span>'
+    + '<span class="fid-ft"><span class="fid-last">' + h(fidLast(c.code)) + '</span>' + (c.courses ? '<span class="fid-tag">Courses</span>' : '') + '</span></button>';
+}
+/* --- mode caisse --- */
+var FIDC = null;
+function fidOpen(id){
+  var L = fidSorted(); if (!L.length) return;
+  var i0 = Math.max(0, L.findIndex(function(c){ return c._id === id; }));
+  var root = document.getElementById("fidRoot");
+  var W = Math.min(window.innerWidth - 40, 440);
+  root.innerHTML = '<div class="fid-cs" role="dialog" aria-modal="true" aria-label="Mode caisse">'
+    + '<div class="fid-cs-top"><span class="fid-wake" id="fidWake" hidden>L\'écran reste allumé</span><button type="button" class="fid-x" data-act="fid-close" aria-label="Fermer"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>'
+    + '<div class="fid-vp"><div class="fid-track" id="fidTrack">' + L.map(function(c){ var f = fidFmtOf(c); return '<section class="fid-pane" aria-label="' + h(c.name) + '">'
+      + '<div class="fid-ph">' + fidLogo(c) + '<div><h2>' + h(c.name) + '</h2>' + (c.desc ? '<p>' + h(c.desc) + '</p>' : '') + '</div></div>'
+      + '<div class="fid-code" data-code="' + h(c.code) + '" data-fmt="' + h(f) + '"></div><p class="fid-n">' + h(fidNum(c.code, f)) + '</p></section>'; }).join("") + '</div></div>'
+    + (L.length > 1 ? '<div class="fid-nav"><button type="button" class="fid-ar" data-act="fid-prev" aria-label="Carte précédente">‹</button><span class="fid-dots">' + L.map(function(_, j){ return '<i data-j="' + j + '"></i>'; }).join("") + '</span><button type="button" class="fid-ar" data-act="fid-next" aria-label="Carte suivante">›</button></div>' : '')
+    + '</div>';
+  root.hidden = false; document.body.classList.add("fid-on");
+  FIDC = { L: L, i: i0, used: {}, timer: 0, lock: null };
+  root.querySelectorAll(".fid-code").forEach(function(el){ fidDraw(el, el.dataset.code, el.dataset.fmt, W, 120); });
+  fidGo(i0, true);
+  fidWake(true);
+  fidSwipe(root.querySelector(".fid-vp"));
+  setTimeout(function(){ var x = root.querySelector(".fid-x"); if (x) x.focus({preventScroll:true}); }, 50);
+}
+function fidGo(i, instant){
+  if (!FIDC) return; var n = FIDC.L.length; i = Math.max(0, Math.min(n - 1, i)); FIDC.i = i;
+  var tr = document.getElementById("fidTrack"); if (!tr) return;
+  tr.style.transition = instant ? "none" : ""; tr.style.transform = "translateX(" + (-100 * i) + "%)";
+  document.querySelectorAll("#fidRoot .fid-dots i").forEach(function(d, j){ d.classList.toggle("on", j === i); });
+  /* une carte compte comme « utilisée » quand elle reste affichée plus d'une seconde */
+  clearTimeout(FIDC.timer); var c = FIDC.L[i];
+  FIDC.timer = setTimeout(function(){ if (!FIDC || FIDC.used[c._id]) return; FIDC.used[c._id] = 1; db.collection("items").doc(c._id).update({ uses: (c.uses || 0) + 1, lastUse: nowISO() }).catch(function(){}); }, 1200);
+}
+function fidWake(on){
+  if (!FIDC) return;
+  if (!on){ if (FIDC.lock){ FIDC.lock.release().catch(function(){}); FIDC.lock = null; } return; }
+  if (!("wakeLock" in navigator)) return;
+  navigator.wakeLock.request("screen").then(function(l){ if (!FIDC){ l.release(); return; } FIDC.lock = l; var w = document.getElementById("fidWake"); if (w) w.hidden = false; l.addEventListener("release", function(){ if (FIDC && FIDC.lock === l) FIDC.lock = null; }); }).catch(function(){});
+}
+document.addEventListener("visibilitychange", function(){ if (FIDC && document.visibilityState === "visible" && !FIDC.lock) fidWake(true); });
+function fidClose(){
+  if (!FIDC) return; clearTimeout(FIDC.timer); fidWake(false); FIDC = null;
+  var root = document.getElementById("fidRoot"); root.hidden = true; root.innerHTML = ""; document.body.classList.remove("fid-on");
+}
+function fidSwipe(vp){
+  var x0 = null, y0 = 0, dx = 0, w = 1, tr = document.getElementById("fidTrack");
+  vp.addEventListener("pointerdown", function(e){ if (!FIDC || FIDC.L.length < 2) return; x0 = e.clientX; y0 = e.clientY; dx = 0; w = vp.clientWidth; tr.style.transition = "none"; });
+  vp.addEventListener("pointermove", function(e){ if (x0 === null) return; dx = e.clientX - x0; if (Math.abs(dx) < Math.abs(e.clientY - y0)) return; var i = FIDC.i, n = FIDC.L.length, d = dx; if ((i === 0 && d > 0) || (i === n - 1 && d < 0)) d /= 3; tr.style.transform = "translateX(calc(" + (-100 * i) + "% + " + d + "px))"; });
+  function end(){ if (x0 === null) return; x0 = null; tr.style.transition = ""; if (Math.abs(dx) > Math.max(50, w * .18)) fidGo(FIDC.i + (dx < 0 ? 1 : -1)); else fidGo(FIDC.i); }
+  vp.addEventListener("pointerup", end); vp.addEventListener("pointercancel", end);
+}
+document.addEventListener("keydown", function(e){ if (!FIDC) return; if (e.key === "Escape"){ e.preventDefault(); fidClose(); } else if (e.key === "ArrowRight") fidGo(FIDC.i + 1); else if (e.key === "ArrowLeft") fidGo(FIDC.i - 1); });
+/* --- ajout : appareil photo, photo, ou numéro tapé --- */
+var FIDS = null;
+function fidAdd(){
+  if (!needDb()) return;
+  if (!("BarcodeDetector" in window) || !navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){ fidEdit(null, {}); return; }
+  var root = document.getElementById("fidRoot");
+  root.innerHTML = '<div class="fid-scan" role="dialog" aria-modal="true" aria-label="Scanner une carte"><video id="fidVid" playsinline muted></video><div class="fid-vf"><i class="fid-laser"></i></div>'
+    + '<div class="fid-st" id="fidSt">Vise le code-barres de ta carte</div>'
+    + '<div class="fid-sb"><button type="button" class="fid-sbb" data-act="fid-type">Taper le numéro</button><label class="fid-sbb" for="fidPic">Depuis une photo</label><input type="file" id="fidPic" accept="image/*" hidden></div>'
+    + '<button type="button" class="fid-x light" data-act="fid-scan-close" aria-label="Fermer"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>';
+  root.hidden = false; document.body.classList.add("fid-on");
+  FIDS = { stream: null, raf: 0, det: null, done: false };
+  BarcodeDetector.getSupportedFormats().then(function(sup){
+    var want = Object.keys(FID_JSB).concat(["qr_code"], Object.keys(FID_BWIP)).filter(function(f){ return sup.indexOf(f) >= 0; });
+    FIDS.det = new BarcodeDetector(want.length ? { formats: want } : undefined);
+    document.getElementById("fidPic").onchange = function(){ var f = this.files && this.files[0]; if (!f) return; document.getElementById("fidSt").textContent = "Lecture de la photo…";
+      createImageBitmap(f).then(function(bm){ return FIDS.det.detect(bm); }).then(function(r){ if (r && r.length) fidFound(r[0]); else document.getElementById("fidSt").textContent = "Aucun code trouvé sur cette photo. Essaie plus près, bien à plat."; }).catch(function(){ document.getElementById("fidSt").textContent = "Cette photo n'a pas pu être lue."; }); };
+    return navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: "environment" }, width: { ideal: 1280 }, height: { ideal: 720 } }, audio: false });
+  }).then(function(st){
+    if (!FIDS){ st.getTracks().forEach(function(t){ t.stop(); }); return; }
+    FIDS.stream = st; var v = document.getElementById("fidVid"); v.srcObject = st; return v.play().then(function(){
+      var last = 0; (function loop(now){ if (!FIDS || FIDS.done) return; FIDS.raf = requestAnimationFrame(loop); if (now - last < 160 || FIDS.busy) return; last = now; FIDS.busy = true;
+        FIDS.det.detect(v).then(function(r){ if (FIDS) FIDS.busy = false; if (r && r.length && FIDS && !FIDS.done) fidFound(r[0]); }).catch(function(){ if (FIDS) FIDS.busy = false; }); })(0);
+    });
+  }).catch(function(){ var s = document.getElementById("fidSt"); if (s) s.textContent = "L'appareil photo n'est pas disponible. Choisis une photo de la carte ou tape le numéro."; });
+}
+function fidScanStop(){ if (!FIDS) return; FIDS.done = true; cancelAnimationFrame(FIDS.raf); if (FIDS.stream) FIDS.stream.getTracks().forEach(function(t){ t.stop(); }); FIDS = null;
+  var root = document.getElementById("fidRoot"); root.hidden = true; root.innerHTML = ""; document.body.classList.remove("fid-on"); }
+function fidFound(r){ if (!FIDS) return; FIDS.done = true; try { navigator.vibrate && navigator.vibrate(30); } catch (e){}
+  var fmt = FID_JSB[r.format] || FID_BWIP[r.format] || r.format === "qr_code" ? r.format : "", code = String(r.rawValue || "");
+  if (fmt === "upc_a" && code.length === 13) fmt = "ean_13";
+  fidScanStop(); fidEdit(null, { code: code, fmt: fmt }); }
+/* --- fiche d'une carte (nouvelle ou existante) --- */
+function fidEdit(id, pre){
+  var x = id ? fidAll().find(function(c){ return c._id === id; }) : null; if (id && !x) return;
+  var c = Object.assign({ name: "", desc: "", code: "", fmt: "", color: "", domain: "", courses: false }, x || {}, pre || {});
+  var autoDom = !c.domain, autoCol = !c.color;
+  openSheet(x ? x.name : "Nouvelle carte", '<div class="fid-ed">'
+    + '<div class="field"><label for="fiN">Enseigne</label><input id="fiN" type="text" value="' + h(c.name) + '" placeholder="Intermarché, Castorama…" autocomplete="off"></div>'
+    + '<div class="field"><label for="fiD">Description</label><input id="fiD" type="text" value="' + h(c.desc) + '" placeholder="Courses de la semaine" autocomplete="off"></div>'
+    + '<div class="field"><label for="fiC">Numéro de la carte</label><input id="fiC" type="text" inputmode="text" value="' + h(c.code) + '" autocomplete="off" spellcheck="false"></div>'
+    + '<div class="field"><label for="fiF">Type de code</label><select id="fiF">' + FID_FMTS.map(function(f){ return '<option value="' + f[0] + '"' + (f[0] === (c.fmt || "") ? " selected" : "") + '>' + f[1] + '</option>'; }).join("") + '</select></div>'
+    + '<div class="fid-prev" id="fiPrev" aria-live="polite"></div>'
+    + '<div class="field"><label for="fiW">Site de l\'enseigne (pour le logo)</label><input id="fiW" type="text" value="' + h(c.domain) + '" placeholder="intermarche.com" autocomplete="off" spellcheck="false" inputmode="url"></div>'
+    + '<p class="cat-lbl">Couleur</p><div class="fid-sw" id="fiS"></div>'
+    + '<label class="fid-tg"><input type="checkbox" id="fiK"' + (c.courses ? " checked" : "") + '><span>Proposer dans la page Courses</span></label>'
+    + '<div class="co-btns">' + (x ? '<button type="button" class="btn-line danger" id="fiDel">Supprimer</button>' : '<button type="button" class="btn-line" id="fiCancel">Annuler</button>') + '<button type="button" class="btn-ink" id="fiSave">Enregistrer</button></div></div>', function(){
+    var $ = function(i){ return document.getElementById(i); }, col = c.color, pt = 0;
+    function swatches(){ var b = fidBrand($("fiN").value), list = FID_COLORS.slice(); if (b && list.indexOf(b.color) < 0) list.unshift(b.color); if (col && list.indexOf(col) < 0) list.unshift(col);
+      $("fiS").innerHTML = list.map(function(k){ return '<button type="button" data-c="' + k + '" aria-label="Couleur ' + k + '" aria-pressed="' + (k === col) + '" style="background:' + k + '"></button>'; }).join("");
+      $("fiS").querySelectorAll("button").forEach(function(bt){ bt.onclick = function(){ col = bt.dataset.c; autoCol = false; swatches(); }; }); }
+    function brand(){ var b = fidBrand($("fiN").value); if (!b) return; if (autoDom && b.domain) $("fiW").value = b.domain; if (autoCol){ col = b.color; } swatches(); }
+    function prev(){ clearTimeout(pt); pt = setTimeout(function(){ var code = $("fiC").value.replace(/\s+/g, ""); if (!code){ $("fiPrev").innerHTML = ""; return; } fidDraw($("fiPrev"), code, $("fiF").value || fidAuto(code), Math.min(window.innerWidth - 80, 340), 64); }, 250); }
+    if (!col){ var b0 = fidBrand(c.name); col = b0 ? b0.color : FID_COLORS[0]; }
+    swatches(); prev();
+    $("fiN").oninput = brand; $("fiW").oninput = function(){ autoDom = false; }; $("fiC").oninput = prev; $("fiF").onchange = prev;
+    if (!c.name) setTimeout(function(){ $("fiN").focus(); }, 80);
+    if ($("fiCancel")) $("fiCancel").onclick = closeSheet;
+    if ($("fiDel")) $("fiDel").onclick = function(){ var copy = Object.assign({}, x); delete copy._id; db.collection("items").doc(x._id).delete().then(function(){ closeSheet(); toast("Carte « " + x.name + " » supprimée.", { undo: function(){ db.collection("items").doc(x._id).set(copy).catch(dbErr); } }); }).catch(dbErr); };
+    $("fiSave").onclick = function(){
+      var name = cap($("fiN").value.trim()), code = $("fiC").value.replace(/\s+/g, ""), dom = $("fiW").value.trim().replace(/^https?:\/\//i, "").replace(/\/.*$/, "").toLowerCase();
+      if (!name){ toast("Donne un nom à la carte (l'enseigne)."); $("fiN").focus(); return; }
+      if (!code){ toast("Il manque le numéro de la carte."); $("fiC").focus(); return; }
+      var data = { name: name, desc: $("fiD").value.trim(), code: code, fmt: $("fiF").value || "", color: col || FID_COLORS[0], domain: dom, courses: $("fiK").checked };
+      var job = x ? db.collection("items").doc(x._id).update(data) : db.collection("items").add(Object.assign(data, { kind: "fid", uses: 0, lastUse: null, createdAt: nowISO() }));
+      job.then(function(){ closeSheet(); toast(x ? "Carte modifiée." : "Carte « " + name + " » ajoutée."); if (!x && S.view !== "cartes") location.hash = "cartes"; }).catch(dbErr);
+    };
+  });
+}
+/* --- accès : page Courses et phrase au + --- */
+function fidCoursesHTML(){
+  var L = fidSorted().filter(function(c){ return c.courses; }); if (!L.length) return "";
+  return '<div class="fid-co">' + L.map(function(c){ return '<button type="button" class="fid-cob" data-act="fid-open" data-id="' + h(c._id) + '" style="--c:' + h(c.color || "#3A4A57") + '">' + FID_CARD + '<span>Ma carte ' + h(c.name) + '</span></button>'; }).join("") + '</div>';
+}
+/* « carte Casto », « ma carte Intermarché », « montre-moi la carte de fidélité Décathlon » */
+function fidFind(text){
+  var t = noAcc(String(text || "").toLowerCase()).replace(/[.!?]+$/, "").trim();
+  var m = t.match(/^(?:(?:ouvre|affiche|montre)(?:[\s-]moi)?\s+)?(?:ma|la|une)?\s*cartes?\s+(?:de\s+fidelite\s+|fidelite\s+)?(?:de\s+|du\s+|d'|chez\s+)?(.{2,40})$/);
+  if (!m) return null; var q = m[1].trim(); if (q.length < 3) return null;
+  var L = fidSorted(), qq = q.replace(/[^a-z0-9]/g, "");
+  return L.find(function(c){ var n = noAcc(String(c.name || "").toLowerCase()), nn = n.replace(/[^a-z0-9]/g, ""); return nn.indexOf(qq) === 0 || n.split(/\s+/).some(function(w){ return w.length > 2 && w.indexOf(q) === 0; }) || (qq.length >= 4 && nn.indexOf(qq) >= 0); }) || null;
+}
+/* appui long sur une carte du portefeuille = sa fiche */
+(function(){
+  var t = null;
+  document.addEventListener("pointerdown", function(e){ var it = e.target.closest && e.target.closest(".fid-card"); S.fidLP = false; if (!it) return; clearTimeout(t);
+    t = setTimeout(function(){ S.fidLP = true; try { navigator.vibrate && navigator.vibrate(15); } catch (er){} fidEdit(it.dataset.id); }, 520); });
+  ["pointerup","pointercancel","pointerleave","scroll"].forEach(function(ev){ document.addEventListener(ev, function(){ clearTimeout(t); }, true); });
+  document.addEventListener("contextmenu", function(e){ if (e.target.closest && e.target.closest(".fid-card")) e.preventDefault(); });
+})();
+function fidAct(act, b){
+  if (act === "fid-open"){ if (S.fidLP && b.classList.contains("fid-card")){ S.fidLP = false; return true; } fidOpen(b.dataset.id); return true; }
+  if (act === "fid-add"){ fidAdd(); return true; }
+  if (act === "fid-close"){ fidClose(); return true; }
+  if (act === "fid-prev" || act === "fid-next"){ if (FIDC) fidGo(FIDC.i + (act === "fid-next" ? 1 : -1)); return true; }
+  if (act === "fid-scan-close"){ fidScanStop(); return true; }
+  if (act === "fid-type"){ fidScanStop(); fidEdit(null, {}); return true; }
+  return false;
+}
 var FAN_APPS = [
   {k:"notes", n:"Notes", bg:"#FFF1C2", ink:"#8A6410", ic:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 12h7M9 16h5"/></svg>'},
   {k:"listes", n:"À faire", bg:"#FDDCC6", ink:"#AA4A1C", ic:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M3.5 6l1.2 1.2L7 4.8M3.5 12l1.2 1.2L7 10.8M3.5 18l1.2 1.2L7 16.8"/></svg>'},
@@ -4844,6 +5149,7 @@ var FAN_APPS = [
   {k:"courses", n:"Courses", bg:"#D3EFEA", ink:"#1E6B60", ic:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2.2l2.3 11.2a1.5 1.5 0 0 0 1.5 1.2h8.6a1.5 1.5 0 0 0 1.5-1.1L21 8H6.1"/><circle cx="9.5" cy="20" r="1.3"/><circle cx="17.5" cy="20" r="1.3"/></svg>'},
   {k:"reglages", n:"Réglages", bg:"#ECEDF1", ink:"#3E4250", ic:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M2 12h3M19 12h3M4.9 19.1L7 17M17 7l2.1-2.1"/></svg>'},
   {k:"meteo", n:"Météo", bg:"#D2E8FA", ink:"#2C679C", ic:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18h10a4 4 0 0 0 .5-8 5.5 5.5 0 0 0-10.6 1.5A3.3 3.3 0 0 0 7 18z"/></svg>'},
+  {k:"cartes", n:"Cartes", bg:"#E4E9F7", ink:"#33449A", ic:FID_CARD},
   /* MyWorld_1.1 : le jeu Forpharos remplace la tuile Drive (« Bientôt ») */
   {k:"jeu", n:"Forpharos", bg:"#F3E1C7", ink:"#8A3328", ic:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21l1.2-11h3.6L15 21z"/><path d="M8.5 10h7M10 6.5h4V10h-4z"/><path d="M12 3.5v3"/><path d="M14 8.2l6-2.2M10 8.2L4 6"/><path d="M5 21h14"/></svg>'}
 ];
@@ -4852,8 +5158,8 @@ var FAN_APPS = [
    Pour rester fluide : la plante et le lierre sont dessinés image par image sur deux canevas (feuilles pré-dessinées une seule fois),
    les fleurs sont de simples boutons animés par le navigateur (transform). Le dessin s'arrête quand la plante a fini de pousser.
    Appui long sur une appli : on la déplace où l'on veut, sa branche la suit et reste accrochée à la tige (position gardée dans les réglages). */
-var IVY_ORDER = ["notes", "listes", "courses", "fiche", "gazette", "meteo", "jeu"];
-var IVY_COL = {notes:"#F5C842", listes:"#F29A62", courses:"#5CC2B0", fiche:"#A983E6", gazette:"#E8B44A", meteo:"#73A9E6", jeu:"#C9533F"};
+var IVY_ORDER = ["notes", "listes", "courses", "fiche", "gazette", "meteo", "jeu", "cartes"];   /* MyWorld_1.4 : + Cartes (8e fleur, en haut à gauche) */
+var IVY_COL = {notes:"#F5C842", listes:"#F29A62", courses:"#5CC2B0", fiche:"#A983E6", gazette:"#E8B44A", meteo:"#73A9E6", jeu:"#C9533F", cartes:"#7F95E0"};
 var IVY = (function(){
   var PAL = { leaf: ["#62A04E", "#2D6A2E", "#163C1B"], vein: "rgba(205,232,170,.62)", st: ["#5B4630", "#4E7A35", "#7BAE5A"], pet: "#4C7A34", node: "#7A5B3A", hi: "rgba(185,222,148,.5)", hair: "rgba(156,122,82,.85)" };
   var GEAR = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>';
@@ -4914,7 +5220,7 @@ var IVY = (function(){
       + '<circle cx="42" cy="42" r="31" fill="url(#ivpg' + id + ')"/><path d="M42 11 L46 38 L73 42 L46 46 L42 73 L38 46 L11 42 L38 38Z" fill="rgba(255,255,255,.55)"/><circle cx="42" cy="42" r="20" fill="rgba(255,255,255,.75)"/></svg>'; }
 
   /* ===== le modèle : toutes les formes et l'instant où chacune apparaît ===== */
-  var DEF = [[66, 420], [300, 392], [62, 290], [300, 262], [74, 176], [286, 150]];
+  var DEF = [[66, 420], [300, 392], [62, 290], [300, 262], [74, 176], [286, 150], null, [64, 92]];   /* la 7e (index 6) est au bout de la tige */
   function model(o){
     var bx = o.bx, by = o.by, W = o.W, H = o.H, kx = Math.min(W, 440) / 360, ky = Math.max(.72, Math.min(1.35, (by - 70) / 474)), sc = Math.max(.85, Math.min(1.2, Math.min(kx, ky)));
     var md = { o: o, kx: kx, ky: ky, sc: sc, mx: function(x){ return W / 2 + (x - 180) * kx; }, my: function(y){ return by - (540 - y) * ky; } };
@@ -4924,7 +5230,7 @@ var IVY = (function(){
     md.main = stem(md.M, 11, 2.4, 380, 1500, "io", { hi: 1, sh: 1 });
     md.top = md.M[2][3]; md.bud = [bx + 58 * kx, by - 64 * ky];
     /* position de chaque appli : celle choisie par Théo (en coordonnées de maquette), sinon celle par défaut */
-    md.fl = o.apps.map(function(a, i){ var p = o.pos && o.pos[a.k]; return { a: a, i: i, moved: !!p, p: p ? m(p) : (i < 6 ? m(DEF[i]) : md.top.slice()) }; });
+    md.fl = o.apps.map(function(a, i){ var p = o.pos && o.pos[a.k]; return { a: a, i: i, moved: !!p, p: p ? m(p) : (i === 6 || !DEF[i] ? md.top.slice() : m(DEF[i])) }; });
     md.total = 0; plantBuild(md); rimBuild(md); layers(md);
     return md;
   }
@@ -5213,6 +5519,7 @@ function navSide(dir){
   return false;
 }
 function route(){
+  if (FIDC) fidClose(); if (FIDS) fidScanStop();
   var hsh = (location.hash || "").replace("#",""), prev = S.view, prevKey = S.viewKey;
   var gd = hsh.match(/^gazette-(\d{4}-\d{2}-\d{2})$/);
   S.gzDay = gd ? gd[1] : null;
@@ -5234,7 +5541,7 @@ function route(){
   var x0 = null, y0 = 0, t0 = 0;
   document.addEventListener("touchstart", function(e){
     if (!isApp(S.view) || S.view === "jeu") { x0 = null; return; }
-    if (e.touches.length !== 1 || document.querySelector(".sheet-wrap,.levelup,.note-editor,.draw-pad,#gzPop")) { x0 = null; return; }
+    if (e.touches.length !== 1 || document.querySelector(".sheet-wrap,.levelup,.note-editor,.draw-pad,#gzPop,#fidRoot:not([hidden])")) { x0 = null; return; }
     if (e.target.closest(".bubbles-wrap,.topics,input,select,textarea,.month,.ncard2")) { x0 = null; return; }
     x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; t0 = Date.now();
   }, {passive:true});
