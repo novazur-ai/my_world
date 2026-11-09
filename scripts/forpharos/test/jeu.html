@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0B4F7C"><title>Forpharos, page d'essai</title>
+<style>@font-face{font-family:Nunito;font-weight:400;src:url(../../../fonts/nunito-latin-400-normal.woff2) format("woff2")}@font-face{font-family:Nunito;font-weight:700;src:url(../../../fonts/nunito-latin-700-normal.woff2) format("woff2")}@font-face{font-family:Nunito;font-weight:800;src:url(../../../fonts/nunito-latin-800-normal.woff2) format("woff2")}
+html,body{margin:0;background:#0B4F7C;height:100%}</style></head>
+<body><div id="gameRoot"></div>
+<script type="module">
+/* Page d'essai (non publiée) : le jeu avec des données factices, sans Firebase.
+   Paramètres : ?jour=2026-11-09&xp=120&etat=… */
+import { mount } from "../../../modules/game/game.js";
+const q = new URLSearchParams(location.search), day = q.get("jour") || "2026-11-09", xp = +(q.get("xp") || 120);
+const at = h => day + "T" + h + ":00:00.000Z";
+const log = [
+  { id: "a1", label: "Vacation 6h30", stat: "sag", xp: Math.round(xp*.4), at: at("08") },
+  { id: "a2", label: "Rugby", stat: "force", xp: Math.round(xp*.25), at: at("10") },
+  { id: "a3", label: "Ménage", stat: "dex", xp: Math.round(xp*.15), at: at("11") },
+  { id: "a4", label: "Dîner avec Alessia", stat: "cha", xp: Math.round(xp*.1), at: at("19") },
+  { id: "a5", label: "Projet My World", stat: "int", xp: Math.round(xp*.1), at: at("21") },
+  { id: "a6", label: "Rugby", stat: "force", xp: 20, at: at("22") }
+];
+const now = () => Date.parse(day + "T15:00:00Z") + (performance.now() | 0);
+let st = null; try { st = JSON.parse(sessionStorage.getItem("fp-state") || "null"); } catch (e) {}
+window.__game = mount(document.getElementById("gameRoot"), { testSpeed: +(q.get("vite") || 1), version: "MyWorld_1.1 (essai)", mock: { log, now, state: st ? { state: st } : null }, onExit: () => console.log("Retour à My World") });
+</script></body></html>
