@@ -1926,7 +1926,7 @@ var DECO = (function(){
 
 </script>
 <script>
-var APP_VERSION = "MyWorld_0.48";
+var APP_VERSION = "MyWorld_0.49";
 (function(){
 "use strict";
 var CAL = "t.mallet06@gmail.com";
@@ -4948,21 +4948,27 @@ var IVY = (function(){
     /* une feuille qui dépasserait de l'écran est retournée vers l'intérieur */
     function fit(x, y, a, L, pl){ for (var k = 0; k < 2; k++){ var r = pl + L, tx = x + Math.cos(a) * r, ty = y + Math.sin(a) * r, mx = x + Math.cos(a) * r * .55, my = y + Math.sin(a) * r * .55, wx = Math.abs(Math.sin(a)) * L * .6, wy = Math.abs(Math.cos(a)) * L * .6;
         if (Math.max(ty, my + wy) > floor) a = -a; else if (Math.max(tx, mx + wx) > W - 3) a = Math.PI - a; else break; } return a; }
-    function leaves(st, sz, every){ var n = st.S.length, sd = 1;
-      for (var i = 1; i < n; i += every){ sd = -sd; var t = (i + R(-.3, .3)) / n, p = P(st.S, t), L = R(sz[0], sz[1]), pl = R(2.5, 5), a = fit(p[0], p[1], angS(st.S, t) + sd * R(50, 115) * Math.PI / 180, L, pl);
-        md.rimLv.push({ x: p[0], y: p[1], a: a, L: L, k: R(0, 1) < .85 ? "lobe" : "ovate", pl: pl, t0: when(st, t) + 60 }); } }
+    var cxC = IR - rr, cyC = IT + rr;
+    /* sur le bout arrondi, les feuilles s'ouvrent vers l'extérieur de l'îlot */
+    function leaves(st, sz, every, from){ var n = st.S.length, sd = 1;
+      for (var i = 1; i < n; i += every){ sd = -sd; var t = (i + R(-.3, .3)) / n; if (t < (from || 0)) continue;
+        var p = P(st.S, t), L = R(sz[0], sz[1]), pl = R(2.5, 5), a = p[0] > cxC - 4 ? Math.atan2(p[1] - cyC, p[0] - cxC) + R(-1, 1) : angS(st.S, t) + sd * R(50, 115) * Math.PI / 180;
+        md.rimLv.push({ x: p[0], y: p[1], a: fit(p[0], p[1], a, L, pl), L: L, k: R(0, 1) < .85 ? "lobe" : "ovate", pl: pl, t0: when(st, t) + 60 }); } }
     var s0 = o.bx - (IL + rr), right = (IR - rr) - o.bx;
-    function crawl(dir, len, delay, w, amp, sz){ var n = Math.max(3, Math.round(len / 6)), ph = R(0, 6), ph2 = R(0, 6), pts = [];
+    function crawl(dir, len, delay, w, amp, sz, from){ var n = Math.max(3, Math.round(len / 6)), ph = R(0, 6), ph2 = R(0, 6), pts = [];
       for (var i = 0; i <= n; i++){ var off = -1.5 + amp * Math.sin(i * .45 + ph) + amp * .45 * Math.sin(i * 1.25 + ph2); pts.push(pill(s0 + dir * i * 6, i < 2 ? -2 : off)); }
-      var st = stem(cat(pts), w, 1, delay, len / .2, "lin", { sh: 1 }); md.rimSt.push(st); leaves(st, sz, 2); return st; }
-    function drape(s, len, out, delay){ var p0 = pill(s, -1); len = Math.min(len, floor - 12 - p0[1]); if (len < 12) return;
-      var pts = [p0], x = p0[0], y = p0[1], sw = R(0, 6);
-      for (var i = 1; i <= Math.round(len / 7); i++){ x = Math.min(W - 10, x + out * R(.5, 1.6) + Math.sin(i * .9 + sw) * 1.6); y += 7; pts.push([x, y]); }
-      var st = stem(cat(pts), 2.2, .8, delay, len / .12, "lin", { sh: 1 }); md.rimSt.push(st); leaves(st, [10, 13], 1);
-      var e = pts[pts.length - 1]; md.rimLv.push({ x: e[0], y: e[1], a: fit(e[0], e[1], Math.PI / 2 + out * .35, 9, 2), L: 9, k: "lobe", pl: 2, t0: st.t0 + st.dur }); }
-    var r2 = crawl(1, right + Math.PI * rr + 34, 0, 3.4, 3, [11, 17]); crawl(1, right + rr * 1.6, 150, 2.3, 4.5, [9, 14]); crawl(-1, 44, 60, 2.6, 3, [10, 14]);
-    var sc0 = s0 + right + rr * .9;
-    drape(sc0, 38, 1, when(r2, .62)); drape(sc0 + rr * .9, 52, .6, when(r2, .75)); drape(sc0 + rr * 1.8, 30, .2, when(r2, .9));
+      var st = stem(cat(pts), w, 1, delay, len / .2, "lin", { sh: 1 }); md.rimSt.push(st); leaves(st, sz, 2, from); return st; }
+    /* mèche qui part du bout arrondi vers l'extérieur puis retombe, en restant dans l'écran */
+    function drape(deg, len, delay){ var a0 = deg * Math.PI / 180, p0 = [cxC + Math.cos(a0) * (rr - 1), cyC + Math.sin(a0) * (rr - 1)], pts = [p0], x = p0[0], y = p0[1], d = a0, sw = R(0, 6);
+      for (var i = 1; i <= Math.round(len / 7); i++){ d += (Math.PI / 2 - d) * .22 + Math.sin(i * 1.1 + sw) * .12; var nx = x + Math.cos(d) * 7, ny = y + Math.sin(d) * 7; if (nx > W - 16 || ny > floor - 14) break; x = nx; y = ny; pts.push([x, y]); }
+      if (pts.length < 3) return;
+      var st = stem(cat(pts), 2.2, .8, delay, (pts.length - 1) * 7 / .12, "lin", { sh: 1 }); md.rimSt.push(st); leaves(st, [10, 13], 1);
+      var e = pts[pts.length - 1]; md.rimLv.push({ x: e[0], y: e[1], a: fit(e[0], e[1], d, 9, 2), L: 9, k: "lobe", pl: 2, t0: st.t0 + st.dur }); }
+    /* le lierre longe le haut de l'îlot puis se concentre sur le bout droit et déborde à l'extérieur (comme la maquette B) */
+    var mainLen = right + Math.PI * rr + 34, r2 = crawl(1, mainLen, 0, 3.4, 3, [11, 17], right * .55 / mainLen);
+    crawl(1, right + rr * 1.6, 150, 2.3, 4.5, [9, 14], right * .6 / (right + rr * 1.6));
+    var tc = function(deg){ return when(r2, (right + (deg + 90) * Math.PI / 180 * rr) / mainLen); };
+    drape(-55, 40, tc(-55)); drape(-10, 52, tc(-10)); drape(35, 34, tc(35)); drape(70, 24, tc(70));
     md.rimSt.concat(md.rimLv).forEach(function(x){ md.total = Math.max(md.total, (x.dur ? x.t0 + x.dur : x.t0 + 700)); });
     md.rimTop = IT - 70;
   }
