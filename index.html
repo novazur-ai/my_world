@@ -774,7 +774,7 @@ body.fan-on nav.tabs a,body.fan-on .nav-add{opacity:.35;pointer-events:none;tran
 .fan-app{position:absolute;pointer-events:auto;display:flex;flex-direction:column;align-items:center;gap:5px;width:84px;margin:-28px 0 0 -42px;padding:0;border:0;background:none;font:inherit;color:#fff;cursor:pointer;-webkit-tap-highlight-color:transparent;
   opacity:0;transform:translate(var(--dx),var(--dy)) scale(.2);transition:transform .26s cubic-bezier(.34,1.45,.64,1),opacity .12s ease;transition-delay:calc(var(--i) * 16ms)}
 #appsFan.on .fan-app{opacity:1;transform:none}
-#appsFan.off .fan-app{opacity:0;transform:translate(var(--dx),var(--dy)) scale(.2);transition:transform .24s cubic-bezier(.5,0,.75,0),opacity .2s ease .06s;transition-delay:calc((6 - var(--i)) * 22ms)}
+#appsFan.off .fan-app{opacity:0;transform:translate(var(--dx),var(--dy)) scale(.2);transition:transform .24s cubic-bezier(.5,0,.75,0),opacity .2s ease .06s;transition-delay:calc((7 - var(--i)) * 22ms)}
 #appsFan.off .fan-veil{opacity:0;transition-delay:.08s}
 .fan-app .fi{position:relative;width:56px;height:56px;border-radius:50%;display:grid;place-items:center;background:var(--bg);color:var(--ink);box-shadow:0 8px 20px rgba(0,0,0,.28);transition:transform .15s ease}
 .fan-app:active .fi{transform:scale(.9)}
@@ -993,6 +993,17 @@ body.scroll-lock{position:fixed;left:0;right:0;width:100%;overflow:hidden}
 .gzf.pop{animation:gzfPop .3s ease}
 @keyframes gzfPop{0%{transform:scale(1)}45%{transform:scale(1.25)}100%{transform:scale(1)}}
 @media (prefers-reduced-motion:reduce){.gzf.pop{animation:none}}
+
+/* MyWorld_0.45 : barre « îlot à libellé » (Home · + · Apps), toujours visible */
+nav.tabs{bottom:calc(16px + env(safe-area-inset-bottom,0px))!important}
+nav.tabs .in{width:auto!important;max-width:none!important;display:flex!important;align-items:center;gap:6px;padding:6px!important;border:0!important;border-radius:999px;background:rgba(255,255,255,.84)!important;-webkit-backdrop-filter:blur(14px) saturate(1.4);backdrop-filter:blur(14px) saturate(1.4);box-shadow:0 10px 30px rgba(20,40,70,.18),inset 0 0 0 1px rgba(255,255,255,.7)!important}
+nav.tabs .isl-b{flex:none!important;width:auto!important;max-width:none!important;display:flex!important;flex-direction:row!important;align-items:center;justify-content:center;gap:0;height:46px;min-width:54px;padding:0 15px!important;border:0;border-radius:999px;background:transparent!important;color:#5B6B7C!important;font:inherit;font-size:13.5px!important;font-weight:800!important;text-decoration:none;cursor:pointer;transition:background-color .25s,color .25s,gap .3s}
+nav.tabs .isl-b .lb{max-width:0;overflow:hidden;white-space:nowrap;opacity:0;transition:max-width .3s ease,opacity .25s}
+nav.tabs a.isl-b[aria-current="page"],nav.tabs .nav-apps.isl-b.cur{background:var(--acc-soft,#E4F1FA)!important;color:var(--acc-ink,#0B3A5C)!important;gap:7px}
+nav.tabs a.isl-b[aria-current="page"] .lb,nav.tabs .nav-apps.isl-b.cur .lb,nav.tabs .nav-apps.isl-b[aria-expanded="true"] .lb{max-width:80px;opacity:1}
+nav.tabs .nav-apps.isl-b[aria-expanded="true"]{background:var(--acc-ink,#0B3A5C)!important;color:#fff!important;gap:7px}
+nav.tabs .nav-add{width:58px!important;height:58px!important;margin:-12px 4px!important;border:0!important;box-shadow:0 8px 18px rgba(20,60,110,.4)!important;justify-self:auto}
+nav.tabs .isl-b .nbadge{top:-3px;right:-5px}
 </style>
 </head>
 <body>
@@ -1029,10 +1040,9 @@ body.scroll-lock{position:fixed;left:0;right:0;width:100%;overflow:hidden}
 <div id="evRoot" hidden></div>
 <nav class="tabs" aria-label="Navigation">
   <div class="in">
-    <a href="#accueil" data-tab="accueil"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg>Accueil</a>
-    <a href="#notes" data-tab="notes"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 12h7M9 16h5"/></svg>Notes</a>
+    <a href="#accueil" data-tab="accueil" class="isl-b"><span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg></span><span class="lb">Home</span></a>
     <button type="button" class="nav-add" data-act="add-open" aria-label="Ajouter en parlant (appui long : écrire)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
-    <button type="button" class="nav-apps" data-act="apps" aria-label="Toutes les apps" aria-expanded="false" aria-controls="appsFan"><span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g class="ap-grid"><rect x="4" y="4" width="6.5" height="6.5" rx="2"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="2"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="2"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="2"/></g><path class="ap-x" d="M6 6l12 12M18 6L6 18"/></svg><i class="nbadge" id="gazBadge" hidden></i></span>Apps<span class="sr" id="gazBadgeSr"></span></button>
+    <button type="button" class="nav-apps isl-b" data-act="apps" aria-label="Toutes les apps" aria-expanded="false" aria-controls="appsFan"><span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g class="ap-grid"><rect x="4" y="4" width="6.5" height="6.5" rx="2"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="2"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="2"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="2"/></g><path class="ap-x" d="M6 6l12 12M18 6L6 18"/></svg><i class="nbadge" id="gazBadge" hidden></i></span><span class="lb">Apps</span><span class="sr" id="gazBadgeSr"></span></button>
   </div>
 </nav>
 <div id="appsFan" hidden><div class="fan-veil" data-act="apps-close"></div><div class="fan" role="dialog" aria-modal="true" aria-label="Toutes les apps"></div></div>
@@ -1884,7 +1894,7 @@ var DECO = (function(){
 
 </script>
 <script>
-var APP_VERSION = "MyWorld_0.43";
+var APP_VERSION = "MyWorld_0.45";
 (function(){
 "use strict";
 var CAL = "t.mallet06@gmail.com";
@@ -2770,7 +2780,7 @@ function render(){
   if (v === "meteo") document.getElementById("app").style.setProperty("--mtH", hero.offsetHeight + "px");
   if (v === "notes"){ afterNotesRender(); if (!S.purged && S.notesLoaded){ S.purged = true; purgeOldNotes(); } }
   if (S.evOpen && !document.getElementById("evRoot").hidden) openEvent(S.evOpen.gid, S.evOpen.did, S.evOpen.d, true);
-  document.querySelectorAll("nav.tabs a").forEach(function(a){ if (a.dataset.tab === v) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current"); }); var nap = document.querySelector(".nav-apps"); if (nap) nap.classList.toggle("cur", v === "listes" || v === "courses" || v === "fiche" || v === "gazette" || v === "meteo");
+  document.querySelectorAll("nav.tabs a").forEach(function(a){ if (a.dataset.tab === v) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current"); }); var nap = document.querySelector(".nav-apps"); if (nap) nap.classList.toggle("cur", isApp(v));
   if (window.SKY_REMEASURE) SKY_REMEASURE();
 }
 
@@ -4765,6 +4775,7 @@ function noteImportSheet(){
 }
 /* ===== MyWorld_0.10 : bouton Apps et éventail ===== */
 var FAN_APPS = [
+  {k:"notes", n:"Notes", bg:"#FFF1C2", ink:"#8A6410", ic:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 12h7M9 16h5"/></svg>'},
   {k:"listes", n:"À faire", bg:"#FDDCC6", ink:"#AA4A1C", ic:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M3.5 6l1.2 1.2L7 4.8M3.5 12l1.2 1.2L7 10.8M3.5 18l1.2 1.2L7 16.8"/></svg>'},
   {k:"fiche", n:"Fiche", bg:"#E3D3F7", ink:"#6640A6", ic:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 5-3.5 8-7 10-3.5-2-7-5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg>'},
   {k:"gazette", n:"Gazette", bg:"#FBE6B4", ink:"#8E6312", ic:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h13v14a1 1 0 0 0 1 1H5a1 1 0 0 1-1-1z"/><path d="M17 9h3v10a1 1 0 0 1-2 0M7 9h7M7 13h7M7 16h4"/></svg>'},
@@ -4773,8 +4784,8 @@ var FAN_APPS = [
   {k:"meteo", n:"Météo", bg:"#D2E8FA", ink:"#2C679C", ic:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18h10a4 4 0 0 0 .5-8 5.5 5.5 0 0 0-10.6 1.5A3.3 3.3 0 0 0 7 18z"/></svg>'},
   {k:"drive", n:"Drive", bg:"#D4EED6", ink:"#2F7440", ic:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>', soon:true}
 ];
-/* place de chaque app autour du bouton : [rayon en px, angle en degrés] (arc intérieur de 3, arc extérieur de 4) */
-var FAN_SPOTS = [[124,95],[124,135],[124,172],[228,97],[228,117.5],[228,138],[228,158.5]];
+/* place de chaque app autour du bouton : [rayon en px, angle en degrés] (arc intérieur de 3, arc extérieur de 5) */
+var FAN_SPOTS = [[124,95],[124,135],[124,172],[228,96],[228,115.5],[228,135],[228,154.5],[228,174]];
 var fanTimer = null;
 function fanOpen(){
   var root = document.getElementById("appsFan"), fan = root.querySelector(".fan"), btn = document.querySelector(".nav-apps");
@@ -4834,7 +4845,7 @@ window.addEventListener("resize", function(){ if (!document.getElementById("apps
 
 /* Navigation (MyWorld_0.12) : Accueil et Notes sont côte à côte (barre) ; les autres pages sont des apps
    ouvertes depuis l'éventail. S.hist garde le chemin parcouru pour le retour. */
-var MAIN = ["accueil","notes"];
+var MAIN = ["accueil"];
 S.hist = [];
 function isApp(v){ return MAIN.indexOf(v) < 0; }
 function goBack(){
@@ -4872,7 +4883,7 @@ function route(){
 (function(){
   var x0 = null, y0 = 0, t0 = 0;
   document.addEventListener("touchstart", function(e){
-    if (!isApp(S.view)) { x0 = null; return; }
+    if (!isApp(S.view) || S.view === "jeu") { x0 = null; return; }
     if (e.touches.length !== 1 || document.querySelector(".sheet-wrap,.levelup,.note-editor,.draw-pad,#gzPop")) { x0 = null; return; }
     if (e.target.closest(".bubbles-wrap,.topics,input,select,textarea,.month,.ncard2")) { x0 = null; return; }
     x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; t0 = Date.now();
@@ -4881,7 +4892,7 @@ function route(){
     if (x0 === null) return;
     var t = e.changedTouches[0], dx = t.clientX - x0, dy = t.clientY - y0; x0 = null;
     if (Math.abs(dx) < 70 || Math.abs(dx) < Math.abs(dy) * 1.8 || Date.now() - t0 > 700) return;
-    navSide(dx < 0 ? 1 : -1);
+    if (dx > 0){ S.hist = []; location.hash = "accueil"; }        /* glisser vers la droite depuis une appli = retour à l'accueil */
   }, {passive:true});
 })();
 /* ordinateur : flèches gauche / droite du clavier pour changer de page */
