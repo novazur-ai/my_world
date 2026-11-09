@@ -4962,12 +4962,11 @@ var IVY = (function(){
     function tuft(x, d){ var s = ""; for (var j = 0; j < 7; j++){ var x2 = x + (j - 3) * 2.2, hh = R(7, 15), lean = (j - 3) * R(.8, 1.8) + R(-1, 1);
         s += '<path d="M' + (x2 - 1.2).toFixed(1) + " " + IB.toFixed(1) + " Q" + (x2 + lean * .3).toFixed(1) + " " + (IB - hh * .6).toFixed(1) + " " + (x2 + lean).toFixed(1) + " " + (IB - hh).toFixed(1) + " Q" + (x2 + lean * .3 + 1).toFixed(1) + " " + (IB - hh * .5).toFixed(1) + " " + (x2 + 1.2).toFixed(1) + " " + IB.toFixed(1) + 'Z" fill="' + ["#5FA33A", "#7CC04A", "#4C8C2E"][j % 3] + '"/>'; }
       front += '<g class="iv-grass" style="--d:' + Math.round(d) + 'ms">' + s + "</g>"; }
-    var right = (IR - rr) - bx, left = bx - (IL + rr), half = PER / 2, gapX = o.homeR + 8;
-    var r3 = crawl(1, half - 8, 0, 3.4, 3, [11, 16]), l3 = crawl(-1, half - 8, 40, 3.4, 3, [11, 16]);
-    crawl(1, right + rr, 160, 2.2, 4.5, [9, 13]); crawl(-1, left + rr, 200, 2.2, 4.5, [9, 13]);
-    drape(s0 + right + rr * 1.2, 40, 1, r3(.5)); drape(s0 + right + rr * 2, 26, .4, r3(.62));
-    drape(s0 - left - rr * 1.2, 44, -1, l3(.5)); drape(s0 - left - rr * 2, 28, -.4, l3(.62)); drape(gapX - (IL + rr), 14, 0, l3(.3));
-    [IL + rr * .9, bx - 52, IR - rr * .8].forEach(function(x, j){ tuft(x, 700 + j * 120); });
+    var right = (IR - rr) - bx;
+    /* version B « cascade » : le lierre file vers la droite, enveloppe le bout de l'îlot et retombe en mèches */
+    var r2 = crawl(1, right + Math.PI * rr + 34, 0, 3.4, 3, [11, 17]); crawl(1, right + rr * 1.6, 150, 2.3, 4.5, [9, 14]); crawl(-1, 44, 60, 2.6, 3, [10, 14]);
+    var sc0 = s0 + right + rr * .9;
+    drape(sc0, 38, 1, r2(.62)); drape(sc0 + rr * .9, 52, .6, r2(.75)); drape(sc0 + rr * 1.8, 30, .2, r2(.9));
     return { plant: '<svg aria-hidden="true">' + defs + stems + leaves + "</svg>" + btns, rim: '<svg aria-hidden="true">' + rim + front + "</svg>" };
   }
   return { build: build };
