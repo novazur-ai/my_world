@@ -8,7 +8,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="My World">
-<link rel="manifest" href="manifest.webmanifest?v=34">
+<link rel="manifest" href="manifest.webmanifest?v=35">
 <link rel="icon" href="icons/icon-192-v6.png">
 <link rel="apple-touch-icon" href="icons/apple-touch-180-v6.png">
 <style>
@@ -1096,6 +1096,26 @@ body.fid-on{overflow:hidden}
 .fid-co{display:flex;flex-wrap:wrap;gap:8px}
 .fid-cob{display:inline-flex;align-items:center;gap:8px;height:46px;padding:0 16px;border:0;border-radius:999px;background:var(--c);color:#fff;font:inherit;font-weight:900;font-size:14.5px;cursor:pointer;box-shadow:0 4px 12px color-mix(in srgb,var(--c) 35%,transparent)}
 @media (prefers-reduced-motion: reduce){.fid-laser{animation:none}.fid-track{transition:none}}
+/* MyWorld_1.6 : navigation E — plus de barre : un seul bouton +, toucher = dictée, appui long = clavier, le tirer vers le haut = les applis */
+nav.tabs{bottom:calc(22px + env(safe-area-inset-bottom,0px))!important}
+nav.tabs .in{background:transparent!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;box-shadow:none!important;border:0!important;padding:0!important;gap:2px!important;flex-direction:column!important;align-items:center!important}
+nav.tabs a.isl-b{display:none!important}
+nav.tabs .nav-apps.isl-b{position:absolute!important;left:50%;bottom:100%;width:1px!important;height:1px!important;min-width:0!important;padding:0!important;overflow:hidden;clip-path:inset(50%);opacity:0}
+nav.tabs .nav-apps.isl-b:focus-visible{width:auto!important;height:36px!important;padding:0 14px!important;clip-path:none;opacity:1;transform:translate(-50%,-70px);background:#fff!important;color:var(--acc-ink,#0B3A5C)!important;gap:6px}
+nav.tabs .nav-apps.isl-b:focus-visible .lb{max-width:80px;opacity:1}
+nav.tabs .nav-add{margin:0!important;touch-action:none!important;box-shadow:0 10px 24px rgba(20,60,110,.38),0 0 0 4px var(--page,#F5F8FB)!important}
+nav.tabs .nav-add svg{transition:transform .3s cubic-bezier(.3,1.4,.5,1)}
+body.fan-on nav.tabs .nav-add{pointer-events:auto!important}
+body.fan-on nav.tabs .nav-add svg{transform:rotate(45deg)}
+.nav-hint{display:flex;flex-direction:column;align-items:center;gap:0;border:0;background:none;padding:2px 14px 3px;margin:0;color:var(--acc-ink,#0B3A5C);opacity:.55;cursor:pointer;font:inherit;-webkit-tap-highlight-color:transparent;position:relative;transition:opacity .25s}
+.nav-hint .nh-lb{display:none;font-size:10.5px;font-weight:900;letter-spacing:.04em;line-height:1}
+body.nav-hint-full .nav-hint{opacity:.85}
+body.nav-hint-full .nav-hint .nh-lb{display:block;order:-1;margin-bottom:4px}
+body.nav-hint-full .nav-hint svg{animation:navHintUp 1.8s ease-in-out infinite}
+@keyframes navHintUp{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+body.fan-on .nav-hint{opacity:0;pointer-events:none}
+nav.tabs:has(#gazBadge:not([hidden])) .nav-hint::after{content:"";position:absolute;top:0;right:8px;width:8px;height:8px;border-radius:50%;background:#E0533D;box-shadow:0 0 0 2px var(--page,#F5F8FB)}
+@media (prefers-reduced-motion: reduce){body.nav-hint-full .nav-hint svg{animation:none}}
 </style>
 </head>
 <body>
@@ -1135,6 +1155,7 @@ body.fid-on{overflow:hidden}
 <nav class="tabs" aria-label="Navigation">
   <div class="in">
     <a href="#accueil" data-tab="accueil" class="isl-b"><span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg></span><span class="lb">Home</span></a>
+    <button type="button" class="nav-hint" data-act="apps" aria-label="Toutes les apps (ou tire le + vers le haut)"><svg width="18" height="10" viewBox="0 0 18 10" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 8l7-6 7 6"/></svg><span class="nh-lb">Apps</span></button>
     <button type="button" class="nav-add" data-act="add-open" aria-label="Ajouter en parlant (appui long : écrire)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
     <button type="button" class="nav-apps isl-b" data-act="apps" aria-label="Toutes les apps" aria-expanded="false" aria-controls="appsFan"><span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g class="ap-grid"><rect x="4" y="4" width="6.5" height="6.5" rx="2"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="2"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="2"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="2"/></g><path class="ap-x" d="M6 6l12 12M18 6L6 18"/></svg><i class="nbadge" id="gazBadge" hidden></i></span><span class="lb">Apps</span><span class="sr" id="gazBadgeSr"></span></button>
   </div>
@@ -1989,7 +2010,7 @@ var DECO = (function(){
 
 </script>
 <script>
-var APP_VERSION = "MyWorld_1.5";
+var APP_VERSION = "MyWorld_1.6";
 (function(){
 "use strict";
 var CAL = "t.mallet06@gmail.com";
@@ -4558,10 +4579,10 @@ document.addEventListener("click", function(e){
   if (act === "nk-yes"){ var tk = b.dataset.t, ks = noteKeys(); if (ks.indexOf(tk) < 0) ks.push(tk); saveSettings({noteKeys:ks}).then(function(){ closeSheet(); toast("Mot-clé « " + tk.toLowerCase() + " » ajouté."); }); return; }
   if (act === "nk-no"){ var tn2 = b.dataset.t, nn = ((S.settings && S.settings.noteKeysNo) || []).slice(); nn.push(tn2); saveSettings({noteKeysNo:nn}).then(closeSheet); return; }
   if (act === "nk-del"){ var td = b.dataset.t; saveSettings({noteKeys: noteKeys().filter(function(k){ return k !== td; })}).then(refreshSettings); return; }
-  if (act === "apps"){ if (document.getElementById("appsFan").hidden) fanOpen(); else fanClose(); return; }
+  if (act === "apps"){ if (document.getElementById("appsFan").hidden){ try { localStorage.setItem("mw-apps-n", String((+localStorage.getItem("mw-apps-n") || 0) + 1)); } catch(er){} navHint(); fanOpen(); } else fanClose(); return; }
   if (act === "apps-close"){ fanClose(); return; }
   if (act === "fan-go"){ fanGo(b.dataset.app); return; }
-  if (act === "add-open"){ if (S.lpFired){ S.lpFired = false; return; } addOpen("voice"); return; }
+  if (act === "add-open"){ if (S.lpFired){ S.lpFired = false; return; } if (!document.getElementById("appsFan").hidden){ fanClose(); return; } addOpen("voice"); return; }
   if (act === "add-close"){ addClose(); return; }
   if (act === "ev-open"){ openEvent(b.dataset.gid || null, b.dataset.id || null, b.dataset.d || null); return; }
   if (act === "ev-close"){ closeEvent(); return; }
@@ -5272,7 +5293,7 @@ var IVY = (function(){
   }
   /* le lierre en cascade sur le bout droit de l'îlot, sans jamais dépasser du bas ni des bords de l'écran */
   function rimBuild(md){
-    var o = md.o, R = rnd(7), IL = o.isl.L, IT = o.isl.T, IR = o.isl.R, IB = o.isl.B, rr = (IB - IT) / 2, Ls = (IR - rr) - (IL + rr), PER = 2 * Ls + 2 * Math.PI * rr, W = o.W, H = o.H, floor = H - 4;
+    var o = md.o, R = rnd(7), IL = o.isl.L, IT = o.isl.T, IR = o.isl.R, IB = o.isl.B, rr = (IB - IT) / 2, Ls = (IR - rr) - (IL + rr), PER = 2 * Ls + 2 * Math.PI * rr, W = o.W, H = o.H, floor = H - 8;
     function pill(s, off){ s = ((s % PER) + PER) % PER; var p;
       if (s < Ls) p = [IL + rr + s, IT - off];
       else if ((s -= Ls) < Math.PI * rr){ var a1 = -Math.PI / 2 + s / rr; p = [IR - rr + Math.cos(a1) * (rr + off), IT + rr + Math.sin(a1) * (rr + off)]; }
@@ -5287,11 +5308,11 @@ var IVY = (function(){
     /* sur le bout arrondi, les feuilles s'ouvrent vers l'extérieur de l'îlot */
     function leaves(st, sz, every, from){ var n = st.S.length, sd = 1;
       for (var i = 1; i < n; i += every){ sd = -sd; var t = (i + R(-.3, .3)) / n; if (t < (from || 0)) continue;
-        var p = P(st.S, t), L = R(sz[0], sz[1]), pl = R(2.5, 5), a = p[0] > cxC - 4 ? Math.atan2(p[1] - cyC, p[0] - cxC) + R(-1, 1) : angS(st.S, t) + sd * R(50, 115) * Math.PI / 180;
+        var p = P(st.S, t), L = R(sz[0], sz[1]), pl = R(2.5, 5), a = (Ls < 2 || p[0] > cxC - 4) ? Math.atan2(p[1] - cyC, p[0] - cxC) + R(-1, 1) : angS(st.S, t) + sd * R(50, 115) * Math.PI / 180;
         md.rimLv.push({ x: p[0], y: p[1], a: fit(p[0], p[1], a, L, pl), L: L, k: R(0, 1) < .85 ? "lobe" : "ovate", pl: pl, t0: when(st, t) + 60 }); } }
     var s0 = o.bx - (IL + rr), right = (IR - rr) - o.bx;
     function crawl(dir, len, delay, w, amp, sz, from){ var n = Math.max(3, Math.round(len / 6)), ph = R(0, 6), ph2 = R(0, 6), pts = [];
-      for (var i = 0; i <= n; i++){ var off = -1.5 + amp * Math.sin(i * .45 + ph) + amp * .45 * Math.sin(i * 1.25 + ph2); pts.push(pill(s0 + dir * i * 6, i < 2 ? -2 : off)); }
+      for (var i = 0; i <= n; i++){ var off = (Ls < 2 ? 2.5 : -1.5) + (Ls < 2 ? .6 : 1) * amp * (Math.sin(i * .45 + ph) + .45 * Math.sin(i * 1.25 + ph2)); pts.push(pill(s0 + dir * i * 6, i < 2 ? (Ls < 2 ? 1 : -2) : off)); }   /* autour du + : la liane reste sur le bord, sans couvrir le bouton */
       var st = stem(cat(pts), w, 1, delay, len / .2, "lin", { sh: 1 }); md.rimSt.push(st); leaves(st, sz, 2, from); return st; }
     /* mèche qui part du bout arrondi vers l'extérieur puis retombe, en restant dans l'écran */
     function drape(deg, len, delay){ var a0 = deg * Math.PI / 180, p0 = [cxC + Math.cos(a0) * (rr - 1), cyC + Math.sin(a0) * (rr - 1)], pts = [p0], x = p0[0], y = p0[1], d = a0, sw = R(0, 6);
@@ -5302,6 +5323,8 @@ var IVY = (function(){
     /* le lierre longe le haut de l'îlot puis se concentre sur le bout droit et déborde à l'extérieur (comme la maquette B) */
     var mainLen = right + Math.PI * rr + 34, r2 = crawl(1, mainLen, 0, 3.4, 3, [11, 17], right * .55 / mainLen);
     crawl(1, right + rr * 1.6, 150, 2.3, 4.5, [9, 14], right * .6 / (right + rr * 1.6));
+    /* MyWorld_1.6 : autour du + rond, le lierre l'entoure aussi par la gauche (couronne) */
+    if (Ls < 2) crawl(-1, Math.PI * rr * .9, 60, 3, 3, [10, 15], 0);
     var tc = function(deg){ return when(r2, (right + (deg + 90) * Math.PI / 180 * rr) / mainLen); };
     drape(-55, 40, tc(-55)); drape(-10, 52, tc(-10)); drape(35, 34, tc(35)); drape(70, 24, tc(70));
     md.rimSt.concat(md.rimLv).forEach(function(x){ md.total = Math.max(md.total, (x.dur ? x.t0 + x.dur : x.t0 + 700)); });
@@ -5392,7 +5415,8 @@ function fanOpen(){
   /* la barre change de largeur à l'ouverture (« Home » se replie, « Apps » s'affiche) : on mesure sa place finale sans animation, puis on laisse l'animation se faire */
   var bd = document.body, navIn = document.querySelector("nav.tabs .in");
   bd.classList.add("ivy-measure", "fan-on", "apps-open"); btn.setAttribute("aria-expanded", "true"); navIn.offsetWidth;
-  var r = btn.getBoundingClientRect(), isl = navIn.getBoundingClientRect(), W = window.innerWidth, H = window.innerHeight;
+  /* MyWorld_1.6 : la plante et le lierre partent du bouton + (navigation E, plus de barre) */
+  var addB = document.querySelector(".nav-add"), r = addB.getBoundingClientRect(), isl = r, W = window.innerWidth, H = window.innerHeight;
   bd.classList.remove("apps-open"); btn.setAttribute("aria-expanded", "false"); navIn.offsetWidth;
   bd.classList.remove("ivy-measure"); bd.classList.add("apps-open");
   var bx = r.left + r.width / 2, by = r.top + 6, dpr = Math.min(1.5, window.devicePixelRatio || 1);
@@ -5590,13 +5614,23 @@ document.addEventListener("wheel", function(e){
   btn.addEventListener("click", function(){ S.dictate(false); });
 })();
 window.addEventListener("hashchange", route);
+/* MyWorld_1.6 : le libellé « Apps » au-dessus du + n'apparaît que les 6 premières fois (ensuite, juste le chevron) */
+function navHint(){ var n = 0; try { n = +localStorage.getItem("mw-apps-n") || 0; } catch(e){} document.body.classList.toggle("nav-hint-full", n < 6); }
+navHint();
 /* bouton + : appui long (0,45 s) = saisie au clavier */
 (function(){
   var b = document.querySelector(".nav-add"), t = null;
   if (!b) return;
   function cancel(){ if (t){ clearTimeout(t); t = null; } }
-  b.addEventListener("pointerdown", function(){ cancel(); S.lpFired = false; t = setTimeout(function(){ t = null; S.lpFired = true; try { navigator.vibrate && navigator.vibrate(15); } catch(e){} addOpen("text"); }, 450); });
-  ["pointerup","pointerleave","pointercancel"].forEach(function(ev){ b.addEventListener(ev, cancel); });
+  var y0 = null, x0 = 0;
+  b.addEventListener("pointerdown", function(e){ cancel(); S.lpFired = false; y0 = e.clientY; x0 = e.clientX; try { b.setPointerCapture(e.pointerId); } catch(er){}
+    if (!document.getElementById("appsFan").hidden) return; /* lanceur ouvert : le + sert à fermer */
+    t = setTimeout(function(){ t = null; S.lpFired = true; try { navigator.vibrate && navigator.vibrate(15); } catch(e){} addOpen("text"); }, 450); });
+  /* MyWorld_1.6 : tirer le + vers le haut = ouvrir les applis (le lierre pousse depuis le +) */
+  b.addEventListener("pointermove", function(e){ if (y0 === null) return; var dy = y0 - e.clientY, dx = Math.abs(e.clientX - x0);
+    if (dy > 10 || dx > 14) cancel();
+    if (dy > 26 && dx < 60){ y0 = null; S.lpFired = true; if (document.getElementById("appsFan").hidden){ try { navigator.vibrate && navigator.vibrate(10); localStorage.setItem("mw-apps-n", String((+localStorage.getItem("mw-apps-n") || 0) + 1)); } catch(er){} navHint(); fanOpen(); } } });
+  ["pointerup","pointerleave","pointercancel"].forEach(function(ev){ b.addEventListener(ev, function(){ cancel(); y0 = null; }); });
   b.addEventListener("contextmenu", function(e){ e.preventDefault(); });
 })();
 

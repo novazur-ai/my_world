@@ -5,10 +5,10 @@
   "lang": "fr",
   "start_url": "./",
   "scope": "./",
-  "display": "fullscreen",
+  "display": "standalone",
   "orientation": "portrait",
   "background_color": "#0F1012",
-  "theme_color": "#0F1012",
+  "theme_color": "#F2F6F9",
   "icons": [
     {
       "src": "icons/icon-192-v6.png",
@@ -30,7 +30,6 @@
     }
   ],
   "display_override": [
-    "fullscreen",
     "standalone"
   ],
   "share_target": {
