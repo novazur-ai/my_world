@@ -1116,6 +1116,10 @@ body.nav-hint-full .nav-hint svg{animation:navHintUp 1.8s ease-in-out infinite}
 body.fan-on .nav-hint{opacity:0;pointer-events:none}
 nav.tabs:has(#gazBadge:not([hidden])) .nav-hint::after{content:"";position:absolute;top:0;right:8px;width:8px;height:8px;border-radius:50%;background:#E0533D;box-shadow:0 0 0 2px var(--page,#F5F8FB)}
 @media (prefers-reduced-motion: reduce){body.nav-hint-full .nav-hint svg{animation:none}}
+/* MyWorld_1.7 : bas de l'écran fondu dans la barre Android (Chrome la peint avec theme_color du manifeste, #F2F6F9, fixe ;
+   le fond de l'appli suit le ciel et varie un peu, donc les derniers pixels passent en douceur à #F2F6F9) */
+#navFade{position:fixed;left:0;right:0;bottom:0;height:calc(46px + env(safe-area-inset-bottom,0px));background:linear-gradient(180deg,rgba(242,246,249,0),#F2F6F9 78%);pointer-events:none;z-index:19}
+body.game-on #navFade,body.fid-on #navFade{display:none}
 </style>
 </head>
 <body>
@@ -1152,6 +1156,7 @@ nav.tabs:has(#gazBadge:not([hidden])) .nav-hint::after{content:"";position:absol
 <div id="evRoot" hidden></div>
 <div id="gameRoot" hidden></div>
 <div id="fidRoot" hidden></div>
+<div id="navFade" aria-hidden="true"></div>
 <nav class="tabs" aria-label="Navigation">
   <div class="in">
     <a href="#accueil" data-tab="accueil" class="isl-b"><span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg></span><span class="lb">Home</span></a>
@@ -2010,7 +2015,7 @@ var DECO = (function(){
 
 </script>
 <script>
-var APP_VERSION = "MyWorld_1.6";
+var APP_VERSION = "MyWorld_1.7";
 (function(){
 "use strict";
 var CAL = "t.mallet06@gmail.com";
