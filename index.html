@@ -2204,7 +2204,7 @@ var DECO = (function(){
 
 </script>
 <script>
-var APP_VERSION = "MyWorld_1.11";
+var APP_VERSION = "MyWorld_1.12";
 (function(){
 "use strict";
 var CAL = "t.mallet06@gmail.com";
@@ -2469,20 +2469,22 @@ function pdfPlanning(buf){
       var v = it.t; if (v === "*C*") return;                              /* jours passés sans horaire : ignorés */
       if (/^\d{4}$/.test(v) && (+v.slice(0, 2) > 23 || +v.slice(2) > 59)) return;
       days[pad(c + 1) + "-" + pad(d)] = v;
-      if (/^\d{4}$/.test(v)) n.s++; else if (v === "RH") n.r++; else if (v === "CP") n.c++; else n.a++;
+      if (/^\d{4}$/.test(v) || v === "NUIT") n.s++; else if (v === "RH") n.r++; else if (v === "CP") n.c++; else n.a++;
     });
     if (Object.keys(days).length < 7) throw new Error("vide");
     return { year: year, days: days, n: n, who: who2 ? who2.t.replace(/\s*\(\d+\)\s*$/, "") : who ? who[1] : "" };
   });
 }
 var VAC_LEN = 450;   /* une vacation = 7 h 30 */
+var VAC_NUIT = 1380;  /* MyWorld_1.12 : « NUIT » dans le planning = service de 23 h à 6 h 30 le lendemain (même durée de 7 h 30) */
+function vacMin(v){ return v === "NUIT" ? VAC_NUIT : /^\d{4}$/.test(v || "") ? +v.slice(0, 2) * 60 + +v.slice(2) : null; }
 function hasPlanning(){ var p = S.settings && S.settings.planning; return !!(p && Object.keys(p).length); }
 function vacOf(di){ var p = S.settings && S.settings.planning, Y = p && p[di.slice(0, 4)]; return Y && Y.d ? Y.d[di.slice(5)] || null : null; }
-function vacSpan(di){ var v = vacOf(di); if (!v || !/^\d{4}$/.test(v)) return null; var d = parseISO(di), s = +v.slice(0, 2) * 60 + +v.slice(2);
-  return { di: di, sm: s, em: s + VAC_LEN, s: new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, s), e: new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, s + VAC_LEN) }; }
+function vacSpan(di){ var v = vacOf(di), s = vacMin(v); if (s == null) return null; var d = parseISO(di);
+  return { di: di, sm: s, em: s + VAC_LEN, night: v === "NUIT", s: new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, s), e: new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, s + VAC_LEN) }; }
 function fmtVac(min, full){ min = ((min % 1440) + 1440) % 1440; var m = min % 60; return Math.floor(min / 60) + "h" + (m ? pad(m) : full ? "00" : ""); }
 function hmOf(min){ min = ((min % 1440) + 1440) % 1440; return pad(Math.floor(min / 60)) + ":" + pad(min % 60); }
-function vacShort(di){ var v = vacOf(di); return !v ? "" : /^\d{4}$/.test(v) ? fmtVac(+v.slice(0, 2) * 60 + +v.slice(2)) : v === "CP" ? "CP" : v === "RH" ? "" : v; }
+function vacShort(di){ var v = vacOf(di); return !v ? "" : vacMin(v) != null ? fmtVac(vacMin(v)) : v === "CP" ? "CP" : v === "RH" ? "" : v; }
 function vacDur(min){ min = Math.max(1, Math.round(min)); var hh = Math.floor(min / 60), mm = min % 60; return hh ? hh + " h" + (mm ? " " + pad(mm) : "") : mm + " min"; }
 function vacRel(di){ var d = parseISO(di), k = Math.round((d - today()) / 864e5); return k === 0 ? "aujourd'hui" : k === 1 ? "demain" : k < 7 ? JOURS[d.getDay()] : JOURS[d.getDay()] + " " + d.getDate(); }
 function vacNext(di){ for (var i = 1; i <= 40; i++){ var x = iso(addDays(parseISO(di), i)), sp = vacSpan(x); if (sp) return sp; } return null; }
@@ -2503,9 +2505,9 @@ function svcCardHTML(di){
   if (sp){
     var stt = !isToday ? "plan" : now < sp.s ? "avant" : now < sp.e ? "en" : "fini", hrs = fmtVac(sp.sm, 1) + " – " + fmtVac(sp.em, 1);
     if (stt === "fini") return card("done", DN, "Service terminé", hrs, (function(n){ return n ? "Prochain : " + n : ""; })(nxt(sp.di)), null);
-    if (stt === "en") return card("on", PL, hrs, "En service · encore " + vacDur((sp.e - now) / 6e4), nxt(sp.di), Math.round((now - sp.s) / (sp.e - sp.s) * 100));
-    if (stt === "avant") return card("", PL, hrs, "Service aujourd'hui · dans " + vacDur((sp.s - now) / 6e4), "", null);
-    return card("", PL, hrs, "Service", "", null);
+    if (stt === "en") return card("on", PL, hrs, (sp.night ? "Service de nuit" : "En service") + " · encore " + vacDur((sp.e - now) / 6e4), nxt(sp.di), Math.round((now - sp.s) / (sp.e - sp.s) * 100));
+    if (stt === "avant") return card("", PL, hrs, (sp.night ? "Nuit ce soir" : "Service aujourd'hui") + " · dans " + vacDur((sp.s - now) / 6e4), "", null);
+    return card("", PL, hrs, sp.night ? "Service de nuit" : "Service", "", null);
   }
   if (v === "RH" || v === "CP"){ var n2 = nxt(di); return card("rest", LF, (v === "CP" ? "Congé" : "Repos") + (isToday ? " aujourd'hui" : ""), n2 ? "Reprise " + n2 : "", "", null); }
   return "";
@@ -4065,7 +4067,7 @@ function monthHTML(){
     cells.push('<button type="button" class="' + cls + '" data-act="mday" data-d="' + di + '" aria-pressed="' + (di === S.monthSel) + '" aria-label="' + h(fmtDay(dt) + (evs.length ? ", " + evs.length + " événement" + (evs.length>1?"s":"") : ", rien de prévu")) + '"><span class="mn">' + d + '</span>' + (plan ? '<span class="mh' + (vacOf(di) === "CP" ? " cp" : "") + '">' + vacShort(di) + '</span>' : '') + '<span class="dots" aria-hidden="true">' + evs.slice(0,3).map(function(e){ return '<i class="k-' + (CATS[e.cat] ? e.cat : "neutre") + '"' + (dt < t ? ' style="opacity:.55"' : "") + '></i>'; }).join("") + '</span></button>');
   }
   var sel = parseISO(S.monthSel), selEvs = eventsOn(S.monthSel), vsp = vacSpan(S.monthSel), vv = vacOf(S.monthSel);
-  if (vsp) selEvs = [{title:"Vacation", time:hmOf(vsp.sm), endTime:hmOf(vsp.em), cat:"boulot", src:"vac"}].concat(selEvs);
+  if (vsp) selEvs = [{title:vsp.night ? "Vacation de nuit" : "Vacation", time:hmOf(vsp.sm), endTime:hmOf(vsp.em), cat:"boulot", src:"vac"}].concat(selEvs);
   else if (vv === "CP") selEvs = [{title:"Congé", cat:"boulot", src:"vac"}].concat(selEvs);
   var panel = '<div class="mpanel"><div class="wdate' + (S.monthSel === iso(t) ? " today" : "") + '"><small>' + JOURS[sel.getDay()].replace(".","") + '</small><b>' + sel.getDate() + '</b></div><div style="min-width:0">'
     + (S.monthLoading[key] ? '<p class="wfree">Je récupère ton agenda…</p>' : selEvs.length ? '<div class="wevs">' + selEvs.map(evCard).join("") + '</div>' : '<p class="wfree" style="padding-top:10px">Libre</p>')
@@ -5423,7 +5425,7 @@ function slTone(sc){ return sc >= 85 ? "#2F7440" : sc >= 70 ? "#0B4F7C" : sc >= 
 function slNightName(n){ var a = addDays(parseISO(n.key), -1), b = parseISO(n.key); return "Nuit du " + JOURS[a.getDay()] + " " + a.getDate() + " au " + JOURS[b.getDay()] + " " + b.getDate() + (b.getMonth() !== today().getMonth() ? " " + MOIS[b.getMonth()] : ""); }
 function slSet(){ var x = (S.settings && S.settings.sleep) || {}; return { target: x.target || 420, lead: x.lead != null ? x.lead : 60 }; }
 /* vacation du jour du réveil : "tot" (début ≤ 7 h), "tard", "repos" ou "" */
-function slSvc(key){ if (typeof hasPlanning !== "function" || !hasPlanning()) return ""; var sp = vacSpan(key); if (sp) return sp.sm <= 420 ? "tot" : "tard"; var v = vacOf(key); return v === "RH" || v === "CP" ? "repos" : ""; }
+function slSvc(key){ if (typeof hasPlanning !== "function" || !hasPlanning()) return ""; var sp = vacSpan(key); if (sp) return sp.night ? "nuit" : sp.sm <= 420 ? "tot" : "tard"; var v = vacOf(key); return v === "RH" || v === "CP" ? "repos" : ""; }
 
 /* ---- récupération des nuits depuis le script ---- */
 var SLS = { busy: false, at: 0, st: null };
@@ -5489,7 +5491,7 @@ function slWeekHTML(sel){
   return '<section class="section gut sl-b"><div class="sl-card"><div class="sl-wh"><b>' + h(ttl) + '</b>' + (cnt ? '<span class="sl-mut">moy. ' + slHM(sum / cnt) + '</span>' : '') + '</div><div class="sl-bars" id="slBars" aria-label="Glisse pour changer de semaine">' + cols + '</div></div></section>';
 }
 function slBedHTML(){
-  var tm = addDays(today(), 1), sp = typeof hasPlanning === "function" && hasPlanning() ? vacSpan(iso(tm)) : null; if (!sp) return "";
+  var tm = addDays(today(), 1), sp = typeof hasPlanning === "function" && hasPlanning() ? vacSpan(iso(tm)) : null; if (!sp || sp.night) return "";
   var set = slSet(), bed = sp.sm - set.lead - set.target;
   return '<section class="section gut sl-c"><button type="button" class="sl-bed" data-act="sl-set" aria-label="Ce soir, au lit vers ' + slHour(bed) + ' (service demain à ' + fmtVac(sp.sm, 1) + ') : modifier les réglages"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 18V8M3 14h18v4M21 14v-2a3 3 0 0 0-3-3h-7v5"/><circle cx="7" cy="11" r="2"/></svg><span>Ce soir, au lit vers</span><b>' + slHour(bed) + '</b></button></section>';
 }
@@ -5611,6 +5613,7 @@ var BE_PH = {
   nuages: [["Un peu de gris, beaucoup d'", "envies", "."], ["Derrière les nuages, le ", "soleil", " attend."]],
   repos: [["Jour de repos : la journée est ", "à toi", "."], ["Pas de réveil qui compte, que du ", "bon temps", "."], ["Repos mérité, profites-en ", "à fond", "."]],
   tot: [["Service tôt ? Tu vas ", "assurer", ", comme toujours."], ["Lever matinal, journée ", "bien remplie", "."]],
+  nuit: [["Nuit de service ce soir : la journée en ", "douceur", "."], ["Ce soir, tu veilles sur ", "le ciel", " de Nice."], ["Recharge les batteries, la nuit sera ", "à toi", "."]],
   bonneNuit: [["Belle nuit derrière toi, belle ", "journée", " devant."], ["Bien reposé, prêt à ", "briller", "."]],
   petiteNuit: [["Petite nuit ? Douceur et café, ça va ", "le faire", "."], ["On y va en douceur, tu as ", "tout", " pour réussir."]],
   ven: [["Petit vendredi, ", "grand sourire", "."]], lun: [["Lundi tout neuf, ", "plein de promesses", "."]], dim: [["Dimanche, le droit de ", "ralentir", "."]]
@@ -5620,7 +5623,7 @@ function bePhrase(){
   function add(k, w){ for (var i = 0; i < (w || 2); i++) pool = pool.concat(BE_PH[k]); }
   if (md && md.daily){ var c = md.daily.weather_code[0], p = md.daily.precipitation_probability_max[0] || 0;
     if (p >= 60 || (c >= 51 && c <= 82)) add("pluie", 3); else if (c <= 1) add("soleil"); else if (c <= 3 || c === 45 || c === 48) add("nuages"); }
-  if (v === "RH" || v === "CP") add("repos", 3); else if (sp && sp.sm <= 420) add("tot", 3);
+  if (v === "RH" || v === "CP") add("repos", 3); else if (sp && sp.night) add("nuit", 3); else if (sp && sp.sm <= 420) add("tot", 3);
   var ns = slNights(), n = ns[ns.length - 1];
   if (n && n.key === di){ if (n.score >= 80) add("bonneNuit"); else if (n.sleep < 360) add("petiteNuit", 3); }
   var wd = d.getDay(); if (wd === 5) add("ven", 1); if (wd === 1) add("lun", 1); if (wd === 0) add("dim", 1);
@@ -5636,7 +5639,7 @@ function beHeroHTML(date){
 /* ---- données croisées : une ligne par jour ---- */
 function beDay(di){
   var n = slByKey(di), v = typeof vacOf === "function" ? vacOf(di) : null, sp = typeof vacSpan === "function" ? vacSpan(di) : null;
-  return { di: di, m: moodOf(di), n: n, svc: sp ? (sp.sm <= 420 ? "tot" : "tard") : v === "RH" || v === "CP" ? "repos" : "" };
+  return { di: di, m: moodOf(di), n: n, svc: sp ? (sp.night ? "nuit" : sp.sm <= 420 ? "tot" : "tard") : v === "RH" || v === "CP" ? "repos" : "" };
 }
 function beSleepLine(n){ return n ? "Nuit " + slHM(n.sleep) + " · " + n.score : "Pas de nuit reçue"; }
 
@@ -5652,7 +5655,7 @@ function beCalHTML(){
   var v = S.beView || "mois", seg = '<div class="be-seg" role="tablist"><button type="button" role="tab" aria-selected="' + (v === "sem") + '" data-act="be-view" data-v="sem">Semaine</button><button type="button" role="tab" aria-selected="' + (v === "mois") + '" data-act="be-view" data-v="mois">Mois</button><button type="button" role="tab" aria-selected="false" data-act="be-year">Année</button></div>';
   var body = v === "sem" ? beWeekHTML() : beMonthHTML(), s = beDay(S.beSel), d = parseISO(S.beSel);
   var title = (s.m != null ? MD_J[s.m] : S.beSel === iso(today()) ? "À noter ce soir" : "Humeur non notée") + " · " + d.getDate() + " " + MOIS_COURT[d.getMonth()].toLowerCase() + ".";
-  var sub = beSleepLine(s.n) + (s.svc ? " · " + { tot: "service tôt", tard: "service plus tard", repos: "repos" }[s.svc] : "");
+  var sub = beSleepLine(s.n) + (s.svc ? " · " + { tot: "service tôt", tard: "service plus tard", nuit: "service de nuit", repos: "repos" }[s.svc] : "");
   var ins = beInsights(), teaser = ins.ready && ins.best ? '<a class="be-tease" href="#conclusions">' + BE_BULB + '<span><b>' + h(ins.best.t) + '</b><small>' + h(ins.best.s) + ' · voir les conclusions</small></span></a>'
     : '<a class="be-tease wait" href="#conclusions">' + BE_BULB + '<span><b>Premières conclusions dans ' + ins.left + ' jour' + (ins.left > 1 ? 's' : '') + '</b><small>' + ins.n + ' jour' + (ins.n > 1 ? 's' : '') + ' noté' + (ins.n > 1 ? 's' : '') + ' sur 14</small></span></a>';
   return '<section class="section gut"><div class="sl-card">' + seg + body
@@ -5725,12 +5728,12 @@ function beInsights(){
   if (L.n >= 3 && C.n >= 3) out.sl.push({ t: L.a >= C.a ? "Tu es plus en forme après une vraie nuit" : "La durée de la nuit pèse peu sur ta journée", bars: [["Nuit de 7 h ou plus", L], ["Nuit plus courte", C]], foot: L.n + " jours contre " + C.n, d: Math.abs(L.a - C.a), s: "après 7 h de sommeil : " + beFmt(L.a) + "/5, sinon " + beFmt(C.a) });
   var det = withN.filter(function(r){ return r.n.detail; }), Dh = grp(det.filter(function(r){ return r.n.t.d / r.n.sleep >= .2; })), Dl = grp(det.filter(function(r){ return r.n.t.d / r.n.sleep < .2; }));
   if (Dh.n >= 3 && Dl.n >= 3) out.sl.push({ t: Dh.a > Dl.a + .3 ? "Le sommeil profond te réussit" : "Le sommeil profond change peu ta journée", bars: [["Profond 20 % ou plus", Dh], ["Profond moins de 20 %", Dl]], foot: Math.abs(Dh.a - Dl.a) < .5 ? "Écart faible : à confirmer" : Dh.n + " jours contre " + Dl.n, d: Math.abs(Dh.a - Dl.a), s: "profond ≥ 20 % : " + beFmt(Dh.a) + "/5, sinon " + beFmt(Dl.a) });
-  var G = { repos: grp(rows.filter(function(r){ return r.svc === "repos"; })), tard: grp(rows.filter(function(r){ return r.svc === "tard"; })), tot: grp(rows.filter(function(r){ return r.svc === "tot"; })) };
-  var gb = [["Repos ou congé", G.repos], ["Service plus tard", G.tard], ["Service tôt", G.tot]].filter(function(x){ return x[1].n >= 3; });
+  var G = { repos: grp(rows.filter(function(r){ return r.svc === "repos"; })), tard: grp(rows.filter(function(r){ return r.svc === "tard"; })), tot: grp(rows.filter(function(r){ return r.svc === "tot"; })), nuit: grp(rows.filter(function(r){ return r.svc === "nuit"; })) };
+  var gb = [["Repos ou congé", G.repos], ["Service plus tard", G.tard], ["Service tôt", G.tot], ["Service de nuit", G.nuit]].filter(function(x){ return x[1].n >= 3; });
   if (gb.length >= 2){ var best = gb.slice().sort(function(a, b){ return b[1].a - a[1].a; })[0];
     var rest = rows.filter(function(r){ return r.svc === "repos"; }), both = rest.filter(function(r){ return r.n && r.n.sleep >= 420; }).length;
     out.wk.push({ t: best[0] === "Repos ou congé" ? "Les jours de repos sont tes meilleurs" : best[0] + " : tes meilleurs jours", bars: gb, foot: rest.length >= 3 && both / rest.length >= .7 ? "Repos et longues nuits vont souvent ensemble" : "", d: Math.abs(gb[0][1].a - gb[gb.length - 1][1].a), s: best[0].toLowerCase() + " : " + beFmt(best[1].a) + "/5" }); }
-  var nb = slNights(), bt = nb.filter(function(x){ var sp = vacSpan(x.key); return sp && sp.sm <= 420; }), br = nb.filter(function(x){ var v = vacOf(x.key); return v === "RH" || v === "CP"; });
+  var nb = slNights(), bt = nb.filter(function(x){ var sp = vacSpan(x.key); return sp && !sp.night && sp.sm <= 420; }), br = nb.filter(function(x){ var v = vacOf(x.key); return v === "RH" || v === "CP"; });
   if (bt.length >= 3 && br.length >= 3){ var a1 = beAvg(bt.map(function(x){ return x.sleep; })), a2 = beAvg(br.map(function(x){ return x.sleep; }));
     out.wk.push({ t: "Avant un service tôt, tu dors " + slHM(a1), mins: [["Veille d'un service tôt", a1], ["Veille de repos", a2]], foot: "", d: 0 }); }
   var W = [0, 1, 2, 3, 4, 5, 6].map(function(i){ return grp(rows.filter(function(r){ return (parseISO(r.di).getDay() + 6) % 7 === i; })); });
