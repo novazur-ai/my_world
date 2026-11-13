@@ -1,4 +1,4 @@
-// Gazette du matin (MyWorld_0.44) : sans IA ni clé d'API.
+// Les News du matin (ex-Gazette, renommée en MyWorld_1.13 ; logique MyWorld_0.44) : sans IA ni clé d'API.
 // On lit les flux RSS de sites d'info français pour tous les sujets choisis dans les Réglages,
 // on note chaque article (importance de l'info + goûts appris des notes de Théo), et on garde les 6 meilleurs,
 // tous sujets confondus, rangés du plus important au moins important.
@@ -164,9 +164,13 @@ async function enrich(it){
 
 /* ---------- chiffres du jour ---------- */
 const PEOPLE = /^(morts?|tues?|victimes?|blesses?|personnes|manifestants|habitants|salaries|emplois|eleves|enfants|familles|deplaces|refugies|spectateurs|participants|interpellations|arrestations|logements|tentes|foyers|abonnes|utilisateurs|clients|kilometres|km|tonnes|hectares|voitures|vehicules|maisons|postes)\b/;
-export function keyNumbers(items, n = 3){
+/* MyWorld_1.13 (Les News) : au moins 3 chiffres marquants par jour, jusqu'à 5.
+   Avant : un seul chiffre par sujet, pris dans les 20 meilleurs articles → souvent 1 ou 2.
+   Maintenant : on cherche aussi dans les unes des journaux nationaux ; un chiffre par événement (pas par sujet) ;
+   si on n'en a pas 3, on accepte la tech et le sport, puis les grands nombres sans unité. */
+export function keyNumbers(items, n = 5, min = 3){
   const RX = /(\d{1,3}(?:[  .]\d{3})+|\d+(?:[.,]\d+)?)\s*(%|milliards?|millions?|Md€?|M€|€|euros?|dollars?|\$)?(?:\s+(?:de\s+|d['’])?([a-zàâçéèêëîïôûùüÿœ-]+))?/gi;
-  const out = [];
+  const cands = [];
   for (const it of items){
     let best = null;
     for (const t of [it.title, it.lead].filter(Boolean)){
@@ -175,16 +179,21 @@ export function keyNumbers(items, n = 3){
         const val = parseFloat(raw.replace(/[  .]/g, "").replace(",", "."));
         if (/(le|la|n°)\s?$/i.test(t.slice(Math.max(0, m.index - 4), m.index))) continue;
         if (val >= 1900 && val <= 2100 && !unit) continue;
-        let sc = unit === "%" ? 5 : unit ? 4 : PEOPLE.test(noun) ? (val >= 2 ? 4 : 0) : val >= 1000 ? 3 : 0;
+        let sc = unit === "%" ? 5 : unit ? 4 : PEOPLE.test(noun) ? (val >= 2 ? 4 : 0) : val >= 1000 ? 3 : val >= 100 ? 0.5 : 0;
         if (!sc) continue; if (t === it.title) sc += 1;
-        const cand = { n: raw.replace(/[ .](?=\d{3}\b)/g, " ") + (/%|€|\$/.test(unit) ? " " + unit : unit ? " " + unit : ""), text: it.lead && it.lead.length <= 200 ? it.lead : it.title, topic: it.topic, url: it.url, score: sc };
+        const cand = { n: raw.replace(/[ .](?=\d{3}\b)/g, " ") + (/%|€|\$/.test(unit) ? " " + unit : unit ? " " + unit : ""), text: it.lead && it.lead.length <= 200 ? it.lead : it.title, topic: it.topic, url: it.url, score: sc + (it.score ? Math.min(3, Math.max(0, it.score) / 4) : 0), side: /^(tech|sport)$/.test(rubriqueOf(it.topic) || ""), tw: uw(it.title) };
         if (!best || cand.score > best.score) best = cand;
       }
     }
-    if (best && !/^(tech|sport)$/.test(rubriqueOf(it.topic) || "")) out.push(best);
+    if (best) cands.push(best);
   }
-  const seen = new Set();
-  return out.sort((a, b) => b.score - a.score).filter((x) => !seen.has(x.topic) && seen.add(x.topic)).slice(0, n).map(({ score, ...x }) => x);
+  cands.sort((a, b) => b.score - a.score);
+  const out = [], sameEvent = (a, b) => a.url === b.url || a.n === b.n || [...a.tw].filter((w) => b.tw.has(w)).length >= 2;
+  const take = (ok) => { for (const c of cands){ if (out.length >= n) break; if (!ok(c) || out.some((o) => sameEvent(o, c))) continue; out.push(c); } };
+  take((c) => !c.side && c.score >= 3);                 /* 1. chiffres forts, hors tech et sport */
+  if (out.length < min) take((c) => c.score >= 3);      /* 2. on accepte la tech et le sport */
+  if (out.length < min) take(() => true);               /* 3. grands nombres sans unité */
+  return out.slice(0, Math.max(min, Math.min(n, out.length))).map(({ score, side, tw, ...x }) => x);
 }
 
 /* ---------- « À la une » : l'info reprise par le plus de journaux nationaux ---------- */
@@ -309,7 +318,7 @@ export async function build(topics, seen = new Set(), rates = {}, N_PICK = 6){
   await pool(picked, 3, enrich); dropSiteDescs(picked);
   console.log(`\nCandidats : ${C.length} · notes apprises : ${model.n}`);
   picked.forEach((it, i) => console.log(`${i + 1}. [${it.final}] ${it.topic} · ${it.source} · ${it.title}\n     ${JSON.stringify(it.parts)} (${it.srcs} journal/aux)`));
-  const numbers = keyNumbers(pool0.slice(0, 20));
+  const numbers = keyNumbers(pool0.slice(0, 40).concat(N.arts.map((x) => ({ ...x, topic: x.src }))));
   const items = picked.map((it, i) => ({ title: it.title, lead: it.lead || "", more: it.more || "", url: it.url, source: it.source, ts: it.ts || null, topic: it.topic, rank: i + 1, score: it.final, why: it.parts }));
   return { items, numbers, une, cands: C.length };
 }

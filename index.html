@@ -2204,7 +2204,7 @@ var DECO = (function(){
 
 </script>
 <script>
-var APP_VERSION = "MyWorld_1.12";
+var APP_VERSION = "MyWorld_1.13";
 (function(){
 "use strict";
 var CAL = "t.mallet06@gmail.com";
@@ -2366,16 +2366,16 @@ function heroHTML(){
     var hr = new Date().getHours(), g = greetText().split(" · ")[0];
     if (/^Bonjour, /.test(g)) g = "Coucou " + NAME + " !"; else if (/^(Bonsoir|Bonne nuit), /.test(g)) g = g.replace(", ", " ") + " !";
     ensureMeteo();
-    return '<div class="hd2 gut hd-home"><a class="eb eb-gz" href="#gazette-' + iso(d) + '" aria-label="' + h(date) + ' : ouvrir la Gazette du jour">' + h(date) + '</a>' + wPillHTML() + '</div>';
+    return '<div class="hd2 gut hd-home"><a class="eb eb-gz" href="#gazette-' + iso(d) + '" aria-label="' + h(date) + ' : ouvrir les News du jour">' + h(date) + '</a>' + wPillHTML() + '</div>';
   }
   if (S.view === "meteo") return meteoHero(date);
   if (S.view === "bienetre") return beHeroHTML(date);
   var sub = "";
   if (S.view === "courses"){ var nc = coOpen().filter(function(x){ return !x.done; }).length; sub = '<p class="sub">' + (nc ? nc + " article" + (nc > 1 ? "s" : "") + " à prendre" : "Liste vide") + '</p>'; }
   if (S.view === "cartes"){ var nf = fidAll().length; sub = '<p class="sub">' + (nf ? nf + " carte" + (nf > 1 ? "s" : "") + " de fidélité" : "Aucune carte pour l'instant") + '</p>'; }
-  var title = S.view === "conclusions" ? "Conclusions" : S.view === "sommeil" ? "Sommeil" : S.view === "cartes" ? "Tes cartes" : S.view === "listes" ? "Tes listes" : S.view === "courses" ? "Tes courses" : S.view === "fiche" ? "Ta fiche" : S.view === "notes" ? "Tes notes" : "La Gazette";
+  var title = S.view === "conclusions" ? "Conclusions" : S.view === "sommeil" ? "Sommeil" : S.view === "cartes" ? "Tes cartes" : S.view === "listes" ? "Tes listes" : S.view === "courses" ? "Tes courses" : S.view === "fiche" ? "Ta fiche" : S.view === "notes" ? "Tes notes" : "Les News";
   if (S.view === "gazette"){ var u = S.settings && S.settings.gazetteUpdatedAt, ds0 = gzDays();
-    if (S.gzDay){ var nb = gzBatch(S.gzDay).length; title = "La Gazette"; sub = '<p class="sub">' + h(gzDayLabel(S.gzDay) + (S.gzDay === iso(today()) || S.gzDay === iso(addDays(today(), -1)) ? " · " + parseISO(S.gzDay).getDate() + " " + MOIS[parseISO(S.gzDay).getMonth()] : "") + " · " + nb + " info" + (nb > 1 ? "s" : "")) + '</p>'; }
+    if (S.gzDay){ var nb = gzBatch(S.gzDay).length; title = "Les News"; sub = '<p class="sub">' + h(gzDayLabel(S.gzDay) + (S.gzDay === iso(today()) || S.gzDay === iso(addDays(today(), -1)) ? " · " + parseISO(S.gzDay).getDate() + " " + MOIS[parseISO(S.gzDay).getMonth()] : "") + " · " + nb + " info" + (nb > 1 ? "s" : "")) + '</p>'; }
     else sub = '<p class="sub"><span class="pulse" aria-hidden="true" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#2F7440;margin-right:6px"></span>' + h(u ? (iso(new Date(u)) === iso(today()) ? "Mise à jour à " + new Date(u).getHours() + " h " + pad(new Date(u).getMinutes()) : "Mise à jour " + ago(u)) + " · " + ds0.length + " jour" + (ds0.length > 1 ? "s" : "") + " d'archives" : "En attente de la première mise à jour") + '</p>'; }
   return '<div class="hd2 gut"><p class="eb">' + h(date) + '</p><h1>' + title + '</h1>' + sub + '</div>';
 }
@@ -2807,7 +2807,7 @@ function gzDayLabel(day){ var d = parseISO(day), t = today(); if (day === iso(t)
 function viewGazetteDays(){
   var ds = gzDays(), topics = (S.settings && S.settings.topics) || [], read = gzRead();
   var html = '<div class="gz gut">';
-  if (!ds.length) html += '<div class="lt-empty">' + (topics.length ? "Ta première Gazette arrivera demain matin vers 6 h." : "Choisis tes sujets pour recevoir ta Gazette chaque matin.") + '</div>';
+  if (!ds.length) html += '<div class="lt-empty">' + (topics.length ? "Tes premières News arriveront demain matin vers 6 h." : "Choisis tes sujets pour recevoir tes News chaque matin.") + '</div>';
   else html += '<div class="gzd-list">' + ds.map(function(o){
     var d = parseISO(o.day), nums = gzNumsOf(o.day), nNew = o.items.filter(function(g){ return S.gazNew && S.gazNew[g._id]; }).length;
     var nRead = o.items.filter(function(g){ return read.indexOf(g._id) >= 0; }).length, subj = {}; o.items.forEach(function(g){ subj[g.topic] = 1; });
@@ -2992,7 +2992,7 @@ function viewGazette(){
   if (!withNews.length && Object.keys(groups).length) withNews = Object.keys(groups);
   var f = S.topicFilter && withNews.indexOf(S.topicFilter) >= 0 ? S.topicFilter : "Tout";
   var nums = gzNumsOf(S.gzDay).filter(function(x){ return x && x.n; }), ni = (S.gzNum || 0) % Math.max(1, nums.length);
-  var html = '<div class="gz gut"><button type="button" class="gz-back" data-act="gz-days"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Toutes les Gazettes</button>';
+  var html = '<div class="gz gut"><button type="button" class="gz-back" data-act="gz-days"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Toutes les News</button>';
   var une = gzUneOf(S.gzDay);
   if (une) html += '<button type="button" class="gz-une" data-act="gz-une"><span class="ey">À la une</span><span class="t">' + h(une.title) + '</span>' + (une.lead ? '<span class="l">' + h(une.lead) + '</span>' : "") + '</button>';
   if (nums.length){
@@ -3004,7 +3004,7 @@ function viewGazette(){
   if (ranked) list = list.filter(function(g){ return g.rank != null; }).sort(function(a, b){ return ((b.score != null ? b.score : -99) - (a.score != null ? a.score : -99)) || (a.rank - b.rank); }).slice(0, 6);
   else list.sort(function(a, b){ return (b.ts || 0) - (a.ts || 0); });
   if (!list.length){
-    html += '<div class="lt-empty">' + (topics.length ? "Pas encore d'infos pour tes sujets. La Gazette se met à jour chaque matin vers 6 h." : "Choisis tes sujets pour recevoir ta Gazette chaque matin.") + '</div>';
+    html += '<div class="lt-empty">' + (topics.length ? "Pas encore d'infos pour tes sujets. Les News se mettent à jour chaque matin vers 6 h." : "Choisis tes sujets pour recevoir tes News chaque matin.") + '</div>';
   } else {
     var rates = (S.settings && S.settings.gazRates) || {};
     html += (ranked ? '<p class="gz-lbl">Tes ' + list.length + ' infos du jour</p>' : '') + '<div class="gz-list">' + list.map(function(g){ var c = gzCol(g.topic), rt = rates[g._id];
@@ -4081,7 +4081,7 @@ function settingsHTML(){
   var bd = st.birthday ? "2000-" + st.birthday : "";
   var prev = '';
   return prev + (st.birthday ? '<h3 style="margin-bottom:6px">Mon anniversaire</h3><p style="margin-bottom:22px;font-size:16px;font-weight:700">Le ' + (+st.birthday.slice(3)) + ' ' + MOIS[+st.birthday.slice(0,2)-1] + (st.birthYear ? ' ' + st.birthYear : '') + '</p>' : '<h3 style="margin-bottom:10px">Mon anniversaire</h3><form id="fBd" class="fgrid" style="margin-bottom:22px"><div class="field"><label for="bdIn">Date (l\'année ne compte pas)</label><input type="date" id="bdIn" value="' + h(bd) + '"></div><button class="btn green" type="submit">Enregistrer</button></form>')
-    + '<h3 style="margin-bottom:6px">Sujets de la Gazette</h3><p style="font-size:13px;color:var(--muted);margin-bottom:6px">Chaque sujet devient une rubrique de ta Gazette, mise à jour chaque matin vers 6 h.</p><div>' + topics.map(function(t){ return '<div class="list-line"><span>' + h(t) + '</span><button type="button" class="mini" data-act="del-topic" data-t="' + h(t) + '">Retirer</button></div>'; }).join("") + '</div>'
+    + '<h3 style="margin-bottom:6px">Sujets des News</h3><p style="font-size:13px;color:var(--muted);margin-bottom:6px">Chaque sujet devient une rubrique de tes News, mise à jour chaque matin vers 6 h.</p><div>' + topics.map(function(t){ return '<div class="list-line"><span>' + h(t) + '</span><button type="button" class="mini" data-act="del-topic" data-t="' + h(t) + '">Retirer</button></div>'; }).join("") + '</div>'
     + (function(){ var miss = Object.keys(GZ_RUB).filter(function(r){ return !topics.some(function(t){ return gzRub(t) === r; }); }); return miss.length ? '<p class="learn-sub">Rubriques prêtes</p><div class="gz-quick">' + miss.map(function(r){ return '<button type="button" data-act="topic-quick" data-t="' + h(GZ_RUB[r].n) + '">+ ' + h(GZ_RUB[r].n) + '</button>'; }).join("") + '</div>' : ""; })()
     + '<form id="fT" class="fgrid" style="margin-top:12px"><div class="field"><label for="tName">Nouveau sujet</label><input id="tName" type="text" required placeholder="Un acteur, une série, un lieu…"></div><button class="btn green" type="submit">Ajouter</button></form>'
     + learnSettingsHTML()
@@ -5827,7 +5827,7 @@ var FAN_APPS = [
   {k:"notes", n:"Notes", bg:"#FFF1C2", ink:"#8A6410", ic:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 12h7M9 16h5"/></svg>'},
   {k:"listes", n:"À faire", bg:"#FDDCC6", ink:"#AA4A1C", ic:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M3.5 6l1.2 1.2L7 4.8M3.5 12l1.2 1.2L7 10.8M3.5 18l1.2 1.2L7 16.8"/></svg>'},
   {k:"fiche", n:"Fiche", bg:"#E3D3F7", ink:"#6640A6", ic:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 5-3.5 8-7 10-3.5-2-7-5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg>'},
-  {k:"gazette", n:"Gazette", bg:"#FBE6B4", ink:"#8E6312", ic:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h13v14a1 1 0 0 0 1 1H5a1 1 0 0 1-1-1z"/><path d="M17 9h3v10a1 1 0 0 1-2 0M7 9h7M7 13h7M7 16h4"/></svg>'},
+  {k:"gazette", n:"News", bg:"#FBE6B4", ink:"#8E6312", ic:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h13v14a1 1 0 0 0 1 1H5a1 1 0 0 1-1-1z"/><path d="M17 9h3v10a1 1 0 0 1-2 0M7 9h7M7 13h7M7 16h4"/></svg>'},
   {k:"courses", n:"Courses", bg:"#D3EFEA", ink:"#1E6B60", ic:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2.2l2.3 11.2a1.5 1.5 0 0 0 1.5 1.2h8.6a1.5 1.5 0 0 0 1.5-1.1L21 8H6.1"/><circle cx="9.5" cy="20" r="1.3"/><circle cx="17.5" cy="20" r="1.3"/></svg>'},
   {k:"reglages", n:"Réglages", bg:"#ECEDF1", ink:"#3E4250", ic:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M2 12h3M19 12h3M4.9 19.1L7 17M17 7l2.1-2.1"/></svg>'},
   {k:"meteo", n:"Météo", bg:"#D2E8FA", ink:"#2C679C", ic:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18h10a4 4 0 0 0 .5-8 5.5 5.5 0 0 0-10.6 1.5A3.3 3.3 0 0 0 7 18z"/></svg>'},
