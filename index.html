@@ -1120,6 +1120,88 @@ nav.tabs:has(#gazBadge:not([hidden])) .nav-hint::after{content:"";position:absol
    le fond de l'appli suit le ciel et varie un peu, donc les derniers pixels passent en douceur à #F2F6F9) */
 #navFade{position:fixed;left:0;right:0;bottom:0;height:calc(46px + env(safe-area-inset-bottom,0px));background:linear-gradient(180deg,rgba(242,246,249,0),#F2F6F9 78%);pointer-events:none;z-index:19}
 body.game-on #navFade,body.fid-on #navFade{display:none}
+/* ===== MyWorld_1.8 : Sommeil ===== */
+.ht-row{grid-auto-flow:column;grid-template-columns:none;grid-auto-columns:calc((100% - 20px) / 3);overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain;padding-top:6px;padding-bottom:16px;margin-bottom:-16px;scroll-padding-inline:max(18px,env(safe-area-inset-left,0px))}
+.ht-row::-webkit-scrollbar{display:none}
+.ht-row>.ht{scroll-snap-align:start}
+.ht-sl .ht-ic{background:#DCE1F7;color:#2E3A8C}
+.ht-sc{position:absolute;top:11px;right:11px;min-width:30px;height:22px;padding:0 6px;border-radius:999px;color:#fff;font-size:12px;font-weight:900;display:grid;place-items:center;font-variant-numeric:tabular-nums}
+.sl-page{padding-bottom:30px}
+.sl-page .section{margin-top:22px}
+.sl-page .section-head{margin-bottom:10px}
+.sl-page .section-head h2{font-size:19px;font-weight:900}
+.sl-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:0 6px 18px rgba(11,58,92,.05)}
+.sl-mut{font-size:13px;color:var(--muted);font-weight:700}
+.sl-nav,.sl-wnav{display:flex;align-items:center;justify-content:space-between;gap:6px}
+.sl-nav span{font-size:13px;font-weight:900;color:var(--muted);text-align:center}
+.sl-wnav span{font-size:13px;font-weight:800;color:var(--muted);min-width:0;white-space:nowrap}
+.sl-arr{width:34px;height:34px;flex:none;border-radius:50%;border:1px solid var(--line);background:#fff;color:var(--text);font:900 20px/1 var(--f-body);display:grid;place-items:center;padding:0 0 2px}
+.sl-arr:disabled{opacity:.3}
+.sl-top{display:flex;align-items:center;gap:14px;margin-top:10px}
+.sl-ring{position:relative;width:88px;height:88px;flex:none;display:grid;place-items:center}
+.sl-ring svg{position:absolute;inset:0;width:100%;height:100%}
+.sl-ring b{font-size:28px;font-weight:900;line-height:1;color:var(--c);font-variant-numeric:tabular-nums;margin-top:-6px}
+.sl-ring small{position:absolute;bottom:22px;left:0;right:0;text-align:center;font-size:10.5px;font-weight:900;color:var(--muted)}
+.sl-sum{display:flex;flex-direction:column;gap:2px;min-width:0}
+.sl-lbl{font-size:13px;font-weight:900}
+.sl-big{font-size:28px;font-weight:900;line-height:1.05;font-variant-numeric:tabular-nums;white-space:nowrap}
+.sl-up{color:#2F7440}.sl-down{color:#B23A2B}
+.sl-hyp{display:flex;gap:6px;margin-top:14px}
+.sl-hyp-l{display:flex;flex-direction:column;justify-content:space-around;height:92px;font-size:10px;font-weight:800;color:var(--muted);text-align:right;width:44px;flex:none}
+.sl-hyp-l i{font-style:normal}
+.sl-hyp-g{position:relative;flex:1;min-width:0;padding-bottom:16px}
+.sl-hyp-g svg{display:block;width:100%;height:92px;background:repeating-linear-gradient(180deg,#F3F6F9 0 20px,#fff 20px 22px);border-radius:6px}
+.sl-ticks{position:absolute;left:0;right:0;bottom:0;height:14px}
+.sl-ticks span{position:absolute;transform:translateX(-50%);font-size:10px;font-weight:800;color:var(--muted);white-space:nowrap}
+.sl-stk{display:flex;height:10px;border-radius:6px;overflow:hidden;margin-top:12px;gap:2px}
+.sl-stk i{display:block}
+.sl-leg{display:grid;grid-template-columns:1fr 1fr;gap:4px 12px;margin-top:8px;font-size:12.5px;font-weight:700;color:var(--muted)}
+.sl-leg span{white-space:nowrap}
+.sl-leg i{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:6px;vertical-align:0}
+.sl-leg b{color:var(--text);font-weight:900}
+.sl-leg em{font-style:normal;color:var(--muted)}
+.sl-leg.sm{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:11.5px}
+.sl-nap{margin:8px 0 0}
+.sl-det{margin-top:12px;border-top:1px solid var(--line);padding-top:10px}
+.sl-det summary{font-size:13.5px;font-weight:900;cursor:pointer;color:#0B4F7C}
+.sl-pt{display:grid;grid-template-columns:1fr auto;gap:3px 10px;margin-top:10px}
+.sl-pt-k{font-size:13.5px;font-weight:900}
+.sl-pt-v{font-size:14px;font-weight:900;font-variant-numeric:tabular-nums}.sl-pt-v small{font-size:11px;color:var(--muted)}
+.sl-pt-b{grid-column:1/-1;height:5px;border-radius:5px;background:#E6ECF2;overflow:hidden}.sl-pt-b i{display:block;height:100%;background:#0B4F7C;border-radius:5px}
+.sl-pt-t{grid-column:1/-1;font-size:12px;font-weight:700;color:var(--muted)}
+.sl-src{font-size:11.5px;color:var(--muted);margin:10px 0 0;line-height:1.45}
+.sl-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.sl-stats span{display:flex;flex-direction:column;min-width:0}
+.sl-stats small{font-size:10px;font-weight:900;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);line-height:1.2}
+.sl-stats b{font-size:16px;font-weight:900;margin-top:3px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.sl-bars{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;margin-top:14px;touch-action:pan-y}
+.sl-col{display:flex;flex-direction:column;align-items:stretch;gap:4px;border:0;background:none;padding:0;font:inherit;color:inherit;min-width:0;cursor:pointer}
+.sl-bw{height:110px;display:flex;align-items:flex-end}
+.sl-bar{width:100%;display:flex;flex-direction:column-reverse;border-radius:6px 6px 3px 3px;overflow:hidden}
+.sl-bar i{display:block}
+.sl-bar.empty{height:6px;background:#EDF1F5;border-radius:3px}
+.sl-col.on .sl-bar{outline:2.5px solid #0B4F7C;outline-offset:2px}
+.sl-day{text-align:center;font-size:11px;font-weight:900;color:var(--muted)}
+.sl-day.tot{color:#0B4F7C;text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:3px}
+.sl-sc{text-align:center;font-size:12.5px;font-weight:900;font-variant-numeric:tabular-nums;color:var(--muted)}
+.sl-totk{color:#0B4F7C}
+.sl-note{margin:8px 0 0;font-size:12px}
+.sl-c .sl-card+.sl-card{margin-top:10px}
+.sl-wk small,.sl-tip small{display:block;font-size:10.5px;font-weight:900;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.sl-wk-r{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-top:2px}
+.sl-wk-b{display:block;height:9px;border-radius:6px;background:#E6EEF5;overflow:hidden;margin-top:8px}.sl-wk-b i{display:block;height:100%;border-radius:6px}
+.sl-wk p{margin:4px 0 0}
+.sl-tip p{margin:4px 0 0;font-size:15px;font-weight:700}
+.sl-tip .link-btn{padding:6px 0 0;font-size:13px}
+.sl-foot{text-align:center}
+.sl-foot p{margin:0}
+.sl-foot-b{display:flex;justify-content:center;gap:18px}
+.sl-empty{background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px 18px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:6px}
+.sl-empty b{font-size:18px;font-weight:900}
+.sl-empty p{margin:0;color:var(--muted);font-size:14px;max-width:34ch}
+.sl-moon{width:58px;height:58px;border-radius:50%;background:#DCE1F7;color:#2E3A8C;display:grid;place-items:center;margin-bottom:4px}
+.sl-empty-btns{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap;justify-content:center}
+.sl-empty-btns .btn-line{display:inline-flex;align-items:center;text-decoration:none;min-height:44px}
 </style>
 </head>
 <body>
@@ -1127,7 +1209,7 @@ body.game-on #navFade,body.fid-on #navFade{display:none}
 
 <div id="gate" hidden>
   <h1>My World</h1>
-  <p>Ton tableau de bord de vie. Connecte-toi avec ton compte Google pour retrouver tes quêtes, tes proches et ton agenda.</p>
+  <p>Ton tableau de bord de vie. Connecte-toi avec ton compte Google pour retrouver tes notes, tes listes et ton agenda.</p>
   <button type="button" class="btn-ink" id="gateBtn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"/></svg>Se connecter avec Google</button>
   <p id="gateMsg" role="alert"></p>
 </div>
@@ -2015,7 +2097,7 @@ var DECO = (function(){
 
 </script>
 <script>
-var APP_VERSION = "MyWorld_1.7";
+var APP_VERSION = "MyWorld_1.8";
 (function(){
 "use strict";
 var CAL = "t.mallet06@gmail.com";
@@ -2183,7 +2265,8 @@ function heroHTML(){
   var sub = "";
   if (S.view === "courses"){ var nc = coOpen().filter(function(x){ return !x.done; }).length; sub = '<p class="sub">' + (nc ? nc + " article" + (nc > 1 ? "s" : "") + " à prendre" : "Liste vide") + '</p>'; }
   if (S.view === "cartes"){ var nf = fidAll().length; sub = '<p class="sub">' + (nf ? nf + " carte" + (nf > 1 ? "s" : "") + " de fidélité" : "Aucune carte pour l'instant") + '</p>'; }
-  var title = S.view === "cartes" ? "Tes cartes" : S.view === "listes" ? "Tes listes" : S.view === "courses" ? "Tes courses" : S.view === "fiche" ? "Ta fiche" : S.view === "notes" ? "Tes notes" : "La Gazette";
+  if (S.view === "sommeil") sub = '<p class="sub">' + h(slStatusLine()) + '</p>';
+  var title = S.view === "sommeil" ? "Ton sommeil" : S.view === "cartes" ? "Tes cartes" : S.view === "listes" ? "Tes listes" : S.view === "courses" ? "Tes courses" : S.view === "fiche" ? "Ta fiche" : S.view === "notes" ? "Tes notes" : "La Gazette";
   if (S.view === "gazette"){ var u = S.settings && S.settings.gazetteUpdatedAt, ds0 = gzDays();
     if (S.gzDay){ var nb = gzBatch(S.gzDay).length; title = "La Gazette"; sub = '<p class="sub">' + h(gzDayLabel(S.gzDay) + (S.gzDay === iso(today()) || S.gzDay === iso(addDays(today(), -1)) ? " · " + parseISO(S.gzDay).getDate() + " " + MOIS[parseISO(S.gzDay).getMonth()] : "") + " · " + nb + " info" + (nb > 1 ? "s" : "")) + '</p>'; }
     else sub = '<p class="sub"><span class="pulse" aria-hidden="true" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#2F7440;margin-right:6px"></span>' + h(u ? (iso(new Date(u)) === iso(today()) ? "Mise à jour à " + new Date(u).getHours() + " h " + pad(new Date(u).getMinutes()) : "Mise à jour " + ago(u)) + " · " + ds0.length + " jour" + (ds0.length > 1 ? "s" : "") + " d'archives" : "En attente de la première mise à jour") + '</p>'; }
@@ -2367,6 +2450,7 @@ function homeTilesHTML(){
     + '<button type="button" class="ht ht-co" data-act="home-go" data-k="courses" aria-label="Courses : ' + left + ' article' + (left > 1 ? 's' : '') + ' à prendre"><span class="ht-ic">' + HOME_IC.cart + '</span><span class="ht-k">Courses</span><span class="ht-v">' + left + '</span><span class="ht-bar"><i style="width:' + pct + '%"></i></span></button>'
     + '<button type="button" class="ht ht-td" data-act="home-go" data-k="todo" aria-label="À faire aujourd\'hui : ' + td.length + (late ? ', dont en retard' : '') + '"><span class="ht-ic">' + HOME_IC.todo + '</span><span class="ht-k">À faire</span><span class="ht-v">' + td.length + (late ? '<i class="ht-late" aria-hidden="true"></i>' : '') + '</span></button>'
     + '<button type="button" class="ht ht-nx"' + open + ' aria-label="' + h(nx ? "Prochain : " + nxT + ", " + homeWhen(nx) : "Rien de prévu") + '"><span class="ht-ic">' + (bd ? HOME_IC.cake : HOME_IC.cal) + '</span><span class="ht-k">' + h(nx ? nxT : "Prochain") + '</span><span class="ht-v sm">' + h(nx ? homeWhen(nx) : "—") + '</span></button>'
+    + homeSleepTileHTML()
     + '</section>';
 }
 function homeGameHTML(){
@@ -2896,7 +2980,7 @@ function render(){
   var unseenN = v === "gazette" ? 0 : unseenGazette().length;
   document.getElementById("gazBadge").hidden = !unseenN;
   document.getElementById("gazBadgeSr").textContent = unseenN ? ", " + unseenN + " nouveauté" + (unseenN > 1 ? "s" : "") : "";
-  var html = v === "jeu" ? "" : v === "listes" ? viewListes() : v === "courses" ? viewCourses() : v === "cartes" ? viewCartes() : v === "fiche" ? viewFiche() : v === "gazette" ? viewGazette() : v === "meteo" ? viewMeteo() : v === "notes" ? viewNotes() : viewAccueil();
+  var html = v === "jeu" ? "" : v === "listes" ? viewListes() : v === "courses" ? viewCourses() : v === "cartes" ? viewCartes() : v === "sommeil" ? viewSommeil() : v === "fiche" ? viewFiche() : v === "gazette" ? viewGazette() : v === "meteo" ? viewMeteo() : v === "notes" ? viewNotes() : viewAccueil();
   if (S.dbState === "off") html = '<section class="section gut" style="margin-top:24px"><div class="card soft-empty">Tes données ne sont pas disponibles pour l\'instant. Vérifie ta connexion, puis recharge l\'appli.</div></section>' + html;
   document.getElementById("view").innerHTML = html;
   if (v === "meteo") document.getElementById("app").style.setProperty("--mtH", hero.offsetHeight + "px");
@@ -3039,7 +3123,7 @@ function levelUp(title, text){
 /* ---------- écriture ---------- */
 function nowISO(){ return new Date().toISOString(); }
 function needDb(){ if (!db){ toast("Tes données se chargent encore. Réessaie dans un instant."); return false; } return true; }
-function dbErr(e){ var c = e && e.code; toast(c === "quota_exceeded" ? "L'appli est pleine. Supprime d'anciennes quêtes pour en ajouter." : c === "resource_exhausted" ? "Doucement, trop d'actions d'un coup. Réessaie dans un instant." : "L'enregistrement n'a pas abouti. Réessaie dans un instant."); }
+function dbErr(e){ var c = e && e.code; toast(c === "quota_exceeded" ? "L'appli est pleine. Supprime d'anciens éléments pour en ajouter." : c === "resource_exhausted" ? "Doucement, trop d'actions d'un coup. Réessaie dans un instant." : "L'enregistrement n'a pas abouti. Réessaie dans un instant."); }
 function award(label, stat, xp, skill){
   if (!needDb()) return Promise.resolve();
   var before = totalXP(), beforeStat = statLevel(statXP()[stat]||0), titlesBefore = unlockedTitles().length;
@@ -4536,6 +4620,7 @@ document.addEventListener("click", function(e){
   var act = b.dataset.act, id = b.dataset.id;
   if (act === "close"){ closeSheet(); return; }
   if (/^fid-/.test(act) && fidAct(act, b)) return;
+  if (/^sl-/.test(act) && slAct(act, b)) return;
   if (/^(note-|ne-|fmt$|fig-|aud-|rec-|dp-|pick-folder$|folder-)/.test(act) && noteAction(act, b)) return;
   if (act === "mday"){ S.monthSel = b.dataset.d; document.getElementById("mBody").innerHTML = monthHTML(); var fb2 = document.querySelector('.mcell[data-d="' + S.monthSel + '"]'); if (fb2) fb2.focus({preventScroll:true}); return; }
   if (act === "month"){ S.monthOffset = 0; S.monthSel = null; openSheet("Le mois", '<div id="mBody">' + monthHTML() + '</div>'); return; }
@@ -4568,7 +4653,7 @@ document.addEventListener("click", function(e){
   if (act.indexOf("co-") === 0 && coAct(act, b)) return;
   if (act === "home-game"){ location.hash = "jeu"; return; }
   if (act === "home-go"){ var hk = b.dataset.k;
-    if (hk === "courses" || hk === "notes"){ location.hash = hk; return; }
+    if (hk === "courses" || hk === "notes" || hk === "sommeil"){ location.hash = hk; return; }
     if (hk === "todo"){ S.listTab = "todo"; S.todoMom = "auj"; location.hash = "listes"; return; }
     if (hk === "month"){ var hd = b.dataset.d ? parseISO(b.dataset.d) : today(), t0 = today(); S.monthOffset = (hd.getFullYear() - t0.getFullYear()) * 12 + hd.getMonth() - t0.getMonth(); S.monthSel = iso(hd); openSheet("Le mois", '<div id="mBody">' + monthHTML() + '</div>'); return; }
     return; }
@@ -4611,7 +4696,7 @@ document.addEventListener("click", function(e){
 document.addEventListener("keydown", function(e){ if (e.key === "Escape") { closeSheet(); var l = document.querySelector(".levelup"); if (l) l.remove(); } });
 document.getElementById("captureForm").addEventListener("submit", onCapture);
 
-var TABS = ["accueil","notes","listes","courses","fiche","gazette","meteo","jeu","cartes"];
+var TABS = ["accueil","notes","listes","courses","fiche","gazette","meteo","jeu","cartes","sommeil"];
 
 
 /* ===== MyWorld_0.13 : page « Tes listes » (À faire / Rappels) ===== */
@@ -5167,6 +5252,214 @@ function fidAct(act, b){
   if (act === "fid-type"){ fidScanStop(); fidEdit(null, {}); return true; }
   return false;
 }
+/* ===== MyWorld_1.8 : Sommeil =====
+   Nuits envoyées par la montre (Huawei Santé → Health Sync → Health Connect → HC Webhook → script Google, voir scripts/jeton-agenda),
+   recopiées dans la base (collection « sleep »). Une nuit : { s, e (dates ISO), st: "phase:début:durée …" (minutes ; Firestore refuse les tableaux de tableaux), up }.
+   Phases : d profond, l léger, r paradoxal, w éveil, s sommeil sans détail.
+   Note sur 100 (formule de My World, transparente) :
+   - Durée /40 : repères de la National Sleep Foundation (adultes 26-64 ans : 7 à 9 h conseillé, 6 h ou 10 h peut convenir)
+   - Profond /20 : 13 à 23 % du sommeil en temps normal (Manuel MSD) ; plein à 13 %, 0 à 3 %
+   - Paradoxal /20 : 20 à 25 % (Manuel MSD) ; plein à 20 %, 0 à 8 %
+   - Continuité /20 : repères NSF sur la qualité (2017) : réveils de plus de 5 min (≤ 1 bien, ≥ 4 mauvais) et éveil après l'endormissement (≤ 20 min bien, ≥ 41 min mauvais) */
+var SL_COL = { d: "#2E3A8C", l: "#6E8BEA", r: "#B57BE8", w: "#F2A65A", s: "#A9B7C9" };
+var SL_NAME = { d: "Profond", l: "Léger", r: "Paradoxal", w: "Éveil", s: "Sommeil" };
+var SL_IC = '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>';
+var SLC = { key: "", list: [] };
+function slLin(x, x0, y0, x1, y1){ if (x <= x0) return y0; if (x >= x1) return y1; return y0 + (y1 - y0) * (x - x0) / (x1 - x0); }
+function slDurPts(h){ return h < 7 ? (h < 5 ? slLin(h, 4, 0, 5, 10) : h < 6 ? slLin(h, 5, 10, 6, 25) : slLin(h, 6, 25, 7, 40)) : h <= 9 ? 40 : h < 10 ? slLin(h, 9, 40, 10, 25) : h < 11 ? slLin(h, 10, 25, 11, 10) : slLin(h, 11, 10, 12, 0); }
+function slHM(min, sep){ min = Math.round(min); var hh = Math.floor(min / 60), mm = min % 60; return hh ? (hh + (sep || " h ") + (mm || sep ? pad(mm) : "")).trim() : mm + " min"; }
+function slHour(min){ min = ((Math.round(min) % 1440) + 1440) % 1440; var m = min % 60; return Math.floor(min / 60) + " h" + (m ? " " + pad(m) : ""); }
+function slClock(d){ return pad(d.getHours()) + ":" + pad(d.getMinutes()); }
+/* fusionne et nettoie les nuits de la base */
+function slNights(){
+  var raw = S.sleep || [], k = raw.length + ":" + raw.map(function(x){ return x._id + (x.up || ""); }).join("|");
+  if (k === SLC.key) return SLC.list;
+  var ses = raw.map(function(x){ var s = new Date(x.s), e = new Date(x.e); if (isNaN(s) || isNaN(e) || e <= s) return null;
+      var st = (typeof x.st === "string" ? x.st.split(" ").map(function(t){ var q = t.split(":"); return [q[0], +q[1], +q[2]]; }) : x.st || []).filter(function(a){ return a && a[2] > 0 && SL_COL[a[0]]; }); if (!st.length) st = [["s", 0, Math.round((e - s) / 6e4)]];
+      return { id: x._id, s: s, e: e, st: st, up: x.up || "" }; }).filter(Boolean).sort(function(a, b){ return a.s - b.s; });
+  var clean = [];   /* même nuit envoyée deux fois (heures qui bougent d'une minute) : on garde la plus récente */
+  ses.forEach(function(x){ var p = clean[clean.length - 1]; if (p && x.s < p.e && Math.min(x.e, p.e) - Math.max(x.s, p.s) > .5 * Math.min(x.e - x.s, p.e - p.s)){ if (x.up >= p.up) clean[clean.length - 1] = x; } else clean.push(x); });
+  var nights = [], naps = [];
+  clean.forEach(function(x){
+    var mins = (x.e - x.s) / 6e4, hr = x.s.getHours();
+    if (mins < 180 && hr >= 9 && hr < 20){ naps.push(x); return; }   /* sieste */
+    var key = iso(x.e), p = nights[nights.length - 1];
+    if (p && p.key === key && x.s - p.e < 3 * 36e5){   /* nuit coupée en deux : on la recolle */
+      var off = Math.round((x.s - p.s) / 6e4), gap = Math.round((x.s - p.e) / 6e4);
+      if (gap > 0) p.st.push(["w", Math.round((p.e - p.s) / 6e4), gap]);
+      x.st.forEach(function(a){ p.st.push([a[0], a[1] + off, a[2]]); }); p.e = x.e; p.ids.push(x.id); return;
+    }
+    nights.push({ key: key, s: x.s, e: x.e, st: x.st.slice(), ids: [x.id] });
+  });
+  nights.forEach(function(n){
+    var t = { d: 0, l: 0, r: 0, w: 0, s: 0 };
+    n.st.forEach(function(a){ t[a[0]] = (t[a[0]] || 0) + a[2]; });
+    var sl = n.st.filter(function(a){ return a[0] !== "w"; }), first = sl.length ? Math.min.apply(null, sl.map(function(a){ return a[1]; })) : 0, last = sl.length ? Math.max.apply(null, sl.map(function(a){ return a[1] + a[2]; })) : 0;
+    var mid = n.st.filter(function(a){ return a[0] === "w" && a[1] >= first && a[1] + a[2] <= last; });
+    n.t = t; n.sleep = t.d + t.l + t.r + t.s; n.waso = mid.reduce(function(a, b){ return a + b[2]; }, 0);
+    n.wakes = mid.filter(function(a){ return a[2] > 5; }).length;
+    n.detail = n.sleep > 0 && t.s / n.sleep < .2;
+    var dp = slDurPts(n.sleep / 60), cp = slLin(n.wakes, 1, 10, 4, 0) + slLin(n.waso, 20, 10, 41, 0);
+    n.pts = { dur: dp, cont: cp };
+    if (n.detail){ var ds = t.d + t.l + t.r; n.pts.deep = slLin(t.d / ds, .03, 0, .13, 20); n.pts.rem = slLin(t.r / ds, .08, 0, .20, 20); }
+    n.score = Math.round(n.detail ? dp + cp + n.pts.deep + n.pts.rem : (dp + cp) / 60 * 100);
+    n.naps = naps.filter(function(z){ return iso(z.e) === n.key; });
+  });
+  SLC.key = k; SLC.list = nights;
+  return nights;
+}
+function slByKey(k){ return slNights().find(function(n){ return n.key === k; }) || null; }
+function slLabel(sc){ return sc >= 85 ? "Excellente nuit" : sc >= 70 ? "Bonne nuit" : sc >= 50 ? "Nuit moyenne" : "Nuit difficile"; }
+function slTone(sc){ return sc >= 85 ? "#2F7440" : sc >= 70 ? "#0B4F7C" : sc >= 50 ? "#B7791F" : "#B23A2B"; }
+function slNightName(n){ var a = addDays(parseISO(n.key), -1), b = parseISO(n.key); return "Nuit du " + JOURS[a.getDay()] + " " + a.getDate() + " au " + JOURS[b.getDay()] + " " + b.getDate() + (b.getMonth() !== today().getMonth() ? " " + MOIS[b.getMonth()] : ""); }
+function slSet(){ var x = (S.settings && S.settings.sleep) || {}; return { target: x.target || 420, lead: x.lead != null ? x.lead : 60 }; }
+/* vacation du jour du réveil : "tot" (début ≤ 7 h), "tard", "repos" ou "" */
+function slSvc(key){ if (typeof hasPlanning !== "function" || !hasPlanning()) return ""; var sp = vacSpan(key); if (sp) return sp.sm <= 420 ? "tot" : "tard"; var v = vacOf(key); return v === "RH" || v === "CP" ? "repos" : ""; }
+
+/* ---- récupération des nuits depuis le script ---- */
+var SLS = { busy: false, at: 0, st: null };
+try { SLS.st = JSON.parse(localStorage.getItem("mw-sl-st") || "null"); } catch(e){}
+function slSync(force){
+  if (!mcp || !mcp.sleep || !db || SLS.busy) return;
+  if (!force && Date.now() - SLS.at < 600000) return;
+  SLS.busy = true; SLS.at = Date.now();
+  var since = ""; try { since = localStorage.getItem("mw-sl-since") || ""; } catch(e){}
+  mcp.sleep(since).then(function(j){
+    SLS.busy = false;
+    if (!j){ if (force) toast(navigator.onLine ? "Le script Google ne répond pas. Réessaie plus tard." : "Pas de connexion internet."); return; }
+    var st = { at: new Date().toISOString(), old: !!j.old, key: !!j.key, seen: j.seen || "", test: j.test || "" };
+    SLS.st = st; try { localStorage.setItem("mw-sl-st", JSON.stringify(st)); } catch(e){}
+    var ns = j.nights || [], mx = since;
+    ns.forEach(function(n){ if (!n.id) return; db.collection("sleep").doc(n.id).set({ s: n.s, e: n.e, st: (n.st || []).map(function(a){ return a.join(":"); }).join(" "), src: n.src || "", up: n.up || "" }).catch(function(){}); if ((n.up || "") > mx) mx = n.up; });
+    if (mx !== since) try { localStorage.setItem("mw-sl-since", mx); } catch(e){}
+    if (force) toast(j.old ? "Le script Google n'est pas encore à jour (voir le mode d'emploi)." : ns.length ? ns.length + " nuit" + (ns.length > 1 ? "s" : "") + " reçue" + (ns.length > 1 ? "s" : "") + "." : "Rien de nouveau pour l'instant.");
+    if (S.view === "sommeil") render();
+  }, function(){ SLS.busy = false; });
+}
+setInterval(function(){ if (document.visibilityState === "visible") slSync(false); }, 1800000);
+document.addEventListener("visibilitychange", function(){ if (document.visibilityState === "visible") slSync(false); });
+
+/* ---- page ---- */
+function slStatusLine(){
+  var st = SLS.st, ns = slNights(), last = ns[ns.length - 1];
+  if (st && st.old) return "Script Google à mettre à jour";
+  if (st && st.seen) return "Dernier envoi reçu " + ago(st.seen);
+  if (last) return "Dernière nuit : " + fmtShort(last.key);
+  return "En attente de ta première nuit";
+}
+function viewSommeil(){
+  var ns = slNights();
+  if (!ns.length) return slEmptyHTML();
+  if (!S.slSel || !slByKey(S.slSel)) S.slSel = ns[ns.length - 1].key;
+  var n = slByKey(S.slSel);
+  return '<div class="sl-page">' + slNightHTML(n) + slWeekHTML(n) + slWorkHTML() + slFootHTML() + '</div>';
+}
+function slEmptyHTML(){
+  var st = SLS.st, msg = st && st.old ? "Le script Google répond, mais il n'a pas encore la partie sommeil. Suis l'étape A du mode d'emploi."
+    : st && st.key && st.seen ? "HC Webhook a bien contacté le script, mais aucune nuit n'est encore arrivée. Dans HC Webhook, lance « Synchroniser maintenant » sur quelques jours."
+    : st && st.key ? "Le script est prêt. Il reste à régler HC Webhook (étape B du mode d'emploi)."
+    : "Tes nuits arriveront ici dès que la chaîne sera branchée : montre → Huawei Santé → Health Sync → Health Connect → HC Webhook → ton script Google.";
+  return '<div class="sl-page"><section class="section gut"><div class="sl-empty"><span class="sl-moon" aria-hidden="true">' + SL_IC.replace(/17/g, "30") + '</span><b>Pas encore de nuit</b><p>' + h(msg) + '</p>'
+    + '<div class="sl-empty-btns"><a class="btn-line" href="https://github.com/novazur-ai/my_world/blob/main/scripts/jeton-agenda/LISEZMOI.md#sommeil-myworld_18--tes-nuits-dans-my-world" target="_blank" rel="noopener">Mode d\'emploi</a><button type="button" class="btn-ink" data-act="sl-sync">Vérifier maintenant</button></div></div></section></div>';
+}
+function slRing(sc){
+  var r = 30, c = 2 * Math.PI * r, col = slTone(sc);
+  return '<span class="sl-ring" style="--c:' + col + '" role="img" aria-label="Note ' + sc + ' sur 100"><svg viewBox="0 0 72 72" aria-hidden="true"><circle cx="36" cy="36" r="' + r + '" fill="none" stroke="#E6ECF2" stroke-width="7"/><circle cx="36" cy="36" r="' + r + '" fill="none" stroke="' + col + '" stroke-width="7" stroke-linecap="round" stroke-dasharray="' + (c * sc / 100).toFixed(1) + ' ' + c.toFixed(1) + '" transform="rotate(-90 36 36)"/></svg><b>' + sc + '</b><small>/100</small></span>';
+}
+function slNightHTML(n){
+  var ns = slNights(), i = ns.indexOf(n), prev = ns.slice(Math.max(0, i - 7), i), avg = prev.length ? prev.reduce(function(a, b){ return a + b.sleep; }, 0) / prev.length : 0;
+  var dlt = prev.length >= 3 ? Math.round(n.sleep - avg) : null;
+  var span = (n.e - n.s) / 6e4, rows = { w: 0, r: 1, l: 2, s: 2, d: 3 }, rects = "";
+  n.st.forEach(function(a){ var x = a[1] / span * 300, w = Math.max(.6, a[2] / span * 300); rects += '<rect x="' + x.toFixed(2) + '" y="' + (3 + rows[a[0]] * 22) + '" width="' + w.toFixed(2) + '" height="18" rx="2.5" fill="' + SL_COL[a[0]] + '"/>'; });
+  var ticks = "", t0 = new Date(n.s), step = span > 540 ? 2 : 1; t0.setMinutes(60, 0, 0);
+  for (var t = t0; t < n.e; t = new Date(t.getTime() + 36e5)){ if (t.getHours() % step) continue; var px = (t - n.s) / 6e4 / span * 100; if (px > 4 && px < 96) ticks += '<span style="left:' + px.toFixed(1) + '%">' + t.getHours() + ' h</span>'; }
+  var parts = n.detail ? ["d", "l", "r", "w"] : ["s", "w"], tot = n.sleep + n.t.w;
+  var bar = parts.map(function(k){ return n.t[k] ? '<i style="flex:' + n.t[k] + ';background:' + SL_COL[k] + '"></i>' : ""; }).join("");
+  var leg = parts.map(function(k){ return '<span><i style="background:' + SL_COL[k] + '"></i>' + SL_NAME[k] + ' <b>' + slHM(n.t[k] || 0) + '</b>' + (k !== "w" && n.sleep ? ' <em>· ' + Math.round((n.t[k] || 0) / n.sleep * 100) + ' %</em>' : "") + '</span>'; }).join("");
+  var P = n.pts, det = '<details class="sl-det"><summary>Comment est calculée la note</summary>'
+    + slPtsRow("Durée", P.dur, 40, slHM(n.sleep) + " de sommeil · conseillé : 7 à 9 h")
+    + (n.detail ? slPtsRow("Sommeil profond", P.deep, 20, Math.round(n.t.d / n.sleep * 100) + " % · habituel : 13 à 23 %") + slPtsRow("Sommeil paradoxal", P.rem, 20, Math.round(n.t.r / n.sleep * 100) + " % · habituel : 20 à 25 %") : "")
+    + slPtsRow("Continuité", P.cont, 20, (n.wakes ? n.wakes + " réveil" + (n.wakes > 1 ? "s" : "") + " de plus de 5 min" : "Aucun réveil de plus de 5 min") + " · " + (n.waso ? slHM(n.waso) + " éveillé" : "pas d'éveil") + " dans la nuit")
+    + (n.detail ? "" : '<p class="sl-src">Ta montre n\'a pas envoyé les phases pour cette nuit : la note ne tient compte que de la durée et de la continuité.</p>')
+    + '<p class="sl-src">Repères : National Sleep Foundation (durée, 2015 ; qualité, 2017) et Manuel MSD (part des phases chez l\'adulte). Les phases mesurées au poignet sont des estimations. La note de Huawei Santé suit sa propre formule et peut être différente.</p></details>';
+  return '<section class="section gut sl-a" aria-label="Nuit sélectionnée"><div class="sl-card">'
+    + '<div class="sl-nav"><button type="button" class="sl-arr" data-act="sl-night" data-n="-1"' + (i > 0 ? "" : " disabled") + ' aria-label="Nuit précédente">‹</button><span>' + h(slNightName(n)) + '</span><button type="button" class="sl-arr" data-act="sl-night" data-n="1"' + (i < ns.length - 1 ? "" : " disabled") + ' aria-label="Nuit suivante">›</button></div>'
+    + '<div class="sl-top">' + slRing(n.score) + '<div class="sl-sum"><b class="sl-lbl" style="color:' + slTone(n.score) + '">' + slLabel(n.score) + '</b><span class="sl-big">' + slHM(n.sleep) + '</span><span class="sl-mut">' + slClock(n.s) + ' → ' + slClock(n.e) + (n.t.w ? ' · ' + slHM(n.t.w) + ' éveillé' : '') + '</span>'
+    + (dlt !== null ? '<span class="sl-mut"><b class="' + (dlt >= 0 ? "sl-up" : "sl-down") + '">' + (dlt >= 0 ? "+" : "−") + slHM(Math.abs(dlt)) + '</b> par rapport à ta moyenne</span>' : '') + '</div></div>'
+    + '<div class="sl-hyp"><span class="sl-hyp-l" aria-hidden="true"><i>Éveil</i><i>Parad.</i><i>Léger</i><i>Profond</i></span><div class="sl-hyp-g"><svg viewBox="0 0 300 92" preserveAspectRatio="none" role="img" aria-label="Phases de la nuit, de ' + slClock(n.s) + ' à ' + slClock(n.e) + '">' + rects + '</svg><div class="sl-ticks" aria-hidden="true">' + ticks + '</div></div></div>'
+    + '<div class="sl-stk" aria-hidden="true">' + bar + '</div><div class="sl-leg">' + leg + '</div>'
+    + (n.naps.length ? '<p class="sl-mut sl-nap">+ sieste : ' + n.naps.map(function(z){ return slClock(z.s) + " → " + slClock(z.e); }).join(", ") + '</p>' : '')
+    + det + '</div></section>';
+}
+function slPtsRow(k, v, max, txt){ var p = Math.round(v); return '<div class="sl-pt"><span class="sl-pt-k">' + k + '</span><span class="sl-pt-v">' + p + '<small>/' + max + '</small></span><span class="sl-pt-b"><i style="width:' + (v / max * 100).toFixed(0) + '%"></i></span><span class="sl-pt-t">' + h(txt) + '</span></div>'; }
+function slWeekHTML(sel){
+  var m0 = addDays(monday(today()), 7 * (S.slWeek || 0)), days = [], sum = 0, cnt = 0, beds = [], best = null, early = false;
+  for (var i = 0; i < 7; i++){ var di = iso(addDays(m0, i)), n = slByKey(di); days.push([di, n]); if (n){ sum += n.sleep; cnt++; var b = n.s.getHours() * 60 + n.s.getMinutes(); beds.push(b < 720 ? b + 1440 : b); if (!best || n.score > best.score) best = n; } }
+  var bars = days.map(function(x){
+    var d = parseISO(x[0]), n = x[1], sv = slSvc(x[0]), lt = "LMMJVSD"[(d.getDay() + 6) % 7]; if (sv === "tot") early = true;
+    var col = '<span class="sl-day' + (sv === "tot" ? " tot" : "") + '">' + lt + '</span>';
+    if (!n) return '<div class="sl-col"><span class="sl-bw"><span class="sl-bar empty"></span></span>' + col + '<span class="sl-sc">–</span></div>';
+    var hgt = Math.min(100, n.sleep / 600 * 100), segs = (n.detail ? ["d", "l", "r"] : ["s"]).map(function(k){ return n.t[k] ? '<i style="flex:' + n.t[k] + ';background:' + SL_COL[k] + '"></i>' : ""; }).join("");
+    return '<button type="button" class="sl-col' + (sel && n.key === sel.key ? " on" : "") + '" data-act="sl-pick" data-k="' + n.key + '" aria-label="' + h(slNightName(n) + " : " + slHM(n.sleep) + ", note " + n.score) + '"><span class="sl-bw"><span class="sl-bar" style="height:' + hgt.toFixed(0) + '%">' + segs + '</span></span>' + col + '<span class="sl-sc" style="color:' + slTone(n.score) + '">' + n.score + '</span></button>';
+  }).join("");
+  var sd = null; if (beds.length >= 3){ var mu = beds.reduce(function(a, b){ return a + b; }, 0) / beds.length; sd = Math.round(Math.sqrt(beds.reduce(function(a, b){ return a + (b - mu) * (b - mu); }, 0) / beds.length)); }
+  var e0 = addDays(m0, 6), lbl = (S.slWeek || 0) === 0 ? "Cette semaine" : "Du " + m0.getDate() + (m0.getMonth() !== e0.getMonth() ? " " + MOIS[m0.getMonth()] : "") + " au " + e0.getDate() + " " + MOIS[e0.getMonth()];
+  var first = slNights()[0], canPrev = first && monday(parseISO(first.key)) < m0;
+  return '<section class="section gut sl-b" aria-labelledby="slWkT"><div class="section-head"><h2 id="slWkT">Ta semaine</h2><div class="sl-wnav"><button type="button" class="sl-arr" data-act="sl-week" data-n="-1"' + (canPrev ? "" : " disabled") + ' aria-label="Semaine précédente">‹</button><span>' + h(lbl) + '</span><button type="button" class="sl-arr" data-act="sl-week" data-n="1"' + ((S.slWeek || 0) < 0 ? "" : " disabled") + ' aria-label="Semaine suivante">›</button></div></div>'
+    + '<div class="sl-card"><div class="sl-stats"><span><small>Moyenne</small><b>' + (cnt ? slHM(sum / cnt) : "–") + '</b></span><span><small>Régularité du coucher</small><b>' + (sd !== null ? "± " + slHM(sd) : "–") + '</b></span><span><small>Meilleure nuit</small><b>' + (best ? JOURS[parseISO(best.key).getDay()].replace(".", "") + " · " + best.score : "–") + '</b></span></div>'
+    + '<div class="sl-bars" id="slBars">' + bars + '</div>'
+    + '<div class="sl-leg sm"><span><i style="background:' + SL_COL.d + '"></i>Profond</span><span><i style="background:' + SL_COL.l + '"></i>Léger</span><span><i style="background:' + SL_COL.r + '"></i>Paradoxal</span>' + (early ? '<span class="sl-totk">Lettre soulignée = service tôt</span>' : '') + '</div>'
+    + (sd === null && cnt ? '<p class="sl-mut sl-note">La régularité s\'affiche à partir de 3 nuits dans la semaine.</p>' : '') + '</div></section>';
+}
+function slWorkHTML(){
+  var plan = typeof hasPlanning === "function" && hasPlanning(), set = slSet();
+  if (!plan) return '<section class="section gut sl-c"><div class="section-head"><h2>Sommeil et vacations</h2></div><div class="sl-card sl-mut">Importe ton planning (Réglages > Mon planning) pour comparer tes nuits à tes services.</div></section>';
+  var from = iso(addDays(today(), -30)), g = { tot: [], tard: [], repos: [] };
+  slNights().forEach(function(n){ if (n.key < from) return; var k = slSvc(n.key); if (g[k]) g[k].push(n); });
+  function blk(k, title, col){ var L = g[k], avg = L.length ? L.reduce(function(a, b){ return a + b.sleep; }, 0) / L.length : 0, sc = L.length ? Math.round(L.reduce(function(a, b){ return a + b.score; }, 0) / L.length) : 0;
+    return '<div class="sl-card sl-wk"><small>' + title + '</small>' + (L.length ? '<div class="sl-wk-r"><span class="sl-big">' + slHM(avg) + '</span><span class="sl-mut">' + L.length + ' nuit' + (L.length > 1 ? "s" : "") + ' · note ' + sc + '</span></div><span class="sl-wk-b"><i style="width:' + Math.min(100, avg / set.target * 100).toFixed(0) + '%;background:' + col + '"></i></span>' : '<p class="sl-mut">Pas encore de nuit.</p>') + '</div>'; }
+  var tip = "", tm = addDays(today(), 1), sp = vacSpan(iso(tm));
+  if (sp){ var bed = sp.sm - set.lead - set.target, wake = sp.sm - set.lead;
+    tip = '<div class="sl-card sl-tip"><small>Pour ton service de demain à ' + fmtVac(sp.sm, 1) + '</small><p>Pour dormir ' + slHM(set.target) + ' et te lever à ' + slHour(wake) + ', couche-toi vers <b>' + slHour(bed) + '</b>.</p><button type="button" class="link-btn" data-act="sl-set">Modifier</button></div>'; }
+  return '<section class="section gut sl-c" aria-labelledby="slWT"><div class="section-head"><h2 id="slWT">Sommeil et vacations</h2><span class="sl-mut">30 derniers jours</span></div>'
+    + blk("tot", "Avant un service tôt (début avant 7 h)", "#0B4F7C") + blk("tard", "Avant un service plus tard", "#0B4F7C") + blk("repos", "Les jours de repos ou de congé", "#2F7440") + tip + '</section>';
+}
+function slFootHTML(){
+  return '<section class="section gut sl-foot"><p class="sl-mut">' + h(slStatusLine()) + '</p><div class="sl-foot-b"><button type="button" class="link-btn" data-act="sl-set">Réglages du sommeil</button><button type="button" class="link-btn" data-act="sl-sync">Vérifier maintenant</button></div></section>';
+}
+function slSettings(){
+  var s = slSet(), opt = function(a, b, st, v, f){ var o = ""; for (var x = a; x <= b; x += st) o += '<option value="' + x + '"' + (x === v ? " selected" : "") + '>' + f(x) + '</option>'; return o; };
+  openSheet("Réglages du sommeil", '<div class="field"><label for="slT">Durée de sommeil visée</label><select id="slT">' + opt(360, 540, 15, s.target, function(x){ return slHM(x); }) + '</select></div>'
+    + '<div class="field"><label for="slL">Lever avant le début du service</label><select id="slL">' + opt(15, 150, 15, s.lead, function(x){ return slHM(x); }) + '</select></div>'
+    + '<p class="sl-mut" style="font-size:13px">Sert à calculer l\'heure de coucher conseillée la veille d\'un service.</p>'
+    + '<div class="co-btns"><button type="button" class="btn-line" id="slCancel">Annuler</button><button type="button" class="btn-ink" id="slSave">Enregistrer</button></div>', function(){
+    document.getElementById("slCancel").onclick = closeSheet;
+    document.getElementById("slSave").onclick = function(){ if (!needDb()) return; saveSettings({ sleep: { target: +document.getElementById("slT").value, lead: +document.getElementById("slL").value } }); closeSheet(); toast("Réglages du sommeil enregistrés."); };
+  });
+}
+function slAct(act, b){
+  if (act === "sl-sync"){ slSync(true); return true; }
+  if (act === "sl-set"){ slSettings(); return true; }
+  if (act === "sl-pick"){ S.slSel = b.dataset.k; render(); var a = document.querySelector(".sl-a"); if (a) a.scrollIntoView({ behavior: "smooth", block: "start" }); return true; }
+  if (act === "sl-night"){ var ns = slNights(), i = ns.findIndex(function(n){ return n.key === S.slSel; }) + +b.dataset.n; if (ns[i]){ S.slSel = ns[i].key; var w = Math.round((monday(parseISO(S.slSel)) - monday(today())) / 6048e5); S.slWeek = w; render(); } return true; }
+  if (act === "sl-week"){ S.slWeek = Math.min(0, (S.slWeek || 0) + +b.dataset.n); render(); return true; }
+  return false;
+}
+/* glisser sur les barres de la semaine = semaine précédente / suivante */
+(function(){
+  var x0 = null, y0 = 0;
+  document.addEventListener("touchstart", function(e){ x0 = e.target.closest && e.target.closest("#slBars") ? e.touches[0].clientX : null; if (x0 !== null) y0 = e.touches[0].clientY; }, { passive: true });
+  document.addEventListener("touchend", function(e){ if (x0 === null) return; var t = e.changedTouches[0], dx = t.clientX - x0, dy = t.clientY - y0; x0 = null;
+    if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy) * 1.5) return; var nb = document.querySelector('[data-act="sl-week"][data-n="' + (dx > 0 ? -1 : 1) + '"]'); if (nb && !nb.disabled) nb.click(); }, { passive: true });
+})();
+/* bloc de l'accueil */
+function homeSleepTileHTML(){
+  var ns = slNights(), n = ns[ns.length - 1], fresh = n && n.key >= iso(addDays(today(), -1));
+  return '<button type="button" class="ht ht-sl" data-act="home-go" data-k="sommeil" aria-label="' + h(n ? "Sommeil, " + (fresh ? "nuit dernière" : "dernière nuit le " + fmtShort(n.key)) + " : " + slHM(n.sleep) + ", note " + n.score + " sur 100" : "Sommeil") + '">'
+    + '<span class="ht-ic">' + SL_IC + '</span>' + (n ? '<span class="ht-sc" style="background:' + slTone(n.score) + '">' + n.score + '</span>' : '')
+    + '<span class="ht-k">' + (n && !fresh ? "Le " + fmtShort(n.key) : "Nuit") + '</span><span class="ht-v">' + (n ? slHM(n.sleep, "h") : "—") + '</span></button>';
+}
+
 var FAN_APPS = [
   {k:"notes", n:"Notes", bg:"#FFF1C2", ink:"#8A6410", ic:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 12h7M9 16h5"/></svg>'},
   {k:"listes", n:"À faire", bg:"#FDDCC6", ink:"#AA4A1C", ic:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M3.5 6l1.2 1.2L7 4.8M3.5 12l1.2 1.2L7 10.8M3.5 18l1.2 1.2L7 16.8"/></svg>'},
@@ -5557,6 +5850,7 @@ function route(){
   var back = S.hist.length > 1 && S.hist[S.hist.length - 2] === S.viewKey;
   if (back) S.hist.pop(); else if (S.hist[S.hist.length - 1] !== S.viewKey) S.hist.push(S.viewKey);
   render(); window.scrollTo(0,0);
+  if (S.view === "sommeil") slSync(false);
   if (prevKey && prevKey !== S.viewKey){
     var fwd = isApp(S.view) && !isApp(prev) ? true : !isApp(S.view) && !isApp(prev) ? MAIN.indexOf(S.view) > MAIN.indexOf(prev) : !back;
     if (S.view === "gazette" && prev === "gazette") fwd = !!S.gzDay;
@@ -5571,7 +5865,7 @@ function route(){
   document.addEventListener("touchstart", function(e){
     if (!isApp(S.view) || S.view === "jeu") { x0 = null; return; }
     if (e.touches.length !== 1 || document.querySelector(".sheet-wrap,.levelup,.note-editor,.draw-pad,#gzPop,#fidRoot:not([hidden])")) { x0 = null; return; }
-    if (e.target.closest(".bubbles-wrap,.topics,input,select,textarea,.month,.ncard2")) { x0 = null; return; }
+    if (e.target.closest(".bubbles-wrap,.topics,input,select,textarea,.month,.ncard2,#slBars")) { x0 = null; return; }
     x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; t0 = Date.now();
   }, {passive:true});
   document.addEventListener("touchend", function(e){
@@ -5591,7 +5885,7 @@ document.addEventListener("keydown", function(e){
 });
 /* ordinateur : la molette fait défiler les rangées de bulles horizontalement */
 document.addEventListener("wheel", function(e){
-  var w = e.target.closest && e.target.closest(".bubbles-wrap,.topics,.nfolders,.hp-chips,.hn-row");
+  var w = e.target.closest && e.target.closest(".bubbles-wrap,.topics,.nfolders,.hp-chips,.hn-row,.ht-row");
   if (!w || Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
   var sc = w.scrollWidth > w.clientWidth ? w : w.querySelector("*"); if (!sc || sc.scrollWidth <= sc.clientWidth) return;
   e.preventDefault(); sc.scrollLeft += e.deltaY;
@@ -5673,7 +5967,8 @@ function processShare(){
 window.addEventListener("carnet-ready", function(){ setTimeout(processShare, 300); });
 window.startData = function(dbApi, calApi){
   db = dbApi; mcp = calApi;
-  snap("items","items"); snap("log","log"); snap("gazette","gazette",["addedAt","desc",80]); snap("notes","notes");
+  snap("items","items"); snap("log","log"); snap("gazette","gazette",["addedAt","desc",80]); snap("notes","notes"); snap("sleep","sleep",["s","desc",400]);
+  setTimeout(function(){ slSync(false); }, 2500);
   db.doc("settings/main").onSnapshot(function(s){ S.settings = s.exists ? s.data() : null; render(); markReady("settings"); }, function(){ markReady("settings"); });
   watchCal();
 };

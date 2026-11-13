@@ -162,6 +162,16 @@ function makeCal(email){
         tokenClient.requestAccessToken(change ? { prompt: "select_account consent" } : { prompt: known ? "" : "consent", hint: email });
       });
     },
+    /* MyWorld_1.8 : nuits reçues par le script (HC Webhook) depuis « since ». null = script injoignable ou pas à jour */
+    sleep: async (since) => {
+      if (!AGENDA_TOKEN_URL || !auth.currentUser || !navigator.onLine) return null;
+      try {
+        const idToken = await auth.currentUser.getIdToken();
+        const r = await fetch(AGENDA_TOKEN_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ idToken, want: "sommeil", since: since || "" }) });
+        const j = JSON.parse(await r.text());
+        return j && Array.isArray(j.nights) ? j : { old: true };
+      } catch(e){ console.warn("[Sommeil] script injoignable :", e && e.message); return null; }
+    },
     hasToken: () => !!readTok(),
     hasConsented: () => !!localStorage.getItem("gcalConsented"),
     disconnect: () => {
