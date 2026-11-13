@@ -746,6 +746,49 @@ body[data-view="accueil"] .sky{border-radius:0 0 32px 32px}
 .wp-news::after{content:"";position:absolute;right:0;top:9px;bottom:9px;width:1px;background:rgba(255,255,255,.35)}
 .wp-news i{position:absolute;top:8px;right:9px;width:8px;height:8px;border-radius:50%;background:#FF6B57;box-shadow:0 0 0 2px rgba(20,50,90,.55)}
 .wp-duo .wpill{border-radius:0 18px 18px 0;border-left:0}
+/* MyWorld_1.17 : ouverture animée des News (dépliant en accordéon, environ 1 s) */
+#npOv{position:fixed;inset:0;z-index:9500;perspective:1300px;overflow:hidden;cursor:pointer;-webkit-tap-highlight-color:transparent;contain:strict}
+#npOv .npv{position:absolute;inset:0;background:rgba(8,18,36,.45);animation:npFade .3s ease-out both}
+#npOv .npb{position:absolute;inset:0;opacity:0;animation:npFade .17s ease-out .58s both}
+#npOv.out .npb{animation:npFadeOut .28s ease-in .06s both}
+#npOv .npz{position:absolute;transform-style:preserve-3d;transform-origin:50% 30%;will-change:transform}
+#npOv.out .npz{animation:npZoom .32s cubic-bezier(.55,0,.35,1) both}
+#npOv .nps{position:absolute;inset:0;transform-style:preserve-3d;animation:npSlide .42s cubic-bezier(.4,0,.2,1) .28s both;will-change:transform}
+#npOv .npf{position:absolute;inset:0;transform-style:preserve-3d;transform-origin:50% var(--np-oy);animation:npFly .3s cubic-bezier(.2,.85,.25,1) both;will-change:transform}
+#npOv .npp{position:absolute;left:0;width:100%;height:var(--np-p);transform-style:preserve-3d;transform-origin:50% 0;will-change:transform}
+#npOv .np1{top:0;transform:translateZ(2px);box-shadow:0 14px 26px rgba(0,0,0,.28)}
+#npOv .np2{top:var(--np-p);animation:npU2 .3s cubic-bezier(.35,.1,.2,1.12) .22s both}
+#npOv .np3{top:var(--np-p);animation:npU3 .3s cubic-bezier(.35,.1,.2,1.12) .44s both}
+#npOv .npfc{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;box-shadow:0 14px 26px rgba(0,0,0,.28)}
+#npOv .npbk{transform:rotateX(180deg);background:#E9E2D2;background-image:repeating-linear-gradient(180deg,transparent 0 13px,rgba(120,105,80,.12) 13px 14px)}
+#npOv .npsh{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,0));animation:npShade .3s ease .22s both}
+#npOv .np3>.npsh{animation-delay:.44s}
+#npOv .npin{position:absolute;inset:0;background:#F7F3EA;padding:10px 14px;box-sizing:border-box;color:#141414;overflow:hidden}
+#npOv .npm{text-align:center;border-bottom:2px solid #1D1D1D;padding-bottom:5px}
+#npOv .npm b{display:block;font:900 32px/1 Georgia,"Noto Serif","Times New Roman",serif;letter-spacing:.01em}
+#npOv .npm span{display:flex;justify-content:space-between;font:800 8.5px/1.2 var(--f-body);letter-spacing:.08em;color:#3A3A3A;margin-top:5px;border-top:1px solid #1D1D1D;padding-top:3px}
+#npOv .npt{font:900 15px/1.18 Georgia,"Noto Serif",serif;margin-top:7px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+#npOv .npg{display:grid;grid-template-columns:1fr 1fr;gap:12px;border-top:1px dashed #D9D1BF;padding-top:8px;height:100%;box-sizing:border-box}
+#npOv .npg>div{display:flex;flex-direction:column;gap:4px;min-width:0}
+#npOv .npg b{font:700 12.5px/1.22 Georgia,"Noto Serif",serif;color:#1D1D1D;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden}
+#npOv .npg i{font:700 9px/1.2 var(--f-body);font-style:normal;color:#6A6457}
+#npOv .npg .npn{justify-content:center;align-items:center;border:1.5px solid #1D1D1D;padding:6px;text-align:center;margin-bottom:12px}
+#npOv .npn i{font-weight:900;letter-spacing:.08em;color:#1D1D1D}
+#npOv .npn b{font:900 26px/1.05 Georgia,"Noto Serif",serif;-webkit-line-clamp:2}
+#npOv.skip *{animation:none!important}
+#npOv.skip .npb{opacity:1}
+#npOv.skip .npz{opacity:0}
+#npOv.gone{transition:opacity .18s ease;opacity:0}
+#npOv.rm .npv,#npOv.rm .npz{display:none}
+#npOv.rm .npb{animation-delay:0s;animation-duration:.14s}
+@keyframes npFade{from{opacity:0}to{opacity:1}}
+@keyframes npFadeOut{from{opacity:1}to{opacity:0}}
+@keyframes npFly{0%{transform:translate(var(--np-dx),var(--np-dy)) scale(.08) rotate(-10deg)}100%{transform:none}}
+@keyframes npSlide{from{transform:translateY(var(--np-p))}to{transform:none}}
+@keyframes npU2{from{transform:rotateX(180deg)}to{transform:none}}
+@keyframes npU3{from{transform:translateZ(1px) rotateX(-180deg)}to{transform:none}}
+@keyframes npShade{from{opacity:.9}to{opacity:0}}
+@keyframes npZoom{0%{transform:none;opacity:1}55%{opacity:1}100%{transform:rotateY(-22deg) scale(1.9);opacity:0}}
 .hd-home .wp-face{gap:5px;padding:0 9px 0 6px}.hd-home .wp-face .mtic{width:30px;height:30px}.hd-home .wp-n b{font-size:18px}
 body[data-view="accueil"] .wstrip-sec{margin-top:6px}
 .hd2 .eb,.hd2 h1,.hd2 .sub,.wsh>span:first-child{text-shadow:0 1px 8px rgba(0,0,0,.28)}
@@ -2209,7 +2252,7 @@ var DECO = (function(){
 
 </script>
 <script>
-var APP_VERSION = "MyWorld_1.16";
+var APP_VERSION = "MyWorld_1.17";
 (function(){
 "use strict";
 var CAL = "t.mallet06@gmail.com";
@@ -2974,6 +3017,52 @@ function newsPillHTML(){
   if (!n) return wPillHTML();
   return '<div class="wp-duo"><a class="wp-news" href="#gazette-' + iso(today()) + '" aria-label="Les News du jour : ' + n + ' nouvelle' + (n > 1 ? 's' : '') + ' info' + (n > 1 ? 's' : '') + '">' + NEWS_IC + '<i aria-hidden="true"></i></a>' + wPillHTML() + '</div>';
 }
+/* MyWorld_1.17 : ouverture animée des News du jour. Le journal sort de l'icône, se déplie en accordéon,
+   puis zoome et s'efface sur la page du jour. La page est affichée sous un fond opaque pendant que le journal
+   est ouvert, donc le fondu final ne saccade pas. Un appui pendant l'animation ouvre tout de suite les News. */
+function npPaperHTML(day){
+  var d = parseISO(day), batch = gzBatch(day); if (!batch.length) batch = gzBatch();
+  var list = batch.filter(function(g){ return g && g.title; }), ranked = list.some(function(g){ return g.rank != null; });
+  if (ranked) list = list.filter(function(g){ return g.rank != null; }).sort(function(a, b){ return ((b.score != null ? b.score : -99) - (a.score != null ? a.score : -99)) || (a.rank - b.rank); });
+  else list.sort(function(a, b){ return (b.ts || 0) - (a.ts || 0); });
+  var une = gzUneOf(day), top = une ? une.title : (list[0] ? list[0].title : "Les infos du jour");
+  var rest = list.filter(function(g){ return g.title !== top; }).slice(0, 3);
+  var num = gzNumsOf(day).filter(function(x){ return x && x.n; })[0];
+  function art(g){ return g ? '<div><b>' + h(g.title) + '</b><i>' + h(g.source || g.topic || "") + '</i></div>' : '<div></div>'; }
+  var back = '<div class="npfc npbk"></div><div class="npsh"></div>';
+  var p3 = num ? art(rest[2]) + '<div class="npn"><i>CHIFFRE DU JOUR</i><b>' + h(num.n) + '</b></div>' : art(rest[2]) + '<div></div>';
+  return '<div class="npp np1"><div class="npin"><div class="npm"><b>Les News</b><span><span>' + h((JOURS_LONG[d.getDay()] + " " + d.getDate() + " " + MOIS[d.getMonth()] + " " + d.getFullYear()).toUpperCase()) + '</span><span>MY WORLD</span></span></div><div class="npt">' + h(top) + '</div></div></div>'
+    + '<div class="npp np2"><div class="npfc"><div class="npin"><div class="npg">' + art(rest[0]) + art(rest[1]) + '</div></div></div>' + back
+    + '<div class="npp np3"><div class="npfc"><div class="npin"><div class="npg">' + p3 + '</div></div></div>' + back + '</div></div>';
+}
+function npOpen(a){
+  if (document.getElementById("npOv")) return;
+  var day = iso(today()), target = "gazette-" + day, ov = document.createElement("div"), done = false, routed = false, safety;
+  var rm = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var W = Math.min(300, innerWidth - 80), P = Math.round(W * .52), top = Math.max(16, Math.round((innerHeight - 3 * P) / 2)), left = Math.round((innerWidth - W) / 2);
+  var rc = a.getBoundingClientRect(), dx = Math.round(rc.left + rc.width / 2 - innerWidth / 2), dy = Math.round(rc.top + rc.height / 2 - (top + 1.5 * P));
+  var cs = getComputedStyle(document.documentElement);
+  ov.id = "npOv"; ov.setAttribute("aria-hidden", "true"); if (rm) ov.className = "rm";
+  ov.innerHTML = '<div class="npv"></div><div class="npb"></div>' + (rm ? "" : '<div class="npz" style="left:' + left + 'px;top:' + top + 'px;width:' + W + 'px;height:' + (3 * P) + 'px;--np-p:' + P + 'px;--np-oy:' + Math.round(P / 2) + 'px;--np-dx:' + dx + 'px;--np-dy:' + dy + 'px"><div class="nps"><div class="npf">' + npPaperHTML(day) + '</div></div></div>');
+  var bk = ov.querySelector(".npb"); bk.style.backgroundColor = cs.backgroundColor; bk.style.backgroundImage = cs.backgroundImage; bk.style.backgroundRepeat = "no-repeat";
+  document.body.appendChild(ov);
+  function end(){ if (done) return; done = true; clearTimeout(safety); if (ov.parentNode) ov.parentNode.removeChild(ov); }
+  /* affiche la page du jour sous le fond opaque, puis lance le zoom une fois l'image prête */
+  function go(then){
+    if (routed){ if (then) then(); return; } routed = true;
+    function after(){ window.removeEventListener("hashchange", after); requestAnimationFrame(function(){ requestAnimationFrame(function(){ if (then) then(); }); }); }
+    S.noSlide = true;
+    if (location.hash === "#" + target){ route(); after(); } else { window.addEventListener("hashchange", after); location.hash = target; }
+  }
+  function out(){ if (done) return; ov.classList.add("out"); setTimeout(end, 380); }
+  bk.addEventListener("animationend", function f(e){ if (e.target !== bk || ov.classList.contains("out")) return; bk.removeEventListener("animationend", f); go(out); });
+  ov.addEventListener("click", function(){ if (done) return; ov.classList.add("skip"); go(function(){ ov.classList.add("gone"); setTimeout(end, 200); }); });
+  safety = setTimeout(function(){ go(); end(); }, 2500);
+}
+document.addEventListener("click", function(e){
+  var a = e.target.closest && e.target.closest(".wp-news"); if (!a || e.defaultPrevented || e.button) return;
+  e.preventDefault(); npOpen(a);
+}, true);
 function wPillHTML(){
   var F = wPillFaces();
   if (!F) return '<button type="button" class="wpill empty" aria-label="Météo en cours de chargement. Appui long pour ouvrir la météo."><span class="wp-dots" aria-hidden="true">···</span></button>';
@@ -6246,7 +6335,8 @@ function route(){
   if (back) S.hist.pop(); else if (S.hist[S.hist.length - 1] !== S.viewKey) S.hist.push(S.viewKey);
   render(); window.scrollTo(0,0);
   if (S.view === "sommeil") slSync(false);
-  if (prevKey && prevKey !== S.viewKey){
+  var noSlide = S.noSlide; S.noSlide = false;
+  if (prevKey && prevKey !== S.viewKey && !noSlide){
     var fwd = isApp(S.view) && !isApp(prev) ? true : !isApp(S.view) && !isApp(prev) ? MAIN.indexOf(S.view) > MAIN.indexOf(prev) : !back;
     if (S.view === "gazette" && prev === "gazette") fwd = !!S.gzDay;
     var app = document.getElementById("app"), cls = fwd ? "slide-next" : "slide-prev";
