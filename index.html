@@ -1281,6 +1281,7 @@ body.game-on #navFade,body.fid-on #navFade{display:none}
 .md-home{margin-top:14px}
 .be-hd .be-ph{font-size:30px;line-height:1.18;font-weight:900;letter-spacing:-.01em;margin:10px 0 4px;max-width:330px;text-wrap:balance}
 .be-hl{position:relative;display:inline-block;color:#FFE29A}
+.be-nw{white-space:nowrap}
 .be-sw{position:absolute;left:-2%;bottom:-7px;width:104%;height:11px}
 .be-page{padding-bottom:30px}
 .be-page .section{margin-top:18px}
@@ -2252,7 +2253,7 @@ var DECO = (function(){
 
 </script>
 <script>
-var APP_VERSION = "MyWorld_1.17";
+var APP_VERSION = "MyWorld_1.18";
 (function(){
 "use strict";
 var CAL = "t.mallet06@gmail.com";
@@ -5727,7 +5728,9 @@ function homeMoodHTML(){
 
 /* ---- phrase du jour : sans IA, choisie chaque jour dans une liste selon la météo, la vacation et la nuit ---- */
 var BE_PH = {
-  base: [["Un nouveau jour au ", "paradis", " !"], ["Belle journée en ", "perspective", "."], ["Aujourd'hui, on prend le ", "temps", "."], ["Une page blanche, à toi de l'", "écrire", "."], ["Respire, souris, ", "avance", "."], ["Le meilleur reste à ", "venir", "."], ["Chaque petit pas ", "compte", "."], ["Garde le cap, ", "capitaine", " !"]],
+  base: [["Un nouveau jour au ", "paradis", " !"], ["Belle journée en ", "perspective", "."], ["Aujourd'hui, on prend le ", "temps", "."], ["Une page blanche, à toi de l'", "écrire", "."], ["Respire, souris, ", "avance", "."], ["Le meilleur reste à ", "venir", "."], ["Chaque petit pas ", "compte", "."], ["Garde le cap, ", "capitaine", " !"],
+    /* MyWorld_1.18 : 25 phrases de plus (33 au total), tirées sans répétition */
+    ["Aujourd'hui, sois ", "fier", " de toi."], ["Un café, un sourire, et c'est ", "parti", " !"], ["Comme la mer, garde ton ", "calme", "."], ["Les petites victoires font les ", "grandes journées", "."], ["Ta bonne humeur est ", "contagieuse", "."], ["Aujourd'hui, tout est ", "possible", "."], ["Avance à ton ", "rythme", ", c'est le bon."], ["Un jour de plus pour faire ce que tu ", "aimes", "."], ["Ce que tu construis prend ", "forme", "."], ["Prends soin de ", "toi", ", le reste suivra."], ["Laisse la journée te ", "surprendre", "."], ["Doucement mais ", "sûrement", "."], ["Pense à ce qui te rend ", "heureux", "."], ["Tu as déjà fait de ", "belles choses", ", continue."], ["Piste dégagée : ", "décollage", " immédiat !"], ["Aujourd'hui, un pas de plus vers tes ", "projets", "."], ["Rien ne presse, l'essentiel est ", "là", "."], ["Tu es exactement là où tu dois ", "être", "."], ["La journée t'attend, ", "les bras ouverts", "."], ["Petit bonheur du jour : à toi de le ", "trouver", "."], ["Ton énergie fait ", "la différence", "."], ["Garde ta ", "curiosité", ", elle te va bien."], ["Une belle journée commence par une belle ", "pensée", "."], ["Fais-toi ", "confiance", ", tu sais où tu vas."], ["Une idée par jour, et le monde ", "bouge", "."]],
   pluie: [["Journée pluvieuse, journée ", "heureuse", " ?"], ["La pluie lave tout, même les ", "soucis", "."], ["Parapluie ouvert, moral au ", "beau fixe", "."]],
   soleil: [["Le soleil se lève sur la baie, et ", "toi aussi", "."], ["Grand ciel bleu, grandes ", "idées", "."], ["Lumière de la Riviera, ", "énergie", " du jour."]],
   nuages: [["Un peu de gris, beaucoup d'", "envies", "."], ["Derrière les nuages, le ", "soleil", " attend."]],
@@ -5738,9 +5741,37 @@ var BE_PH = {
   petiteNuit: [["Petite nuit ? Douceur et café, ça va ", "le faire", "."], ["On y va en douceur, tu as ", "tout", " pour réussir."]],
   ven: [["Petit vendredi, ", "grand sourire", "."]], lun: [["Lundi tout neuf, ", "plein de promesses", "."]], dim: [["Dimanche, le droit de ", "ralentir", "."]]
 };
+/* MyWorld_1.18 : les phrases de base passent dans un ordre mélangé, différent à chaque tour de 33 jours
+   (aucune ne revient avant que toutes soient passées, et jamais moins de 17 jours après).
+   Une phrase liée au jour (météo, service, nuit, jour de la semaine) remplace la phrase de base 4 jours sur 10,
+   en tournant dans sa liste pour ne pas répéter la même deux fois de suite. */
+function beDayN(d){ return Math.round((Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) - Date.UTC(2026, 0, 1)) / 864e5); }
+function bePerm(n, c){
+  var a = [], s = (Math.imul(c | 0, 2654435761) + 12345) >>> 0;
+  for (var i = 0; i < n; i++) a.push(i);
+  for (var k = n - 1; k > 0; k--){ s = (Math.imul(s, 1103515245) + 12345) >>> 0; var j = (s >>> 8) % (k + 1), t = a[k]; a[k] = a[j]; a[j] = t; }
+  return a;
+}
+var BE_CYC = {};
+function beCycle(c){
+  /* tour c : les 17 premières phrases du tour d'avant restent dans la 1re moitié, les autres dans la 2de, chacune remélangée
+     → une même phrase ne revient jamais avant au moins 17 jours */
+  var L = BE_PH.base.length, k = c + ":" + L; if (BE_CYC[k]) return BE_CYC[k];
+  var r;
+  if (c <= 0) r = bePerm(L, c);
+  else {
+    var pr = beCycle(c - 1), m = Math.ceil(L / 2), A = pr.slice(0, m), B = pr.slice(m), pa = bePerm(A.length, c * 2 + 1), pb = bePerm(B.length, c * 2 + 2);
+    r = pa.map(function(i){ return A[i]; }).concat(pb.map(function(i){ return B[i]; }));
+  }
+  return (BE_CYC[k] = r);
+}
+function beBaseAt(N){
+  var L = BE_PH.base.length, c = Math.floor(N / L);
+  return BE_PH.base[beCycle(c)[((N % L) + L) % L]];
+}
 function bePhrase(){
-  var d = today(), di = iso(d), pool = [].concat(BE_PH.base), md = mtData(), sp = typeof vacSpan === "function" ? vacSpan(di) : null, v = typeof vacOf === "function" ? vacOf(di) : null;
-  function add(k, w){ for (var i = 0; i < (w || 2); i++) pool = pool.concat(BE_PH[k]); }
+  var d = today(), di = iso(d), N = beDayN(d), keys = [], md = mtData(), sp = typeof vacSpan === "function" ? vacSpan(di) : null, v = typeof vacOf === "function" ? vacOf(di) : null;
+  function add(k, w){ for (var i = 0; i < (w || 2); i++) keys.push(k); }
   if (md && md.daily){ var c = md.daily.weather_code[0], p = md.daily.precipitation_probability_max[0] || 0;
     if (p >= 60 || (c >= 51 && c <= 82)) add("pluie", 3); else if (c <= 1) add("soleil"); else if (c <= 3 || c === 45 || c === 48) add("nuages"); }
   if (v === "RH" || v === "CP") add("repos", 3); else if (sp && sp.night) add("nuit", 3); else if (sp && sp.sm <= 420) add("tot", 3);
@@ -5748,12 +5779,14 @@ function bePhrase(){
   if (n && n.key === di){ if (n.score >= 80) add("bonneNuit"); else if (n.sleep < 360) add("petiteNuit", 3); }
   var wd = d.getDay(); if (wd === 5) add("ven", 1); if (wd === 1) add("lun", 1); if (wd === 0) add("dim", 1);
   var hsh = 0; for (var i = 0; i < di.length; i++) hsh = (hsh * 31 + di.charCodeAt(i)) >>> 0;
-  return pool[hsh % pool.length];
+  hsh = (Math.imul(hsh ^ (hsh >>> 15), 2246822519) >>> 0);
+  if (keys.length && hsh % 10 < 4){ var L = BE_PH[keys[(hsh >>> 8) % keys.length]]; return L[N % L.length]; }
+  return beBaseAt(N);
 }
 var BE_SWASH = '<svg class="be-sw" viewBox="0 0 120 12" preserveAspectRatio="none" aria-hidden="true"><path d="M2 8C30 2 60 11 90 5s25 1 28-1" fill="none" stroke="#FFD36E" stroke-width="3.4" stroke-linecap="round"/></svg>';
 function beHeroHTML(date){
-  var p = bePhrase();
-  return '<div class="hd2 gut be-hd"><p class="eb">' + h(date) + ' · Bien-être</p><h1 class="be-ph">' + h(p[0]) + '<span class="be-hl">' + h(p[1]) + BE_SWASH + '</span>' + h(p[2]) + '</h1></div>';
+  var p = bePhrase(), lead = (p[2].match(/^\s?\S*/) || [""])[0].replace(/^\s/, "\u00A0");  /* 1.18 : la ponctuation (ou le 1er mot) reste collée au mot surligné */
+  return '<div class="hd2 gut be-hd"><p class="eb">' + h(date) + ' · Bien-être</p><h1 class="be-ph">' + h(p[0]) + '<span class="be-nw"><span class="be-hl">' + h(p[1]) + BE_SWASH + '</span>' + h(lead) + '</span>' + h(p[2].slice(lead.length ? p[2].match(/^\s?\S*/)[0].length : 0)) + '</h1></div>';
 }
 
 /* ---- données croisées : une ligne par jour ---- */
