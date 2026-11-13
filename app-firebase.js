@@ -220,16 +220,30 @@ onAuthStateChanged(auth, async (user) => {
 });
 
 /* ---------- écran de lancement ----------
-   À chaque ouverture : logo animé (anneaux qui tournent, lunes en orbite), pendant qu'on vérifie s'il y a une nouvelle version
-   et qu'on charge les données. Une fois l'appli affichée, plus aucune mise à jour ni rechargement. */
+   MyWorld_1.19 : plus d'attente imposée. L'appli s'ouvre depuis la copie gardée dans le téléphone (sw.js) et l'écran part
+   dès que les données sont là. 1re ouverture du jour : courte animation du logo (au moins 0,5 s) ; ensuite le logo
+   rétrécit jusqu'au +. La recherche de nouvelle version se fait après, en coulisse : la nouvelle version sert
+   à l'ouverture suivante (petit message pour prévenir). */
 const splash = document.getElementById("splash"), t0 = Date.now();
 let splashOpen = !!splash;
 function hideSplash(){
   if (!splashOpen) return; splashOpen = false;
+  const quick = splash.classList.contains("quick");
   setTimeout(() => {
     const meta = document.querySelector('meta[name="theme-color"]'); if (meta) meta.content = "#0B4F7C";
-    splash.classList.add("out"); setTimeout(() => splash.remove(), 1300);
-  }, Math.max(0, 1300 - (Date.now() - t0)));   /* le logo a le temps d'apparaître et de tourner un peu */
+    if (quick){
+      const lg = splash.querySelector(".sp-lg"), pl = document.querySelector("nav.tabs .nav-add");
+      const b = pl && pl.getBoundingClientRect();
+      if (lg && b && b.width > 0 && getComputedStyle(pl).visibility !== "hidden"){
+        const a = lg.getBoundingClientRect();
+        splash.style.setProperty("--qx", Math.round(b.left + b.width / 2 - (a.left + a.width / 2)) + "px");
+        splash.style.setProperty("--qy", Math.round(b.top + b.height / 2 - (a.top + a.height / 2)) + "px");
+        splash.style.setProperty("--qs", Math.max(.08, Math.min(.6, b.width * 1.15 / (a.width * .727))).toFixed(3));
+        setTimeout(() => { pl.classList.remove("mw-pop"); void pl.offsetWidth; pl.classList.add("mw-pop"); setTimeout(() => pl.classList.remove("mw-pop"), 420); }, 470);
+      } else splash.classList.remove("quick");   /* pas de + à l'écran : sortie courte classique */
+    }
+    splash.classList.add("out"); setTimeout(() => splash.remove(), splash.classList.contains("quick") ? 680 : 820);
+  }, Math.max(0, (quick ? 0 : 500) - (Date.now() - t0)));
 }
 const timeout = (ms) => new Promise((r) => setTimeout(r, ms));
 const appReady = new Promise((resolve) => {
@@ -237,30 +251,18 @@ const appReady = new Promise((resolve) => {
   new MutationObserver(() => { if (!gate.hidden) resolve(); }).observe(gate, { attributes: true, attributeFilter: ["hidden"] });
 });
 
-/* nouvelle version : cherchée seulement pendant l'écran de lancement */
+/* nouvelle version : cherchée en coulisse, une fois l'appli affichée ; elle s'ouvrira au lancement suivant */
 function checkUpdate(){
-  if (!("serviceWorker" in navigator)) return Promise.resolve();
+  if (!("serviceWorker" in navigator)) return;
   const hadController = !!navigator.serviceWorker.controller;
   navigator.serviceWorker.addEventListener("controllerchange", () => {
-    /* la nouvelle version ne recharge l'appli que si l'écran de lancement est encore là */
-    if (!hadController || !splashOpen) return;
-    let last = 0; try { last = +sessionStorage.getItem("carnet-upd") || 0; } catch(e){}
-    if (Date.now() - last < 20000) return;
-    try { sessionStorage.setItem("carnet-upd", String(Date.now())); } catch(e){}
-    location.reload();
+    if (!hadController) return;
+    if (typeof window.toast === "function") window.toast("Nouvelle version de My World prête : elle s'ouvrira au prochain lancement.");
   });
-  return navigator.serviceWorker.register("./sw.js", { updateViaCache: "none" }).then((reg) => {
-    if (!hadController || !navigator.onLine) return;
-    return reg.update().then(() => {
-      const w = reg.installing || reg.waiting;
-      if (!w) return;
-      /* une nouvelle version s'installe : on attend qu'elle soit prête (l'appli se recharge derrière le logo) */
-      return new Promise((resolve) => { w.addEventListener("statechange", () => { if (w.state === "activated" || w.state === "redundant") resolve(); }); });
-    });
+  navigator.serviceWorker.register("./sw.js", { updateViaCache: "none" }).then((reg) => {
+    if (hadController && navigator.onLine) return reg.update();
   }).catch(() => {});
 }
-Promise.all([
-  Promise.race([checkUpdate(), timeout(6000)]),
-  Promise.race([appReady, timeout(8000)])
-]).then(() => setTimeout(hideSplash, 150));
-setTimeout(hideSplash, 12000);
+Promise.race([appReady, timeout(4000)]).then(() => requestAnimationFrame(() => requestAnimationFrame(hideSplash)));
+setTimeout(hideSplash, 8000);
+setTimeout(checkUpdate, 1500);

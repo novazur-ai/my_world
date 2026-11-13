@@ -10,6 +10,7 @@ const SHELL = [
   "fonts/nunito-latin-400-normal.woff2", "fonts/nunito-latin-600-normal.woff2", "fonts/nunito-latin-700-normal.woff2", "fonts/nunito-latin-800-normal.woff2",
   "fonts/dancing-script-latin-600-normal.woff2", "fonts/dancing-script-latin-700-normal.woff2"
 ];
+const SHELL_PATHS = new Set(SHELL.map((u) => new URL(u, self.location).pathname));
 self.addEventListener("install", (e) => { e.waitUntil(caches.open(VERSION).then((c) => c.addAll(SHELL.map((u) => new Request(u, { cache: "reload" })))).then(() => self.skipWaiting())); });
 self.addEventListener("activate", (e) => { e.waitUntil(caches.keys().then((keys) => Promise.all(keys.filter((k) => k !== VERSION && k !== ASSETS).map((k) => caches.delete(k)))).then(() => self.clients.claim())); });
 self.addEventListener("fetch", (e) => {
@@ -28,8 +29,15 @@ self.addEventListener("fetch", (e) => {
     e.respondWith(caches.match(req).then((hit) => hit || fetch(req).then((res) => { const copy = res.clone(); caches.open(ASSETS).then((c) => c.put(req, copy)); return res; })));
     return;
   }
+  /* MyWorld_1.19 : la page et le code de l'appli viennent directement de la copie de CETTE version (ouverture instantanée,
+     tous les fichiers de la même version) ; une mise en ligne change sw.js, le téléphone installe alors la nouvelle copie
+     en coulisse et l'utilise à l'ouverture suivante */
+  if (sameOrigin && SHELL_PATHS.has(url.pathname)){
+    e.respondWith(caches.open(VERSION).then((c) => c.match(req, { ignoreSearch: true }).then((hit) => hit || (req.mode === "navigate" ? c.match("index.html") : null))).then((hit) => hit || fetch(req)).catch(() => caches.match("index.html")));
+    return;
+  }
   if (sameOrigin){
-    /* page et code : d'abord le réseau (pour les mises à jour), sinon le cache */
+    /* autres fichiers : d'abord le réseau, sinon le cache */
     /* une adresse avec paramètres (ex. partage reçu) n'est pas gardée en cache ; hors ligne, on sert la page */
     e.respondWith(fetch(req, { cache: "no-cache" }).then((res) => { if (!url.search){ const copy = res.clone(); caches.open(VERSION).then((c) => c.put(req, copy)); } return res; }).catch(() => caches.match(req, { ignoreSearch: true }).then((hit) => hit || caches.match("index.html"))));
   }
