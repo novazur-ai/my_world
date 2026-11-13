@@ -1145,7 +1145,7 @@ body.game-on #navFade,body.fid-on #navFade{display:none}
 .sl-top{display:flex;align-items:center;gap:14px;margin-top:10px}
 .sl-ring{position:relative;width:88px;height:88px;flex:none;display:grid;place-items:center}
 .sl-ring svg{position:absolute;inset:0;width:100%;height:100%}
-.sl-ring b{font-size:28px;font-weight:900;line-height:1;color:var(--c);font-variant-numeric:tabular-nums;margin-top:-6px}
+.sl-ring b{font-size:30px;font-weight:900;line-height:1;color:var(--c);font-variant-numeric:tabular-nums;margin-top:-6px}
 .sl-ring small{position:absolute;bottom:22px;left:0;right:0;text-align:center;font-size:10.5px;font-weight:900;color:var(--muted)}
 .sl-sum{display:flex;flex-direction:column;gap:2px;min-width:0}
 .sl-lbl{font-size:13px;font-weight:900}
@@ -1201,6 +1201,23 @@ body.game-on #navFade,body.fid-on #navFade{display:none}
 .sl-foot{text-align:center}
 .sl-foot p{margin:0}
 .sl-foot-b{display:flex;justify-content:center;gap:18px}
+.sl-when{margin:0 0 8px;font-size:13px;font-weight:900;color:var(--muted)}
+.sl-a .sl-ring small{display:none}.sl-a .sl-ring b{margin-top:0}
+.sl-ringb{border:0;background:none;padding:0;border-radius:50%;cursor:pointer;flex:none}
+.sl-a .sl-top{margin-top:0;gap:16px}
+.sl-a .sl-big{font-size:34px}
+.sl-a .sl-mut{font-size:14px}
+.sl-hyp2{display:block;width:100%;height:56px;margin-top:12px}
+.sl-pills{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:12px}
+.sl-pill{display:flex;flex-direction:column;align-items:center;gap:2px;padding:9px 4px;border-radius:14px;background:#fff;border:1px solid var(--line)}
+.sl-pill span{display:flex;align-items:center;gap:5px;font-size:11.5px;font-weight:800;color:var(--muted)}
+.sl-pill i{display:block;width:8px;height:8px;border-radius:3px}
+.sl-pill b{font-size:17px;font-weight:900;font-variant-numeric:tabular-nums}
+.sl-wh{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}.sl-wh b{font-size:16px;font-weight:900}
+.sl-b .sl-bars{margin-top:0}.sl-b .sl-bw{height:84px}
+.sl-bed{width:100%;display:flex;align-items:center;gap:10px;padding:12px 14px;border:0;border-radius:16px;background:#E3EEF6;color:#0B3A5C;font:800 14px var(--f-body);text-align:left;cursor:pointer}
+.sl-bed b{margin-left:auto;font-size:18px;font-weight:900}
+.sl-det .sl-pt:first-child{margin-top:0}
 .sl-empty{background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px 18px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:6px}
 .sl-empty b{font-size:18px;font-weight:900}
 .sl-empty p{margin:0;color:var(--muted);font-size:14px;max-width:34ch}
@@ -2102,7 +2119,7 @@ var DECO = (function(){
 
 </script>
 <script>
-var APP_VERSION = "MyWorld_1.9";
+var APP_VERSION = "MyWorld_1.10";
 (function(){
 "use strict";
 var CAL = "t.mallet06@gmail.com";
@@ -2270,8 +2287,7 @@ function heroHTML(){
   var sub = "";
   if (S.view === "courses"){ var nc = coOpen().filter(function(x){ return !x.done; }).length; sub = '<p class="sub">' + (nc ? nc + " article" + (nc > 1 ? "s" : "") + " à prendre" : "Liste vide") + '</p>'; }
   if (S.view === "cartes"){ var nf = fidAll().length; sub = '<p class="sub">' + (nf ? nf + " carte" + (nf > 1 ? "s" : "") + " de fidélité" : "Aucune carte pour l'instant") + '</p>'; }
-  if (S.view === "sommeil") sub = '<p class="sub">' + h(slStatusLine()) + '</p>';
-  var title = S.view === "sommeil" ? "Ton sommeil" : S.view === "cartes" ? "Tes cartes" : S.view === "listes" ? "Tes listes" : S.view === "courses" ? "Tes courses" : S.view === "fiche" ? "Ta fiche" : S.view === "notes" ? "Tes notes" : "La Gazette";
+  var title = S.view === "sommeil" ? "Sommeil" : S.view === "cartes" ? "Tes cartes" : S.view === "listes" ? "Tes listes" : S.view === "courses" ? "Tes courses" : S.view === "fiche" ? "Ta fiche" : S.view === "notes" ? "Tes notes" : "La Gazette";
   if (S.view === "gazette"){ var u = S.settings && S.settings.gazetteUpdatedAt, ds0 = gzDays();
     if (S.gzDay){ var nb = gzBatch(S.gzDay).length; title = "La Gazette"; sub = '<p class="sub">' + h(gzDayLabel(S.gzDay) + (S.gzDay === iso(today()) || S.gzDay === iso(addDays(today(), -1)) ? " · " + parseISO(S.gzDay).getDate() + " " + MOIS[parseISO(S.gzDay).getMonth()] : "") + " · " + nb + " info" + (nb > 1 ? "s" : "")) + '</p>'; }
     else sub = '<p class="sub"><span class="pulse" aria-hidden="true" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#2F7440;margin-right:6px"></span>' + h(u ? (iso(new Date(u)) === iso(today()) ? "Mise à jour à " + new Date(u).getHours() + " h " + pad(new Date(u).getMinutes()) : "Mise à jour " + ago(u)) + " · " + ds0.length + " jour" + (ds0.length > 1 ? "s" : "") + " d'archives" : "En attente de la première mise à jour") + '</p>'; }
@@ -5352,12 +5368,52 @@ function slStatusLine(){
   if (last) return "Dernière nuit : " + fmtShort(last.key);
   return "En attente de ta première nuit";
 }
+/* MyWorld_1.10 : page Sommeil allégée (maquette 1 « Essentiel ») : note + durée, phases, 3 pastilles, semaine, heure de coucher.
+   Le détail de la note s'ouvre en touchant l'anneau. */
 function viewSommeil(){
   var ns = slNights();
   if (!ns.length) return slEmptyHTML();
   if (!S.slSel || !slByKey(S.slSel)) S.slSel = ns[ns.length - 1].key;
   var n = slByKey(S.slSel);
-  return '<div class="sl-page">' + slStaleHTML() + slNightHTML(n) + slWeekHTML(n) + slWorkHTML() + slFootHTML() + '</div>';
+  return '<div class="sl-page">' + slStaleHTML() + slNightHTML(n, n === ns[ns.length - 1]) + slWeekHTML(n) + slBedHTML() + '</div>';
+}
+function slNightHTML(n, last){
+  var span = (n.e - n.s) / 6e4, rows = { w: 0, r: 1, l: 2, s: 2, d: 3 }, rects = "";
+  n.st.forEach(function(a){ var x = a[1] / span * 300, w = Math.max(.8, a[2] / span * 300); rects += '<rect x="' + x.toFixed(2) + '" y="' + (2 + rows[a[0]] * 14) + '" width="' + w.toFixed(2) + '" height="11" rx="2" fill="' + SL_COL[a[0]] + '"/>'; });
+  var pills = (n.detail ? ["d", "l", "r"] : ["s"]).map(function(k){ return '<div class="sl-pill"><span><i style="background:' + SL_COL[k] + '"></i>' + SL_NAME[k] + '</span><b>' + slHM(n.t[k] || 0, "h") + '</b></div>'; }).join("");
+  return '<section class="section gut sl-a" aria-label="' + h(slNightName(n)) + '">'
+    + (last ? '' : '<p class="sl-when">' + h(slNightName(n)) + '</p>')
+    + '<div class="sl-card"><div class="sl-top"><button type="button" class="sl-ringb" data-act="sl-detail" aria-label="Note ' + n.score + ' sur 100 : voir le détail">' + slRing(n.score) + '</button>'
+    + '<div class="sl-sum"><span class="sl-big">' + slHM(n.sleep) + '</span><span class="sl-mut">' + slClock(n.s) + ' → ' + slClock(n.e) + '</span></div></div>'
+    + '<svg class="sl-hyp2" viewBox="0 0 300 56" preserveAspectRatio="none" role="img" aria-label="Phases de la nuit">' + rects + '</svg></div>'
+    + '<div class="sl-pills">' + pills + '</div></section>';
+}
+function slWeekHTML(sel){
+  var m0 = addDays(monday(today()), 7 * (S.slWeek || 0)), sum = 0, cnt = 0, cols = "";
+  for (var i = 0; i < 7; i++){
+    var di = iso(addDays(m0, i)), n = slByKey(di), lt = "LMMJVSD"[i];
+    if (!n){ cols += '<div class="sl-col"><span class="sl-bw"><span class="sl-bar empty"></span></span><span class="sl-day">' + lt + '</span><span class="sl-sc">–</span></div>'; continue; }
+    sum += n.sleep; cnt++;
+    var segs = (n.detail ? ["d", "l", "r"] : ["s"]).map(function(k){ return n.t[k] ? '<i style="flex:' + n.t[k] + ';background:' + SL_COL[k] + '"></i>' : ""; }).join("");
+    cols += '<button type="button" class="sl-col' + (sel && n.key === sel.key ? " on" : "") + '" data-act="sl-pick" data-k="' + n.key + '" aria-label="' + h(slNightName(n) + " : " + slHM(n.sleep) + ", note " + n.score) + '"><span class="sl-bw"><span class="sl-bar" style="height:' + Math.min(100, n.sleep / 600 * 100).toFixed(0) + '%">' + segs + '</span></span><span class="sl-day">' + lt + '</span><span class="sl-sc" style="color:' + slTone(n.score) + '">' + n.score + '</span></button>';
+  }
+  var e0 = addDays(m0, 6), ttl = (S.slWeek || 0) === 0 ? "Semaine" : m0.getDate() + (m0.getMonth() !== e0.getMonth() ? " " + MOIS_COURT[m0.getMonth()].toLowerCase() : "") + " – " + e0.getDate() + " " + MOIS_COURT[e0.getMonth()].toLowerCase();
+  return '<section class="section gut sl-b"><div class="sl-card"><div class="sl-wh"><b>' + h(ttl) + '</b>' + (cnt ? '<span class="sl-mut">moy. ' + slHM(sum / cnt) + '</span>' : '') + '</div><div class="sl-bars" id="slBars" aria-label="Glisse pour changer de semaine">' + cols + '</div></div></section>';
+}
+function slBedHTML(){
+  var tm = addDays(today(), 1), sp = typeof hasPlanning === "function" && hasPlanning() ? vacSpan(iso(tm)) : null; if (!sp) return "";
+  var set = slSet(), bed = sp.sm - set.lead - set.target;
+  return '<section class="section gut sl-c"><button type="button" class="sl-bed" data-act="sl-set" aria-label="Ce soir, au lit vers ' + slHour(bed) + ' (service demain à ' + fmtVac(sp.sm, 1) + ') : modifier les réglages"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 18V8M3 14h18v4M21 14v-2a3 3 0 0 0-3-3h-7v5"/><circle cx="7" cy="11" r="2"/></svg><span>Ce soir, au lit vers</span><b>' + slHour(bed) + '</b></button></section>';
+}
+function slDetail(){
+  var n = slByKey(S.slSel); if (!n) return; var P = n.pts;
+  openSheet("Note " + n.score + " · " + slLabel(n.score), '<div class="sl-det">'
+    + slPtsRow("Durée", P.dur, 40, slHM(n.sleep) + " · conseillé : 7 à 9 h")
+    + (n.detail ? slPtsRow("Sommeil profond", P.deep, 20, Math.round(n.t.d / n.sleep * 100) + " % · habituel : 13 à 23 %") + slPtsRow("Sommeil paradoxal", P.rem, 20, Math.round(n.t.r / n.sleep * 100) + " % · habituel : 20 à 25 %") : "")
+    + slPtsRow("Continuité", P.cont, 20, (n.wakes ? n.wakes + " réveil" + (n.wakes > 1 ? "s" : "") + " de plus de 5 min" : "aucun réveil de plus de 5 min") + " · " + (n.waso ? slHM(n.waso) + " éveillé" : "pas d'éveil"))
+    + (n.naps.length ? '<p class="sl-src">Sieste : ' + n.naps.map(function(z){ return slClock(z.s) + " → " + slClock(z.e); }).join(", ") + ' (hors note)</p>' : '')
+    + (n.detail ? "" : '<p class="sl-src">Pas de phases envoyées pour cette nuit : note sur la durée et la continuité.</p>')
+    + '<p class="sl-src">Repères : National Sleep Foundation (2015, 2017) et Manuel MSD. Phases estimées par la montre ; Huawei Santé a sa propre note.</p></div>');
 }
 function slEmptyHTML(){
   var st = SLS.st, msg = st && st.old ? "Le script Google répond, mais il n'a pas encore la partie sommeil. Suis l'étape A du mode d'emploi."
@@ -5371,67 +5427,7 @@ function slRing(sc){
   var r = 30, c = 2 * Math.PI * r, col = slTone(sc);
   return '<span class="sl-ring" style="--c:' + col + '" role="img" aria-label="Note ' + sc + ' sur 100"><svg viewBox="0 0 72 72" aria-hidden="true"><circle cx="36" cy="36" r="' + r + '" fill="none" stroke="#E6ECF2" stroke-width="7"/><circle cx="36" cy="36" r="' + r + '" fill="none" stroke="' + col + '" stroke-width="7" stroke-linecap="round" stroke-dasharray="' + (c * sc / 100).toFixed(1) + ' ' + c.toFixed(1) + '" transform="rotate(-90 36 36)"/></svg><b>' + sc + '</b><small>/100</small></span>';
 }
-function slNightHTML(n){
-  var ns = slNights(), i = ns.indexOf(n), prev = ns.slice(Math.max(0, i - 7), i), avg = prev.length ? prev.reduce(function(a, b){ return a + b.sleep; }, 0) / prev.length : 0;
-  var dlt = prev.length >= 3 ? Math.round(n.sleep - avg) : null;
-  var span = (n.e - n.s) / 6e4, rows = { w: 0, r: 1, l: 2, s: 2, d: 3 }, rects = "";
-  n.st.forEach(function(a){ var x = a[1] / span * 300, w = Math.max(.6, a[2] / span * 300); rects += '<rect x="' + x.toFixed(2) + '" y="' + (3 + rows[a[0]] * 22) + '" width="' + w.toFixed(2) + '" height="18" rx="2.5" fill="' + SL_COL[a[0]] + '"/>'; });
-  var ticks = "", t0 = new Date(n.s), step = span > 540 ? 2 : 1; t0.setMinutes(60, 0, 0);
-  for (var t = t0; t < n.e; t = new Date(t.getTime() + 36e5)){ if (t.getHours() % step) continue; var px = (t - n.s) / 6e4 / span * 100; if (px > 4 && px < 96) ticks += '<span style="left:' + px.toFixed(1) + '%">' + t.getHours() + ' h</span>'; }
-  var parts = n.detail ? ["d", "l", "r", "w"] : ["s", "w"], tot = n.sleep + n.t.w;
-  var bar = parts.map(function(k){ return n.t[k] ? '<i style="flex:' + n.t[k] + ';background:' + SL_COL[k] + '"></i>' : ""; }).join("");
-  var leg = parts.map(function(k){ return '<span><i style="background:' + SL_COL[k] + '"></i>' + SL_NAME[k] + ' <b>' + slHM(n.t[k] || 0) + '</b>' + (k !== "w" && n.sleep ? ' <em>· ' + Math.round((n.t[k] || 0) / n.sleep * 100) + ' %</em>' : "") + '</span>'; }).join("");
-  var P = n.pts, det = '<details class="sl-det"><summary>Comment est calculée la note</summary>'
-    + slPtsRow("Durée", P.dur, 40, slHM(n.sleep) + " de sommeil · conseillé : 7 à 9 h")
-    + (n.detail ? slPtsRow("Sommeil profond", P.deep, 20, Math.round(n.t.d / n.sleep * 100) + " % · habituel : 13 à 23 %") + slPtsRow("Sommeil paradoxal", P.rem, 20, Math.round(n.t.r / n.sleep * 100) + " % · habituel : 20 à 25 %") : "")
-    + slPtsRow("Continuité", P.cont, 20, (n.wakes ? n.wakes + " réveil" + (n.wakes > 1 ? "s" : "") + " de plus de 5 min" : "Aucun réveil de plus de 5 min") + " · " + (n.waso ? slHM(n.waso) + " éveillé" : "pas d'éveil") + " dans la nuit")
-    + (n.detail ? "" : '<p class="sl-src">Ta montre n\'a pas envoyé les phases pour cette nuit : la note ne tient compte que de la durée et de la continuité.</p>')
-    + '<p class="sl-src">Repères : National Sleep Foundation (durée, 2015 ; qualité, 2017) et Manuel MSD (part des phases chez l\'adulte). Les phases mesurées au poignet sont des estimations. La note de Huawei Santé suit sa propre formule et peut être différente.</p></details>';
-  return '<section class="section gut sl-a" aria-label="Nuit sélectionnée"><div class="sl-card">'
-    + '<div class="sl-nav"><button type="button" class="sl-arr" data-act="sl-night" data-n="-1"' + (i > 0 ? "" : " disabled") + ' aria-label="Nuit précédente">‹</button><span>' + h(slNightName(n)) + '</span><button type="button" class="sl-arr" data-act="sl-night" data-n="1"' + (i < ns.length - 1 ? "" : " disabled") + ' aria-label="Nuit suivante">›</button></div>'
-    + '<div class="sl-top">' + slRing(n.score) + '<div class="sl-sum"><b class="sl-lbl" style="color:' + slTone(n.score) + '">' + slLabel(n.score) + '</b><span class="sl-big">' + slHM(n.sleep) + '</span><span class="sl-mut">' + slClock(n.s) + ' → ' + slClock(n.e) + (n.t.w ? ' · ' + slHM(n.t.w) + ' éveillé' : '') + '</span>'
-    + (dlt !== null ? '<span class="sl-mut"><b class="' + (dlt >= 0 ? "sl-up" : "sl-down") + '">' + (dlt >= 0 ? "+" : "−") + slHM(Math.abs(dlt)) + '</b> par rapport à ta moyenne</span>' : '') + '</div></div>'
-    + '<div class="sl-hyp"><span class="sl-hyp-l" aria-hidden="true"><i>Éveil</i><i>Parad.</i><i>Léger</i><i>Profond</i></span><div class="sl-hyp-g"><svg viewBox="0 0 300 92" preserveAspectRatio="none" role="img" aria-label="Phases de la nuit, de ' + slClock(n.s) + ' à ' + slClock(n.e) + '">' + rects + '</svg><div class="sl-ticks" aria-hidden="true">' + ticks + '</div></div></div>'
-    + '<div class="sl-stk" aria-hidden="true">' + bar + '</div><div class="sl-leg">' + leg + '</div>'
-    + (n.naps.length ? '<p class="sl-mut sl-nap">+ sieste : ' + n.naps.map(function(z){ return slClock(z.s) + " → " + slClock(z.e); }).join(", ") + '</p>' : '')
-    + det + '</div></section>';
-}
 function slPtsRow(k, v, max, txt){ var p = Math.round(v); return '<div class="sl-pt"><span class="sl-pt-k">' + k + '</span><span class="sl-pt-v">' + p + '<small>/' + max + '</small></span><span class="sl-pt-b"><i style="width:' + (v / max * 100).toFixed(0) + '%"></i></span><span class="sl-pt-t">' + h(txt) + '</span></div>'; }
-function slWeekHTML(sel){
-  var m0 = addDays(monday(today()), 7 * (S.slWeek || 0)), days = [], sum = 0, cnt = 0, beds = [], best = null, early = false;
-  for (var i = 0; i < 7; i++){ var di = iso(addDays(m0, i)), n = slByKey(di); days.push([di, n]); if (n){ sum += n.sleep; cnt++; var b = n.s.getHours() * 60 + n.s.getMinutes(); beds.push(b < 720 ? b + 1440 : b); if (!best || n.score > best.score) best = n; } }
-  var bars = days.map(function(x){
-    var d = parseISO(x[0]), n = x[1], sv = slSvc(x[0]), lt = "LMMJVSD"[(d.getDay() + 6) % 7]; if (sv === "tot") early = true;
-    var col = '<span class="sl-day' + (sv === "tot" ? " tot" : "") + '">' + lt + '</span>';
-    if (!n) return '<div class="sl-col"><span class="sl-bw"><span class="sl-bar empty"></span></span>' + col + '<span class="sl-sc">–</span></div>';
-    var hgt = Math.min(100, n.sleep / 600 * 100), segs = (n.detail ? ["d", "l", "r"] : ["s"]).map(function(k){ return n.t[k] ? '<i style="flex:' + n.t[k] + ';background:' + SL_COL[k] + '"></i>' : ""; }).join("");
-    return '<button type="button" class="sl-col' + (sel && n.key === sel.key ? " on" : "") + '" data-act="sl-pick" data-k="' + n.key + '" aria-label="' + h(slNightName(n) + " : " + slHM(n.sleep) + ", note " + n.score) + '"><span class="sl-bw"><span class="sl-bar" style="height:' + hgt.toFixed(0) + '%">' + segs + '</span></span>' + col + '<span class="sl-sc" style="color:' + slTone(n.score) + '">' + n.score + '</span></button>';
-  }).join("");
-  var sd = null; if (beds.length >= 3){ var mu = beds.reduce(function(a, b){ return a + b; }, 0) / beds.length; sd = Math.round(Math.sqrt(beds.reduce(function(a, b){ return a + (b - mu) * (b - mu); }, 0) / beds.length)); }
-  var e0 = addDays(m0, 6), lbl = (S.slWeek || 0) === 0 ? "Cette semaine" : "Du " + m0.getDate() + (m0.getMonth() !== e0.getMonth() ? " " + MOIS[m0.getMonth()] : "") + " au " + e0.getDate() + " " + MOIS[e0.getMonth()];
-  var first = slNights()[0], canPrev = first && monday(parseISO(first.key)) < m0;
-  return '<section class="section gut sl-b" aria-labelledby="slWkT"><div class="section-head"><h2 id="slWkT">Ta semaine</h2><div class="sl-wnav"><button type="button" class="sl-arr" data-act="sl-week" data-n="-1"' + (canPrev ? "" : " disabled") + ' aria-label="Semaine précédente">‹</button><span>' + h(lbl) + '</span><button type="button" class="sl-arr" data-act="sl-week" data-n="1"' + ((S.slWeek || 0) < 0 ? "" : " disabled") + ' aria-label="Semaine suivante">›</button></div></div>'
-    + '<div class="sl-card"><div class="sl-stats"><span><small>Moyenne</small><b>' + (cnt ? slHM(sum / cnt) : "–") + '</b></span><span><small>Régularité du coucher</small><b>' + (sd !== null ? "± " + slHM(sd) : "–") + '</b></span><span><small>Meilleure nuit</small><b>' + (best ? JOURS[parseISO(best.key).getDay()].replace(".", "") + " · " + best.score : "–") + '</b></span></div>'
-    + '<div class="sl-bars" id="slBars">' + bars + '</div>'
-    + '<div class="sl-leg sm"><span><i style="background:' + SL_COL.d + '"></i>Profond</span><span><i style="background:' + SL_COL.l + '"></i>Léger</span><span><i style="background:' + SL_COL.r + '"></i>Paradoxal</span>' + (early ? '<span class="sl-totk">Lettre soulignée = service tôt</span>' : '') + '</div>'
-    + (sd === null && cnt ? '<p class="sl-mut sl-note">La régularité s\'affiche à partir de 3 nuits dans la semaine.</p>' : '') + '</div></section>';
-}
-function slWorkHTML(){
-  var plan = typeof hasPlanning === "function" && hasPlanning(), set = slSet();
-  if (!plan) return '<section class="section gut sl-c"><div class="section-head"><h2>Sommeil et vacations</h2></div><div class="sl-card sl-mut">Importe ton planning (Réglages > Mon planning) pour comparer tes nuits à tes services.</div></section>';
-  var from = iso(addDays(today(), -30)), g = { tot: [], tard: [], repos: [] };
-  slNights().forEach(function(n){ if (n.key < from) return; var k = slSvc(n.key); if (g[k]) g[k].push(n); });
-  function blk(k, title, col){ var L = g[k], avg = L.length ? L.reduce(function(a, b){ return a + b.sleep; }, 0) / L.length : 0, sc = L.length ? Math.round(L.reduce(function(a, b){ return a + b.score; }, 0) / L.length) : 0;
-    return '<div class="sl-card sl-wk"><small>' + title + '</small>' + (L.length ? '<div class="sl-wk-r"><span class="sl-big">' + slHM(avg) + '</span><span class="sl-mut">' + L.length + ' nuit' + (L.length > 1 ? "s" : "") + ' · note ' + sc + '</span></div><span class="sl-wk-b"><i style="width:' + Math.min(100, avg / set.target * 100).toFixed(0) + '%;background:' + col + '"></i></span>' : '<p class="sl-mut">Pas encore de nuit.</p>') + '</div>'; }
-  var tip = "", tm = addDays(today(), 1), sp = vacSpan(iso(tm));
-  if (sp){ var bed = sp.sm - set.lead - set.target, wake = sp.sm - set.lead;
-    tip = '<div class="sl-card sl-tip"><small>Pour ton service de demain à ' + fmtVac(sp.sm, 1) + '</small><p>Pour dormir ' + slHM(set.target) + ' et te lever à ' + slHour(wake) + ', couche-toi vers <b>' + slHour(bed) + '</b>.</p><button type="button" class="link-btn" data-act="sl-set">Modifier</button></div>'; }
-  return '<section class="section gut sl-c" aria-labelledby="slWT"><div class="section-head"><h2 id="slWT">Sommeil et vacations</h2><span class="sl-mut">30 derniers jours</span></div>'
-    + blk("tot", "Avant un service tôt (début avant 7 h)", "#0B4F7C") + blk("tard", "Avant un service plus tard", "#0B4F7C") + blk("repos", "Les jours de repos ou de congé", "#2F7440") + tip + '</section>';
-}
-function slFootHTML(){
-  return '<section class="section gut sl-foot"><p class="sl-mut">' + h(slStatusLine()) + '</p><div class="sl-foot-b"><button type="button" class="link-btn" data-act="sl-set">Réglages du sommeil</button><button type="button" class="link-btn" data-act="sl-sync">Vérifier maintenant</button></div></section>';
-}
 function slSettings(){
   var s = slSet(), opt = function(a, b, st, v, f){ var o = ""; for (var x = a; x <= b; x += st) o += '<option value="' + x + '"' + (x === v ? " selected" : "") + '>' + f(x) + '</option>'; return o; };
   openSheet("Réglages du sommeil", '<div class="field"><label for="slT">Durée de sommeil visée</label><select id="slT">' + opt(360, 540, 15, s.target, function(x){ return slHM(x); }) + '</select></div>'
@@ -5445,6 +5441,7 @@ function slSettings(){
 function slAct(act, b){
   if (act === "sl-sync"){ slSync(true); return true; }
   if (act === "sl-set"){ slSettings(); return true; }
+  if (act === "sl-detail"){ slDetail(); return true; }
   if (act === "sl-pick"){ S.slSel = b.dataset.k; render(); var a = document.querySelector(".sl-a"); if (a) a.scrollIntoView({ behavior: "smooth", block: "start" }); return true; }
   if (act === "sl-night"){ var ns = slNights(), i = ns.findIndex(function(n){ return n.key === S.slSel; }) + +b.dataset.n; if (ns[i]){ S.slSel = ns[i].key; var w = Math.round((monday(parseISO(S.slSel)) - monday(today())) / 6048e5); S.slWeek = w; render(); } return true; }
   if (act === "sl-week"){ S.slWeek = Math.min(0, (S.slWeek || 0) + +b.dataset.n); render(); return true; }
@@ -5455,7 +5452,7 @@ function slAct(act, b){
   var x0 = null, y0 = 0;
   document.addEventListener("touchstart", function(e){ x0 = e.target.closest && e.target.closest("#slBars") ? e.touches[0].clientX : null; if (x0 !== null) y0 = e.touches[0].clientY; }, { passive: true });
   document.addEventListener("touchend", function(e){ if (x0 === null) return; var t = e.changedTouches[0], dx = t.clientX - x0, dy = t.clientY - y0; x0 = null;
-    if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy) * 1.5) return; var nb = document.querySelector('[data-act="sl-week"][data-n="' + (dx > 0 ? -1 : 1) + '"]'); if (nb && !nb.disabled) nb.click(); }, { passive: true });
+    if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy) * 1.5) return; var nw = Math.min(0, (S.slWeek || 0) + (dx > 0 ? -1 : 1)), f = slNights()[0]; if (nw === (S.slWeek || 0) || (f && addDays(monday(today()), 7 * nw) < monday(parseISO(f.key)))) return; S.slWeek = nw; render(); }, { passive: true });
 })();
 /* bloc de l'accueil */
 /* MyWorld_1.9 : alerte quand aucune nuit n'est arrivée depuis 3 jours (2 jours d'oubli de montre restent normaux) */
