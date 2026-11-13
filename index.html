@@ -988,6 +988,7 @@ body.scroll-lock{position:fixed;left:0;right:0;width:100%;overflow:hidden}
 .gz-rt{margin-left:auto;width:8px;height:8px;border-radius:50%;flex:none}.gz-rt.r0{background:#E0533D}.gz-rt.r1{background:#E3A72F}.gz-rt.r2{background:#3FAE7A}
 .gz-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .gz-rate{display:flex;gap:2px;flex:none;margin:-4px -6px 0 0}
+.gz-less{display:block;margin:12px auto 0;border:0;background:none;font:800 13px var(--f-body);color:#8A4A2B;text-decoration:underline;text-underline-offset:3px;padding:8px 12px;cursor:pointer}
 .gzf{width:34px;height:34px;border:0;border-radius:50%;background:transparent;color:#B3BCC8;display:grid;place-items:center;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:color .15s,background .15s,transform .15s}
 .gzf.r0[aria-pressed="true"]{color:#D9472F;background:#FBE3DF}.gzf.r1[aria-pressed="true"]{color:#C98A1E;background:#FDF0D5}.gzf.r2[aria-pressed="true"]{color:#2F9E6A;background:#DFF3E8}
 .gzf.pop{animation:gzfPop .3s ease}
@@ -2204,7 +2205,7 @@ var DECO = (function(){
 
 </script>
 <script>
-var APP_VERSION = "MyWorld_1.13";
+var APP_VERSION = "MyWorld_1.14";
 (function(){
 "use strict";
 var CAL = "t.mallet06@gmail.com";
@@ -2783,8 +2784,10 @@ var GZ_RUB = {
 var GZ_FREE = [["#E6EDC8","#56661A"],["#D9DFF7","#33449A"],["#D2E8FA","#2C679C"],["#FAD3CB","#A8402F"],["#FBE6B4","#8E6312"],["#E3D3F7","#6640A6"]];
 function gzKey(t){ return noAcc(String(t || "").toLowerCase()).replace(/[’']/g, "'").trim(); }
 function gzRub(t){ var k = gzKey(t); for (var r in GZ_RUB) if (GZ_RUB[r].alias.indexOf(k) >= 0) return r; return null; }
-function gzCol(t){ var r = gzRub(t); if (r) return GZ_RUB[r].c; var n = gzKey(t), x = 0; for (var j = 0; j < n.length; j++) x = (x * 31 + n.charCodeAt(j)) >>> 0; return GZ_FREE[x % GZ_FREE.length]; }
-function gzIcon(t, size){ var r = gzRub(t), z = size || 18; return r ? '<svg width="' + z + '" height="' + z + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + GZ_RUB[r].ic + '</svg>' : '<b aria-hidden="true">' + h(String(t).charAt(0).toUpperCase()) + '</b>'; }
+/* MyWorld_1.14 : infos « Aviation » ajoutées d'office par le tri des News (pas une rubrique à choisir) */
+var GZ_AVIA = { c: ["#DCE7F5", "#2A4F86"], ic: '<path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z"/>' };
+function gzCol(t){ if (gzKey(t) === "aviation") return GZ_AVIA.c; var r = gzRub(t); if (r) return GZ_RUB[r].c; var n = gzKey(t), x = 0; for (var j = 0; j < n.length; j++) x = (x * 31 + n.charCodeAt(j)) >>> 0; return GZ_FREE[x % GZ_FREE.length]; }
+function gzIcon(t, size){ var r = gzRub(t), z = size || 18; if (gzKey(t) === "aviation") return '<svg width="' + z + '" height="' + z + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true">' + GZ_AVIA.ic + '</svg>'; return r ? '<svg width="' + z + '" height="' + z + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + GZ_RUB[r].ic + '</svg>' : '<b aria-hidden="true">' + h(String(t).charAt(0).toUpperCase()) + '</b>'; }
 function gzRead(){ try { return JSON.parse(localStorage.getItem("gzRead") || "[]"); } catch(e){ return []; } }
 function gzMarkRead(id){ try { var r = gzRead(); if (r.indexOf(id) < 0){ r.push(id); localStorage.setItem("gzRead", JSON.stringify(r.slice(-400))); } } catch(e){} }
 function gzDays(){
@@ -3027,6 +3030,23 @@ function gzRate(b){
   document.querySelectorAll('.gzf[data-id="' + id + '"]').forEach(function(x){ var on = !!(R[id] && R[id].r === +x.dataset.r); x.setAttribute("aria-pressed", String(on)); x.classList.toggle("pop", on); });
   saveSettings({ gazRates: R }).catch(dbErr);
 }
+/* MyWorld_1.14 (tri D) : « Moins de ce genre » (avis fort, r = -2) et article ouvert sur le site (signal léger +0,5, sans écraser un avis donné) */
+function gzSaveRate(id, fn){
+  var g = S.gazette.find(function(x){ return x._id === id; }); if (!g) return;
+  var R = Object.assign({}, (S.settings && S.settings.gazRates) || {}), prev = R[id] ? Object.assign({}, R[id]) : null;
+  var base = { t: g.topic || "", s: g.source || "", ti: g.title || "", at: nowISO() };
+  fn(R, base);
+  saveSettings({ gazRates: R }).catch(dbErr);
+  return prev;
+}
+function gzLess(id){
+  var prev = gzSaveRate(id, function(R, base){ R[id] = Object.assign(base, { r: -2, less: 1 }); });
+  toast("Compris : moins d'infos comme celle-ci.", { undo: function(){ gzSaveRate(id, function(R){ if (prev) R[id] = prev; else delete R[id]; }); } });
+  gzClose();
+}
+function gzOpened(id){
+  gzSaveRate(id, function(R, base){ if (R[id] && typeof R[id].r === "number" && !R[id].imp) R[id] = Object.assign({}, R[id], { o: 1 }); else R[id] = Object.assign(base, { r: .5, imp: 1, o: 1 }); });
+}
 function gzOpen(id, obj){
   var g = obj || S.gazette.find(function(x){ return x._id === id; }); if (!g) return;
   if (!obj) gzMarkRead(id);
@@ -3037,8 +3057,10 @@ function gzOpen(id, obj){
     + (g.lead ? '<h4>L\'essentiel</h4><p>' + h(g.lead) + '</p>' : "")
     + (g.more ? '<h4>En quelques phrases</h4><p class="more">' + h(g.more) + '</p>' : "")
     + (!g.lead && !g.more ? '<p class="more">Pas de résumé pour cet article : le site ne le fournit pas.</p>' : "")
-    + '<div class="acts"><button type="button" class="b1" data-act="gz-close">Fermer</button><a class="b2" href="' + h(g.url) + '" target="_blank" rel="noopener">Lire sur ' + h(g.source || "le site") + ' ↗</a></div></div>';
-  document.body.appendChild(el); document.body.classList.add("gz-on"); scrollLock(true); gzDrag(el);
+    + '<div class="acts"><button type="button" class="b1" data-act="gz-close">Fermer</button><a class="b2" href="' + h(g.url) + '" target="_blank" rel="noopener">Lire sur ' + h(g.source || "le site") + ' ↗</a></div>'
+    + (obj ? '' : '<button type="button" class="gz-less" data-act="gz-less" data-id="' + h(g._id) + '">Moins de ce genre</button>') + '</div>';
+  document.body.appendChild(el);
+  if (!obj){ var lk = el.querySelector(".b2"); if (lk) lk.addEventListener("click", function(){ gzOpened(g._id); }); } document.body.classList.add("gz-on"); scrollLock(true); gzDrag(el);
   requestAnimationFrame(function(){ el.classList.add("on"); });
   setTimeout(function(){ var b = el.querySelector(".b1"); if (b) b.focus({preventScroll:true}); }, 60);
   render();
@@ -4758,6 +4780,7 @@ document.addEventListener("click", function(e){
   if (act === "gz-une"){ var u1 = gzUneOf(S.gzDay); if (u1) gzOpen(null, u1); return; }
   if (act === "gz-close"){ gzClose(); return; }
   if (act === "gz-rate"){ gzRate(b); return; }
+  if (act === "gz-less"){ gzLess(b.dataset.id); return; }
   if (act === "gz-num"){ S.gzNum = (S.gzNum || 0) + 1; render(); return; }
   if (act === "topic-quick"){ var tq = b.dataset.t, tl = ((S.settings && S.settings.topics) || []).slice(); if (tl.indexOf(tq) < 0) tl.push(tq); saveSettings({topics:tl}).then(refreshSettings); return; }
   if (act === "note-import"){ noteImportSheet(); return; }

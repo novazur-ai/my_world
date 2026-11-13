@@ -29,6 +29,9 @@ const FEEDS = {
   frandroid: ["Frandroid", "https://www.frandroid.com/feed"],
   lequipe: ["L'Équipe", "https://dwh.lequipe.fr/api/edito/rss?path=/"],
   of_une: ["Ouest-France", "https://www.ouest-france.fr/rss/une"],
+  /* MyWorld_1.14 : aviation (métier de Théo, FBO de Nice) : ajoutés d'office aux candidats, gardés seulement si l'info touche l'aviation */
+  airjournal: ["Air Journal", "https://www.air-journal.fr/feed/"],
+  aeromorning: ["Aeromorning", "https://aeromorning.com/feed/"],
   /* sites spécialisés : servent aux sujets libres (on y cherche les articles qui parlent du sujet) */
   figaro: ["Le Figaro", "https://www.lefigaro.fr/rss/figaro_actualites.xml"],
   libe: ["Libération", "https://www.liberation.fr/arc/outboundfeeds/rss-all/?outputType=xml"],
@@ -237,6 +240,11 @@ const GRAVE = /\b(attentats?|explosions?|seismes?|tremblement de terre|guerres?|
 /* contenus « pratiques » ou de divertissement : moins importants */
 const SOFT = /\b(guide|astuces?|comment |pourquoi |quiz|horoscope|on a teste|nos conseils|les \d+ meilleur|top \d+|notre selection|en images|people|star academy|tele-?realite|recettes?|bon plan|code promo|test du|test de la)\b/;
 const LOCAL = /\bcagnes\b/;
+/* MyWorld_1.14, tri B « utile pour toi » (textes sans accents, en minuscules) */
+const UTILE = /\b(prix|carburants?|essence|gazole|diesel|impots?|taxes?|retraites?|salaires?|smic|loyers?|electricite|tarifs?|allocations?|caf|transports?|sncf|ter|tgv|trains?|tram|autoroutes?|peages?|bouchons?|vigilance|alerte meteo|orages?|inondations?|canicule|tempetes?|neige|greves?)\b/;
+const AVIA = /\b(aeroports?|aerien(ne)?s?|aviation|avions?|jets? prives?|aviation d'affaires|compagnies? aeriennes?|air france|easyjet|ryanair|transavia|dgac|controle aerien|controleurs aeriens|aiguilleurs|pilotes?|airbus|boeing|dassault|falcon|gulfstream|bombardier|embraer|cessna|fbo|nice-cote d'azur|nice cote d'azur)\b/;
+const AZUR = /\b(nice|antibes|cannes|alpes-maritimes|cote d'azur|monaco|grasse|menton|saint-laurent-du-var|villeneuve-loubet|vence|saint-jeannet)\b/;
+const FAITS = /\b(meurtres?|tue par|poignard\w*|agressions?|agresse|braquages?|viol|faits? divers|people|stars?|chanteu(r|se)|influenceu(r|se)|tele-?realite|mariage|divorce|en couple|rupture)\b/;
 /* les grands titres des journaux nationaux (30 h), pour mesurer combien de rédactions parlent d'une info */
 let NAT = null;
 async function national(){
@@ -254,7 +262,7 @@ async function national(){
 export function learnModel(rates){
   const T = {}, Sx = {}, W = {}, add = (m, k, r) => { const v = m[k] || (m[k] = [0, 0]); v[0] += r; v[1]++; };
   let n = 0;
-  for (const x of Object.values(rates || {})){ if (!x || typeof x.r !== "number") continue; n++; if (x.t) add(T, x.t, x.r); if (x.s) add(Sx, x.s, x.r); for (const w of uw(x.ti || "")) add(W, w, x.r); }
+  for (const x of Object.values(rates || {})){ if (!x || typeof x.r !== "number") continue; if (!x.imp) n++; if (x.t) add(T, x.t, x.r); if (x.s) add(Sx, x.s, x.r); for (const w of uw(x.ti || "")) add(W, w, x.r); }
   return { T, S: Sx, W, n };
 }
 function prefScore(m, it){
@@ -262,10 +270,12 @@ function prefScore(m, it){
   const f = (v, k) => (v ? v[0] / (v[1] + k) : 0);
   const ws = [...uw(it.title)].map((w) => f(m.W[w], 2)).filter((x) => x);
   const wsc = ws.length ? ws.reduce((a, b) => a + b, 0) / Math.sqrt(ws.length) : 0;
-  return 3 * f(m.T[it.topic], 3) + 1.5 * f(m.S[it.source], 3) + Math.max(-3, Math.min(3, 2 * wsc));
+  /* plus Théo donne d'avis, plus ses goûts pèsent : × 1 au début, × 2,5 à partir de 30 avis */
+  const k = 1 + Math.min(30, m.n) / 20;
+  return k * (3 * f(m.T[it.topic], 3) + 1.5 * f(m.S[it.source], 3) + Math.max(-3, Math.min(3, 2 * wsc)));
 }
 const r1 = (x) => Math.round(x * 10) / 10;
-export async function build(topics, seen = new Set(), rates = {}, N_PICK = 6){
+export async function build(topics, seen = new Set(), rates = {}, N_PICK = 6, prevTitles = []){
   const now = Date.now(), model = learnModel(rates), C = [], urls = new Set();
   for (const topic of topics){
     const rub = rubriqueOf(topic);
@@ -283,22 +293,30 @@ export async function build(topics, seen = new Set(), rates = {}, N_PICK = 6){
     for (const i of cands){ if (seen.has(i.url) || seen.has(norm(i.title)) || urls.has(i.url)) continue; urls.add(i.url); C.push({ ...i, topic }); n++; }
     console.log(`${topic}${rub ? " (rubrique " + rub + ")" : ""} : ${n} candidat(s)`);
   }
+  for (const f of ["airjournal", "aeromorning"]){ let n = 0;
+    for (const i of await readFeed(f)){ if ((i.ts && now - i.ts > 36 * 3600e3) || !i.lead || seen.has(i.url) || seen.has(norm(i.title)) || urls.has(i.url) || !AVIA.test(norm(i.title + " " + i.lead))) continue; urls.add(i.url); C.push({ ...i, topic: "Aviation" }); n++; }
+    console.log(`Aviation (${f}) : ${n} candidat(s)`); }
   let une = null; try { une = await topStory(); } catch (e) { console.warn("À la une : " + e.message); }
-  const N = await national(), uneA = une ? { w: uw(une.title + " " + une.lead), tw: uw(une.title) } : null;
+  const N = await national(), prev = prevTitles.map((p) => ({ w: uw(p.title + " " + (p.lead || "")), tw: uw(p.title) })), uneA = une ? { w: uw(une.title + " " + une.lead), tw: uw(une.title) } : null;
   for (const it of C){
     it.w = uw(it.title + " " + it.lead); it.tw = uw(it.title);
-    const srcs = new Set([it.source]); for (const a of N.arts) if (N.cov(it, a)) srcs.add(a.src);
+    const srcs = new Set([it.source]), tss = it.ts ? [it.ts] : []; for (const a of N.arts) if (N.cov(it, a)){ srcs.add(a.src); if (a.ts) tss.push(a.ts); }
+    const spanH = tss.length > 1 ? (Math.max(...tss) - Math.min(...tss)) / 3600e3 : 0;
     const t = norm(it.title), l = norm(it.lead), age = it.ts ? (now - it.ts) / 3600e3 : 30;
-    const gt = new Set(t.match(GRAVE) || []).size, gl = new Set(l.match(GRAVE) || []).size;
+    const tl = t + " " + l;
+    /* MyWorld_1.14 : tri A « ce dont tout le monde parle » + B « utile pour toi » + D « appris de toi » ; plus de bonus pour les mots « graves » */
     it.parts = {
-      reprise: srcs.size > 1 ? r1(4 * Math.log2(srcs.size)) : 0,           /* nombre de journaux qui en parlent */
-      gravite: Math.min(6, 2.5 * gt + gl),                                  /* info grave ou d'intérêt général */
-      cagnes: LOCAL.test(t + " " + l) ? 2 : 0,
+      reprise: srcs.size > 1 ? r1(5 * Math.log2(srcs.size)) : 0,           /* nombre de grands journaux qui en parlent */
+      duree: spanH >= 6 ? 2 : spanH >= 3 ? 1 : 0,                           /* reste à la une plusieurs heures */
+      utile: (AVIA.test(tl) ? 4 : 0) + (UTILE.test(tl) ? 2 : 0) + (LOCAL.test(tl) ? 3 : AZUR.test(tl) ? 2 : 0),
+      faitsDivers: FAITS.test(tl) ? -3 : 0,
       leger: SOFT.test(t) ? -3 : 0,
       fraicheur: age < 6 ? 2 : age < 12 ? 1 : age < 24 ? 0 : age < 48 ? -2 : -4,
       qualite: (it.lead && it.lead.length >= 80 ? 1 : -1) + (/news\.google\./.test(it.url) ? -1 : 0),
-      gouts: r1(prefScore(model, it))                                       /* appris des notes */
+      gouts: r1(prefScore(model, it))                                       /* appris des avis (visages, « Moins de ce genre », articles ouverts) */
     };
+    /* déjà montrée les jours d'avant (même événement, autre article) : seulement si elle a pris beaucoup d'ampleur */
+    if (prev.some((p) => N.sim(it, p) >= 6) && srcs.size < 5) it.parts.dejaVue = -8;
     it.score = Object.values(it.parts).reduce((a, b) => a + b, 0);
     it.srcs = srcs.size;
   }
@@ -347,8 +365,9 @@ if (process.env.ESSAI){
   const topics = settings.topics || [], rates = settings.gazRates || {};
   const gazRef = base.collection("gazette"), existing = await gazRef.get(), seen = new Set();
   /* déjà publiées les jours précédents : on ne les repropose pas ; celles d'aujourd'hui peuvent être reclassées */
-  existing.forEach((d) => { const g = d.data(); if (g.addedAt && parisDay(g.addedAt) === day) return; if (g.url) seen.add(g.url); if (g.title) seen.add(norm(g.title)); });
-  const { items, numbers, une } = await build(topics, seen, rates);
+  const prevTitles = [], lim3 = new Date(Date.now() - 3 * 86400000).toISOString();
+  existing.forEach((d) => { const g = d.data(); if (g.addedAt && parisDay(g.addedAt) === day) return; if (g.url) seen.add(g.url); if (g.title) seen.add(norm(g.title)); if (g.title && g.addedAt && g.addedAt >= lim3) prevTitles.push({ title: g.title, lead: g.lead || "" }); });
+  const { items, numbers, une } = await build(topics, seen, rates, 6, prevTitles);
   if (process.env.SONDE){ console.log("Mode sonde : rien n'est écrit."); process.exit(0); }
   const batch = db.batch(), addedAt = new Date().toISOString(); let added = 0;
   /* les infos déjà publiées aujourd'hui sans résumé (titre seul) sont complétées */
