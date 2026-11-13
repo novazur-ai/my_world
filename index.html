@@ -1125,6 +1125,11 @@ body.game-on #navFade,body.fid-on #navFade{display:none}
 .ht-row::-webkit-scrollbar{display:none}
 .ht-row>.ht{scroll-snap-align:start}
 .ht-sl .ht-ic{background:#DCE1F7;color:#2E3A8C}
+.ht-warn .ht-ic{background:#FCE3C8;color:#A0531A}.ht-warn{border-color:#F2C391}
+.sl-alert{display:flex;align-items:center;gap:11px;padding:11px 12px;border-radius:16px;background:#FFF4E6;border:1px solid #F2C391}
+.sl-alert-ic{width:30px;height:30px;flex:none;border-radius:50%;background:#D9822B;color:#fff;font-weight:900;display:grid;place-items:center}
+.sl-alert-t{display:flex;flex-direction:column;min-width:0;flex:1}.sl-alert-t b{font-size:14.5px;font-weight:900;color:#7A3E10}.sl-alert-t small{font-size:12.5px;font-weight:700;color:#9A5A22}
+.sl-alert-b{flex:none;border:0;border-radius:999px;background:#D9822B;color:#fff;font:800 13px var(--f-body);padding:8px 13px}
 .ht-sc{position:absolute;top:11px;right:11px;min-width:30px;height:22px;padding:0 6px;border-radius:999px;color:#fff;font-size:12px;font-weight:900;display:grid;place-items:center;font-variant-numeric:tabular-nums}
 .sl-page{padding-bottom:30px}
 .sl-page .section{margin-top:22px}
@@ -2097,7 +2102,7 @@ var DECO = (function(){
 
 </script>
 <script>
-var APP_VERSION = "MyWorld_1.8";
+var APP_VERSION = "MyWorld_1.9";
 (function(){
 "use strict";
 var CAL = "t.mallet06@gmail.com";
@@ -5352,7 +5357,7 @@ function viewSommeil(){
   if (!ns.length) return slEmptyHTML();
   if (!S.slSel || !slByKey(S.slSel)) S.slSel = ns[ns.length - 1].key;
   var n = slByKey(S.slSel);
-  return '<div class="sl-page">' + slNightHTML(n) + slWeekHTML(n) + slWorkHTML() + slFootHTML() + '</div>';
+  return '<div class="sl-page">' + slStaleHTML() + slNightHTML(n) + slWeekHTML(n) + slWorkHTML() + slFootHTML() + '</div>';
 }
 function slEmptyHTML(){
   var st = SLS.st, msg = st && st.old ? "Le script Google répond, mais il n'a pas encore la partie sommeil. Suis l'étape A du mode d'emploi."
@@ -5453,8 +5458,15 @@ function slAct(act, b){
     if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy) * 1.5) return; var nb = document.querySelector('[data-act="sl-week"][data-n="' + (dx > 0 ? -1 : 1) + '"]'); if (nb && !nb.disabled) nb.click(); }, { passive: true });
 })();
 /* bloc de l'accueil */
+/* MyWorld_1.9 : alerte quand aucune nuit n'est arrivée depuis 3 jours (2 jours d'oubli de montre restent normaux) */
+function slStale(){ var ns = slNights(), n = ns[ns.length - 1]; if (!n) return 0; var d = Math.floor((Date.now() - n.e) / 864e5); return d >= 3 ? d : 0; }
+function slStaleHTML(){
+  var d = slStale(); if (!d) return "";
+  return '<section class="section gut sl-alert-s"><div class="sl-alert" role="status"><span class="sl-alert-ic" aria-hidden="true">!</span><span class="sl-alert-t"><b>Aucune nuit depuis ' + d + ' jours</b><small>Montre oubliée, ou Health Sync / HC Webhook arrêté ?</small></span><button type="button" class="sl-alert-b" data-act="sl-sync">Vérifier</button></div></section>';
+}
 function homeSleepTileHTML(){
-  var ns = slNights(), n = ns[ns.length - 1], fresh = n && n.key >= iso(addDays(today(), -1));
+  var ns = slNights(), n = ns[ns.length - 1], fresh = n && n.key >= iso(addDays(today(), -1)), st = slStale();
+  if (st) return '<button type="button" class="ht ht-sl ht-warn" data-act="home-go" data-k="sommeil" aria-label="Sommeil : aucune nuit reçue depuis ' + st + ' jours"><span class="ht-ic">' + SL_IC + '</span><span class="ht-sc" style="background:#D9822B">!</span><span class="ht-k">Pas de nuit</span><span class="ht-v">' + st + ' j</span></button>';
   return '<button type="button" class="ht ht-sl" data-act="home-go" data-k="sommeil" aria-label="' + h(n ? "Sommeil, " + (fresh ? "nuit dernière" : "dernière nuit le " + fmtShort(n.key)) + " : " + slHM(n.sleep) + ", note " + n.score + " sur 100" : "Sommeil") + '">'
     + '<span class="ht-ic">' + SL_IC + '</span>' + (n ? '<span class="ht-sc" style="background:' + slTone(n.score) + '">' + n.score + '</span>' : '')
     + '<span class="ht-k">' + (n && !fresh ? "Le " + fmtShort(n.key) : "Nuit") + '</span><span class="ht-v">' + (n ? slHM(n.sleep, "h") : "—") + '</span></button>';
