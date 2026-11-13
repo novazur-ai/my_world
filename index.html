@@ -1218,6 +1218,91 @@ body.game-on #navFade,body.fid-on #navFade{display:none}
 .sl-bed{width:100%;display:flex;align-items:center;gap:10px;padding:12px 14px;border:0;border-radius:16px;background:#E3EEF6;color:#0B3A5C;font:800 14px var(--f-body);text-align:left;cursor:pointer}
 .sl-bed b{margin-left:auto;font-size:18px;font-weight:900}
 .sl-det .sl-pt:first-child{margin-top:0}
+/* ===== MyWorld_1.11 : Bien-être ===== */
+.md-face{display:block;overflow:visible}
+.md-row{display:flex;justify-content:space-between;align-items:center}
+.md-pick{border:0;background:none;padding:2px;border-radius:50%;cursor:pointer;transition:transform .15s}
+.md-pick:active{transform:scale(.9)}
+.md-done{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:8px 14px}
+.md-done b{flex:1;font-size:15px;font-weight:900}
+.md-done .link-btn{font-size:13px}
+.md-ban{border-radius:20px;padding:13px 14px 10px;background:linear-gradient(120deg,#EEF1FC,#FBF0F4);border:1px solid #E3E2F3;display:flex;flex-direction:column;gap:8px}
+.md-ban-h{display:flex;justify-content:space-between;align-items:center}
+.md-ban-h b{font-size:16px;font-weight:900;color:#2A2340}
+.md-x{width:32px;height:32px;border-radius:50%;border:0;background:#fff;color:var(--muted);font:900 17px/1 var(--f-body);display:grid;place-items:center;cursor:pointer}
+.md-home{margin-top:14px}
+.be-hd .be-ph{font-size:30px;line-height:1.18;font-weight:900;letter-spacing:-.01em;margin:10px 0 4px;max-width:330px;text-wrap:balance}
+.be-hl{position:relative;display:inline-block;color:#FFE29A}
+.be-sw{position:absolute;left:-2%;bottom:-7px;width:104%;height:11px}
+.be-page{padding-bottom:30px}
+.be-page .section{margin-top:18px}
+.be-ask{display:flex;flex-direction:column;gap:10px}.be-ask>b{font-size:16px;font-weight:900}
+.be-seg{display:flex;padding:4px;border-radius:999px;background:#E9EEF3;margin-bottom:14px}
+.be-seg button{flex:1;border:0;border-radius:999px;padding:8px 0;font:900 14px var(--f-body);background:transparent;color:var(--muted);cursor:pointer}
+.be-seg button[aria-selected="true"]{background:#fff;color:#0B3A5C;box-shadow:0 2px 6px rgba(10,40,70,.12)}
+.be-week{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+.be-wd{border:0;background:transparent;border-radius:14px;padding:6px 0;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;font:inherit;color:inherit}
+.be-wd.on{background:#E8F0F7}.be-wd:disabled{opacity:.45;cursor:default}
+.be-j{font-size:11px;font-weight:900;color:var(--muted)}
+.be-ns{font-size:12px;font-weight:900;font-variant-numeric:tabular-nums}
+.be-mh{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}.be-mh b{font-size:15px;font-weight:900;text-transform:capitalize}
+.be-dow{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;text-align:center;font-size:10.5px;font-weight:900;color:var(--muted);margin-bottom:5px}
+.be-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;touch-action:pan-y}
+.be-c{height:42px;border:0;border-radius:12px 14px 11px 13px;background:#fff;box-shadow:inset 0 0 0 1px var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font:900 13px var(--f-body);color:#2A2340;cursor:pointer;padding:0}
+.be-c[style]{box-shadow:none}
+.be-c.fut{background:#F3F6F9;box-shadow:none;color:#A3AEB9;cursor:default}
+.be-c.td{box-shadow:inset 0 0 0 2px #A9B4BF}
+.be-c.on{outline:2.5px solid #0B4F7C;outline-offset:2px}
+.be-c i{width:5px;height:5px;border-radius:50%;background:transparent}.be-c i.ok{background:#2A2340}
+.be-leg{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:10px}
+.be-leg i{width:14px;height:14px;border-radius:4px}.be-leg span{font-size:11px;font-weight:800;color:var(--muted);margin-left:6px}
+.be-sel{margin-top:12px;padding:10px 12px;border-radius:14px;background:#F3F6F9;display:flex;align-items:center;gap:10px}
+.be-sel span{display:flex;flex-direction:column;min-width:0}.be-sel b{font-size:14px;font-weight:900}.be-sel small{font-size:12.5px;font-weight:700;color:var(--muted)}
+.be-tease{display:flex;gap:10px;align-items:center;margin-top:12px;padding:12px;border-radius:14px;background:#EAF4EE;color:#1F5A3A;text-decoration:none}
+.be-tease span{display:flex;flex-direction:column;min-width:0}.be-tease b{font-size:14px;font-weight:900}.be-tease small{font-size:12.5px;font-weight:700}
+.be-tease.wait{background:#F1F3F8;color:#3A4A68}
+.be-slt{display:flex;align-items:center;gap:14px;text-decoration:none;color:inherit}
+.be-slt>span:not(.sl-ring){display:flex;flex-direction:column}
+.be-slt .sl-ring{width:72px;height:72px}.be-slt .sl-ring b{font-size:22px;margin-top:0}.be-slt .sl-ring small{display:none}
+.be-stale{margin:0 0 10px;font-size:13px;font-weight:800;color:#9A5A22}
+.be-sbars{display:flex;gap:6px;margin-top:12px}
+.be-sb{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
+.be-sbw{height:48px;width:100%;display:flex;align-items:flex-end}
+.be-sbw i{display:block;width:100%;border-radius:5px 5px 2px 2px;background:linear-gradient(180deg,#B57BE8 0 20%,#6E8BEA 20% 75%,#2E3A8C 75%)}
+.be-sbw i.e{height:4px;background:#E4EAF0;border-radius:2px}
+.be-sb em{font-style:normal;font-size:10.5px;font-weight:900;color:var(--muted)}.be-sb b{font-size:11.5px;font-weight:900}
+.be-sl0{display:flex;flex-direction:column;gap:4px;text-decoration:none;color:inherit}
+#beYear{position:fixed;inset:0;z-index:90;background:#F2F6F9;overflow-y:auto;padding:calc(18px + env(safe-area-inset-top,0px)) 18px calc(24px + env(safe-area-inset-bottom,0px))}
+#beYear[hidden]{display:none}
+body.by-on #navFade{display:none}
+.by-wrap{max-width:460px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+.by-top{display:flex;justify-content:space-between;align-items:center}.by-top b{font-size:34px;font-weight:900}
+.by-x{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:#fff;font:900 22px/1 var(--f-body);color:var(--text);cursor:pointer}
+.by-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px 6px}
+.by-m{border:0;background:transparent;border-radius:14px;padding:8px 4px;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;font:inherit;color:var(--muted)}
+.by-m b{font-size:12px;font-weight:900}.by-m.on{background:#fff;box-shadow:0 0 0 2px #0B4F7C;color:#0B3A5C}
+.by-g{display:grid;grid-template-columns:repeat(7,10px);gap:2.5px}
+.by-g i{width:10px;height:10px;border-radius:3px}.by-g i.d{background:#E6EBF0}
+.by-bar{display:flex;gap:1px;width:88px;height:6px;border-radius:3px;overflow:hidden}.by-bar i{background:#E6EBF0}
+.by-pc{display:flex;justify-content:space-around}
+.by-pc span{display:flex;flex-direction:column;align-items:center;gap:3px}.by-pc b{font-size:15px;font-weight:900}
+.cc-sum{display:flex;align-items:center;gap:12px}.cc-sum span{font-size:14px;font-weight:800;line-height:1.35}
+.cc-wait{display:flex;flex-direction:column;gap:8px}.cc-wait b{font-size:16px;font-weight:900}.cc-wait small{font-size:12.5px;font-weight:700;color:var(--muted)}
+.cc-list{display:flex;flex-direction:column;gap:12px}
+.cc-i{display:flex;flex-direction:column;gap:10px}.cc-i>b{font-size:15.5px;font-weight:900;line-height:1.3}.cc-i small{font-size:12px;font-weight:700;color:var(--muted)}
+.cc-b{display:flex;flex-direction:column;gap:4px}.cc-b>div{display:flex;justify-content:space-between;font-size:13px;font-weight:800}
+.cc-t{display:block;height:12px;border-radius:6px;background:#EDF1F5;overflow:hidden}.cc-t i{display:block;height:100%;border-radius:6px}
+.cc-w{display:flex;gap:7px}.cc-w>span{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px}
+.cc-w>span>span{height:90px;width:100%;display:flex;align-items:flex-end}.cc-w i{display:block;width:100%;border-radius:7px 9px 4px 4px}
+.cc-w b{font-size:12px;font-weight:900}.cc-w em{font-style:normal;font-size:11px;font-weight:900;color:var(--muted)}
+.cc-note{text-align:center;font-size:12px;font-weight:700;color:var(--muted);margin:16px 0 0}
+.ht-edit .ht{animation:htw .32s ease-in-out infinite;touch-action:none}
+.ht-edit .ht:nth-child(2){animation-delay:.08s}.ht-edit .ht:nth-child(3){animation-delay:.16s}.ht-edit .ht:nth-child(4){animation-delay:.04s}
+.ht-edit{overflow-x:hidden}
+.ht-edit .ht.ht-drag{animation:none;z-index:2;box-shadow:0 14px 30px rgba(11,58,92,.22);transition:none}
+@keyframes htw{0%,100%{transform:rotate(-1.4deg)}50%{transform:rotate(1.4deg)}}
+.ht-ok{display:block;margin:12px max(18px,env(safe-area-inset-right,0px)) -4px auto;border:0;border-radius:999px;background:#0B4F7C;color:#fff;font:800 13px var(--f-body);padding:7px 16px;cursor:pointer}
+@media (prefers-reduced-motion:reduce){.ht-edit .ht{animation:none;outline:2px dashed #8FA6C0;outline-offset:2px}}
 .sl-empty{background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px 18px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:6px}
 .sl-empty b{font-size:18px;font-weight:900}
 .sl-empty p{margin:0;color:var(--muted);font-size:14px;max-width:34ch}
@@ -1259,7 +1344,7 @@ body.game-on #navFade,body.fid-on #navFade{display:none}
 
 <div id="evRoot" hidden></div>
 <div id="gameRoot" hidden></div>
-<div id="fidRoot" hidden></div>
+<div id="fidRoot" hidden></div><div id="beYear" hidden role="dialog" aria-label="Ton année"></div>
 <div id="navFade" aria-hidden="true"></div>
 <nav class="tabs" aria-label="Navigation">
   <div class="in">
@@ -2119,7 +2204,7 @@ var DECO = (function(){
 
 </script>
 <script>
-var APP_VERSION = "MyWorld_1.10";
+var APP_VERSION = "MyWorld_1.11";
 (function(){
 "use strict";
 var CAL = "t.mallet06@gmail.com";
@@ -2284,10 +2369,11 @@ function heroHTML(){
     return '<div class="hd2 gut hd-home"><a class="eb eb-gz" href="#gazette-' + iso(d) + '" aria-label="' + h(date) + ' : ouvrir la Gazette du jour">' + h(date) + '</a>' + wPillHTML() + '</div>';
   }
   if (S.view === "meteo") return meteoHero(date);
+  if (S.view === "bienetre") return beHeroHTML(date);
   var sub = "";
   if (S.view === "courses"){ var nc = coOpen().filter(function(x){ return !x.done; }).length; sub = '<p class="sub">' + (nc ? nc + " article" + (nc > 1 ? "s" : "") + " à prendre" : "Liste vide") + '</p>'; }
   if (S.view === "cartes"){ var nf = fidAll().length; sub = '<p class="sub">' + (nf ? nf + " carte" + (nf > 1 ? "s" : "") + " de fidélité" : "Aucune carte pour l'instant") + '</p>'; }
-  var title = S.view === "sommeil" ? "Sommeil" : S.view === "cartes" ? "Tes cartes" : S.view === "listes" ? "Tes listes" : S.view === "courses" ? "Tes courses" : S.view === "fiche" ? "Ta fiche" : S.view === "notes" ? "Tes notes" : "La Gazette";
+  var title = S.view === "conclusions" ? "Conclusions" : S.view === "sommeil" ? "Sommeil" : S.view === "cartes" ? "Tes cartes" : S.view === "listes" ? "Tes listes" : S.view === "courses" ? "Tes courses" : S.view === "fiche" ? "Ta fiche" : S.view === "notes" ? "Tes notes" : "La Gazette";
   if (S.view === "gazette"){ var u = S.settings && S.settings.gazetteUpdatedAt, ds0 = gzDays();
     if (S.gzDay){ var nb = gzBatch(S.gzDay).length; title = "La Gazette"; sub = '<p class="sub">' + h(gzDayLabel(S.gzDay) + (S.gzDay === iso(today()) || S.gzDay === iso(addDays(today(), -1)) ? " · " + parseISO(S.gzDay).getDate() + " " + MOIS[parseISO(S.gzDay).getMonth()] : "") + " · " + nb + " info" + (nb > 1 ? "s" : "")) + '</p>'; }
     else sub = '<p class="sub"><span class="pulse" aria-hidden="true" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#2F7440;margin-right:6px"></span>' + h(u ? (iso(new Date(u)) === iso(today()) ? "Mise à jour à " + new Date(u).getHours() + " h " + pad(new Date(u).getMinutes()) : "Mise à jour " + ago(u)) + " · " + ds0.length + " jour" + (ds0.length > 1 ? "s" : "") + " d'archives" : "En attente de la première mise à jour") + '</p>'; }
@@ -2467,12 +2553,13 @@ function homeTilesHTML(){
     nxT = bd ? nx.e.title.replace(/^anniversaire\s+(?:de\s+|d['’]\s*)?/i, "") : splitTitle(nx.e.title, nx.e.meta && nx.e.src === "gcal" ? nx.e.meta : nx.e.place).core;
     open = nx.e.src === "gcal" ? ' data-act="ev-open" data-gid="' + h(nx.e.gid) + '" data-d="' + h(nx.e.date || nx.di) + '"' : ' data-act="home-go" data-k="month" data-d="' + h(nx.di) + '"';
   }
-  return '<section class="section gut ht-row" aria-label="En bref">'
-    + '<button type="button" class="ht ht-co" data-act="home-go" data-k="courses" aria-label="Courses : ' + left + ' article' + (left > 1 ? 's' : '') + ' à prendre"><span class="ht-ic">' + HOME_IC.cart + '</span><span class="ht-k">Courses</span><span class="ht-v">' + left + '</span><span class="ht-bar"><i style="width:' + pct + '%"></i></span></button>'
-    + '<button type="button" class="ht ht-td" data-act="home-go" data-k="todo" aria-label="À faire aujourd\'hui : ' + td.length + (late ? ', dont en retard' : '') + '"><span class="ht-ic">' + HOME_IC.todo + '</span><span class="ht-k">À faire</span><span class="ht-v">' + td.length + (late ? '<i class="ht-late" aria-hidden="true"></i>' : '') + '</span></button>'
-    + '<button type="button" class="ht ht-nx"' + open + ' aria-label="' + h(nx ? "Prochain : " + nxT + ", " + homeWhen(nx) : "Rien de prévu") + '"><span class="ht-ic">' + (bd ? HOME_IC.cake : HOME_IC.cal) + '</span><span class="ht-k">' + h(nx ? nxT : "Prochain") + '</span><span class="ht-v sm">' + h(nx ? homeWhen(nx) : "—") + '</span></button>'
-    + homeSleepTileHTML()
-    + '</section>';
+  var T = {
+    co: '<button type="button" class="ht ht-co" data-ht="co" data-act="home-go" data-k="courses" aria-label="Courses : ' + left + ' article' + (left > 1 ? 's' : '') + ' à prendre"><span class="ht-ic">' + HOME_IC.cart + '</span><span class="ht-k">Courses</span><span class="ht-v">' + left + '</span><span class="ht-bar"><i style="width:' + pct + '%"></i></span></button>',
+    td: '<button type="button" class="ht ht-td" data-ht="td" data-act="home-go" data-k="todo" aria-label="À faire aujourd\'hui : ' + td.length + (late ? ', dont en retard' : '') + '"><span class="ht-ic">' + HOME_IC.todo + '</span><span class="ht-k">À faire</span><span class="ht-v">' + td.length + (late ? '<i class="ht-late" aria-hidden="true"></i>' : '') + '</span></button>',
+    nx: '<button type="button" class="ht ht-nx" data-ht="nx"' + open + ' aria-label="' + h(nx ? "Prochain : " + nxT + ", " + homeWhen(nx) : "Rien de prévu") + '"><span class="ht-ic">' + (bd ? HOME_IC.cake : HOME_IC.cal) + '</span><span class="ht-k">' + h(nx ? nxT : "Prochain") + '</span><span class="ht-v sm">' + h(nx ? homeWhen(nx) : "—") + '</span></button>',
+    sl: homeSleepTileHTML() };
+  /* MyWorld_1.11 : ordre choisi par Théo (appui long puis glisser), gardé dans settings.homeOrder */
+  return '<section class="section gut ht-row" aria-label="En bref (appui long sur un bloc pour réorganiser)">' + htOrder().map(function(k){ return T[k]; }).join("") + '</section>';
 }
 function homeGameHTML(){
   return '<section class="section gut"><button type="button" class="hgame" data-act="home-game" aria-label="Jouer à La Veille de Forpharos, le jeu de My World">'
@@ -2600,7 +2687,7 @@ function programmeHTML(){
   return '<section class="section gut" aria-labelledby="pg"><div class="section-head"><h2 id="pg">' + h(title) + '</h2><button type="button" class="link-btn" data-act="month">Voir le mois</button></div>' + calNotice() + svcCardHTML(di) + '<div class="prows">' + body + '</div></section>';
 }
 function viewAccueil(){
-  return weekStripHTML() + homeProgHTML() + homeTilesHTML() + homeGameHTML() + homeNotesHTML();
+  return weekStripHTML() + homeProgHTML() + homeMoodHTML() + homeTilesHTML() + homeGameHTML() + homeNotesHTML();
 }
 /* ---------- Fiche d'un rendez-vous ---------- */
 function remText(rem, time){
@@ -3001,7 +3088,7 @@ function render(){
   var unseenN = v === "gazette" ? 0 : unseenGazette().length;
   document.getElementById("gazBadge").hidden = !unseenN;
   document.getElementById("gazBadgeSr").textContent = unseenN ? ", " + unseenN + " nouveauté" + (unseenN > 1 ? "s" : "") : "";
-  var html = v === "jeu" ? "" : v === "listes" ? viewListes() : v === "courses" ? viewCourses() : v === "cartes" ? viewCartes() : v === "sommeil" ? viewSommeil() : v === "fiche" ? viewFiche() : v === "gazette" ? viewGazette() : v === "meteo" ? viewMeteo() : v === "notes" ? viewNotes() : viewAccueil();
+  var html = v === "jeu" ? "" : v === "listes" ? viewListes() : v === "courses" ? viewCourses() : v === "cartes" ? viewCartes() : v === "sommeil" ? viewSommeil() : v === "bienetre" ? viewBienetre() : v === "conclusions" ? viewConclusions() : v === "fiche" ? viewFiche() : v === "gazette" ? viewGazette() : v === "meteo" ? viewMeteo() : v === "notes" ? viewNotes() : viewAccueil();
   if (S.dbState === "off") html = '<section class="section gut" style="margin-top:24px"><div class="card soft-empty">Tes données ne sont pas disponibles pour l\'instant. Vérifie ta connexion, puis recharge l\'appli.</div></section>' + html;
   document.getElementById("view").innerHTML = html;
   if (v === "meteo") document.getElementById("app").style.setProperty("--mtH", hero.offsetHeight + "px");
@@ -4642,6 +4729,7 @@ document.addEventListener("click", function(e){
   if (act === "close"){ closeSheet(); return; }
   if (/^fid-/.test(act) && fidAct(act, b)) return;
   if (/^sl-/.test(act) && slAct(act, b)) return;
+  if (/^(mood-|be-|by-|cc-)/.test(act) && beAct(act, b)) return;
   if (/^(note-|ne-|fmt$|fig-|aud-|rec-|dp-|pick-folder$|folder-)/.test(act) && noteAction(act, b)) return;
   if (act === "mday"){ S.monthSel = b.dataset.d; document.getElementById("mBody").innerHTML = monthHTML(); var fb2 = document.querySelector('.mcell[data-d="' + S.monthSel + '"]'); if (fb2) fb2.focus({preventScroll:true}); return; }
   if (act === "month"){ S.monthOffset = 0; S.monthSel = null; openSheet("Le mois", '<div id="mBody">' + monthHTML() + '</div>'); return; }
@@ -4674,7 +4762,7 @@ document.addEventListener("click", function(e){
   if (act.indexOf("co-") === 0 && coAct(act, b)) return;
   if (act === "home-game"){ location.hash = "jeu"; return; }
   if (act === "home-go"){ var hk = b.dataset.k;
-    if (hk === "courses" || hk === "notes" || hk === "sommeil"){ location.hash = hk; return; }
+    if (hk === "courses" || hk === "notes" || hk === "sommeil" || hk === "bienetre"){ location.hash = hk; return; }
     if (hk === "todo"){ S.listTab = "todo"; S.todoMom = "auj"; location.hash = "listes"; return; }
     if (hk === "month"){ var hd = b.dataset.d ? parseISO(b.dataset.d) : today(), t0 = today(); S.monthOffset = (hd.getFullYear() - t0.getFullYear()) * 12 + hd.getMonth() - t0.getMonth(); S.monthSel = iso(hd); openSheet("Le mois", '<div id="mBody">' + monthHTML() + '</div>'); return; }
     return; }
@@ -4717,7 +4805,7 @@ document.addEventListener("click", function(e){
 document.addEventListener("keydown", function(e){ if (e.key === "Escape") { closeSheet(); var l = document.querySelector(".levelup"); if (l) l.remove(); } });
 document.getElementById("captureForm").addEventListener("submit", onCapture);
 
-var TABS = ["accueil","notes","listes","courses","fiche","gazette","meteo","jeu","cartes","sommeil"];
+var TABS = ["accueil","notes","listes","courses","fiche","gazette","meteo","jeu","cartes","sommeil","bienetre","conclusions"];
 
 
 /* ===== MyWorld_0.13 : page « Tes listes » (À faire / Rappels) ===== */
@@ -5463,11 +5551,274 @@ function slStaleHTML(){
 }
 function homeSleepTileHTML(){
   var ns = slNights(), n = ns[ns.length - 1], fresh = n && n.key >= iso(addDays(today(), -1)), st = slStale();
-  if (st) return '<button type="button" class="ht ht-sl ht-warn" data-act="home-go" data-k="sommeil" aria-label="Sommeil : aucune nuit reçue depuis ' + st + ' jours"><span class="ht-ic">' + SL_IC + '</span><span class="ht-sc" style="background:#D9822B">!</span><span class="ht-k">Pas de nuit</span><span class="ht-v">' + st + ' j</span></button>';
-  return '<button type="button" class="ht ht-sl" data-act="home-go" data-k="sommeil" aria-label="' + h(n ? "Sommeil, " + (fresh ? "nuit dernière" : "dernière nuit le " + fmtShort(n.key)) + " : " + slHM(n.sleep) + ", note " + n.score + " sur 100" : "Sommeil") + '">'
+  if (st) return '<button type="button" class="ht ht-sl ht-warn" data-ht="sl" data-act="home-go" data-k="bienetre" aria-label="Sommeil : aucune nuit reçue depuis ' + st + ' jours"><span class="ht-ic">' + SL_IC + '</span><span class="ht-sc" style="background:#D9822B">!</span><span class="ht-k">Pas de nuit</span><span class="ht-v">' + st + ' j</span></button>';
+  return '<button type="button" class="ht ht-sl" data-ht="sl" data-act="home-go" data-k="bienetre" aria-label="' + h(n ? "Sommeil, " + (fresh ? "nuit dernière" : "dernière nuit le " + fmtShort(n.key)) + " : " + slHM(n.sleep) + ", note " + n.score + " sur 100" : "Sommeil") + '">'
     + '<span class="ht-ic">' + SL_IC + '</span>' + (n ? '<span class="ht-sc" style="background:' + slTone(n.score) + '">' + n.score + '</span>' : '')
     + '<span class="ht-k">' + (n && !fresh ? "Le " + fmtShort(n.key) : "Nuit") + '</span><span class="ht-v">' + (n ? slHM(n.sleep, "h") : "—") + '</span></button>';
 }
+
+/* ===== MyWorld_1.11 : Bien-être =====
+   Humeur du jour (collection « mood », un document par jour { m: 0..4, at }), notée le soir dès 20 h d'un simple toucher
+   (bandeau de l'accueil ou carte de la page). Visages style « Trait » (choix de Théo, planche « Humeurs : 5 styles »).
+   Page #bienetre : phrase du jour, Semaine / Mois / Année (plein écran, % par mois), résumé du jour, conclusion, sommeil.
+   Page #conclusions : croisements humeur × sommeil × vacations × jour de la semaine (dès 14 jours notés, groupes de 3 jours mini). */
+var MD_COL = ["#A898DD", "#A9C2E4", "#F6D883", "#9EDDB4", "#5CC28F"];
+var MD_L = ["Difficile", "Bof", "Correcte", "Bonne", "Super"];
+var MD_J = ["Journée difficile", "Journée bof", "Journée correcte", "Bonne journée", "Super journée"];
+var MD_INK = "#2A2340";
+function mdFace(l, size){
+  var k = 'fill="none" stroke="' + MD_INK + '" stroke-linecap="round" stroke-linejoin="round"', I = MD_INK;
+  var f = [
+    '<path d="M16.5 22.5l5-1.2M31.5 22.5l-5-1.2M18.5 33.5q5.5-4 11 0" ' + k + ' stroke-width="1.7"/>',
+    '<path d="M17 22h5M26 22h5M18.5 32q3-1 5.5 0t5.5-.2" ' + k + ' stroke-width="1.7"/>',
+    '<circle cx="19.5" cy="22" r="1.5" fill="' + I + '"/><circle cx="28.5" cy="22" r="1.5" fill="' + I + '"/><path d="M19 31q5 2.6 10 0" ' + k + ' stroke-width="1.7"/>',
+    '<circle cx="19.5" cy="21.5" r="1.7" fill="' + I + '"/><circle cx="28.5" cy="21.5" r="1.7" fill="' + I + '"/><path d="M17.5 29.5q6.5 5.5 13 0" ' + k + ' stroke-width="1.8"/>',
+    '<path d="M16.5 23q3-3.6 6 0M25.5 23q3-3.6 6 0" ' + k + ' stroke-width="1.8"/><path d="M16.5 28.5q7.5 9 15 0z" fill="' + I + '" stroke="' + I + '" stroke-width="1.4" stroke-linejoin="round"/>'][l];
+  return '<svg class="md-face" width="' + size + '" height="' + size + '" viewBox="0 0 48 48" aria-hidden="true"><path d="M35.5 11.5A17 17 0 1 0 40.5 20" fill="none" stroke="' + MD_COL[l] + '" stroke-width="3.6" stroke-linecap="round"/>' + f + '</svg>';
+}
+function mdEmpty(size){ return '<svg class="md-face" width="' + size + '" height="' + size + '" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="17" fill="none" stroke="#C3CCD5" stroke-width="2" stroke-dasharray="4 4"/></svg>'; }
+function moodOf(di){ var x = (S.mood || []).find(function(z){ return z._id === di; }); return x && x.m >= 0 && x.m <= 4 ? x.m : null; }
+function moodSet(di, m){
+  if (!needDb()) return;
+  var prev = moodOf(di), ref = db.collection("mood").doc(di);
+  S.moodEdit = false;
+  ref.set({ m: m, at: nowISO() }).then(function(){
+    toast(MD_J[m] + ", c'est noté.", { undo: function(){ (prev == null ? ref.delete() : ref.set({ m: prev, at: nowISO() })).catch(dbErr); } });
+  }).catch(dbErr);
+}
+function moodEvening(){ return new Date().getHours() >= 20; }
+function moodLater(){ try { return localStorage.getItem("mw-mood-later") === iso(today()); } catch(e){ return false; } }
+/* rangée de 5 visages à toucher */
+function moodPickRow(size){
+  var di = iso(today());
+  return '<div class="md-row">' + [0, 1, 2, 3, 4].map(function(l){ return '<button type="button" class="md-pick" data-act="mood-set" data-m="' + l + '" data-d="' + di + '" aria-label="' + MD_J[l] + '">' + mdFace(l, size) + '</button>'; }).join("") + '</div>';
+}
+function moodDoneRow(m){ return '<div class="md-done">' + mdFace(m, 40) + '<b>' + MD_J[m] + ' · noté</b><button type="button" class="link-btn" data-act="mood-change">Changer</button></div>'; }
+/* bandeau de l'accueil, de 20 h à minuit */
+function homeMoodHTML(){
+  if (!moodEvening()) return "";
+  var m = moodOf(iso(today()));
+  if (m != null && !S.moodEdit) return '<section class="section gut md-home">' + moodDoneRow(m) + '</section>';
+  if (moodLater() && !S.moodEdit) return "";
+  return '<section class="section gut md-home"><div class="md-ban"><div class="md-ban-h"><b>Comment était ta journée ?</b><button type="button" class="md-x" data-act="mood-later" aria-label="Plus tard">×</button></div>' + moodPickRow(46) + '</div></section>';
+}
+
+/* ---- phrase du jour : sans IA, choisie chaque jour dans une liste selon la météo, la vacation et la nuit ---- */
+var BE_PH = {
+  base: [["Un nouveau jour au ", "paradis", " !"], ["Belle journée en ", "perspective", "."], ["Aujourd'hui, on prend le ", "temps", "."], ["Une page blanche, à toi de l'", "écrire", "."], ["Respire, souris, ", "avance", "."], ["Le meilleur reste à ", "venir", "."], ["Chaque petit pas ", "compte", "."], ["Garde le cap, ", "capitaine", " !"]],
+  pluie: [["Journée pluvieuse, journée ", "heureuse", " ?"], ["La pluie lave tout, même les ", "soucis", "."], ["Parapluie ouvert, moral au ", "beau fixe", "."]],
+  soleil: [["Le soleil se lève sur la baie, et ", "toi aussi", "."], ["Grand ciel bleu, grandes ", "idées", "."], ["Lumière de la Riviera, ", "énergie", " du jour."]],
+  nuages: [["Un peu de gris, beaucoup d'", "envies", "."], ["Derrière les nuages, le ", "soleil", " attend."]],
+  repos: [["Jour de repos : la journée est ", "à toi", "."], ["Pas de réveil qui compte, que du ", "bon temps", "."], ["Repos mérité, profites-en ", "à fond", "."]],
+  tot: [["Service tôt ? Tu vas ", "assurer", ", comme toujours."], ["Lever matinal, journée ", "bien remplie", "."]],
+  bonneNuit: [["Belle nuit derrière toi, belle ", "journée", " devant."], ["Bien reposé, prêt à ", "briller", "."]],
+  petiteNuit: [["Petite nuit ? Douceur et café, ça va ", "le faire", "."], ["On y va en douceur, tu as ", "tout", " pour réussir."]],
+  ven: [["Petit vendredi, ", "grand sourire", "."]], lun: [["Lundi tout neuf, ", "plein de promesses", "."]], dim: [["Dimanche, le droit de ", "ralentir", "."]]
+};
+function bePhrase(){
+  var d = today(), di = iso(d), pool = [].concat(BE_PH.base), md = mtData(), sp = typeof vacSpan === "function" ? vacSpan(di) : null, v = typeof vacOf === "function" ? vacOf(di) : null;
+  function add(k, w){ for (var i = 0; i < (w || 2); i++) pool = pool.concat(BE_PH[k]); }
+  if (md && md.daily){ var c = md.daily.weather_code[0], p = md.daily.precipitation_probability_max[0] || 0;
+    if (p >= 60 || (c >= 51 && c <= 82)) add("pluie", 3); else if (c <= 1) add("soleil"); else if (c <= 3 || c === 45 || c === 48) add("nuages"); }
+  if (v === "RH" || v === "CP") add("repos", 3); else if (sp && sp.sm <= 420) add("tot", 3);
+  var ns = slNights(), n = ns[ns.length - 1];
+  if (n && n.key === di){ if (n.score >= 80) add("bonneNuit"); else if (n.sleep < 360) add("petiteNuit", 3); }
+  var wd = d.getDay(); if (wd === 5) add("ven", 1); if (wd === 1) add("lun", 1); if (wd === 0) add("dim", 1);
+  var hsh = 0; for (var i = 0; i < di.length; i++) hsh = (hsh * 31 + di.charCodeAt(i)) >>> 0;
+  return pool[hsh % pool.length];
+}
+var BE_SWASH = '<svg class="be-sw" viewBox="0 0 120 12" preserveAspectRatio="none" aria-hidden="true"><path d="M2 8C30 2 60 11 90 5s25 1 28-1" fill="none" stroke="#FFD36E" stroke-width="3.4" stroke-linecap="round"/></svg>';
+function beHeroHTML(date){
+  var p = bePhrase();
+  return '<div class="hd2 gut be-hd"><p class="eb">' + h(date) + ' · Bien-être</p><h1 class="be-ph">' + h(p[0]) + '<span class="be-hl">' + h(p[1]) + BE_SWASH + '</span>' + h(p[2]) + '</h1></div>';
+}
+
+/* ---- données croisées : une ligne par jour ---- */
+function beDay(di){
+  var n = slByKey(di), v = typeof vacOf === "function" ? vacOf(di) : null, sp = typeof vacSpan === "function" ? vacSpan(di) : null;
+  return { di: di, m: moodOf(di), n: n, svc: sp ? (sp.sm <= 420 ? "tot" : "tard") : v === "RH" || v === "CP" ? "repos" : "" };
+}
+function beSleepLine(n){ return n ? "Nuit " + slHM(n.sleep) + " · " + n.score : "Pas de nuit reçue"; }
+
+/* ---- page ---- */
+function viewBienetre(){
+  var di = iso(today()); if (!S.beSel) S.beSel = di;
+  var m = moodOf(di), ask = moodEvening() && (m == null || S.moodEdit);
+  var top = ask ? '<section class="section gut"><div class="sl-card be-ask"><b>Ta journée ?</b>' + moodPickRow(50) + '</div></section>'
+    : m != null ? '<section class="section gut">' + moodDoneRow(m) + '</section>' : "";
+  return '<div class="be-page">' + top + beCalHTML() + beSleepHTML() + '</div>';
+}
+function beCalHTML(){
+  var v = S.beView || "mois", seg = '<div class="be-seg" role="tablist"><button type="button" role="tab" aria-selected="' + (v === "sem") + '" data-act="be-view" data-v="sem">Semaine</button><button type="button" role="tab" aria-selected="' + (v === "mois") + '" data-act="be-view" data-v="mois">Mois</button><button type="button" role="tab" aria-selected="false" data-act="be-year">Année</button></div>';
+  var body = v === "sem" ? beWeekHTML() : beMonthHTML(), s = beDay(S.beSel), d = parseISO(S.beSel);
+  var title = (s.m != null ? MD_J[s.m] : S.beSel === iso(today()) ? "À noter ce soir" : "Humeur non notée") + " · " + d.getDate() + " " + MOIS_COURT[d.getMonth()].toLowerCase() + ".";
+  var sub = beSleepLine(s.n) + (s.svc ? " · " + { tot: "service tôt", tard: "service plus tard", repos: "repos" }[s.svc] : "");
+  var ins = beInsights(), teaser = ins.ready && ins.best ? '<a class="be-tease" href="#conclusions">' + BE_BULB + '<span><b>' + h(ins.best.t) + '</b><small>' + h(ins.best.s) + ' · voir les conclusions</small></span></a>'
+    : '<a class="be-tease wait" href="#conclusions">' + BE_BULB + '<span><b>Premières conclusions dans ' + ins.left + ' jour' + (ins.left > 1 ? 's' : '') + '</b><small>' + ins.n + ' jour' + (ins.n > 1 ? 's' : '') + ' noté' + (ins.n > 1 ? 's' : '') + ' sur 14</small></span></a>';
+  return '<section class="section gut"><div class="sl-card">' + seg + body
+    + '<div class="be-sel">' + (s.m != null ? mdFace(s.m, 36) : mdEmpty(36)) + '<span><b>' + h(title) + '</b><small>' + h(sub) + '</small></span></div>' + teaser + '</div></section>';
+}
+var BE_BULB = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2V17h5v-1.1c0-.8.4-1.5 1-2A6 6 0 0 0 12 3z"/></svg>';
+function beWeekHTML(){
+  var m0 = monday(today()), td = iso(today());
+  return '<div class="be-week">' + [0, 1, 2, 3, 4, 5, 6].map(function(i){
+    var di = iso(addDays(m0, i)), s = beDay(di), fut = di > td;
+    return '<button type="button" class="be-wd' + (di === S.beSel ? " on" : "") + '" data-act="be-pick" data-d="' + di + '"' + (fut ? " disabled" : "") + ' aria-label="' + h(JOURS[parseISO(di).getDay()] + " : " + (s.m != null ? MD_J[s.m] : "non noté") + ", " + beSleepLine(s.n)) + '"><span class="be-j">' + "LMMJVSD"[i] + '</span>' + (s.m != null ? mdFace(s.m, 38) : mdEmpty(38)) + '<span class="be-ns" style="color:' + (s.n ? slTone(s.n.score) : "var(--muted)") + '">' + (s.n ? s.n.score : "–") + '</span></button>';
+  }).join("") + '</div>';
+}
+function beMonthHTML(){
+  var b = today(), mo = new Date(b.getFullYear(), b.getMonth() + (S.beMonth || 0), 1), td = iso(today());
+  var off = (mo.getDay() + 6) % 7, nd = new Date(mo.getFullYear(), mo.getMonth() + 1, 0).getDate(), cells = "";
+  for (var i = 0; i < off; i++) cells += '<span></span>';
+  for (var d = 1; d <= nd; d++){
+    var di = iso(new Date(mo.getFullYear(), mo.getMonth(), d)), s = beDay(di), fut = di > td;
+    var st = s.m != null ? ' style="background:' + MD_COL[s.m] + '"' : "";
+    cells += '<button type="button" class="be-c' + (fut ? " fut" : "") + (di === td && s.m == null ? " td" : "") + (di === S.beSel ? " on" : "") + '"' + st + ' data-act="be-pick" data-d="' + di + '"' + (fut ? " disabled" : "") + ' aria-label="' + d + " " + MOIS[mo.getMonth()] + " : " + (s.m != null ? MD_J[s.m] : "non noté") + '"><span>' + d + '</span><i' + (s.n && s.n.score >= 85 ? ' class="ok"' : '') + '></i></button>';
+  }
+  var first = beFirstDay(), canPrev = first && first < iso(mo);
+  return '<div class="be-mh"><button type="button" class="sl-arr" data-act="be-month" data-n="-1"' + (canPrev ? "" : " disabled") + ' aria-label="Mois précédent">‹</button><b>' + MOIS[mo.getMonth()] + (mo.getFullYear() !== b.getFullYear() ? " " + mo.getFullYear() : "") + '</b><button type="button" class="sl-arr" data-act="be-month" data-n="1"' + ((S.beMonth || 0) < 0 ? "" : " disabled") + ' aria-label="Mois suivant">›</button></div>'
+    + '<div class="be-dow" aria-hidden="true"><span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>S</span><span>D</span></div><div class="be-grid" id="beGrid">' + cells + '</div>'
+    + '<div class="be-leg" aria-hidden="true">' + MD_COL.map(function(c){ return '<i style="background:' + c + '"></i>'; }).join("") + '<span>• nuit ≥ 85</span></div>';
+}
+function beFirstDay(){ var a = (S.mood || []).map(function(x){ return x._id; }).concat(slNights().map(function(n){ return n.key; })).sort(); return a[0] || null; }
+function beSleepHTML(){
+  var ns = slNights(), n = ns[ns.length - 1], st = slStale();
+  if (!n) return '<section class="section gut"><a class="sl-card be-sl0" href="#sommeil"><b>Sommeil</b><span class="sl-mut">Pas encore de nuit reçue</span></a></section>';
+  var m0 = monday(today()), bars = [0, 1, 2, 3, 4, 5, 6].map(function(i){ var x = slByKey(iso(addDays(m0, i)));
+    return '<span class="be-sb"><span class="be-sbw">' + (x ? '<i style="height:' + Math.min(100, x.sleep / 600 * 100).toFixed(0) + '%"></i>' : '<i class="e"></i>') + '</span><em>' + "LMMJVSD"[i] + '</em><b style="color:' + (x ? slTone(x.score) : "var(--muted)") + '">' + (x ? x.score : "–") + '</b></span>'; }).join("");
+  return '<section class="section gut"><div class="sl-card"><div class="sl-wh"><b>Sommeil</b><a class="link-btn" href="#sommeil">Ouvrir</a></div>'
+    + (st ? '<p class="be-stale">Aucune nuit depuis ' + st + ' jours</p>' : '')
+    + '<a class="be-slt" href="#sommeil">' + slRing(n.score) + '<span><span class="sl-big">' + slHM(n.sleep) + '</span><span class="sl-mut">' + slClock(n.s) + ' → ' + slClock(n.e) + '</span></span></a><div class="be-sbars">' + bars + '</div></div></section>';
+}
+/* ---- vue année, plein écran ---- */
+function beYearOpen(){
+  var r = document.getElementById("beYear"); if (!r) return;
+  var y = today().getFullYear(), M = S.beYm != null ? S.beYm : today().getMonth(), months = "";
+  for (var mi = 0; mi < 12; mi++){
+    var first = new Date(y, mi, 1), off = (first.getDay() + 6) % 7, nd = new Date(y, mi + 1, 0).getDate(), sq = "", cnt = [0, 0, 0, 0, 0];
+    for (var i = 0; i < off; i++) sq += '<i></i>';
+    for (var d = 1; d <= nd; d++){ var di = iso(new Date(y, mi, d)), m = moodOf(di); if (m != null) cnt[m]++; sq += '<i class="d"' + (m != null ? ' style="background:' + MD_COL[m] + '"' : '') + '></i>'; }
+    var tot = cnt.reduce(function(a, b){ return a + b; }, 0), bar = tot ? cnt.map(function(n, l){ return n ? '<i style="flex:' + n + ';background:' + MD_COL[l] + '"></i>' : ""; }).join("") : '<i style="flex:1"></i>';
+    months += '<button type="button" class="by-m' + (mi === M ? " on" : "") + '" data-act="by-month" data-m="' + mi + '" aria-label="' + MOIS[mi] + '"><b>' + MOIS_COURT[mi] + '</b><span class="by-g">' + sq + '</span><span class="by-bar">' + bar + '</span></button>';
+  }
+  var c = [0, 0, 0, 0, 0], last = new Date(y, M + 1, 0).getDate();
+  for (var dd = 1; dd <= last; dd++){ var mm = moodOf(iso(new Date(y, M, dd))); if (mm != null) c[mm]++; }
+  var T = c.reduce(function(a, b){ return a + b; }, 0);
+  r.innerHTML = '<div class="by-wrap"><div class="by-top"><b>' + y + '</b><button type="button" class="by-x" data-act="by-close" aria-label="Fermer">×</button></div><div class="by-grid">' + months + '</div>'
+    + '<div class="sl-card by-det"><div class="sl-wh"><b>' + MOIS[M].charAt(0).toUpperCase() + MOIS[M].slice(1) + '</b><span class="sl-mut">' + (T ? T + " jour" + (T > 1 ? "s" : "") + " noté" + (T > 1 ? "s" : "") : "pas encore de données") + '</span></div><div class="by-pc">'
+    + c.map(function(n, l){ return '<span>' + mdFace(l, 40) + '<b>' + (T ? Math.round(n / T * 100) + " %" : "–") + '</b></span>'; }).join("") + '</div></div></div>';
+  r.hidden = false; document.body.classList.add("by-on");
+}
+function beYearClose(){ var r = document.getElementById("beYear"); if (r && !r.hidden){ r.hidden = true; r.innerHTML = ""; document.body.classList.remove("by-on"); } }
+document.addEventListener("keydown", function(e){ if (e.key === "Escape") beYearClose(); });
+
+/* ---- conclusions croisées ---- */
+function beAvg(a){ return a.length ? a.reduce(function(s, x){ return s + x; }, 0) / a.length : 0; }
+function beFmt(x){ return x.toFixed(1).replace(".", ","); }
+function beInsights(){
+  var rows = (S.mood || []).filter(function(x){ return x.m >= 0 && x.m <= 4; }).map(function(x){ var r = beDay(x._id); r.v = x.m + 1; return r; });
+  var n = rows.length, out = { n: n, left: Math.max(0, 14 - n), ready: n >= 14, rows: rows, sl: [], wk: [], wd: [] };
+  out.avg = beAvg(rows.map(function(r){ return r.v; }));
+  var withN = rows.filter(function(r){ return r.n; }); out.avgSleep = beAvg(withN.map(function(r){ return r.n.sleep; }));
+  function grp(list){ return { n: list.length, a: beAvg(list.map(function(r){ return r.v; })) }; }
+  var L = grp(withN.filter(function(r){ return r.n.sleep >= 420; })), C = grp(withN.filter(function(r){ return r.n.sleep < 420; }));
+  if (L.n >= 3 && C.n >= 3) out.sl.push({ t: L.a >= C.a ? "Tu es plus en forme après une vraie nuit" : "La durée de la nuit pèse peu sur ta journée", bars: [["Nuit de 7 h ou plus", L], ["Nuit plus courte", C]], foot: L.n + " jours contre " + C.n, d: Math.abs(L.a - C.a), s: "après 7 h de sommeil : " + beFmt(L.a) + "/5, sinon " + beFmt(C.a) });
+  var det = withN.filter(function(r){ return r.n.detail; }), Dh = grp(det.filter(function(r){ return r.n.t.d / r.n.sleep >= .2; })), Dl = grp(det.filter(function(r){ return r.n.t.d / r.n.sleep < .2; }));
+  if (Dh.n >= 3 && Dl.n >= 3) out.sl.push({ t: Dh.a > Dl.a + .3 ? "Le sommeil profond te réussit" : "Le sommeil profond change peu ta journée", bars: [["Profond 20 % ou plus", Dh], ["Profond moins de 20 %", Dl]], foot: Math.abs(Dh.a - Dl.a) < .5 ? "Écart faible : à confirmer" : Dh.n + " jours contre " + Dl.n, d: Math.abs(Dh.a - Dl.a), s: "profond ≥ 20 % : " + beFmt(Dh.a) + "/5, sinon " + beFmt(Dl.a) });
+  var G = { repos: grp(rows.filter(function(r){ return r.svc === "repos"; })), tard: grp(rows.filter(function(r){ return r.svc === "tard"; })), tot: grp(rows.filter(function(r){ return r.svc === "tot"; })) };
+  var gb = [["Repos ou congé", G.repos], ["Service plus tard", G.tard], ["Service tôt", G.tot]].filter(function(x){ return x[1].n >= 3; });
+  if (gb.length >= 2){ var best = gb.slice().sort(function(a, b){ return b[1].a - a[1].a; })[0];
+    var rest = rows.filter(function(r){ return r.svc === "repos"; }), both = rest.filter(function(r){ return r.n && r.n.sleep >= 420; }).length;
+    out.wk.push({ t: best[0] === "Repos ou congé" ? "Les jours de repos sont tes meilleurs" : best[0] + " : tes meilleurs jours", bars: gb, foot: rest.length >= 3 && both / rest.length >= .7 ? "Repos et longues nuits vont souvent ensemble" : "", d: Math.abs(gb[0][1].a - gb[gb.length - 1][1].a), s: best[0].toLowerCase() + " : " + beFmt(best[1].a) + "/5" }); }
+  var nb = slNights(), bt = nb.filter(function(x){ var sp = vacSpan(x.key); return sp && sp.sm <= 420; }), br = nb.filter(function(x){ var v = vacOf(x.key); return v === "RH" || v === "CP"; });
+  if (bt.length >= 3 && br.length >= 3){ var a1 = beAvg(bt.map(function(x){ return x.sleep; })), a2 = beAvg(br.map(function(x){ return x.sleep; }));
+    out.wk.push({ t: "Avant un service tôt, tu dors " + slHM(a1), mins: [["Veille d'un service tôt", a1], ["Veille de repos", a2]], foot: "", d: 0 }); }
+  var W = [0, 1, 2, 3, 4, 5, 6].map(function(i){ return grp(rows.filter(function(r){ return (parseISO(r.di).getDay() + 6) % 7 === i; })); });
+  if (W.filter(function(g){ return g.n >= 2; }).length >= 4){ var bi = W.map(function(g, i){ return [g.n >= 2 ? g.a : -1, i]; }).sort(function(a, b){ return b[0] - a[0]; })[0][1];
+    out.wd.push({ t: "Le " + JOURS_LONG[(bi + 1) % 7] + " te réussit", W: W, foot: "Humeur moyenne par jour de la semaine" }); }
+  var all = out.sl.concat(out.wk).filter(function(x){ return x.s; }).sort(function(a, b){ return b.d - a.d; });
+  out.best = all[0] ? { t: all[0].t, s: all[0].s } : null;
+  return out;
+}
+function beBar(label, g, col){ return '<div class="cc-b"><div><span>' + h(label) + '</span><b>' + beFmt(g.a) + ' / 5</b></div><span class="cc-t"><i style="width:' + (g.a / 5 * 100).toFixed(0) + '%;background:' + col + '"></i></span></div>'; }
+function viewConclusions(){
+  var I = beInsights(), tab = S.ccTab || "sl", html = '<div class="be-page">';
+  html += '<section class="section gut"><div class="sl-card cc-sum">' + (I.n ? mdFace(Math.max(0, Math.min(4, Math.round(I.avg) - 1)), 46) : mdEmpty(46)) + '<span>' + (I.n ? 'Humeur moyenne <b>' + beFmt(I.avg) + ' / 5</b> sur ' + I.n + ' jour' + (I.n > 1 ? 's' : '') : 'Aucune journée notée pour l\'instant') + (I.avgSleep ? ' · nuit moyenne <b>' + slHM(I.avgSleep) + '</b>' : '') + '</span></div></section>';
+  if (!I.ready){
+    html += '<section class="section gut"><div class="sl-card cc-wait"><b>Encore ' + I.left + ' jour' + (I.left > 1 ? 's' : '') + ' à noter</b><span class="cc-t"><i style="width:' + (I.n / 14 * 100).toFixed(0) + '%;background:#5CC28F"></i></span><small>Les conclusions arrivent à partir de 14 jours notés, pour qu\'elles veuillent dire quelque chose.</small></div></section>';
+    return html + '</div>';
+  }
+  html += '<section class="section gut"><div class="be-seg" role="tablist">' + [["sl", "Sommeil"], ["wk", "Travail"], ["wd", "Semaine"]].map(function(t){ return '<button type="button" role="tab" aria-selected="' + (tab === t[0]) + '" data-act="cc-tab" data-t="' + t[0] + '">' + t[1] + '</button>'; }).join("") + '</div></section>';
+  var list = I[tab], cols = ["#5CC28F", "#A9C2E4", "#F6D883"];
+  html += '<section class="section gut cc-list">' + (list.length ? list.map(function(x){
+    var body = x.bars ? x.bars.map(function(b, i){ return beBar(b[0], b[1], i === 0 && b[1].a >= x.bars[x.bars.length - 1][1].a ? "#5CC28F" : cols[Math.min(2, i)]); }).join("")
+      : x.mins ? x.mins.map(function(b, i){ return '<div class="cc-b"><div><span>' + h(b[0]) + '</span><b>' + slHM(b[1]) + '</b></div><span class="cc-t"><i style="width:' + Math.min(100, b[1] / 540 * 100).toFixed(0) + '%;background:' + (i ? "#5CC28F" : "#0B4F7C") + '"></i></span></div>'; }).join("")
+      : '<div class="cc-w">' + x.W.map(function(g, i){ return '<span><b>' + (g.n ? beFmt(g.a) : "–") + '</b><span><i style="height:' + (g.n ? g.a / 5 * 100 : 4).toFixed(0) + '%;background:' + (g.n ? MD_COL[Math.max(0, Math.min(4, Math.round(g.a) - 1))] : "#E6EBF0") + '"></i></span><em>' + "LMMJVSD"[i] + '</em></span>'; }).join("") + '</div>';
+    return '<div class="sl-card cc-i"><b>' + h(x.t) + '</b>' + body + (x.foot ? '<small>' + h(x.foot) + '</small>' : '') + '</div>';
+  }).join("") : '<div class="sl-card sl-mut">Pas encore assez de jours dans chaque groupe pour comparer.</div>') + '</section>';
+  html += '<p class="cc-note">Tendances, pas des certitudes</p>';
+  return html + '</div>';
+}
+function beAct(act, b){
+  if (act === "mood-set"){ moodSet(b.dataset.d, +b.dataset.m); return true; }
+  if (act === "mood-change"){ S.moodEdit = true; render(); return true; }
+  if (act === "mood-later"){ try { localStorage.setItem("mw-mood-later", iso(today())); } catch(e){} render(); return true; }
+  if (act === "be-view"){ S.beView = b.dataset.v; render(); return true; }
+  if (act === "be-pick"){ S.beSel = b.dataset.d; render(); return true; }
+  if (act === "be-month"){ S.beMonth = Math.min(0, (S.beMonth || 0) + +b.dataset.n); render(); return true; }
+  if (act === "be-year"){ S.beYm = null; beYearOpen(); return true; }
+  if (act === "by-month"){ S.beYm = +b.dataset.m; beYearOpen(); return true; }
+  if (act === "by-close"){ beYearClose(); return true; }
+  if (act === "cc-tab"){ S.ccTab = b.dataset.t; render(); return true; }
+  return false;
+}
+/* glisser sur le mois = mois précédent / suivant */
+(function(){
+  var x0 = null, y0 = 0;
+  document.addEventListener("touchstart", function(e){ x0 = e.target.closest && e.target.closest("#beGrid") ? e.touches[0].clientX : null; if (x0 !== null) y0 = e.touches[0].clientY; }, { passive: true });
+  document.addEventListener("touchend", function(e){ if (x0 === null) return; var t = e.changedTouches[0], dx = t.clientX - x0, dy = t.clientY - y0; x0 = null;
+    if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy) * 1.5) return; var nb = document.querySelector('[data-act="be-month"][data-n="' + (dx > 0 ? -1 : 1) + '"]'); if (nb && !nb.disabled) nb.click(); }, { passive: true });
+})();
+
+/* ===== MyWorld_1.11 : blocs de l'accueil réorganisables (appui long, puis glisser) ===== */
+var HT_KEYS = ["co", "td", "nx", "sl"];
+function htOrder(){ var o = (S.settings && S.settings.homeOrder) || [], r = o.filter(function(k){ return HT_KEYS.indexOf(k) >= 0; }); HT_KEYS.forEach(function(k){ if (r.indexOf(k) < 0) r.push(k); }); return r; }
+(function(){
+  var timer = null, st = null, edit = false, drag = null, suppress = false;
+  function row(){ return document.querySelector(".ht-row"); }
+  function start(){ var r = row(); if (!r) return; edit = true; r.classList.add("ht-edit"); if (navigator.vibrate) try { navigator.vibrate(12); } catch(e){}
+    if (!r.querySelector(".ht-ok")){ var ok = document.createElement("button"); ok.type = "button"; ok.className = "ht-ok"; ok.textContent = "OK"; ok.setAttribute("aria-label", "Terminer la réorganisation"); r.parentNode.insertBefore(ok, r); ok.onclick = stop; } }
+  function stop(){ var r = row(); edit = false; drag = null; if (!r) return; r.classList.remove("ht-edit");
+    var ok = document.querySelector(".ht-ok"); if (ok) ok.remove();
+    var ord = [].map.call(r.querySelectorAll(".ht"), function(el){ return el.dataset.ht; }).filter(Boolean);
+    if (ord.join() !== htOrder().join() && db) saveSettings({ homeOrder: ord }); }
+  document.addEventListener("pointerdown", function(e){
+    if (edit && !document.querySelector(".ht-row.ht-edit")){ edit = false; drag = null; var ok0 = document.querySelector(".ht-ok"); if (ok0) ok0.remove(); }
+    var t = e.target.closest && e.target.closest(".ht-row .ht"); if (!t) { if (edit && !(e.target.closest && e.target.closest(".ht-ok,.ht-row"))) stop(); return; }
+    st = { x: e.clientX, y: e.clientY, el: t, id: e.pointerId };
+    if (edit){ drag = { el: t, id: e.pointerId, x: e.clientX }; t.classList.add("ht-drag"); try { t.setPointerCapture(e.pointerId); } catch(_){} e.preventDefault(); return; }
+    clearTimeout(timer); timer = setTimeout(function(){ timer = null; suppress = true; start(); drag = { el: t, id: st.id, x: st.x }; t.classList.add("ht-drag"); try { t.setPointerCapture(st.id); } catch(_){} }, 450);
+  });
+  document.addEventListener("pointermove", function(e){
+    if (timer && st && Math.hypot(e.clientX - st.x, e.clientY - st.y) > 10){ clearTimeout(timer); timer = null; }
+    if (!drag || e.pointerId !== drag.id) return;
+    var r = row(); if (!r) return; e.preventDefault();
+    var tx = e.clientX - drag.x; drag.el.style.transform = "translateX(" + tx + "px) scale(1.06)";
+    var rr = r.getBoundingClientRect(); if (e.clientX > rr.right - 36) r.scrollLeft += 8; else if (e.clientX < rr.left + 36) r.scrollLeft -= 8;
+    var sib = [].slice.call(r.querySelectorAll(".ht")).filter(function(x){ return x !== drag.el; });
+    for (var i = 0; i < sib.length; i++){ var bb = sib[i].getBoundingClientRect(), cx = bb.left + bb.width / 2;
+      if (Math.abs(e.clientX - cx) < bb.width * .3){
+        var before = drag.el.getBoundingClientRect().left - tx;
+        r.insertBefore(drag.el, e.clientX < cx ? sib[i] : sib[i].nextSibling);
+        var after = drag.el.getBoundingClientRect().left - tx; drag.x += after - before;
+        drag.el.style.transform = "translateX(" + (e.clientX - drag.x) + "px) scale(1.06)"; break; } }
+  }, { passive: false });
+  function end(e){ clearTimeout(timer); timer = null; if (suppress) setTimeout(function(){ suppress = false; }, 350); if (drag && (!e || e.pointerId === drag.id)){ drag.el.style.transform = ""; drag.el.classList.remove("ht-drag"); drag = null; } }
+  document.addEventListener("pointerup", end); document.addEventListener("pointercancel", end);
+  document.addEventListener("click", function(e){ if ((suppress || edit) && e.target.closest && e.target.closest(".ht-row .ht")){ e.preventDefault(); e.stopPropagation(); suppress = false; } }, true);
+  document.addEventListener("contextmenu", function(e){ if (e.target.closest && e.target.closest(".ht-row .ht")) e.preventDefault(); });
+  window.htStop = function(){ if (edit) stop(); };
+})();
 
 var FAN_APPS = [
   {k:"notes", n:"Notes", bg:"#FFF1C2", ink:"#8A6410", ic:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 12h7M9 16h5"/></svg>'},
@@ -5478,6 +5829,7 @@ var FAN_APPS = [
   {k:"reglages", n:"Réglages", bg:"#ECEDF1", ink:"#3E4250", ic:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M2 12h3M19 12h3M4.9 19.1L7 17M17 7l2.1-2.1"/></svg>'},
   {k:"meteo", n:"Météo", bg:"#D2E8FA", ink:"#2C679C", ic:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18h10a4 4 0 0 0 .5-8 5.5 5.5 0 0 0-10.6 1.5A3.3 3.3 0 0 0 7 18z"/></svg>'},
   {k:"cartes", n:"Cartes", bg:"#E4E9F7", ink:"#33449A", ic:FID_CARD},
+  {k:"bienetre", n:"Bien-être", bg:"#FBE3EA", ink:"#9A3A55", ic:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16.5 4.8A8.5 8.5 0 1 0 19.6 9"/><path d="M8.8 14.2q3.2 2.9 6.4 0"/><circle cx="9.3" cy="10" r=".6" fill="currentColor"/><circle cx="14.7" cy="10" r=".6" fill="currentColor"/></svg>'},
   /* MyWorld_1.1 : le jeu Forpharos remplace la tuile Drive (« Bientôt ») */
   {k:"jeu", n:"La Veille de Forpharos", bg:"#F3E1C7", ink:"#8A3328", ic:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21l1.2-11h3.6L15 21z"/><path d="M8.5 10h7M10 6.5h4V10h-4z"/><path d="M12 3.5v3"/><path d="M14 8.2l6-2.2M10 8.2L4 6"/><path d="M5 21h14"/></svg>'}
 ];
@@ -5486,8 +5838,8 @@ var FAN_APPS = [
    Pour rester fluide : la plante et le lierre sont dessinés image par image sur deux canevas (feuilles pré-dessinées une seule fois),
    les fleurs sont de simples boutons animés par le navigateur (transform). Le dessin s'arrête quand la plante a fini de pousser.
    Appui long sur une appli : on la déplace où l'on veut, sa branche la suit et reste accrochée à la tige (position gardée dans les réglages). */
-var IVY_ORDER = ["notes", "listes", "courses", "fiche", "gazette", "meteo", "jeu", "cartes"];   /* MyWorld_1.4 : + Cartes (8e fleur, en haut à gauche) */
-var IVY_COL = {notes:"#F5C842", listes:"#F29A62", courses:"#5CC2B0", fiche:"#A983E6", gazette:"#E8B44A", meteo:"#73A9E6", jeu:"#C9533F", cartes:"#7F95E0"};
+var IVY_ORDER = ["notes", "listes", "courses", "fiche", "gazette", "meteo", "jeu", "cartes", "bienetre"];   /* MyWorld_1.4 : + Cartes (8e fleur, en haut à gauche) ; 1.11 : + Bien-être (9e, en haut à droite) */
+var IVY_COL = {notes:"#F5C842", listes:"#F29A62", courses:"#5CC2B0", fiche:"#A983E6", gazette:"#E8B44A", meteo:"#73A9E6", jeu:"#C9533F", cartes:"#7F95E0", bienetre:"#E58FA6"};
 var IVY = (function(){
   var PAL = { leaf: ["#62A04E", "#2D6A2E", "#163C1B"], vein: "rgba(205,232,170,.62)", st: ["#5B4630", "#4E7A35", "#7BAE5A"], pet: "#4C7A34", node: "#7A5B3A", hi: "rgba(185,222,148,.5)", hair: "rgba(156,122,82,.85)" };
   var GEAR = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>';
@@ -5548,7 +5900,7 @@ var IVY = (function(){
       + '<circle cx="42" cy="42" r="31" fill="url(#ivpg' + id + ')"/><path d="M42 11 L46 38 L73 42 L46 46 L42 73 L38 46 L11 42 L38 38Z" fill="rgba(255,255,255,.55)"/><circle cx="42" cy="42" r="20" fill="rgba(255,255,255,.75)"/></svg>'; }
 
   /* ===== le modèle : toutes les formes et l'instant où chacune apparaît ===== */
-  var DEF = [[66, 420], [300, 392], [62, 290], [300, 262], [74, 176], [286, 150], null, [64, 92]];   /* la 7e (index 6) est au bout de la tige */
+  var DEF = [[66, 420], [300, 392], [62, 290], [300, 262], [74, 176], [286, 150], null, [64, 92], [298, 60]];   /* 1.11 : Bien-être en haut à droite */   /* la 7e (index 6) est au bout de la tige */
   function model(o){
     var bx = o.bx, by = o.by, W = o.W, H = o.H, kx = Math.min(W, 440) / 360, ky = Math.max(.72, Math.min(1.35, (by - 70) / 474)), sc = Math.max(.85, Math.min(1.2, Math.min(kx, ky)));
     var md = { o: o, kx: kx, ky: ky, sc: sc, mx: function(x){ return W / 2 + (x - 180) * kx; }, my: function(y){ return by - (540 - y) * ky; } };
@@ -5850,7 +6202,7 @@ function navSide(dir){
   return false;
 }
 function route(){
-  if (FIDC) fidClose(); if (FIDS) fidScanStop();
+  if (FIDC) fidClose(); if (FIDS) fidScanStop(); beYearClose(); if (window.htStop) window.htStop();
   var hsh = (location.hash || "").replace("#",""), prev = S.view, prevKey = S.viewKey;
   var gd = hsh.match(/^gazette-(\d{4}-\d{2}-\d{2})$/);
   S.gzDay = gd ? gd[1] : null;
@@ -5873,8 +6225,8 @@ function route(){
   var x0 = null, y0 = 0, t0 = 0;
   document.addEventListener("touchstart", function(e){
     if (!isApp(S.view) || S.view === "jeu") { x0 = null; return; }
-    if (e.touches.length !== 1 || document.querySelector(".sheet-wrap,.levelup,.note-editor,.draw-pad,#gzPop,#fidRoot:not([hidden])")) { x0 = null; return; }
-    if (e.target.closest(".bubbles-wrap,.topics,input,select,textarea,.month,.ncard2,#slBars")) { x0 = null; return; }
+    if (e.touches.length !== 1 || document.querySelector(".sheet-wrap,.levelup,.note-editor,.draw-pad,#gzPop,#fidRoot:not([hidden]),#beYear:not([hidden])")) { x0 = null; return; }
+    if (e.target.closest(".bubbles-wrap,.topics,input,select,textarea,.month,.ncard2,#slBars,#beGrid,.ht-row")) { x0 = null; return; }
     x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; t0 = Date.now();
   }, {passive:true});
   document.addEventListener("touchend", function(e){
@@ -5976,7 +6328,7 @@ function processShare(){
 window.addEventListener("carnet-ready", function(){ setTimeout(processShare, 300); });
 window.startData = function(dbApi, calApi){
   db = dbApi; mcp = calApi;
-  snap("items","items"); snap("log","log"); snap("gazette","gazette",["addedAt","desc",80]); snap("notes","notes"); snap("sleep","sleep",["s","desc",400]);
+  snap("items","items"); snap("log","log"); snap("gazette","gazette",["addedAt","desc",80]); snap("notes","notes"); snap("sleep","sleep",["s","desc",400]); snap("mood","mood");
   setTimeout(function(){ slSync(false); }, 2500);
   db.doc("settings/main").onSnapshot(function(s){ S.settings = s.exists ? s.data() : null; render(); markReady("settings"); }, function(){ markReady("settings"); });
   watchCal();
