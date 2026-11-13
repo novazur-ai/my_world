@@ -741,6 +741,11 @@ body[data-view="accueil"] .sky{border-radius:0 0 32px 32px}
 .hd2.hd-home{display:flex;align-items:center;justify-content:space-between;min-height:42px}
 .hd2.hd-home .eb{margin:0}
 .hd-home .wpill{position:static;height:42px;width:100px}
+.wp-duo{display:flex;align-items:stretch}
+.wp-news{position:relative;display:grid;place-items:center;width:44px;height:42px;box-sizing:border-box;border-radius:18px 0 0 18px;background:rgba(255,255,255,.14);border:1.5px solid rgba(255,255,255,.4);border-right:0;color:#fff;text-decoration:none;-webkit-tap-highlight-color:transparent}
+.wp-news::after{content:"";position:absolute;right:0;top:9px;bottom:9px;width:1px;background:rgba(255,255,255,.35)}
+.wp-news i{position:absolute;top:8px;right:9px;width:8px;height:8px;border-radius:50%;background:#FF6B57;box-shadow:0 0 0 2px rgba(20,50,90,.55)}
+.wp-duo .wpill{border-radius:0 18px 18px 0;border-left:0}
 .hd-home .wp-face{gap:5px;padding:0 9px 0 6px}.hd-home .wp-face .mtic{width:30px;height:30px}.hd-home .wp-n b{font-size:18px}
 body[data-view="accueil"] .wstrip-sec{margin-top:6px}
 .hd2 .eb,.hd2 h1,.hd2 .sub,.wsh>span:first-child{text-shadow:0 1px 8px rgba(0,0,0,.28)}
@@ -2204,7 +2209,7 @@ var DECO = (function(){
 
 </script>
 <script>
-var APP_VERSION = "MyWorld_1.15";
+var APP_VERSION = "MyWorld_1.16";
 (function(){
 "use strict";
 var CAL = "t.mallet06@gmail.com";
@@ -2366,7 +2371,7 @@ function heroHTML(){
     var hr = new Date().getHours(), g = greetText().split(" · ")[0];
     if (/^Bonjour, /.test(g)) g = "Coucou " + NAME + " !"; else if (/^(Bonsoir|Bonne nuit), /.test(g)) g = g.replace(", ", " ") + " !";
     ensureMeteo();
-    return '<div class="hd2 gut hd-home"><a class="eb eb-gz" href="#gazette-' + iso(d) + '" aria-label="' + h(date) + ' : ouvrir les News du jour">' + h(date) + '</a>' + wPillHTML() + '</div>';
+    return '<div class="hd2 gut hd-home"><a class="eb eb-gz" href="#gazette-' + iso(d) + '" aria-label="' + h(date) + ' : ouvrir les News du jour">' + h(date) + '</a>' + newsPillHTML() + '</div>';
   }
   if (S.view === "meteo") return meteoHero(date);
   if (S.view === "bienetre") return beHeroHTML(date);
@@ -2758,7 +2763,7 @@ function viewFiche(){
 function gazSeenAt(){ var a = (S.settings && S.settings.gazetteSeenAt) || "", b = S.gazSeenLocal || ""; try { b = [b, localStorage.getItem("gazetteSeenAt") || ""].sort().pop(); } catch(e){} return [a, b].sort().pop(); }
 function unseenGazette(){
   var topics = (S.settings && S.settings.topics) || [], seen = gazSeenAt(), cutoff = Date.now() - 7*86400000;
-  return S.gazette.filter(function(g){ return g.addedAt && new Date(g.addedAt).getTime() >= cutoff && g.addedAt > seen && topics.indexOf(g.topic) >= 0; });
+  return S.gazette.filter(function(g){ return g.addedAt && new Date(g.addedAt).getTime() >= cutoff && g.addedAt > seen && (topics.indexOf(g.topic) >= 0 || g.topic === "Aviation"); });
 }
 function markGazetteSeen(){
   var un = unseenGazette(); if (!un.length) return;
@@ -2962,6 +2967,13 @@ function wPillFaces(){
   ];
 }
 function wPillLabel(f, tm){ return "Météo " + f.say + " : " + Math.round(f.t) + " degrés, " + mtLabel(f.code).toLowerCase() + ", risque de pluie " + (f.p || 0) + " %. Toucher pour " + (tm ? "aujourd'hui" : "demain") + ", appui long pour ouvrir la météo."; }
+/* MyWorld_1.16 : bouton News accolé à la pastille météo (option A), seulement tant que les News du jour ne sont pas lues */
+var NEWS_IC = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h13v14H6a2 2 0 0 1-2-2zM17 9h3v8a2 2 0 0 1-2 2M7 9h7M7 12.5h7M7 16h4"/></svg>';
+function newsPillHTML(){
+  var n = typeof unseenGazette === "function" ? unseenGazette().length : 0;
+  if (!n) return wPillHTML();
+  return '<div class="wp-duo"><a class="wp-news" href="#gazette-' + iso(today()) + '" aria-label="Les News du jour : ' + n + ' nouvelle' + (n > 1 ? 's' : '') + ' info' + (n > 1 ? 's' : '') + '">' + NEWS_IC + '<i aria-hidden="true"></i></a>' + wPillHTML() + '</div>';
+}
 function wPillHTML(){
   var F = wPillFaces();
   if (!F) return '<button type="button" class="wpill empty" aria-label="Météo en cours de chargement. Appui long pour ouvrir la météo."><span class="wp-dots" aria-hidden="true">···</span></button>';
