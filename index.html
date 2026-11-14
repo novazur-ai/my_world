@@ -357,6 +357,12 @@ body.ne-open{overflow:hidden}
 .ne-body ul.todo>li[data-done="1"]::before{background:var(--ink) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FFFDF8' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12l5 5 9-10'/%3E%3C/svg%3E") center/14px no-repeat}
 .ne-body figure{position:relative;margin:12px 0;border-radius:10px;overflow:hidden;-webkit-user-select:none;user-select:none}
 .ne-body figure img{display:block;width:100%;height:auto;border-radius:10px;border:1.5px solid var(--line);background:#FFFFFF}
+/* MyWorld_1.22 : 3 tailles d'aperçu (G = toute la largeur, comme avant) */
+.ne-body figure[data-size="m"]{width:66%}
+.ne-body figure[data-size="p"]{width:40%;min-width:128px}
+.fig-sz{position:absolute;left:6px;bottom:6px;z-index:2;display:flex;gap:1px;padding:2px;border-radius:999px;background:rgba(25,25,35,.5)}
+.fig-sz button{width:28px;height:28px;border:0;border-radius:50%;background:transparent;color:#FFFFFF;font:800 11px/1 var(--f-body);display:grid;place-items:center}
+.fig-sz button[aria-pressed="true"]{background:#FFFFFF;color:#1E1E24}
 .fig-x{position:absolute;top:6px;right:6px;z-index:2;width:34px;height:34px;border:0;border-radius:50%;background:rgba(25,25,35,.55);color:#fff;display:grid;place-items:center}
 .fig-miss{padding:14px;font-size:13px;color:var(--muted);border:1.5px dashed var(--line);border-radius:10px}
 .n-audio{display:flex;align-items:center;gap:12px;padding:10px 52px 10px 10px;border-radius:999px;background:var(--band);color:var(--text)}
@@ -405,9 +411,12 @@ body.ne-open{overflow:hidden}
 #recT{font-weight:800;font-variant-numeric:tabular-nums}
 .rec-dot{width:14px;height:14px;border-radius:50%;background:#E0405E;animation:micPulse 1.2s ease-out infinite}
 /* dessin */
-.draw-pad{position:fixed;inset:0;z-index:70;display:flex;flex-direction:column;background:#FFFFFF;background-image:radial-gradient(circle,rgba(110,90,60,.18) 1px,transparent 1.3px);background-size:22px 22px;animation:pop .2s ease-out}
+.draw-pad{position:fixed;inset:0;z-index:70;display:flex;flex-direction:column;background:#FFFFFF;background-image:radial-gradient(circle,rgba(110,90,60,.18) 1px,transparent 1.3px);background-size:22px 22px;animation:dpIn .16s ease-out} /* 1.22 : fondu sans zoom (le zoom décalait le trait au début) */
+@keyframes dpIn{from{opacity:0}to{opacity:1}}
 .dp-top{display:flex;align-items:center;padding:calc(8px + env(safe-area-inset-top,0px)) 8px 4px;color:#26262C}
-#dpCanvas{flex:1;width:100%;touch-action:none;cursor:crosshair}
+/* MyWorld_1.22 : zone de dessin à taille fixe (avant, la toile grandissait avec sa propre définition et s'étirait) */
+.dp-area{position:relative;flex:1 1 0;min-height:0}
+#dpCanvas{position:absolute;inset:0;display:block;width:100%;height:100%;touch-action:none;cursor:crosshair}
 .dp-tools{display:flex;align-items:flex-end;gap:4px;padding:6px 10px calc(10px + env(safe-area-inset-bottom,0px));overflow-x:auto;scrollbar-width:none}
 .dp-color{width:40px;height:40px;flex-shrink:0;margin:0 6px 10px 2px;border-radius:50%;border:3px solid #FFFFFF;box-shadow:0 2px 8px rgba(0,0,0,.3)}
 .dp-pen{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:4px;width:62px;padding:0;border:0;background:transparent;font-size:11px;font-weight:700;color:#66666F}
@@ -2290,7 +2299,7 @@ var DECO = (function(){
 
 </script>
 <script>
-var APP_VERSION = "MyWorld_1.21";
+var APP_VERSION = "MyWorld_1.22";
 (function(){
 "use strict";
 var CAL = "t.mallet06@gmail.com";
@@ -4507,7 +4516,7 @@ function cleanHTML(html){
     Array.prototype.slice.call(node.childNodes).forEach(function(c){
       if (c.nodeType === 3) return;
       if (c.nodeType !== 1 || !ALLOWED[c.tagName]){ if (c.nodeType === 1 && c.childNodes.length && c.tagName !== "SCRIPT" && c.tagName !== "STYLE"){ walk(c); while (c.firstChild) c.parentNode.insertBefore(c.firstChild, c); } c.remove(); return; }
-      Array.prototype.slice.call(c.attributes).forEach(function(a){ var ok = (c.tagName === "FIGURE" && /^data-(media|kind|dur)$/.test(a.name)) || (c.tagName === "UL" && a.name === "class" && a.value === "todo") || (c.tagName === "LI" && a.name === "data-done"); if (!ok) c.removeAttribute(a.name); });
+      Array.prototype.slice.call(c.attributes).forEach(function(a){ var ok = (c.tagName === "FIGURE" && /^data-(media|kind|dur|size)$/.test(a.name)) || (c.tagName === "UL" && a.name === "class" && a.value === "todo") || (c.tagName === "LI" && a.name === "data-done"); if (!ok) c.removeAttribute(a.name); });
       if (c.tagName === "FIGURE") c.innerHTML = ""; else walk(c);
     });
   })(t.content);
@@ -4519,13 +4528,14 @@ function hydrateFigure(fig){
   fig.setAttribute("contenteditable", "false");
   fig.innerHTML = '<button type="button" class="fig-x" data-act="fig-del" aria-label="Retirer">' + ICON.close + '</button>' + (kind === "audio"
     ? '<div class="n-audio"><button type="button" class="n-play" data-act="aud-play" aria-label="Lire">' + ICON.play + '</button><div class="n-prog"><i></i></div><span class="n-dur">' + fmtDur(+fig.dataset.dur) + '</span></div>'
-    : '<img alt="' + (kind === "drawing" ? "Dessin" : "Photo") + '"' + (kind === "drawing" ? ' data-act="fig-draw"' : "") + '>');
+    : '<img alt="' + (kind === "drawing" ? "Dessin" : "Photo") + '"' + (kind === "drawing" ? ' data-act="fig-draw"' : "") + '>' + figSizeHTML(fig.dataset.size));
   getMedia(id).then(function(m){
     if (!m) { fig.querySelector("img,.n-audio") && (fig.querySelector("img,.n-audio").outerHTML = '<p class="fig-miss">Média indisponible hors connexion</p>'); return; }
     if (kind === "audio"){ var a = new Audio(m.data); a.preload = "metadata"; fig._audio = a; a.ontimeupdate = function(){ var d = isFinite(a.duration) ? a.duration : (+fig.dataset.dur || 1); fig.querySelector(".n-prog i").style.width = Math.min(100, a.currentTime / d * 100) + "%"; fig.querySelector(".n-dur").textContent = fmtDur(a.currentTime) + " / " + fmtDur(d); }; a.onended = function(){ fig.querySelector(".n-play").innerHTML = ICON.play; fig.querySelector(".n-prog i").style.width = "0"; fig.querySelector(".n-dur").textContent = fmtDur(+fig.dataset.dur); }; }
     else { var im = fig.querySelector("img"); if (im) im.src = m.data; }
   });
 }
+function figSizeHTML(cur){ cur = cur || "g"; return '<div class="fig-sz" role="group" aria-label="Taille de l\'aperçu">' + [["p", "P", "Petit"], ["m", "M", "Moyen"], ["g", "G", "Grand"]].map(function(z){ return '<button type="button" data-act="fig-size" data-s="' + z[0] + '" aria-label="' + z[2] + '" aria-pressed="' + (z[0] === cur) + '">' + z[1] + '</button>'; }).join("") + '</div>'; }
 function figureHTML(id, kind, dur){ return '<figure data-media="' + h(id) + '" data-kind="' + kind + '"' + (dur ? ' data-dur="' + Math.round(dur) + '"' : "") + '></figure>'; }
 function openNote(id, preset){
   try { var O = noteOpens(); O[id] = (O[id] || 0) + 1; localStorage.setItem("mw-nopen", JSON.stringify(O)); } catch(e){}
@@ -4794,16 +4804,20 @@ function openDraw(figure){
   if (!NE) return;
   DP = {fig: figure || null, strokes: [], redo: [], pen: "crayon", color: INKS[0], base: null};
   var el = document.createElement("div"); el.id = "drawPad"; el.className = "draw-pad";
-  el.innerHTML = '<div class="dp-top"><button type="button" class="ne-ic" data-act="dp-cancel" aria-label="Annuler le dessin">' + ICON.close + '</button><span style="flex:1"></span><button type="button" class="ne-ic" data-act="dp-undo" aria-label="Annuler le dernier trait">' + ICON.undo + '</button><button type="button" class="ne-ic" data-act="dp-redo" aria-label="Rétablir">' + ICON.redo + '</button><button type="button" class="ne-ic" data-act="dp-done" aria-label="Terminer le dessin">' + ICON.done + '</button></div><canvas id="dpCanvas"></canvas><div class="dp-tools"><button type="button" class="dp-color" data-act="dp-colors" aria-label="Couleur" style="background:' + DP.color + '"></button>' + PENS.map(function(p){ return '<button type="button" class="dp-pen pen-' + p.id + (p.id === DP.pen ? " on" : "") + '" data-act="dp-pen" data-p="' + p.id + '" aria-label="' + p.name + '" aria-pressed="' + (p.id === DP.pen) + '"><i></i><span>' + p.name + '</span></button>'; }).join("") + '</div><div class="dp-inks" id="dpInks" hidden>' + INKS.map(function(c){ return '<button type="button" data-act="dp-ink" data-c="' + c + '" style="background:' + c + '" aria-label="Couleur ' + c + '"></button>'; }).join("") + '</div>';
+  el.innerHTML = '<div class="dp-top"><button type="button" class="ne-ic" data-act="dp-cancel" aria-label="Annuler le dessin">' + ICON.close + '</button><span style="flex:1"></span><button type="button" class="ne-ic" data-act="dp-undo" aria-label="Annuler le dernier trait">' + ICON.undo + '</button><button type="button" class="ne-ic" data-act="dp-redo" aria-label="Rétablir">' + ICON.redo + '</button><button type="button" class="ne-ic" data-act="dp-done" aria-label="Terminer le dessin">' + ICON.done + '</button></div><div class="dp-area"><canvas id="dpCanvas"></canvas></div><div class="dp-tools"><button type="button" class="dp-color" data-act="dp-colors" aria-label="Couleur" style="background:' + DP.color + '"></button>' + PENS.map(function(p){ return '<button type="button" class="dp-pen pen-' + p.id + (p.id === DP.pen ? " on" : "") + '" data-act="dp-pen" data-p="' + p.id + '" aria-label="' + p.name + '" aria-pressed="' + (p.id === DP.pen) + '"><i></i><span>' + p.name + '</span></button>'; }).join("") + '</div><div class="dp-inks" id="dpInks" hidden>' + INKS.map(function(c){ return '<button type="button" data-act="dp-ink" data-c="' + c + '" style="background:' + c + '" aria-label="Couleur ' + c + '"></button>'; }).join("") + '</div>';
   document.body.appendChild(el);
   var cv = el.querySelector("#dpCanvas"), dpr = Math.min(window.devicePixelRatio || 1, 2);
-  function size(){ var r = cv.getBoundingClientRect(); cv.width = Math.round(r.width * dpr); cv.height = Math.round(r.height * dpr); redrawPad(); }
+  /* 1.22 : taille réelle de la toile (clientWidth/Height, sans l'effet de zoom d'ouverture qui faussait getBoundingClientRect)
+     et position du doigt recalculée d'après l'écran → le trait tombe pile sous le doigt */
+  function size(){ var w = cv.clientWidth, hh = cv.clientHeight; if (!w || !hh) return; var W = Math.round(w * dpr), H = Math.round(hh * dpr); if (cv.width !== W || cv.height !== H){ cv.width = W; cv.height = H; } redrawPad(); }
+  function at(ev){ var r = cv.getBoundingClientRect(), sx = r.width ? cv.clientWidth / r.width : 1, sy = r.height ? cv.clientHeight / r.height : 1; return [(ev.clientX - r.left) * sx, (ev.clientY - r.top) * sy]; }
   DP.cv = cv; DP.dpr = dpr;
   if (figure){ var im = figure.querySelector("img"); if (im && im.src){ var b = new Image(); b.onload = function(){ DP && (DP.base = b, redrawPad()); }; b.src = im.src; } }
   requestAnimationFrame(size);
+  if (window.ResizeObserver){ DP.ro = new ResizeObserver(function(){ size(); }); DP.ro.observe(cv); } else window.addEventListener("resize", size);
   var cur = null;
-  cv.addEventListener("pointerdown", function(e){ cv.setPointerCapture(e.pointerId); var p = PENS.find(function(x){ return x.id === DP.pen; }); cur = {pen:p.id, color:DP.color, pts:[[e.offsetX, e.offsetY, e.pressure || .5, e.timeStamp]]}; DP.strokes.push(cur); DP.redo = []; document.getElementById("dpInks").hidden = true; });
-  cv.addEventListener("pointermove", function(e){ if (!cur) return; var evs = e.getCoalescedEvents ? e.getCoalescedEvents() : [e]; evs.forEach(function(ev){ cur.pts.push([ev.offsetX, ev.offsetY, ev.pressure || .5, ev.timeStamp]); }); redrawPad(); });
+  cv.addEventListener("pointerdown", function(e){ cv.setPointerCapture(e.pointerId); var p = PENS.find(function(x){ return x.id === DP.pen; }); var q = at(e); cur = {pen:p.id, color:DP.color, pts:[[q[0], q[1], e.pressure || .5, e.timeStamp]]}; DP.strokes.push(cur); DP.redo = []; document.getElementById("dpInks").hidden = true; });
+  cv.addEventListener("pointermove", function(e){ if (!cur) return; var evs = e.getCoalescedEvents ? e.getCoalescedEvents() : [e]; evs.forEach(function(ev){ var q = at(ev); cur.pts.push([q[0], q[1], ev.pressure || .5, ev.timeStamp]); }); redrawPad(); });
   ["pointerup","pointercancel"].forEach(function(t){ cv.addEventListener(t, function(){ cur = null; }); });
   history.pushState({ne:1, dp:1}, "");
 }
@@ -4861,6 +4875,7 @@ function closeDraw(save, fromPop){
     }
   }
   var el = document.getElementById("drawPad"); if (el) el.remove();
+  if (dp.ro) dp.ro.disconnect();
   DP = null;
   if (!fromPop && history.state && history.state.dp) history.back();
 }
@@ -4912,6 +4927,7 @@ function noteAction(act, b){
       if (c === "bold") document.execCommand("bold"); else if (c === "h3") document.execCommand("formatBlock", false, "h3"); else if (c === "ul") document.execCommand("insertUnorderedList"); else { document.execCommand("formatBlock", false, "div"); document.execCommand("removeFormat"); }
       queueSave(); return true;
     case "fig-del": var fg = b.closest("figure"); if (fg){ if (fg._audio) fg._audio.pause(); fg.remove(); updateNeMeta(); queueSave(); } return true;
+    case "fig-size": var fz = b.closest("figure"); if (fz){ var sz = b.dataset.s; if (sz === "g") fz.removeAttribute("data-size"); else fz.setAttribute("data-size", sz); fz.querySelectorAll(".fig-sz button").forEach(function(x){ x.setAttribute("aria-pressed", x.dataset.s === sz); }); queueSave(); } return true;
     case "fig-draw": var fd = b.closest("figure"); if (fd) openDraw(fd); return true;
     case "aud-play": var fa = b.closest("figure"); if (fa && fa._audio){ document.querySelectorAll("#noteEd figure").forEach(function(o){ if (o !== fa && o._audio && !o._audio.paused){ o._audio.pause(); o.querySelector(".n-play").innerHTML = ICON.play; } }); if (fa._audio.paused){ fa._audio.play(); b.innerHTML = ICON.pause; } else { fa._audio.pause(); b.innerHTML = ICON.play; } } return true;
   }
