@@ -254,36 +254,38 @@ const appReady = new Promise((resolve) => {
 /* nouvelle version (MyWorld_1.24) : cherchée à chaque démarrage ET à chaque retour dans l'appli (Android garde souvent
    l'appli en mémoire : « fermer / rouvrir » ne la relance pas). Dès qu'elle est installée, un bouton « Mettre à jour l'app »
    apparaît ; un toucher recharge l'appli sur la nouvelle version. */
-let swReg = null, lastUpdCheck = 0, updShown = false;
+let swReg = null, lastUpdCheck = 0, updShown = false, swFresh = false;
 function showUpdateBtn(){
   if (updShown || document.getElementById("updBtn")) return; updShown = true;
   const b = document.createElement("button"); b.type = "button"; b.id = "updBtn"; b.className = "upd-btn";
   b.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></svg><span>Mettre à jour l\'app</span>';
-  b.addEventListener("click", () => { b.disabled = true; b.classList.add("busy"); b.querySelector("span").textContent = "Mise à jour…"; hardUpdate(); });
+  b.addEventListener("click", () => { b.disabled = true; b.classList.add("busy"); b.querySelector("span").textContent = "Mise à jour…"; if (swFresh) location.reload(); else forceUpdate(); });
   document.body.appendChild(b);
 }
-/* MyWorld_1.25 : mise à jour sûre. On laisse d'abord la nouvelle version s'installer (6 s au plus) ; si elle ne
-   prend pas la main, on efface la copie locale de l'appli (pas les données) et on recharge depuis le réseau. */
-function hardUpdate(){
+/* MyWorld_1.27 : mise à jour forcée (bouton des Réglages, ou bouton du bas si la copie n'est pas encore prête).
+   La copie locale retélécharge tout le code depuis internet, puis l'appli se recharge ; tes données ne bougent pas.
+   Secours (copie locale absente ou trop ancienne pour comprendre la demande) : on l'efface et on recharge depuis le réseau. */
+function forceUpdate(){
   let done = false;
-  const go = () => { if (done) return; done = true; location.replace(location.pathname + "?maj=" + Date.now() + location.hash); };
-  if (!("serviceWorker" in navigator)) return go();
-  const fresh = () => fetch("version.json?t=" + Date.now(), { cache: "no-store" }).then((r) => r.ok ? r.json() : null).catch(() => null);
-  navigator.serviceWorker.addEventListener("controllerchange", () => setTimeout(go, 150));
-  if (swReg) swReg.update().catch(() => {});
-  setTimeout(() => {
-    if (done) return;
-    caches.keys().then((ks) => Promise.all(ks.filter((k) => k.indexOf("carnet-") === 0 && k !== "carnet-assets-1").map((k) => caches.delete(k)))).catch(() => {}).then(fresh).then(go, go);
-  }, 6000);
+  const go = (viaNet) => { if (done) return; done = true; if (viaNet) location.replace(location.pathname + "?maj=" + Date.now() + location.hash); else location.reload(); };
+  const fallback = () => { if (done) return; Promise.all([
+      caches.keys().then((ks) => Promise.all(ks.filter((k) => k.indexOf("carnet-") === 0 && k !== "carnet-assets-1").map((k) => caches.delete(k)))),
+      "serviceWorker" in navigator ? navigator.serviceWorker.getRegistrations().then((rs) => Promise.all(rs.map((r) => r.unregister()))) : null
+    ]).catch(() => {}).then(() => go(true)); };
+  const ctl = "serviceWorker" in navigator && navigator.serviceWorker.controller;
+  if (!ctl || !navigator.onLine) return fallback();
+  const mc = new MessageChannel();
+  mc.port1.onmessage = (e) => { if (e.data && e.data.ok) go(false); else fallback(); };
+  ctl.postMessage({ type: "mw-refetch" }, [mc.port2]);
+  setTimeout(fallback, 15000);
 }
-function checkBuild(){
-  const mine = window.APP_BUILD; if (!mine || mine.indexOf("__") >= 0 || !navigator.onLine) return;
-  fetch("version.json?t=" + Date.now(), { cache: "no-store" }).then((r) => r.ok ? r.json() : null).then((j) => { if (j && j.build && j.build !== mine) showUpdateBtn(); }).catch(() => {});
-}
+window.mwForceUpdate = forceUpdate;
 function checkUpdate(){
   if (!("serviceWorker" in navigator)) return;
   let hadController = !!navigator.serviceWorker.controller;
   navigator.serviceWorker.addEventListener("controllerchange", () => { if (hadController) showUpdateBtn(); hadController = true; });
+  /* la copie locale signale que le code en ligne a changé et qu'elle s'est déjà mise à jour : un rechargement suffit */
+  navigator.serviceWorker.addEventListener("message", (e) => { if (e.data && e.data.type === "mw-updated"){ swFresh = true; showUpdateBtn(); } });
   navigator.serviceWorker.register("./sw.js", { updateViaCache: "none" }).then((reg) => {
     swReg = reg;
     if (reg.waiting && navigator.serviceWorker.controller) showUpdateBtn();
@@ -294,7 +296,8 @@ function checkUpdate(){
 function recheckUpdate(force){
   if (!swReg || !navigator.onLine) return;
   if (!force && Date.now() - lastUpdCheck < 30000) return;
-  lastUpdCheck = Date.now(); swReg.update().catch(() => {}); checkBuild();
+  lastUpdCheck = Date.now(); swReg.update().catch(() => {});
+  const ctl = navigator.serviceWorker.controller; if (ctl) ctl.postMessage({ type: "mw-check" });
 }
 document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") recheckUpdate(false); });
 window.addEventListener("online", () => recheckUpdate(true));

@@ -1,6 +1,5 @@
-/* Service worker : garde l'appli disponible sans connexion.
-   VERSION est remplacée automatiquement à chaque mise en ligne par .github/workflows/deploy.yml :
-   rien à changer à la main. Les téléphones prennent la nouvelle version à la prochaine ouverture. */
+/* Service worker : garde l'appli disponible sans connexion et la met à jour toute seule (voir MyWorld_1.27 plus bas).
+   Rien à changer à la main à chaque version. */
 const VERSION = "carnet-__BUILD__";
 const ASSETS = "carnet-assets-1"; /* images, stickers, polices, SDK : gardés d'une version à l'autre */
 const SHELL = [
@@ -11,18 +10,47 @@ const SHELL = [
   "fonts/dancing-script-latin-600-normal.woff2", "fonts/dancing-script-latin-700-normal.woff2"
 ];
 const SHELL_PATHS = new Set(SHELL.map((u) => new URL(u, self.location).pathname));
-/* MyWorld_1.25 : chaque fichier est téléchargé avec ?b=<numéro de version> (GitHub Pages garde les fichiers 10 min en cache :
-   sans cela, une version pouvait garder l'ancienne page). La page doit contenir le numéro de cette version, sinon
-   l'installation échoue et sera retentée à la prochaine vérification (on ne garde jamais une page périmée). */
-const BUILD = VERSION.replace("carnet-", "");
-self.addEventListener("install", (e) => { e.waitUntil(caches.open(VERSION).then((c) => Promise.all(SHELL.map((u) => {
-  const url = new URL(u, self.location); url.searchParams.set("b", BUILD);
-  return fetch(url.href, { cache: "reload" }).then((res) => {
-    if (!res.ok) throw new Error("fichier " + u + " : " + res.status);
-    if ((u === "./" || u === "index.html") && BUILD.indexOf("__") < 0) return res.clone().text().then((t) => { if (t.indexOf(BUILD) < 0) throw new Error("page pas encore à jour"); return c.put(new Request(u), res); });
-    return c.put(new Request(u), res);
+/* MyWorld_1.27 : GitHub Pages publie aussi directement la branche main (« pages-build-deployment »), et cette publication
+   passe après celle de deploy.yml : en ligne, VERSION reste « carnet-__BUILD__ » d'une version à l'autre. Une version qui
+   ne touche pas sw.js n'était donc jamais vue par les téléphones (cause des blocages en 1.21 puis 1.25).
+   Désormais le code de l'appli est comparé à celui en ligne à chaque ouverture, quelle que soit la façon dont le site est publié :
+   - installation : chaque fichier est téléchargé avec une adresse unique (?b=…), jamais servi depuis un cache ;
+   - à chaque ouverture (et quand la page le demande au retour dans l'appli) : index.html, app-firebase.js et
+     firebase-config.js sont redemandés au serveur (requête conditionnelle, quasi gratuite s'ils n'ont pas changé) ;
+     s'ils ont changé, la copie locale est remplacée d'un coup et la page reçoit « mw-updated » (bouton « Mettre à jour l'app ») ;
+   - « mw-refetch » (bouton Forcer la mise à jour des Réglages) : retélécharge toute la copie, puis répond à la page. */
+const bust = (u) => { const x = new URL(u, self.location); x.searchParams.set("b", Date.now().toString(36) + Math.random().toString(36).slice(2, 7)); return x.href; };
+const getFresh = (u) => fetch(bust(u), { cache: "no-store" }).then((res) => { if (!res.ok) throw new Error(u + " : " + res.status); return res; });
+const refetchAll = () => caches.open(VERSION).then((c) => Promise.all(SHELL.map((u) => getFresh(u))).then((list) => Promise.all(list.map((res, i) => c.put(new Request(SHELL[i]), res)))));
+self.addEventListener("install", (e) => { e.waitUntil(refetchAll().then(() => self.skipWaiting())); });
+const CODE = ["index.html", "app-firebase.js", "firebase-config.js"];
+let lastCheck = 0, checking = null;
+function refreshCode(force){
+  if (checking) return checking;
+  if (!force && Date.now() - lastCheck < 15000) return Promise.resolve(false);
+  lastCheck = Date.now();
+  checking = caches.open(VERSION).then((c) =>
+    Promise.all(CODE.map((u) => fetch(new URL(u, self.location).href, { cache: "no-cache" }).then((res) => {
+      if (!res.ok) throw new Error(u + " : " + res.status);
+      return res.text().then((t) => ({ u, t, type: res.headers.get("content-type") || "" }));
+    }))).then((fresh) => Promise.all(fresh.map((f) => c.match(f.u).then((old) => old ? old.text() : null))).then((olds) => {
+      if (fresh.every((f, i) => olds[i] === f.t)) return false;
+      const puts = [];
+      fresh.forEach((f) => { const mk = () => new Response(f.t, { headers: { "Content-Type": f.type } }); puts.push(c.put(new Request(f.u), mk())); if (f.u === "index.html") puts.push(c.put(new Request("./"), mk())); });
+      return Promise.all(puts).then(() => true);
+    }))
+  ).catch(() => false).then((changed) => {
+    checking = null;
+    if (changed) self.clients.matchAll({ includeUncontrolled: true, type: "window" }).then((cs) => cs.forEach((cl) => cl.postMessage({ type: "mw-updated" })));
+    return changed;
   });
-}))).then(() => self.skipWaiting())); });
+  return checking;
+}
+self.addEventListener("message", (e) => {
+  const d = e.data || {};
+  if (d.type === "mw-check") e.waitUntil(refreshCode(true));
+  if (d.type === "mw-refetch") e.waitUntil(refetchAll().then(() => true, () => false).then((ok) => { lastCheck = Date.now(); if (e.ports && e.ports[0]) e.ports[0].postMessage({ ok }); }));
+});
 self.addEventListener("activate", (e) => { e.waitUntil(caches.keys().then((keys) => Promise.all(keys.filter((k) => k !== VERSION && k !== ASSETS).map((k) => caches.delete(k)))).then(() => self.clients.claim())); });
 self.addEventListener("fetch", (e) => {
   const req = e.request;
@@ -41,9 +69,9 @@ self.addEventListener("fetch", (e) => {
     return;
   }
   /* MyWorld_1.19 : la page et le code de l'appli viennent directement de la copie de CETTE version (ouverture instantanée,
-     tous les fichiers de la même version) ; une mise en ligne change sw.js, le téléphone installe alors la nouvelle copie
-     en coulisse et l'utilise à l'ouverture suivante */
+     tous les fichiers de la même version) ; la vérification ci-dessus remplace la copie quand le code en ligne a changé */
   if (sameOrigin && SHELL_PATHS.has(url.pathname)){
+    if (req.mode === "navigate") e.waitUntil(refreshCode(false));
     e.respondWith(caches.open(VERSION).then((c) => c.match(req, { ignoreSearch: true }).then((hit) => hit || (req.mode === "navigate" ? c.match("index.html") : null))).then((hit) => hit || fetch(req)).catch(() => caches.match("index.html")));
     return;
   }
