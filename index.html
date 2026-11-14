@@ -2290,7 +2290,7 @@ var DECO = (function(){
 
 </script>
 <script>
-var APP_VERSION = "MyWorld_1.20";
+var APP_VERSION = "MyWorld_1.21";
 (function(){
 "use strict";
 var CAL = "t.mallet06@gmail.com";
@@ -5571,17 +5571,27 @@ function fidAct(act, b){
    Nuits envoyées par la montre (Huawei Santé → Health Sync → Health Connect → HC Webhook → script Google, voir scripts/jeton-agenda),
    recopiées dans la base (collection « sleep »). Une nuit : { s, e (dates ISO), st: "phase:début:durée …" (minutes ; Firestore refuse les tableaux de tableaux), up }.
    Phases : d profond, l léger, r paradoxal, w éveil, s sommeil sans détail.
-   Note sur 100 (formule de My World, transparente) :
-   - Durée /40 : repères de la National Sleep Foundation (adultes 26-64 ans : 7 à 9 h conseillé, 6 h ou 10 h peut convenir)
-   - Profond /20 : 13 à 23 % du sommeil en temps normal (Manuel MSD) ; plein à 13 %, 0 à 3 %
-   - Paradoxal /20 : 20 à 25 % (Manuel MSD) ; plein à 20 %, 0 à 8 %
-   - Continuité /20 : repères NSF sur la qualité (2017) : réveils de plus de 5 min (≤ 1 bien, ≥ 4 mauvais) et éveil après l'endormissement (≤ 20 min bien, ≥ 41 min mauvais) */
+   Note sur 100 (formule de My World, transparente). MyWorld_1.21 : grille plus exigeante (Théo : 100 dans l'appli pour une nuit
+   notée 85 par Huawei Santé, à cause de 2 réveils). Les réveils pèsent plus lourd et sont TOUS comptés (avant : seulement > 5 min) ;
+   les points pleins demandent un peu plus que le minimum normal.
+   - Durée /30 : National Sleep Foundation 2015 (adultes : 7 à 9 h conseillé ; 6 h ou 10 h peut convenir) : plein de 7 à 9 h
+   - Profond /15 : normal 13 à 23 % (Manuel MSD), repère Huawei Santé 20 à 60 % : 3 % = 0, 13 % = 9, plein dès 20 %
+   - Paradoxal /15 : normal 20 à 25 % (Manuel MSD), repère Huawei 10 à 30 % : 8 % = 0, 15 % = 9, plein de 20 à 30 %, puis baisse légère
+   - Réveils /25 : tous les réveils pendant la nuit (éveils collés = un seul) ; repère Huawei 0 à 1 ; NSF 2017 (réveils > 5 min : ≤ 1 bien, ≥ 4 mauvais) :
+     0 = 25, 1 = 20, 2 = 11, 3 = 5, 4 et plus = 0
+   - Éveil après l'endormissement /15 : NSF 2017 (≤ 20 min bien, ≥ 41 min mauvais) : ≤ 10 min = 15, 20 min = 11, 30 min = 6, 41 min = 0 */
 var SL_COL = { d: "#2E3A8C", l: "#6E8BEA", r: "#B57BE8", w: "#F2A65A", s: "#A9B7C9" };
 var SL_NAME = { d: "Profond", l: "Léger", r: "Paradoxal", w: "Éveil", s: "Sommeil" };
 var SL_IC = '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>';
 var SLC = { key: "", list: [] };
 function slLin(x, x0, y0, x1, y1){ if (x <= x0) return y0; if (x >= x1) return y1; return y0 + (y1 - y0) * (x - x0) / (x1 - x0); }
-function slDurPts(h){ return h < 7 ? (h < 5 ? slLin(h, 4, 0, 5, 10) : h < 6 ? slLin(h, 5, 10, 6, 25) : slLin(h, 6, 25, 7, 40)) : h <= 9 ? 40 : h < 10 ? slLin(h, 9, 40, 10, 25) : h < 11 ? slLin(h, 10, 25, 11, 10) : slLin(h, 11, 10, 12, 0); }
+function slDurPts(h){ return h < 7 ? (h < 5 ? slLin(h, 4, 0, 5, 7) : h < 6 ? slLin(h, 5, 7, 6, 18) : slLin(h, 6, 18, 7, 30)) : h <= 9 ? 30 : h < 10 ? slLin(h, 9, 30, 10, 18) : h < 11 ? slLin(h, 10, 18, 11, 7) : slLin(h, 11, 7, 12, 0); }
+/* MyWorld_1.21 : barèmes en paliers (points entre deux paliers = proportionnels) */
+function slSteps(x, pts){ for (var i = 1; i < pts.length; i++) if (x <= pts[i][0]) return slLin(x, pts[i - 1][0], pts[i - 1][1], pts[i][0], pts[i][1]); return pts[pts.length - 1][1]; }
+function slWakePts(n){ return [25, 20, 11, 5][n] != null ? [25, 20, 11, 5][n] : 0; }
+function slWasoPts(m){ return slSteps(m, [[0, 15], [10, 15], [20, 11], [30, 6], [41, 0]]); }
+function slDeepPts(p){ return slSteps(p, [[0, 0], [.03, 0], [.13, 9], [.20, 15], [1, 15]]); }
+function slRemPts(p){ return slSteps(p, [[0, 0], [.08, 0], [.15, 9], [.20, 15], [.30, 15], [.40, 10], [1, 10]]); }
 function slHM(min, sep){ min = Math.round(min); var hh = Math.floor(min / 60), mm = min % 60; return hh ? (hh + (sep || " h ") + (mm || sep ? pad(mm) : "")).trim() : mm + " min"; }
 function slHour(min){ min = ((Math.round(min) % 1440) + 1440) % 1440; var m = min % 60; return Math.floor(min / 60) + " h" + (m ? " " + pad(m) : ""); }
 function slClock(d){ return pad(d.getHours()) + ":" + pad(d.getMinutes()); }
@@ -5612,12 +5622,13 @@ function slNights(){
     var sl = n.st.filter(function(a){ return a[0] !== "w"; }), first = sl.length ? Math.min.apply(null, sl.map(function(a){ return a[1]; })) : 0, last = sl.length ? Math.max.apply(null, sl.map(function(a){ return a[1] + a[2]; })) : 0;
     var mid = n.st.filter(function(a){ return a[0] === "w" && a[1] >= first && a[1] + a[2] <= last; });
     n.t = t; n.sleep = t.d + t.l + t.r + t.s; n.waso = mid.reduce(function(a, b){ return a + b[2]; }, 0);
-    n.wakes = mid.filter(function(a){ return a[2] > 5; }).length;
+    /* 1.21 : tous les réveils comptent ; deux éveils qui se touchent = un seul réveil */
+    n.wakes = mid.slice().sort(function(a, b){ return a[1] - b[1]; }).reduce(function(acc, a){ if (acc.end != null && a[1] <= acc.end + 1){ acc.end = Math.max(acc.end, a[1] + a[2]); return acc; } acc.n++; acc.end = a[1] + a[2]; return acc; }, { n: 0, end: null }).n;
     n.detail = n.sleep > 0 && t.s / n.sleep < .2;
-    var dp = slDurPts(n.sleep / 60), cp = slLin(n.wakes, 1, 10, 4, 0) + slLin(n.waso, 20, 10, 41, 0);
-    n.pts = { dur: dp, cont: cp };
-    if (n.detail){ var ds = t.d + t.l + t.r; n.pts.deep = slLin(t.d / ds, .03, 0, .13, 20); n.pts.rem = slLin(t.r / ds, .08, 0, .20, 20); }
-    n.score = Math.round(n.detail ? dp + cp + n.pts.deep + n.pts.rem : (dp + cp) / 60 * 100);
+    var dp = slDurPts(n.sleep / 60), wp = slWakePts(n.wakes), ap = slWasoPts(n.waso);
+    n.pts = { dur: dp, wake: wp, waso: ap, cont: wp + ap };
+    if (n.detail){ var ds = t.d + t.l + t.r; n.pts.deep = slDeepPts(t.d / ds); n.pts.rem = slRemPts(t.r / ds); }
+    n.score = Math.round(n.detail ? dp + wp + ap + n.pts.deep + n.pts.rem : (dp + wp + ap) / 70 * 100);
     n.naps = naps.filter(function(z){ return iso(z.e) === n.key; });
   });
   SLC.key = k; SLC.list = nights;
@@ -5702,12 +5713,13 @@ function slBedHTML(){
 function slDetail(){
   var n = slByKey(S.slSel); if (!n) return; var P = n.pts;
   openSheet("Note " + n.score + " · " + slLabel(n.score), '<div class="sl-det">'
-    + slPtsRow("Durée", P.dur, 40, slHM(n.sleep) + " · conseillé : 7 à 9 h")
-    + (n.detail ? slPtsRow("Sommeil profond", P.deep, 20, Math.round(n.t.d / n.sleep * 100) + " % · habituel : 13 à 23 %") + slPtsRow("Sommeil paradoxal", P.rem, 20, Math.round(n.t.r / n.sleep * 100) + " % · habituel : 20 à 25 %") : "")
-    + slPtsRow("Continuité", P.cont, 20, (n.wakes ? n.wakes + " réveil" + (n.wakes > 1 ? "s" : "") + " de plus de 5 min" : "aucun réveil de plus de 5 min") + " · " + (n.waso ? slHM(n.waso) + " éveillé" : "pas d'éveil"))
+    + slPtsRow("Durée", P.dur, 30, slHM(n.sleep) + " · conseillé : 7 à 9 h")
+    + (n.detail ? slPtsRow("Sommeil profond", P.deep, 15, Math.round(n.t.d / n.sleep * 100) + " % · plein dès 20 %") + slPtsRow("Sommeil paradoxal", P.rem, 15, Math.round(n.t.r / n.sleep * 100) + " % · plein de 20 à 30 %") : "")
+    + slPtsRow("Réveils", P.wake, 25, (n.wakes ? n.wakes + " réveil" + (n.wakes > 1 ? "s" : "") : "aucun réveil") + " · repère : 0 à 1")
+    + slPtsRow("Éveillé dans la nuit", P.waso, 15, (n.waso ? slHM(n.waso) : "0 min") + " · plein jusqu'à 10 min")
     + (n.naps.length ? '<p class="sl-src">Sieste : ' + n.naps.map(function(z){ return slClock(z.s) + " → " + slClock(z.e); }).join(", ") + ' (hors note)</p>' : '')
-    + (n.detail ? "" : '<p class="sl-src">Pas de phases envoyées pour cette nuit : note sur la durée et la continuité.</p>')
-    + '<p class="sl-src">Repères : National Sleep Foundation (2015, 2017) et Manuel MSD. Phases estimées par la montre ; Huawei Santé a sa propre note.</p></div>');
+    + (n.detail ? "" : '<p class="sl-src">Pas de phases envoyées pour cette nuit : note sur la durée, les réveils et l\'éveil.</p>')
+    + '<p class="sl-src">Repères : National Sleep Foundation (2015, 2017), Manuel MSD et repères affichés par Huawei Santé. Phases estimées par la montre ; la formule de Huawei n\'est pas publiée, les deux notes peuvent donc différer un peu.</p></div>');
 }
 function slEmptyHTML(){
   var st = SLS.st, msg = st && st.old ? "Le script Google répond, mais il n'a pas encore la partie sommeil. Suis l'étape A du mode d'emploi."
