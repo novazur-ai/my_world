@@ -331,6 +331,23 @@ body.nsel-on nav.tabs *{pointer-events:none!important}
 .n-seg button:active{background:rgba(0,0,0,.06)}
 .n-seg .n-seg-add{width:48px;background:linear-gradient(135deg,var(--acc,#2766A8),var(--acc-grad,#4C8BCB));color:#FFFFFF;box-shadow:0 4px 10px rgba(39,102,168,.25)}
 .n-seg .n-seg-add:active{filter:brightness(.92);background:linear-gradient(135deg,var(--acc,#2766A8),var(--acc-grad,#4C8BCB))}
+.nw-list{display:flex;flex-direction:column;gap:8px}
+.nw-day{margin:8px 0 0;font-size:11px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.nw-day:first-child{margin-top:0}
+.nw-it{border:1.5px solid var(--line);border-radius:14px;padding:11px 14px;background:var(--paper,#fff)}
+.nw-it.cur{border-color:var(--acc,#2766A8)}
+.nw-h{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.nw-h b{font-size:15px;font-weight:900;flex:1;min-width:0}
+.nw-v{flex:none;font-size:11.5px;font-weight:900;padding:2px 8px;border-radius:999px;background:var(--acc-soft,#E3EEF8);color:var(--acc-ink,#1E4F84)}
+.nw-cur{font-size:11px;font-weight:900;color:var(--acc-ink,#1E4F84)}
+.nw-it ul{margin:6px 0 0;padding-left:18px;font-size:13.5px;line-height:1.45;color:var(--text)}
+.nw-it li+li{margin-top:2px}
+.nw-more{margin-top:10px}
+.nw-more summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:8px;min-height:44px;font-size:14px;font-weight:900;color:var(--acc-ink,#1E4F84)}
+.nw-more summary::-webkit-details-marker{display:none}
+.nw-more summary::after{content:"";width:8px;height:8px;border-right:2.4px solid currentColor;border-bottom:2.4px solid currentColor;transform:rotate(45deg);margin:-4px 0 0 2px;transition:transform .2s}
+.nw-more[open] summary::after{transform:rotate(225deg);margin-top:4px}
+.nw-more summary span{font-weight:700;color:var(--muted);font-size:12.5px}
 .n-icbtn{width:46px;height:46px;flex-shrink:0;border-radius:50%;border:1.5px solid var(--line);background:rgba(255,255,255,.9);color:var(--ink);display:grid;place-items:center}
 .n-chips{margin-top:12px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
 .n-chips::-webkit-scrollbar{display:none}
@@ -2395,7 +2412,44 @@ var DECO = (function(){
 
 </script>
 <script>
-var APP_VERSION = "MyWorld_1.32";
+var APP_VERSION = "MyWorld_1.33";
+/* MyWorld_1.33 : nouveautés affichées dans les Réglages. À CHAQUE VERSION (appli ou jeu) : ajouter une entrée EN TÊTE,
+   {v: numéro, d: date AAAA-MM-JJ, t: titre court, l: 1 à 3 phrases simples, sans jargon}. */
+var MW_NEWS = [
+  {"v": "1.33", "d": "2026-11-14", "t": "Historique des nouveautés", "l": ["Dans les Réglages, la liste des dernières nouveautés de l'appli, version par version."]},
+  {"v": "1.32", "d": "2026-11-14", "t": "Pastilles à copier plus fiables", "l": ["Les pastilles à copier se créent correctement même au milieu d'une phrase."]},
+  {"v": "1.31", "d": "2026-11-14", "t": "Texte à copier d'un toucher", "l": ["Nouvel outil « copier » dans la barre des notes.", "Bloc « À copier » : un toucher copie tout le texte.", "Pastille au milieu du texte pour un code, une immatriculation, une adresse."]},
+  {"v": "1.30", "d": "2026-11-14", "t": "Un seul + dans Notes", "l": ["Le + pour créer une note rejoint Dossiers et Options en haut de la page.", "Le gros + flottant de Notes disparaît."]},
+  {"v": "1.29", "d": "2026-11-14", "t": "Sélection multiple des notes", "l": ["Appui long sur une note pour en sélectionner plusieurs.", "Supprimer, épingler ou déplacer dans un dossier en une fois.", "« Tes notes » devient « Notes »."]},
+  {"v": "1.28", "d": "2026-11-14", "t": "Notes qui s'ouvrent depuis leur carte", "l": ["La note s'agrandit depuis sa carte et s'y replie en se fermant.", "Fond noir et texte blanc par défaut pour les nouvelles notes.", "Le panneau des fonds prend la couleur de la note."]},
+  {"v": "1.27", "d": "2026-11-14", "t": "Mises à jour qui arrivent toujours", "l": ["L'appli compare son code à celui en ligne à chaque ouverture.", "Bouton « Forcer la mise à jour » dans les Réglages."]},
+  {"v": "1.26", "d": "2026-11-14", "t": "Menu des notes revu", "l": ["Le menu ⋮ s'ouvre en petite fenêtre sous le bouton.", "« Déplacer vers un dossier » s'affiche bien au-dessus de la note."]},
+  {"v": "1.25", "d": "2026-11-14", "t": "Mises à jour plus sûres", "l": ["Une nouvelle version ne peut plus s'installer avec une ancienne page."]},
+  {"v": "1.24", "d": "2026-11-14", "t": "Bouton « Mettre à jour l'app »", "l": ["L'appli cherche une nouvelle version à chaque retour dedans.", "Un bouton apparaît quand elle est prête."]},
+  {"v": "1.23", "d": "2026-11-14", "t": "Nouvelle note depuis l'accueil", "l": ["Tire le carrousel des notes vers la droite pour créer une note."]},
+  {"v": "1.22", "d": "2026-11-14", "t": "Dessin réparé et tailles d'images", "l": ["Le trait du dessin suit enfin le doigt.", "Photos et dessins des notes en 3 tailles : P, M, G."]},
+  {"v": "1.21", "d": "2026-11-14", "t": "Note de sommeil plus exigeante", "l": ["Tous les réveils comptent, barème plus proche de Huawei Santé."]},
+  {"v": "1.20", "d": "2026-11-14", "t": "Mise en forme des notes", "l": ["Le T ouvre les outils : surligner, 3 tailles de titre, gras."]},
+  {"v": "1.19", "d": "2026-11-13", "t": "Lancement plus rapide", "l": ["Le logo complet une fois par jour, puis il se glisse dans le + aux ouvertures suivantes."]},
+  {"v": "1.18", "d": "2026-11-13", "t": "Plus de phrases du jour", "l": ["33 phrases dans Bien-être, sans répétition visible."]},
+  {"v": "1.17", "d": "2026-11-13", "t": "Journal animé", "l": ["Les News s'ouvrent en dépliant un petit journal depuis l'accueil."]},
+  {"v": "1.16", "d": "2026-11-13", "t": "Bouton News sur l'accueil", "l": ["Un journal collé à la météo signale les nouvelles infos du jour."]},
+  {"v": "1.15", "d": "2026-11-13", "t": "News : moins de ce genre", "l": ["Le visage de gauche demande moins d'infos de ce type."]},
+  {"v": "1.14", "d": "2026-11-13", "t": "Nouveau tri des News", "l": ["Priorité à ce dont tout le monde parle, à l'aviation et à ce qui est utile.", "Les News apprennent de tes avis."]},
+  {"v": "1.13", "d": "2026-11-13", "t": "La Gazette devient « Les News »", "l": ["De 3 à 5 chiffres marquants chaque jour."]},
+  {"v": "1.12", "d": "2026-11-13", "t": "Vacations de nuit", "l": ["Le code NUIT du planning = service de 23 h à 6 h 30."]},
+  {"v": "1.11", "d": "2026-11-13", "t": "Page Bien-être", "l": ["Humeur du soir d'un toucher, calendrier semaine, mois et année.", "Phrase du jour et premières conclusions humeur et sommeil."]},
+  {"v": "1.10", "d": "2026-11-13", "t": "Page Sommeil allégée", "l": ["L'essentiel de la nuit et de la semaine, le détail de la note au toucher."]},
+  {"v": "1.9", "d": "2026-11-13", "t": "Alerte Sommeil", "l": ["Prévient quand aucune nuit n'est arrivée depuis 3 jours."]},
+  {"v": "1.8", "d": "2026-11-13", "t": "Sommeil", "l": ["Tes nuits arrivent de la montre, avec une note sur 100.", "Bloc « Nuit » sur l'accueil."]},
+  {"v": "1.7", "d": "2026-11-11", "t": "Bas de l'écran raccord", "l": ["Le bas de l'appli se fond dans la barre Android."]},
+  {"v": "1.6", "d": "2026-11-10", "t": "Un seul bouton +", "l": ["Fin du plein écran ; tirer le + vers le haut ouvre les applis."]},
+  {"v": "1.5", "d": "2026-11-09", "t": "« La Veille de Forpharos »", "l": ["Le jeu prend son nom."]},
+  {"v": "1.4", "d": "2026-11-09", "t": "Cartes de fidélité", "l": ["Portefeuille, mode caisse plein écran, scan du code-barres."]},
+  {"v": "1.3", "d": "2026-11-09", "t": "Lanceur plus rapide", "l": ["La tige du lanceur pousse presque deux fois plus vite."]},
+  {"v": "1.2", "d": "2026-11-09", "t": "Barre plus nette", "l": ["« Home » se replie quand le lanceur s'ouvre."]},
+  {"v": "1.1", "d": "2026-11-09", "t": "Le jeu arrive", "l": ["Première version jouable de Forpharos : village, Forge, combats."]}
+];
 (function(){
 "use strict";
 var CAL = "t.mallet06@gmail.com";
@@ -4377,8 +4431,29 @@ function settingsHTML(){
     + '<h3 style="margin:26px 0 6px">Google Agenda</h3>' + gcalSettingsHTML()
     + '<h3 style="margin:26px 0 6px">Sauvegarde</h3><p style="font-size:13px;color:var(--muted);margin-bottom:10px">Télécharge une copie de toutes tes données, ou importe une sauvegarde.</p><div class="bk-row"><button type="button" class="btn light" data-act="export">Télécharger</button><button type="button" class="btn light" data-act="import">Importer</button><input type="file" id="impFile" accept="application/json,.json" hidden></div>'
     + '<div style="margin-top:26px"><button type="button" class="mini" data-act="signout">Se déconnecter</button></div>'
+    + newsSettingsHTML()
     + '<h3 style="margin:26px 0 6px">Mise à jour</h3><p style="font-size:13px;color:var(--muted);margin-bottom:10px">Si une nouvelle version tarde à arriver : l\'appli retélécharge tout son code depuis internet puis redémarre. Tes données ne bougent pas.</p><button type="button" class="btn light" data-act="force-upd">Forcer la mise à jour</button>'
     + '<p style="margin:18px 0 0;font-size:12px;font-weight:700;color:#85858F">Version ' + APP_VERSION + '</p>';
+}
+function newsDayLabel(d){
+  var t = iso(new Date()), y = iso(new Date(Date.now() - 864e5));
+  if (d === t) return "Aujourd'hui"; if (d === y) return "Hier";
+  var x = new Date(d + "T12:00:00"); return JOURS_LONG[x.getDay()].replace(/^./, function(c){ return c.toUpperCase(); }) + " " + x.getDate() + " " + MOIS[x.getMonth()];
+}
+function newsItemHTML(n, cur){
+  return '<div class="nw-it' + (cur ? ' cur' : '') + '"><div class="nw-h"><span class="nw-v">' + h(n.v) + '</span><b>' + h(n.t) + '</b>' + (cur ? '<span class="nw-cur">Ta version</span>' : '') + '</div><ul>' + n.l.map(function(x){ return '<li>' + h(x) + '</li>'; }).join("") + '</ul></div>';
+}
+function newsGroupHTML(list, curV, prevDay){
+  var out = "", last = prevDay || "";
+  list.forEach(function(n){ if (n.d !== last){ out += '<p class="nw-day">' + newsDayLabel(n.d) + '</p>'; last = n.d; } out += newsItemHTML(n, n.v === curV); });
+  return out;
+}
+/* MyWorld_1.33 : section « Nouveautés » des Réglages : les 3 dernières versions, puis tout l'historique à déplier */
+function newsSettingsHTML(){
+  var cur = APP_VERSION.replace("MyWorld_", ""), first = MW_NEWS.slice(0, 3), rest = MW_NEWS.slice(3);
+  return '<h3 style="margin:26px 0 6px">Nouveautés</h3><p style="font-size:13px;color:var(--muted);margin-bottom:10px">Ce qui a changé dans l\'appli, version par version.</p>'
+    + '<div class="nw-list">' + newsGroupHTML(first, cur) + '</div>'
+    + (rest.length ? '<details class="nw-more"><summary>Tout l\'historique <span>' + MW_NEWS.length + ' versions</span></summary><div class="nw-list">' + newsGroupHTML(rest, cur, first.length ? first[first.length - 1].d : "") + '</div></details>' : '');
 }
 function mountSettings(){
   var imp = document.getElementById("impFile"); if (imp) imp.onchange = function(){ var f = imp.files && imp.files[0]; if (!f || !needDb()) return; f.text().then(function(t){ var j = JSON.parse(t); if (!j || !j.collections) throw new Error("format"); return db.importAll(j); }).then(function(n){ toast("Sauvegarde importée (" + n + " éléments)."); closeSheet(); }).catch(function(){ toast("Ce fichier n'est pas une sauvegarde valide."); }); };
