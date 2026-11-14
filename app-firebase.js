@@ -251,18 +251,35 @@ const appReady = new Promise((resolve) => {
   new MutationObserver(() => { if (!gate.hidden) resolve(); }).observe(gate, { attributes: true, attributeFilter: ["hidden"] });
 });
 
-/* nouvelle version : cherchée en coulisse, une fois l'appli affichée ; elle s'ouvrira au lancement suivant */
+/* nouvelle version (MyWorld_1.24) : cherchée à chaque démarrage ET à chaque retour dans l'appli (Android garde souvent
+   l'appli en mémoire : « fermer / rouvrir » ne la relance pas). Dès qu'elle est installée, un bouton « Mettre à jour l'app »
+   apparaît ; un toucher recharge l'appli sur la nouvelle version. */
+let swReg = null, lastUpdCheck = 0, updShown = false;
+function showUpdateBtn(){
+  if (updShown || document.getElementById("updBtn")) return; updShown = true;
+  const b = document.createElement("button"); b.type = "button"; b.id = "updBtn"; b.className = "upd-btn";
+  b.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></svg><span>Mettre à jour l\'app</span>';
+  b.addEventListener("click", () => { b.disabled = true; b.classList.add("busy"); b.querySelector("span").textContent = "Mise à jour…"; location.reload(); });
+  document.body.appendChild(b);
+}
 function checkUpdate(){
   if (!("serviceWorker" in navigator)) return;
-  const hadController = !!navigator.serviceWorker.controller;
-  navigator.serviceWorker.addEventListener("controllerchange", () => {
-    if (!hadController) return;
-    if (typeof window.toast === "function") window.toast("Nouvelle version de My World prête : elle s'ouvrira au prochain lancement.");
-  });
+  let hadController = !!navigator.serviceWorker.controller;
+  navigator.serviceWorker.addEventListener("controllerchange", () => { if (hadController) showUpdateBtn(); hadController = true; });
   navigator.serviceWorker.register("./sw.js", { updateViaCache: "none" }).then((reg) => {
-    if (hadController && navigator.onLine) return reg.update();
+    swReg = reg;
+    if (reg.waiting && navigator.serviceWorker.controller) showUpdateBtn();
+    reg.addEventListener("updatefound", () => { const w = reg.installing, had = !!navigator.serviceWorker.controller; if (w && had) w.addEventListener("statechange", () => { if (w.state === "installed" || w.state === "activated") showUpdateBtn(); }); });   /* pas de bouton à la toute 1re installation */
+    recheckUpdate(true);
   }).catch(() => {});
 }
+function recheckUpdate(force){
+  if (!swReg || !navigator.onLine) return;
+  if (!force && Date.now() - lastUpdCheck < 30000) return;
+  lastUpdCheck = Date.now(); swReg.update().catch(() => {});
+}
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") recheckUpdate(false); });
+window.addEventListener("online", () => recheckUpdate(true));
 Promise.race([appReady, timeout(4000)]).then(() => requestAnimationFrame(() => requestAnimationFrame(hideSplash)));
 setTimeout(hideSplash, 8000);
-setTimeout(checkUpdate, 1500);
+setTimeout(checkUpdate, 600);

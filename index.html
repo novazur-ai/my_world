@@ -110,6 +110,12 @@ html:has(#splash),html:has(#splash) body{overflow:hidden}
 @keyframes spToPlus{to{transform:translate(var(--qx,0),var(--qy,0)) scale(var(--qs,.3))}}
 @keyframes spGone{to{opacity:0}}
 nav.tabs .nav-add.mw-pop{animation:mwPop .32s cubic-bezier(.3,1.6,.5,1)}
+/* MyWorld_1.24 : bouton « Mettre à jour l'app » (apparaît dès qu'une nouvelle version est prête) */
+.upd-btn{position:fixed;left:50%;bottom:calc(112px + env(safe-area-inset-bottom,0px));z-index:95;transform:translateX(-50%);display:flex;align-items:center;gap:8px;min-height:44px;padding:0 18px 0 14px;border:0;border-radius:999px;background:#0B3A5C;color:#FFFFFF;font:900 14px var(--f-body);box-shadow:0 10px 26px rgba(11,58,92,.35);animation:updIn .45s cubic-bezier(.3,1.4,.5,1) both;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.upd-btn.busy svg{animation:updSpin .8s linear infinite}
+@keyframes updIn{from{opacity:0;transform:translate(-50%,24px) scale(.9)}to{opacity:1;transform:translateX(-50%)}}
+@keyframes updSpin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion: reduce){.upd-btn{animation:none}}
 @keyframes mwPop{from{transform:scale(.6);opacity:.3}to{transform:none;opacity:1}}
 @keyframes spBg{to{background-color:rgba(15,16,18,0)}}
 @keyframes spFade{to{opacity:0;transform:scale(.85)}}
@@ -2311,7 +2317,7 @@ var DECO = (function(){
 
 </script>
 <script>
-var APP_VERSION = "MyWorld_1.23";
+var APP_VERSION = "MyWorld_1.24";
 (function(){
 "use strict";
 var CAL = "t.mallet06@gmail.com";
