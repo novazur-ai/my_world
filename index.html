@@ -387,6 +387,26 @@ body.ne-open{overflow:hidden}
 .ne-sep{width:1px;height:12px;background:currentColor;opacity:.4}
 .ne-folder{margin-left:auto;padding:4px 10px;border-radius:999px;border:1.5px solid currentColor;background:transparent;color:inherit;font-size:12px;font-weight:800;opacity:.85}
 .ne-body{position:relative;min-height:50vh;font-size:var(--nfs,17px);line-height:1.6;outline:none;overflow-wrap:anywhere}
+.ne-body .cpb{position:relative;margin:10px 0;padding:40px 14px 12px;border:1.5px solid rgba(39,102,168,.28);background:rgba(39,102,168,.06);border-radius:14px;font-size:.94em;line-height:1.5;transition:border-color .2s,background .2s}
+.ne-body .cpb::before{content:"À copier";position:absolute;left:14px;top:12px;font-size:11px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#2766A8;pointer-events:none}
+.ne-body .cpb::after{content:"";position:absolute;right:8px;top:6px;width:32px;height:32px;border-radius:9px;background:rgba(39,102,168,.12) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232766A8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='8' y='8' width='12' height='12' rx='2.5'/%3E%3Cpath d='M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2'/%3E%3C/svg%3E") center/18px no-repeat;pointer-events:none}
+.ne-body .cpb.cp-done{border-color:#1E9E5A;background:rgba(30,158,90,.1)}
+.ne-body .cpb.cp-done::before{content:"Copié !";color:#1E9E5A}
+.ne-body .cpb.cp-done::after{background:rgba(30,158,90,.16) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231E9E5A' stroke-width='2.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center/18px no-repeat;animation:cpPop .3s cubic-bezier(.3,1.5,.5,1)}
+.ne-body .cpy{display:inline-flex;align-items:center;gap:5px;padding:1px 6px 1px 9px;margin:0 1px;border-radius:8px;border:1.5px solid rgba(39,102,168,.4);background:rgba(39,102,168,.1);color:#1E4F84;font-weight:800;cursor:pointer;-webkit-user-select:none;user-select:none;transition:background .2s,border-color .2s,color .2s,transform .12s;vertical-align:baseline}
+.ne-body .cpy::after{content:"";width:14px;height:14px;flex:none;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='8' y='8' width='12' height='12' rx='2.5'/%3E%3Cpath d='M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='8' y='8' width='12' height='12' rx='2.5'/%3E%3Cpath d='M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2'/%3E%3C/svg%3E") center/contain no-repeat;opacity:.8}
+.ne-body .cpy:active{transform:scale(.95)}
+.ne-body .cpy.cp-done{background:#1E9E5A;border-color:#1E9E5A;color:#FFFFFF}
+.ne-body .cpy.cp-done::after{-webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E");mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E");opacity:1;animation:cpPop .3s cubic-bezier(.3,1.5,.5,1)}
+.note-editor.dark .ne-body .cpb{border-color:rgba(142,192,255,.28);background:rgba(142,192,255,.07)}
+.note-editor.dark .ne-body .cpb::before{color:#8EC0FF}
+.note-editor.dark .ne-body .cpb::after{background-color:rgba(142,192,255,.14);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238EC0FF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='8' y='8' width='12' height='12' rx='2.5'/%3E%3Cpath d='M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2'/%3E%3C/svg%3E")}
+.note-editor.dark .ne-body .cpb.cp-done{border-color:#5FD39A;background:rgba(95,211,154,.1)}
+.note-editor.dark .ne-body .cpb.cp-done::before{color:#5FD39A}
+.note-editor.dark .ne-body .cpb.cp-done::after{background-color:rgba(95,211,154,.18);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235FD39A' stroke-width='2.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E")}
+.note-editor.dark .ne-body .cpy{border-color:rgba(142,192,255,.45);background:rgba(142,192,255,.12);color:#CFE3FF}
+.note-editor.dark .ne-body .cpy.cp-done{background:#1E9E5A;border-color:#1E9E5A;color:#FFFFFF}
+@keyframes cpPop{from{transform:scale(.4)}to{transform:none}}
 .ne-body.empty::before{content:attr(data-ph);position:absolute;opacity:.4;pointer-events:none}
 .ne-body h1{font-size:1.6em;font-weight:800;line-height:1.2;margin:.45em 0 .2em}
 .ne-body h2{font-size:1.36em;font-weight:800;line-height:1.25;margin:.42em 0 .2em}
@@ -2375,7 +2395,7 @@ var DECO = (function(){
 
 </script>
 <script>
-var APP_VERSION = "MyWorld_1.30";
+var APP_VERSION = "MyWorld_1.31";
 (function(){
 "use strict";
 var CAL = "t.mallet06@gmail.com";
@@ -4527,6 +4547,7 @@ var ICON = {
   pause:'<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>',
   trash:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></svg>',
   hl:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.2 3.6l5.2 3-5.6 9.7-5.2-3z"/><path d="M9.6 13.3l5.2 3-1.7 2.9-3.6.4-1.6-2.5z"/><path d="M4 21h7"/></svg>',
+  copy:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2.5"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>',
   close:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>'
 };
 function noteCard(n){
@@ -4676,7 +4697,7 @@ function cleanHTML(html){
     Array.prototype.slice.call(node.childNodes).forEach(function(c){
       if (c.nodeType === 3) return;
       if (c.nodeType !== 1 || !ALLOWED[c.tagName]){ if (c.nodeType === 1 && c.childNodes.length && c.tagName !== "SCRIPT" && c.tagName !== "STYLE"){ walk(c); while (c.firstChild) c.parentNode.insertBefore(c.firstChild, c); } c.remove(); return; }
-      Array.prototype.slice.call(c.attributes).forEach(function(a){ var ok = (c.tagName === "FIGURE" && /^data-(media|kind|dur|size)$/.test(a.name)) || (c.tagName === "UL" && a.name === "class" && a.value === "todo") || (c.tagName === "LI" && a.name === "data-done"); if (!ok) c.removeAttribute(a.name); });
+      Array.prototype.slice.call(c.attributes).forEach(function(a){ var ok = (c.tagName === "FIGURE" && /^data-(media|kind|dur|size)$/.test(a.name)) || (c.tagName === "UL" && a.name === "class" && a.value === "todo") || (c.tagName === "LI" && a.name === "data-done") || (a.name === "class" && ((c.tagName === "DIV" && /\bcpb\b/.test(a.value)) || (c.tagName === "SPAN" && /\bcpy\b/.test(a.value)))); if (!ok) c.removeAttribute(a.name); else if (a.name === "class" && /\bcp[by]\b/.test(a.value)) c.setAttribute("class", c.tagName === "DIV" ? "cpb" : "cpy"); });
       if (c.tagName === "FIGURE") c.innerHTML = ""; else walk(c);
     });
   })(t.content);
@@ -4761,7 +4782,7 @@ function openNote(id, preset, from){
   el.innerHTML = '<div class="ne-top"><button type="button" class="ne-ic" data-act="ne-back" aria-label="Retour">' + ICON.back + '</button><span style="flex:1"></span><button type="button" class="ne-ic" data-act="ne-undo" aria-label="Annuler">' + ICON.undo + '</button><button type="button" class="ne-ic" data-act="ne-redo" aria-label="Rétablir">' + ICON.redo + '</button><button type="button" class="ne-ic" data-act="ne-bg" aria-label="Fond de la note">' + ICON.palette + '</button><button type="button" class="ne-ic" data-act="ne-menu" aria-label="Plus d\'options" aria-haspopup="menu" aria-expanded="false">' + ICON.more + '</button></div>'
     + '<div class="ne-scroll"><input class="ne-title" id="neTitle" type="text" placeholder="Titre" value="' + h(n.title) + '" maxlength="120" aria-label="Titre"><p class="ne-meta"><span id="neDate"></span><span class="ne-sep"></span><span id="neCount"></span><button type="button" class="ne-folder" data-act="ne-folder" id="neFolder"></button></p>'
     + '<div class="ne-body" id="neBody" contenteditable="true" data-ph="Commence à écrire…" aria-label="Contenu de la note">' + cleanHTML(n.html) + '</div></div>'
-    + '<div class="ne-bar" id="neBar"><div class="nb-stage"><div class="nb-row nb-base"><button type="button" class="ne-ic" data-act="ne-rec" aria-label="Note vocale">' + ICON.wave + '</button><button type="button" class="ne-ic" data-act="ne-img" aria-label="Ajouter une photo">' + ICON.image + '</button><button type="button" class="ne-ic" data-act="ne-draw" aria-label="Dessiner">' + ICON.draw + '</button><button type="button" class="ne-ic" data-act="ne-todo" aria-label="Liste à cocher">' + ICON.check + '</button></div>'
+    + '<div class="ne-bar" id="neBar"><div class="nb-stage"><div class="nb-row nb-base"><button type="button" class="ne-ic" data-act="ne-rec" aria-label="Note vocale">' + ICON.wave + '</button><button type="button" class="ne-ic" data-act="ne-img" aria-label="Ajouter une photo">' + ICON.image + '</button><button type="button" class="ne-ic" data-act="ne-draw" aria-label="Dessiner">' + ICON.draw + '</button><button type="button" class="ne-ic" data-act="ne-todo" aria-label="Liste à cocher">' + ICON.check + '</button><button type="button" class="ne-ic nb-cp" data-act="ne-copy" aria-label="Texte à copier">' + ICON.copy + '</button></div>'
     + '<div class="nb-row nb-fmt" aria-hidden="true"><button type="button" class="ne-ic nf nf-hl" data-act="nf" data-f="hl" aria-label="Surligner" aria-pressed="false" tabindex="-1">' + ICON.hl + '</button><button type="button" class="ne-ic nf" data-act="nf" data-f="h1" aria-label="Grand titre" aria-pressed="false" tabindex="-1"><span class="nf-h">H<sub>1</sub></span></button><button type="button" class="ne-ic nf" data-act="nf" data-f="h2" aria-label="Moyen titre" aria-pressed="false" tabindex="-1"><span class="nf-h">H<sub>2</sub></span></button><button type="button" class="ne-ic nf" data-act="nf" data-f="h3" aria-label="Petit titre" aria-pressed="false" tabindex="-1"><span class="nf-h">H<sub>3</sub></span></button><button type="button" class="ne-ic nf" data-act="nf" data-f="b" aria-label="Gras" aria-pressed="false" tabindex="-1"><b class="nf-b">B</b></button></div></div>'
     + '<button type="button" class="ne-ic nb-tg" data-act="ne-fmt" aria-label="Mise en forme" aria-expanded="false"><span class="tg-t">' + ICON.text + '</span><span class="tg-x">' + ICON.close + '</span></button></div>'
     + '<div class="ne-pop" id="nePop" hidden></div><input type="file" id="neFile" accept="image/*" hidden>';
@@ -4795,7 +4816,8 @@ function openNote(id, preset, from){
   });
   document.addEventListener("selectionchange", trackRange);
   document.addEventListener("selectionchange", neFmtState);
-  el.querySelector("#neBar").addEventListener("mousedown", function(e){ if (e.target.closest(".nf,.nb-tg")) e.preventDefault(); });
+  el.querySelector("#neBar").addEventListener("mousedown", function(e){ if (e.target.closest(".nf,.nb-tg,.nb-cp")) e.preventDefault(); });
+  neCpBind(body);
   el.querySelector("#neFile").onchange = onPickImage;
   history.pushState({ne:1}, "");
   if (isNew && !preset) setTimeout(function(){ body.focus(); }, from ? 300 : 60);
@@ -4818,6 +4840,61 @@ function keepCaret(){
 }
 if (window.visualViewport) window.visualViewport.addEventListener("resize", function(){ if (typeof NE !== "undefined" && NE) keepCaret(); });
 function trackRange(){ if (!NE) return; var s = window.getSelection(); if (s.rangeCount){ var r = s.getRangeAt(0), b = document.getElementById("neBody"); if (b && b.contains(r.startContainer)) NE.range = r.cloneRange(); } }
+/* MyWorld_1.31 : texte à copier (maquettes A + B du canevas « Texte à copier dans les notes »).
+   A · bloc « À copier » (div.cpb) : en lecture (clavier fermé) un toucher n'importe où sur le bloc copie tout son texte ;
+       en écriture on modifie le texte normalement et le bouton en haut à droite (ou l'étiquette) copie.
+   B · pastille (span.cpy, non modifiable) au milieu du texte : un toucher la copie, toujours.
+   Outil « copier » de la barre : texte court sélectionné (≤ 80 caractères, une ligne) → pastille ; texte plus long → bloc ;
+   rien de sélectionné → bloc vide ; curseur dans un bloc ou sélection sur une pastille → redevient du texte normal. */
+function neCpHydrate(b){ (b || document.getElementById("neBody")).querySelectorAll("span.cpy").forEach(function(c){ c.setAttribute("contenteditable", "false"); }); }
+function neCopyText(text, el, label){
+  var ok = function(){ if (el){ el.classList.add("cp-done"); clearTimeout(el._cpT); el._cpT = setTimeout(function(){ el.classList.remove("cp-done"); }, 1500); } toast(label); if (navigator.vibrate) try { navigator.vibrate(8); } catch(e){} };
+  var legacy = function(){ var t = document.createElement("textarea"); t.value = text; t.setAttribute("readonly", ""); t.style.cssText = "position:fixed;top:-100px;opacity:0"; document.body.appendChild(t); t.select(); var r = false; try { r = document.execCommand("copy"); } catch(e){} t.remove(); if (r) ok(); else toast("Copie impossible sur cet appareil."); };
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(ok, legacy); else legacy();
+}
+function neCpHead(blk, ev){ return ev.clientY - blk.getBoundingClientRect().top < 36; }
+function neCpBind(b){
+  neCpHydrate(b);
+  b.addEventListener("mousedown", function(e){
+    var chip = e.target.closest && e.target.closest("span.cpy"), blk = e.target.closest && e.target.closest("div.cpb");
+    if (chip || (blk && (document.activeElement !== b || neCpHead(blk, e)))) e.preventDefault();
+  });
+  b.addEventListener("click", function(e){
+    var chip = e.target.closest && e.target.closest("span.cpy"), blk = e.target.closest && e.target.closest("div.cpb");
+    if (chip){ e.preventDefault(); var t = chip.textContent.trim(); neCopyText(t, chip, "« " + (t.length > 28 ? t.slice(0, 26) + "…" : t) + " » copié"); return; }
+    if (blk && (document.activeElement !== b || neCpHead(blk, e))){ e.preventDefault(); var tx = noteText(blk); if (!tx){ toast("Le bloc est vide."); return; } neCopyText(tx, blk, "Texte copié"); }
+  });
+}
+function neCopyTool(){
+  var b = document.getElementById("neBody"); if (!b) return;
+  placeCaret();
+  var s = window.getSelection(), r = s.rangeCount ? s.getRangeAt(0) : null;
+  if (!r || !b.contains(r.commonAncestorContainer)) return;
+  var n = r.startContainer.nodeType === 1 ? r.startContainer : r.startContainer.parentNode, blk = n.closest && n.closest("div.cpb");
+  if (blk && b.contains(blk)){
+    while (blk.firstChild) blk.parentNode.insertBefore(blk.firstChild, blk);
+    blk.remove(); toast("Ce n'est plus un bloc à copier."); updateNeMeta(); queueSave(); return;
+  }
+  var chips = Array.prototype.filter.call(b.querySelectorAll("span.cpy"), function(c){ return r.intersectsNode(c); });
+  if (chips.length){ chips.forEach(function(c){ c.replaceWith(document.createTextNode(c.textContent)); }); toast(chips.length > 1 ? "Pastilles retirées." : "Ce n'est plus une pastille."); updateNeMeta(); queueSave(); return; }
+  var txt = r.toString();
+  if (!r.collapsed && txt.trim() && txt.length <= 80 && !/\n/.test(txt)){
+    document.execCommand("insertHTML", false, '<span class="cpy" data-n="1">' + h(txt.trim()) + '</span>' + (/\s$/.test(txt) ? "&nbsp;" : ""));
+  } else {
+    var inner = "&#8203;";
+    if (!r.collapsed){ var d = document.createElement("div"); d.appendChild(r.cloneContents()); inner = cleanHTML(d.innerHTML) || "&#8203;"; }
+    document.execCommand("insertHTML", false, '<div class="cpb" data-n="1">' + inner + '</div><div><br></div>');
+  }
+  var nw = b.querySelector("[data-n]");
+  if (nw){
+    nw.removeAttribute("data-n");
+    var rr = document.createRange();
+    if (nw.tagName === "DIV" && r.collapsed){ rr.selectNodeContents(nw); rr.collapse(false); } else { rr.setStartAfter(nw); rr.collapse(true); }
+    s.removeAllRanges(); s.addRange(rr);
+    toast(nw.tagName === "SPAN" ? "Pastille à copier créée : un toucher la copie." : "Bloc à copier créé : touche son en-tête pour copier.");
+  }
+  neCpHydrate(b); updateNeMeta(); queueSave();
+}
 function placeCaret(){
   var b = document.getElementById("neBody"); b.focus();
   var s = window.getSelection();
@@ -5154,6 +5231,7 @@ function noteAction(act, b){
     case "ne-rec": if (REC) stopRecording(false); else { nePop(null); startRecording(); } return true;
     case "rec-stop": stopRecording(false); return true;
     case "rec-cancel": stopRecording(true); return true;
+    case "ne-copy": nePop(null); neCopyTool(); return true;
     case "ne-todo": nePop(null); placeCaret(); document.execCommand("insertHTML", false, '<ul class="todo"><li data-done="0">&#8203;</li></ul>'); queueSave(); return true;
     case "ne-fmt": neFmt(); return true;
     case "nf": neFmtApply(b.dataset.f); return true;
