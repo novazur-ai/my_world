@@ -320,6 +320,10 @@ nav.tabs .nav-add.mw-pop{animation:mwPop .32s cubic-bezier(.3,1.6,.5,1)}
 .nc-stk.b{right:-8px;bottom:-8px;transform:rotate(18deg)}
 /* fonds */
 .bg-papier{background:#FFFFFF}
+.bg-noir{background:#0E0E10}
+.ncard2.bg-noir,.hn-card.bg-noir{background:#1D1D20;border-color:#2A2A2E}
+.ncard2.bg-noir .nc-p,.ncard2.bg-noir .nc-d,.note-editor.bg-noir .ne-meta{color:#9C9CA6}
+.bg-sw.bg-noir{color:#F4F1FF}
 .bg-creme{background:linear-gradient(160deg,#FFF9E8,#FBEBC4)}
 .bg-sauge{background:linear-gradient(160deg,#F1F6EC,#DCEAD3)}
 .bg-nuit{background:radial-gradient(circle at 20% 20%,rgba(255,255,255,.35) 1px,transparent 1.5px) 0 0/34px 34px,radial-gradient(circle at 70% 60%,rgba(255,255,255,.25) 1px,transparent 1.5px) 0 0/52px 52px,linear-gradient(160deg,#24476F,#173455)}
@@ -338,7 +342,9 @@ nav.tabs .nav-add.mw-pop{animation:mwPop .32s cubic-bezier(.3,1.6,.5,1)}
 .f-n{color:var(--muted);font-weight:600;font-variant-numeric:tabular-nums}
 /* éditeur */
 body.ne-open{overflow:hidden}
-.note-editor{position:fixed;inset:0;z-index:60;display:flex;flex-direction:column;color:var(--text);animation:pop .22s ease-out}
+.note-editor{position:fixed;inset:0;z-index:60;display:flex;flex-direction:column;color:var(--text)}
+.ne-ghost{position:fixed;z-index:61;margin:0;pointer-events:none;transform-origin:0 0;box-shadow:none!important}
+.note-editor.ne-anim{will-change:clip-path}
 .ne-top{display:flex;align-items:center;gap:2px;padding:calc(8px + env(safe-area-inset-top,0px)) 8px 4px}
 .ne-ic{width:46px;height:46px;flex-shrink:0;border:0;border-radius:12px;background:transparent;color:inherit;display:grid;place-items:center}
 .ne-ic:active{background:rgba(0,0,0,.06)}
@@ -401,7 +407,10 @@ body.ne-open{overflow:hidden}
 .nf.on{background:rgba(0,0,0,.08)}
 .note-editor.dark .nf.on{background:rgba(255,255,255,.14)}
 @media (prefers-reduced-motion: reduce){.nb-row,.nb-tg>span,.nb-fmt .nf-hl svg{transition:none!important}}
-.ne-pop{position:absolute;left:0;right:0;bottom:calc(62px + env(safe-area-inset-bottom,0px));padding:12px 14px;background:var(--paper);border-top:1.5px solid var(--line);box-shadow:0 -10px 24px rgba(25,25,35,.12);color:var(--text)}
+.ne-pop{position:absolute;left:0;right:0;bottom:calc(62px + env(safe-area-inset-bottom,0px));padding:12px 14px;background:inherit;background-attachment:fixed;border-top:1px solid rgba(0,0,0,.08);color:inherit} /* MyWorld_1.28 : même fond que la note, suit le fond choisi */
+.note-editor.dark .ne-pop{border-top-color:rgba(255,255,255,.1)}
+.note-editor.dark .bg-sw{border-color:rgba(255,255,255,.18)}
+.note-editor.dark .bg-sw.on{outline-color:#FFFFFF}
 .ne-pop[hidden]{display:none}
 /* MyWorld_1.26 : menu des trois points = petite fenêtre qui s'ouvre depuis le bouton, en haut à droite */
 .ne-mbg{position:absolute;inset:0;z-index:3;background:transparent}
@@ -2334,7 +2343,7 @@ var DECO = (function(){
 
 </script>
 <script>
-var APP_VERSION = "MyWorld_1.27";
+var APP_VERSION = "MyWorld_1.28";
 (function(){
 "use strict";
 var CAL = "t.mallet06@gmail.com";
@@ -2725,7 +2734,7 @@ function hnBind(){
     set(Math.max(0, Math.min(124, dx * .55)));
   }, { passive: false });
   function end(){ if (mode !== 1){ mode = -1; return; } mode = -1; wrap.classList.remove("hn-pulling"); var go = armed; set(0); wrap.classList.remove("hn-armed"); armed = false;
-    if (go){ row._hnClick = Date.now(); setTimeout(function(){ openNote(null); }, 120); } }
+    if (go){ row._hnClick = Date.now(); setTimeout(function(){ openNote(null, null, wrap.querySelector(".hn-pull")); }, 120); } }
   row.addEventListener("touchend", end); row.addEventListener("touchcancel", end);
   row.addEventListener("click", function(e){ if (row._hnClick && Date.now() - row._hnClick < 500){ e.stopPropagation(); e.preventDefault(); } }, true);
   /* petit coup de pouce les 3 premières fois : le carrousel s'écarte un instant et montre le + */
@@ -4023,7 +4032,7 @@ function commit(r){
   if (r.kind === "note"){
     var nid = db.collection("notes").newId(), now = nowISO();
     var html = (r.text ? String(r.text).split(/\n/).map(function(l){ return "<div>" + (l.trim() ? h(l) : "<br>") + "</div>"; }).join("") : "") + (r.items && r.items.length ? todoHTML(r.items) : r.todo ? todoHTML([""]) : "");
-    return db.collection("notes").doc(nid).set({title:r.title || "", html:html, text:textFromHTML(html), media:[], thumb:null, hasAudio:false, folder:null, bg:"papier", pinned:false, deleted:false, createdAt:now, updatedAt:now}).then(function(){ if (r.quiet) return nid; toast("Note ajoutée dans tes notes.", {undo:function(){ db.collection("notes").doc(nid).delete().catch(dbErr); }}); if (r.title) setTimeout(function(){ offerNoteKey(r.title); }, 900); return nid; });
+    return db.collection("notes").doc(nid).set({title:r.title || "", html:html, text:textFromHTML(html), media:[], thumb:null, hasAudio:false, folder:null, bg:"noir", pinned:false, deleted:false, createdAt:now, updatedAt:now}).then(function(){ if (r.quiet) return nid; toast("Note ajoutée dans tes notes.", {undo:function(){ db.collection("notes").doc(nid).delete().catch(dbErr); }}); if (r.title) setTimeout(function(){ offerNoteKey(r.title); }, 900); return nid; });
   }
   if (r.kind === "note-add"){
     var tn = S.notes.find(function(n){ return n._id === r.noteId; }); if (!tn || !r.items.length) return;
@@ -4430,6 +4439,7 @@ function completeEventSheet(id){
 
 /* ---------- Notes ---------- */
 var NOTE_BGS = [
+  {id:"noir", name:"Noir", dark:true},   /* MyWorld_1.28 : fond par défaut des nouvelles notes */
   {id:"papier", name:"Papier"},
   {id:"creme", name:"Crème"},
   {id:"sauge", name:"Sauge"},
@@ -4441,7 +4451,7 @@ var NOTE_BGS = [
 var NE = null;          /* éditeur ouvert */
 var DP = null;          /* bloc de dessin ouvert */
 S.notes = []; S.media = {}; S.noteFolder = "__all"; S.noteQuery = "";
-function noteBg(id){ return NOTE_BGS.find(function(b){ return b.id === id; }) || NOTE_BGS[0]; }
+function noteBg(id){ return NOTE_BGS.find(function(b){ return b.id === id; }) || NOTE_BGS[1]; }
 function notePrefs(){ var p = (S.settings && S.settings.notePrefs) || {}; return {size: p.size || "moyenne", sort: p.sort || "modif", layout: p.layout || "grille"}; }
 function noteFolders(){ return ((S.settings && S.settings.noteFolders) || []).slice(); }
 function liveNotes(){ return S.notes.filter(function(n){ return !n.deleted; }); }
@@ -4597,13 +4607,62 @@ function hydrateFigure(fig){
 }
 function figSizeHTML(cur){ cur = cur || "g"; return '<div class="fig-sz" role="group" aria-label="Taille de l\'aperçu">' + [["p", "P", "Petit"], ["m", "M", "Moyen"], ["g", "G", "Grand"]].map(function(z){ return '<button type="button" data-act="fig-size" data-s="' + z[0] + '" aria-label="' + z[2] + '" aria-pressed="' + (z[0] === cur) + '">' + z[1] + '</button>'; }).join("") + '</div>'; }
 function figureHTML(id, kind, dur){ return '<figure data-media="' + h(id) + '" data-kind="' + kind + '"' + (dur ? ' data-dur="' + Math.round(dur) + '"' : "") + '></figure>'; }
-function openNote(id, preset){
+/* MyWorld_1.28 : ouverture / fermeture animées, d'après la vidéo de Théo (Notes Xiaomi).
+   Ouverture : la note se dévoile depuis la carte touchée (ou le +), coins arrondis qui s'effacent ; la carte s'efface
+   pendant que le contenu de la note apparaît (0,32 s). Fermeture : l'inverse, la note se replie dans sa carte
+   (0,3 s) ; si la carte n'est pas à l'écran, la note se réduit légèrement en fondu. clip-path + transform + opacity seulement. */
+var NE_EASE_IN = "cubic-bezier(.2,0,0,1)", NE_EASE_OUT = "cubic-bezier(.3,0,.1,1)";
+function neReduce(){ return matchMedia("(prefers-reduced-motion: reduce)").matches; }
+function neInset(r, ed){ var W = ed.clientWidth || innerWidth, H = ed.clientHeight || innerHeight; return "inset(" + Math.max(0, r.top) + "px " + Math.max(0, W - r.right) + "px " + Math.max(0, H - r.bottom) + "px " + Math.max(0, r.left) + "px round " + (r.rad || 12) + "px)"; }
+function neRectOf(el){
+  if (!el || !el.getBoundingClientRect) return null;
+  var r = el.getBoundingClientRect(); if (r.width < 8 || r.height < 8 || r.bottom < 0 || r.top > innerHeight || r.right < 0 || r.left > innerWidth) return null;
+  var rad = parseFloat(getComputedStyle(el).borderTopLeftRadius) || 12;
+  return {top:r.top, left:r.left, right:r.right, bottom:r.bottom, width:r.width, height:r.height, rad:Math.min(rad, r.width / 2)};
+}
+function neGhost(src, r){
+  var g = src.cloneNode(true); g.className += " ne-ghost"; g.removeAttribute("data-act"); g.removeAttribute("id"); g.setAttribute("aria-hidden", "true");
+  g.style.left = r.left + "px"; g.style.top = r.top + "px"; g.style.width = r.width + "px"; g.style.height = r.height + "px";
+  document.body.appendChild(g); return g;
+}
+function neAnimOpen(el, from){
+  var kids = [].slice.call(el.children).filter(function(k){ return k.id !== "nePop"; });
+  if (neReduce()){ el.animate([{opacity:0},{opacity:1}], {duration:160, easing:"ease-out"}); return; }
+  var r = neRectOf(from);
+  if (!r){ el.animate([{opacity:0, transform:"scale(.94)"},{opacity:1, transform:"none"}], {duration:240, easing:NE_EASE_IN}); return; }
+  var D = 320, full = "inset(0px 0px 0px 0px round 0px)", W = el.clientWidth, H = el.clientHeight;
+  el.classList.add("ne-anim");
+  var a = el.animate([{clipPath: neInset(r, el)}, {clipPath: full}], {duration:D, easing:NE_EASE_IN});
+  kids.forEach(function(k){ k.animate([{opacity:0, transform:"translateY(" + Math.round((r.top - 20) * .12) + "px) scale(.96)"}, {opacity:0, offset:.18}, {opacity:1, transform:"none"}], {duration:D, easing:NE_EASE_IN}); });
+  /* la carte touchée s'agrandit avec la note et s'efface */
+  if (from.matches && from.matches(".ncard2,.hn-card")){
+    var g = neGhost(from, r);
+    g.animate([{opacity:1}, {opacity:0, offset:.3}, {opacity:0}], {duration:D, easing:"linear"}).onfinish = function(){ g.remove(); };
+  }
+  a.onfinish = function(){ el.classList.remove("ne-anim"); };
+}
+function neAnimClose(el, id, done){
+  if (neReduce()){ el.animate([{opacity:1},{opacity:0}], {duration:140, easing:"ease-in", fill:"forwards"}).onfinish = done; return; }
+  var card = null;
+  document.querySelectorAll('[data-act="note-open"][data-id="' + id + '"]').forEach(function(c){ if (!card && neRectOf(c)) card = c; });
+  var r = neRectOf(card);
+  if (!r){ el.animate([{opacity:1, transform:"none"},{opacity:0, transform:"scale(.94)"}], {duration:200, easing:NE_EASE_OUT, fill:"forwards"}).onfinish = done; return; }
+  var D = 300, W = el.clientWidth, H = el.clientHeight, kids = [].slice.call(el.children);
+  el.classList.add("ne-anim"); el.style.pointerEvents = "none";
+  kids.forEach(function(k){ k.animate([{opacity:1, transform:"none"}, {opacity:0, offset:.5, transform:"scale(.97)"}, {opacity:0, transform:"scale(.97)"}], {duration:D, easing:NE_EASE_OUT, fill:"forwards"}); });
+  var g = neGhost(card, r);
+  card.style.visibility = "hidden";
+  g.style.zIndex = 62; g.animate([{opacity:0}, {opacity:0, offset:.6}, {opacity:1}], {duration:D, easing:"linear", fill:"forwards"});
+  el.animate([{clipPath:"inset(0px 0px 0px 0px round 0px)", opacity:1}, {opacity:1, offset:.75}, {clipPath: neInset(r, el), opacity:0}], {duration:D, easing:NE_EASE_OUT, fill:"forwards"}).onfinish = function(){ card.style.visibility = ""; g.remove(); done(); };
+}
+function openNote(id, preset, from){
   try { var O = noteOpens(); O[id] = (O[id] || 0) + 1; localStorage.setItem("mw-nopen", JSON.stringify(O)); } catch(e){}
   var n = id ? S.notes.find(function(x){ return x._id === id; }) : null;
   if (id && !n) return;
-  if (NE) closeNote(true);
+  if (NE) closeNote(true, true);
   var isNew = !n;
   n = n ? Object.assign({}, n) : {_id: db.collection("notes").newId(), title:"", html:"", text:"", folder: (S.noteFolder !== "__all" && S.noteFolder !== "__none") ? S.noteFolder : null, bg:"papier", pinned:false, createdAt: nowISO(), updatedAt: nowISO()};
+  if (isNew) n.bg = "noir";
   if (preset) Object.assign(n, preset);
   NE = {note:n, isNew:isNew, saved:!isNew, sig:null, mediaStart:(n.media || []).slice(), added:[], timer:null, range:null};
   var bg = noteBg(n.bg), pr = notePrefs();
@@ -4618,6 +4677,7 @@ function openNote(id, preset){
     + '<div class="ne-pop" id="nePop" hidden></div><input type="file" id="neFile" accept="image/*" hidden>';
   document.body.appendChild(el);
   document.body.classList.add("ne-open");
+  neAnimOpen(el, from);
   var body = el.querySelector("#neBody"), title = el.querySelector("#neTitle");
   body.querySelectorAll("figure[data-media]").forEach(hydrateFigure);
   updateNeMeta();
@@ -4648,7 +4708,7 @@ function openNote(id, preset){
   el.querySelector("#neBar").addEventListener("mousedown", function(e){ if (e.target.closest(".nf,.nb-tg")) e.preventDefault(); });
   el.querySelector("#neFile").onchange = onPickImage;
   history.pushState({ne:1}, "");
-  if (isNew && !preset) setTimeout(function(){ body.focus(); }, 60);
+  if (isNew && !preset) setTimeout(function(){ body.focus(); }, from ? 300 : 60);
 }
 /* le curseur reste toujours visible au-dessus de la barre d'outils */
 function keepCaret(){
@@ -4719,7 +4779,7 @@ function saveNote(){
   d.updatedAt = nowISO(); Object.assign(n, d); NE.saved = true; updateNeMeta();
   return db.collection("notes").doc(n._id).set(Object.assign({}, d, {deleted:false})).catch(dbErr);
 }
-function closeNote(skipHistory){
+function closeNote(skipHistory, noAnim){
   if (!NE) return;
   var ne = NE, wasSaved = ne.saved;
   if (ne.isNew){ var tt0 = (collectNote(ne).title || "").trim(); if (tt0) setTimeout(function(){ offerNoteKey(tt0); }, 500); }
@@ -4734,7 +4794,9 @@ function closeNote(skipHistory){
   stopRecording(true);
   document.removeEventListener("selectionchange", trackRange);
   document.removeEventListener("selectionchange", neFmtState);
-  var el = document.getElementById("noteEd"); if (el) el.remove();
+  var el = document.getElementById("noteEd"), nid = ne.note._id;
+  if (el){ el.id = ""; if (document.activeElement && el.contains(document.activeElement)) document.activeElement.blur();
+    if (noAnim) el.remove(); else neAnimClose(el, nid, function(){ el.remove(); }); }
   document.body.classList.remove("ne-open");
   NE = null;
   if (!skipHistory && history.state && history.state.ne) history.back();
@@ -4963,8 +5025,8 @@ function closeDraw(save, fromPop){
 function noteAction(act, b){
   var id = b.dataset.id;
   switch (act){
-    case "note-new": openNote(null); return true;
-    case "note-open": if (b.dataset.long === "1"){ delete b.dataset.long; return true; } openNote(id); return true;
+    case "note-new": openNote(null, null, b); return true;
+    case "note-open": if (b.dataset.long === "1"){ delete b.dataset.long; return true; } openNote(id, null, b); return true;
     case "note-folder": S.noteFolder = b.dataset.f; if (b.dataset.close) closeSheet(); render(); return true;
     case "note-folders": foldersSheet(); return true;
     case "note-prefs": notePrefsSheet(); return true;
