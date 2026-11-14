@@ -2395,7 +2395,7 @@ var DECO = (function(){
 
 </script>
 <script>
-var APP_VERSION = "MyWorld_1.31";
+var APP_VERSION = "MyWorld_1.32";
 (function(){
 "use strict";
 var CAL = "t.mallet06@gmail.com";
@@ -4879,7 +4879,13 @@ function neCopyTool(){
   if (chips.length){ chips.forEach(function(c){ c.replaceWith(document.createTextNode(c.textContent)); }); toast(chips.length > 1 ? "Pastilles retirées." : "Ce n'est plus une pastille."); updateNeMeta(); queueSave(); return; }
   var txt = r.toString();
   if (!r.collapsed && txt.trim() && txt.length <= 80 && !/\n/.test(txt)){
-    document.execCommand("insertHTML", false, '<span class="cpy" data-n="1">' + h(txt.trim()) + '</span>' + (/\s$/.test(txt) ? "&nbsp;" : ""));
+    /* MyWorld_1.32 : pastille posée directement dans la page (et plus par insertHTML : sur Chrome Android, insertHTML
+       au milieu d'une ligne remplaçait parfois la pastille par un simple texte coloré, sans classe ni bouton) */
+    var sp = document.createElement("span"); sp.className = "cpy"; sp.setAttribute("contenteditable", "false"); sp.setAttribute("data-n", "1"); sp.textContent = txt.trim();
+    r.deleteContents(); r.insertNode(sp);
+    var nx = sp.nextSibling, nt = nx && nx.nodeType === 3 ? nx.data : "";
+    if (!nx || (nx.nodeType === 3 && !/^[\s\u00a0]/.test(nt)) || nx.nodeType === 1) sp.parentNode.insertBefore(document.createTextNode("\u00a0"), sp.nextSibling);
+    var pv = sp.previousSibling; if (pv && pv.nodeType === 3 && pv.data && !/[\s\u00a0]$/.test(pv.data)) sp.parentNode.insertBefore(document.createTextNode("\u00a0"), sp);
   } else {
     var inner = "&#8203;";
     if (!r.collapsed){ var d = document.createElement("div"); d.appendChild(r.cloneContents()); inner = cleanHTML(d.innerHTML) || "&#8203;"; }
@@ -4889,7 +4895,9 @@ function neCopyTool(){
   if (nw){
     nw.removeAttribute("data-n");
     var rr = document.createRange();
-    if (nw.tagName === "DIV" && r.collapsed){ rr.selectNodeContents(nw); rr.collapse(false); } else { rr.setStartAfter(nw); rr.collapse(true); }
+    if (nw.tagName === "DIV" && r.collapsed){ rr.selectNodeContents(nw); rr.collapse(false); }
+    else if (nw.tagName === "SPAN" && nw.nextSibling && nw.nextSibling.nodeType === 3){ rr.setStart(nw.nextSibling, Math.min(1, nw.nextSibling.length)); rr.collapse(true); }
+    else { rr.setStartAfter(nw); rr.collapse(true); }
     s.removeAllRanges(); s.addRange(rr);
     toast(nw.tagName === "SPAN" ? "Pastille à copier créée : un toucher la copie." : "Bloc à copier créé : touche son en-tête pour copier.");
   }
