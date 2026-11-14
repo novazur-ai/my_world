@@ -331,6 +331,34 @@ body.nsel-on nav.tabs *{pointer-events:none!important}
 .n-seg button:active{background:rgba(0,0,0,.06)}
 .n-seg .n-seg-add{width:48px;background:linear-gradient(135deg,var(--acc,#2766A8),var(--acc-grad,#4C8BCB));color:#FFFFFF;box-shadow:0 4px 10px rgba(39,102,168,.25)}
 .n-seg .n-seg-add:active{filter:brightness(.92);background:linear-gradient(135deg,var(--acc,#2766A8),var(--acc-grad,#4C8BCB))}
+/* MyWorld_1.34 : page Réglages, cartes qui se déplient */
+.rg-page{margin-top:22px;padding-bottom:12px}
+.rg-gt{margin:24px 4px 8px;font-family:var(--f-body);font-size:11.5px;font-weight:900;letter-spacing:.09em;line-height:1.3;text-transform:uppercase;color:var(--muted)}
+.rg-page>.rg-gt:first-child{margin-top:0}
+.rg-card{background:#FFFFFF;border:1.5px solid var(--line);border-radius:18px;margin-bottom:8px;overflow:hidden;transition:border-color .25s,box-shadow .3s}
+.rg-card.op{border-color:#A9C3DD;box-shadow:0 12px 26px rgba(16,38,61,.08)}
+.rg-row{display:flex;align-items:center;gap:12px;width:100%;min-height:64px;padding:10px 12px;border:0;background:transparent;font:inherit;color:inherit;text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.rg-row:active{background:#F4F7FA}
+.rg-ic{flex:none;width:38px;height:38px;border-radius:11px;display:grid;place-items:center}
+.rg-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}
+.rg-t b{font-size:15.5px;font-weight:800;color:var(--text)}
+.rg-sum{font-size:12.5px;font-weight:700;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rg-chev{flex:none;display:grid;color:#9AA8B6;transition:transform .3s cubic-bezier(.2,0,0,1)}
+.rg-card.op .rg-chev{transform:rotate(90deg);color:var(--ink)}
+.rg-bd{display:grid;grid-template-rows:0fr;transition:grid-template-rows .32s cubic-bezier(.2,0,0,1)}
+.rg-card.op .rg-bd{grid-template-rows:1fr}
+.rg-in{overflow:hidden;min-height:0}
+.rg-pad{padding:4px 14px 16px;opacity:0;transform:translateY(-6px);transition:opacity .18s,transform .32s cubic-bezier(.2,0,0,1)}
+.rg-card.op .rg-pad{opacity:1;transform:none;transition-delay:.05s}
+.rg-hint{font-size:13px;line-height:1.45;color:var(--muted);margin:0 0 10px}
+.rg-act{display:flex;justify-content:space-between;gap:10px}
+.rg-act .btn{min-width:120px}
+.rg-ver{margin:12px 0 0;font-size:12px;font-weight:700;color:#85858F}
+.rg-danger{color:#B33A2E!important}
+.rg-out{display:block;width:100%;margin-top:22px;min-height:52px;border-radius:16px;border:1.5px solid var(--line);background:#FFFFFF;font:inherit;font-size:15px;font-weight:800;color:#B33A2E}
+.rg-pad .list-line:last-child{border-bottom:0}
+.hd2 .av.rg-i{top:auto;bottom:2px;cursor:pointer}
+@media (prefers-reduced-motion:reduce){.rg-bd,.rg-pad,.rg-chev,.rg-card{transition:none}}
 .nw-list{display:flex;flex-direction:column;gap:8px}
 .nw-day{margin:8px 0 0;font-size:11px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 .nw-day:first-child{margin-top:0}
@@ -2412,10 +2440,11 @@ var DECO = (function(){
 
 </script>
 <script>
-var APP_VERSION = "MyWorld_1.33";
+var APP_VERSION = "MyWorld_1.34";
 /* MyWorld_1.33 : nouveautés affichées dans les Réglages. À CHAQUE VERSION (appli ou jeu) : ajouter une entrée EN TÊTE,
    {v: numéro, d: date AAAA-MM-JJ, t: titre court, l: 1 à 3 phrases simples, sans jargon}. */
 var MW_NEWS = [
+  {"v": "1.34", "d": "2026-11-14", "t": "Réglages rangés", "l": ["Les Réglages deviennent une vraie page, rangée en 4 rubriques : Moi, Contenus, Compte et données, L'appli.", "Chaque réglage est une carte qui se déplie d'un toucher, avec un résumé visible d'un coup d'œil. Le sommeil et l'affichage des notes y sont aussi.", "Les nouveautés s'ouvrent avec le bouton « i » en haut à droite."]},
   {"v": "1.33", "d": "2026-11-14", "t": "Historique des nouveautés", "l": ["Dans les Réglages, la liste des dernières nouveautés de l'appli, version par version."]},
   {"v": "1.32", "d": "2026-11-14", "t": "Pastilles à copier plus fiables", "l": ["Les pastilles à copier se créent correctement même au milieu d'une phrase."]},
   {"v": "1.31", "d": "2026-11-14", "t": "Texte à copier d'un toucher", "l": ["Nouvel outil « copier » dans la barre des notes.", "Bloc « À copier » : un toucher copie tout le texte.", "Pastille au milieu du texte pour un code, une immatriculation, une adresse."]},
@@ -2615,6 +2644,7 @@ function heroHTML(){
   }
   if (S.view === "meteo") return meteoHero(date);
   if (S.view === "bienetre") return beHeroHTML(date);
+  if (S.view === "reglages") return '<div class="hd2 gut"><p class="eb">' + h(date) + '</p><h1>Réglages</h1><button type="button" class="av rg-i" data-act="reg-info" aria-label="Nouveautés de l\'appli">' + RG_INFO + '</button></div>';
   var sub = "";
   if (S.view === "courses"){ var nc = coOpen().filter(function(x){ return !x.done; }).length; sub = '<p class="sub">' + (nc ? nc + " article" + (nc > 1 ? "s" : "") + " à prendre" : "Liste vide") + '</p>'; }
   if (S.view === "cartes"){ var nf = fidAll().length; sub = '<p class="sub">' + (nf ? nf + " carte" + (nf > 1 ? "s" : "") + " de fidélité" : "Aucune carte pour l'instant") + '</p>'; }
@@ -2854,10 +2884,15 @@ setInterval(function(){
 /* réglages : import du PDF */
 function planningSettingsHTML(){
   var P = (S.settings && S.settings.planning) || {}, ys = Object.keys(P).sort();
-  return '<h3 style="margin:26px 0 6px">Mon planning</h3><p style="font-size:13px;color:var(--muted);margin-bottom:6px">Importe ton PDF « Planning individuel » : tes vacations s\'affichent sur l\'accueil et dans le mois. Le fichier est lu sur ton téléphone, rien n\'est envoyé ailleurs.</p>'
+  return '<p class="rg-hint">Importe ton PDF « Planning individuel » : tes vacations s\'affichent sur l\'accueil et dans le mois. Le fichier est lu sur ton téléphone, rien n\'est envoyé ailleurs.</p>'
     + ys.map(function(y){ var n = P[y].n || {}, at = P[y].at ? new Date(P[y].at) : null;
         return '<div class="list-line"><span>' + y + ' · ' + (n.s || 0) + ' services, ' + (n.r || 0) + ' repos, ' + (n.c || 0) + ' congés' + (at ? '<small class="plan-at">Importé le ' + at.getDate() + ' ' + MOIS[at.getMonth()] + '</small>' : '') + '</span><button type="button" class="mini" data-act="plan-del" data-y="' + h(y) + '">Retirer</button></div>'; }).join("")
-    + '<div id="planPrev"></div><div class="bk-row" style="margin-top:10px"><button type="button" class="btn light" data-act="plan-imp">Importer un PDF</button>' + (ys.length ? '<button type="button" class="btn light" data-act="month">Vérifier les jours</button>' : '') + '</div><input type="file" id="planFile" accept="application/pdf,.pdf" hidden>';
+    + '<div id="planPrev">' + (S.planPending ? planPrevHTML(S.planPending) : "") + '</div><div class="bk-row" style="margin-top:10px"><button type="button" class="btn light" data-act="plan-imp">Importer un PDF</button>' + (ys.length ? '<button type="button" class="btn light" data-act="month">Vérifier les jours</button>' : '') + '</div><input type="file" id="planFile" accept="application/pdf,.pdf" hidden>';
+}
+function planPrevHTML(r){
+  var had = !!(S.settings && S.settings.planning && S.settings.planning[r.year]);
+  return '<div class="plan-box"><b>Planning ' + r.year + (r.who ? ' · ' + h(r.who) : '') + '</b><p>' + Object.keys(r.days).length + ' jours lus : ' + r.n.s + ' services, ' + r.n.r + ' repos, ' + r.n.c + ' congés' + (r.n.a ? ', ' + r.n.a + ' autres' : '') + '.' + (had ? ' Il remplace le planning ' + r.year + ' déjà enregistré.' : '') + '</p>'
+    + '<div class="plan-btns"><button type="button" class="btn light" data-act="plan-cancel">Annuler</button><button type="button" class="btn green" data-act="plan-save">Enregistrer</button></div></div>';
 }
 function mountPlanning(){
   var f = document.getElementById("planFile"); if (!f) return;
@@ -2865,9 +2900,7 @@ function mountPlanning(){
     var file = f.files && f.files[0]; f.value = ""; if (!file) return;
     var box = document.getElementById("planPrev"); box.innerHTML = '<p class="plan-box">Lecture du PDF…</p>';
     file.arrayBuffer().then(pdfPlanning).then(function(r){
-      S.planPending = r; var had = !!(S.settings && S.settings.planning && S.settings.planning[r.year]);
-      box.innerHTML = '<div class="plan-box"><b>Planning ' + r.year + (r.who ? ' · ' + h(r.who) : '') + '</b><p>' + Object.keys(r.days).length + ' jours lus : ' + r.n.s + ' services, ' + r.n.r + ' repos, ' + r.n.c + ' congés' + (r.n.a ? ', ' + r.n.a + ' autres' : '') + '.' + (had ? ' Il remplace le planning ' + r.year + ' déjà enregistré.' : '') + '</p>'
-        + '<div class="plan-btns"><button type="button" class="btn light" data-act="plan-cancel">Annuler</button><button type="button" class="btn green" data-act="plan-save">Enregistrer</button></div></div>';
+      S.planPending = r; box.innerHTML = planPrevHTML(r);
     }).catch(function(){ S.planPending = null; box.innerHTML = '<p class="plan-box err">Ce PDF ne ressemble pas à un « Planning individuel ». Exporte le planning de l\'année depuis l\'outil de ton travail, puis réessaie.</p>'; });
   };
 }
@@ -3088,7 +3121,7 @@ function viewGazetteDays(){
       + (une ? '<span class="gzd-n gzd-une"><b>À la une</b> ' + h(une.title) + '</span>' : nums[0] ? '<span class="gzd-n"><b>' + h(nums[0].n) + '</b> ' + h(String(nums[0].text || "").slice(0, 70)) + (String(nums[0].text || "").length > 70 ? "…" : "") + '</span>' : "") + '</span>'
       + '<span class="gzd-go" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span></button>';
   }).join("") + '</div>';
-  html += '<button type="button" class="lt-add" data-act="settings"><span class="lt-addi">' + LT_PLUS + '</span><span>Gérer mes sujets</span></button></div>';
+  html += '<button type="button" class="lt-add" data-act="settings" data-sec="news"><span class="lt-addi">' + LT_PLUS + '</span><span>Gérer mes sujets</span></button></div>';
   return html;
 }
 function gzWhen(g){ if (!g.ts) return g.date ? fmtShort(g.date) : ""; var d = new Date(g.ts), t = today(); return (iso(d) === iso(t) ? "" : iso(d) === iso(addDays(t, -1)) ? "hier, " : d.getDate() + " " + MOIS[d.getMonth()] + ", ") + d.getHours() + " h " + pad(d.getMinutes()); }
@@ -3333,7 +3366,7 @@ function viewGazette(){
     html += (ranked ? '<p class="gz-lbl">Tes ' + list.length + ' infos du jour</p>' : '') + '<div class="gz-list">' + list.map(function(g){ var c = gzCol(g.topic), rt = rates[g._id];
       return '<button type="button" class="gz-card' + (read.indexOf(g._id) >= 0 ? " read" : "") + '" data-act="gz-open" data-id="' + h(g._id) + '"><span class="gz-tp" style="color:' + c[1] + '">' + gzIcon(g.topic, 13) + h(g.topic || "") + (rt && !rt.imp ? '<i class="gz-rt r' + (rt.r < 0 ? 0 : rt.r + 1) + '" aria-label="Noté"></i>' : '') + '</span><span class="t">' + h(g.title) + '</span>' + (g.lead ? '<span class="l">' + h(g.lead) + '</span>' : "") + '<span class="meta">' + h(g.source || "") + (gzWhen(g) ? " · " + h(gzWhen(g)) : "") + '</span></button>'; }).join("") + '</div>';
   }
-  html += '<button type="button" class="lt-add" data-act="settings"><span class="lt-addi">' + LT_PLUS + '</span><span>Gérer mes sujets</span></button></div>';
+  html += '<button type="button" class="lt-add" data-act="settings" data-sec="news"><span class="lt-addi">' + LT_PLUS + '</span><span>Gérer mes sujets</span></button></div>';
   return html;
 }
 var GZ_FACES = [[-1, "Pas pertinent : moins de ce genre", "M8.5 16.6c.9-1.2 2.1-1.9 3.5-1.9s2.6.7 3.5 1.9"], [0, "Moyen", "M9 15.6h6"], [1, "Pertinent", "M8.5 14.2c.9 1.4 2.1 2.1 3.5 2.1s2.6-.7 3.5-2.1"]];
@@ -3430,9 +3463,11 @@ function render(){
   var unseenN = v === "gazette" ? 0 : unseenGazette().length;
   document.getElementById("gazBadge").hidden = !unseenN;
   document.getElementById("gazBadgeSr").textContent = unseenN ? ", " + unseenN + " nouveauté" + (unseenN > 1 ? "s" : "") : "";
-  var html = v === "jeu" ? "" : v === "listes" ? viewListes() : v === "courses" ? viewCourses() : v === "cartes" ? viewCartes() : v === "sommeil" ? viewSommeil() : v === "bienetre" ? viewBienetre() : v === "conclusions" ? viewConclusions() : v === "fiche" ? viewFiche() : v === "gazette" ? viewGazette() : v === "meteo" ? viewMeteo() : v === "notes" ? viewNotes() : viewAccueil();
+  var ae = document.activeElement, keepRg = v === "reglages" && document.getElementById("rgPage") && ae && ae.closest && ae.closest("#rgPage") && (ae.tagName === "TEXTAREA" || (ae.tagName === "INPUT" && /^(text|date|search)$/.test(ae.type)));
+  var html = keepRg ? "" : v === "reglages" ? settingsHTML() : v === "jeu" ? "" : v === "listes" ? viewListes() : v === "courses" ? viewCourses() : v === "cartes" ? viewCartes() : v === "sommeil" ? viewSommeil() : v === "bienetre" ? viewBienetre() : v === "conclusions" ? viewConclusions() : v === "fiche" ? viewFiche() : v === "gazette" ? viewGazette() : v === "meteo" ? viewMeteo() : v === "notes" ? viewNotes() : viewAccueil();
   if (S.dbState === "off") html = '<section class="section gut" style="margin-top:24px"><div class="card soft-empty">Tes données ne sont pas disponibles pour l\'instant. Vérifie ta connexion, puis recharge l\'appli.</div></section>' + html;
-  document.getElementById("view").innerHTML = html;
+  if (!keepRg) document.getElementById("view").innerHTML = html;
+  if (v === "reglages" && !keepRg) mountSettings();
   if (v === "meteo") document.getElementById("app").style.setProperty("--mtH", hero.offsetHeight + "px");
   if (v === "accueil") hnBind();   /* 1.23 : tirer les notes pour en créer une */
   if (v === "notes"){ afterNotesRender(); if (!S.purged && S.notesLoaded){ S.purged = true; purgeOldNotes(); } }
@@ -4417,23 +4452,77 @@ function monthHTML(){
     + (nEv || nBd ? '<p class="msum"><span>' + (nEv ? nEv + " rendez-vous" : "") + (nEv && nBd ? "</span> ce mois · " : nEv ? "</span> ce mois" : "") + (nBd ? (nEv ? "" : "<span>") + nBd + " anniversaire" + (nBd > 1 ? "s" : "") + (nEv ? "" : "</span> ce mois") : "") + '</p>' : "")
     + '<div class="month' + (plan ? ' pl' : '') + '">' + cells.join("") + '</div>' + panel;
 }
+/* MyWorld_1.34 : Réglages = une vraie page (#reglages), rangée en 4 rubriques de cartes qui se déplient (une seule ouverte à la fois) */
+var RG_IC = {
+  anniv:'<path d="M4 21h16M5 21v-7h14v7M12 14V9M12 6.5c-1 0-1.5-.8-1.5-1.6S12 2 12 2s1.5 2.1 1.5 2.9-.5 1.6-1.5 1.6z"/>',
+  plan:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+  som:'<path d="M20 15A8 8 0 1 1 9 4a6.5 6.5 0 0 0 11 11z"/>',
+  news:'<path d="M4 5h13v14H6a2 2 0 0 1-2-2z"/><path d="M17 9h3v8a2 2 0 0 1-2 2"/><path d="M8 9h5M8 13h5"/>',
+  appris:'<path d="M12 3l2.5 5 5.5.8-4 3.9 1 5.5L12 15.6 7 18.2l1-5.5-4-3.9 5.5-.8z"/>',
+  notes:'<path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 13h7M9 17h5"/>',
+  gcal:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4M9 15l2 2 4-4"/>',
+  save:'<path d="M12 4v11M7 10l5 5 5-5M5 20h14"/>',
+  ivy:'<path d="M12 21V11M12 11c-4 0-6-3-6-6 3 0 6 2 6 6zM12 14c3 0 5-2 5-5-3 0-5 2-5 5z"/>',
+  maj:'<path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/>'
+};
+var RG_COL = {anniv:["#FAD3CB","#A8402F"], plan:["#D9DFF7","#33449A"], som:["#E3D3F7","#6640A6"], news:["#FBE6B4","#8E6312"], appris:["#FDDCC6","#AA4A1C"], notes:["#FFF1C2","#8E6312"], gcal:["#D2E8FA","#2C679C"], save:["#D4EED6","#2F7440"], ivy:["#E6EDC8","#56661A"], maj:["#E3EEF8","#1E4F84"]};
+var RG_CHEV = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>';
+var RG_INFO = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 11v7"/><circle cx="12" cy="6.6" r="1.1" fill="currentColor" stroke="none"/></svg>';
+function rgCard(k, title, sum, body){
+  var o = S.regOpen === k, c = RG_COL[k];
+  return '<div class="rg-card' + (o ? ' op' : '') + '" data-k="' + k + '"><button type="button" class="rg-row" data-act="reg-tog" data-k="' + k + '" aria-expanded="' + o + '" aria-controls="rg-' + k + '">'
+    + '<span class="rg-ic" style="background:' + c[0] + ';color:' + c[1] + '"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + RG_IC[k] + '</svg></span>'
+    + '<span class="rg-t"><b>' + h(title) + '</b><span class="rg-sum">' + h(sum) + '</span></span><span class="rg-chev">' + RG_CHEV + '</span></button>'
+    + '<div class="rg-bd" id="rg-' + k + '"' + (o ? '' : ' inert') + '><div class="rg-in"><div class="rg-pad">' + body + '</div></div></div></div>';
+}
+function rgSelect(id, label, opts, cur){ return '<div class="field"><label for="' + id + '">' + label + '</label><select id="' + id + '">' + opts.map(function(o){ return '<option value="' + o[0] + '"' + (String(o[0]) === String(cur) ? " selected" : "") + '>' + h(o[1]) + '</option>'; }).join("") + '</select></div>'; }
 function settingsHTML(){
   var st = S.settings || {}, topics = st.topics || [];
-  var bd = st.birthday ? "2000-" + st.birthday : "";
-  var prev = '';
-  return prev + (st.birthday ? '<h3 style="margin-bottom:6px">Mon anniversaire</h3><p style="margin-bottom:22px;font-size:16px;font-weight:700">Le ' + (+st.birthday.slice(3)) + ' ' + MOIS[+st.birthday.slice(0,2)-1] + (st.birthYear ? ' ' + st.birthYear : '') + '</p>' : '<h3 style="margin-bottom:10px">Mon anniversaire</h3><form id="fBd" class="fgrid" style="margin-bottom:22px"><div class="field"><label for="bdIn">Date (l\'année ne compte pas)</label><input type="date" id="bdIn" value="' + h(bd) + '"></div><button class="btn green" type="submit">Enregistrer</button></form>')
-    + '<h3 style="margin-bottom:6px">Sujets des News</h3><p style="font-size:13px;color:var(--muted);margin-bottom:6px">Chaque sujet devient une rubrique de tes News, mise à jour chaque matin vers 6 h.</p><div>' + topics.map(function(t){ return '<div class="list-line"><span>' + h(t) + '</span><button type="button" class="mini" data-act="del-topic" data-t="' + h(t) + '">Retirer</button></div>'; }).join("") + '</div>'
+  /* Moi */
+  var bdSum = st.birthday ? "Le " + (+st.birthday.slice(3)) + " " + MOIS[+st.birthday.slice(0,2)-1] : "À renseigner";
+  var anniv = '<form id="fBd"><div class="field"><label for="bdIn">Date (l\'année ne compte pas)</label><input type="date" id="bdIn" value="' + h(st.birthday ? "2000-" + st.birthday : "") + '"></div><p class="rg-hint">Ce jour-là, l\'accueil te le souhaite et le bandeau se met en fête.</p>'
+    + '<div class="rg-act">' + (st.birthday ? '<button type="button" class="btn light" data-act="bd-del">Retirer</button>' : '<span></span>') + '<button class="btn green" type="submit">Enregistrer</button></div></form>';
+  var P = st.planning || {}, ys = Object.keys(P).sort();
+  var planSum = ys.length ? "Planning " + ys.join(", ") + " · " + ys.reduce(function(n, y){ return n + ((P[y].n && P[y].n.s) || 0); }, 0) + " services" : "Aucun planning importé";
+  var sl = slSet(), slOpt = function(a, b, stp){ var o = []; for (var x = a; x <= b; x += stp) o.push([x, slHM(x)]); return o; };
+  var som = rgSelect("rgSlT", "Durée de sommeil visée", slOpt(360, 540, 15), sl.target) + rgSelect("rgSlL", "Lever avant le début du service", slOpt(15, 150, 15), sl.lead)
+    + '<p class="rg-hint" style="margin:-4px 0 0">Sert à te conseiller une heure de coucher la veille d\'un service. Enregistré dès que tu changes.</p>';
+  /* Contenus */
+  var news = '<p class="rg-hint">Chaque sujet devient une rubrique de tes News, mise à jour chaque matin vers 6 h.</p><div>' + (topics.length ? topics.map(function(t){ return '<div class="list-line"><span>' + h(t) + '</span><button type="button" class="mini" data-act="del-topic" data-t="' + h(t) + '">Retirer</button></div>'; }).join("") : '<p class="soft-empty" style="padding:0">Aucun sujet pour l\'instant.</p>') + '</div>'
     + (function(){ var miss = Object.keys(GZ_RUB).filter(function(r){ return !topics.some(function(t){ return gzRub(t) === r; }); }); return miss.length ? '<p class="learn-sub">Rubriques prêtes</p><div class="gz-quick">' + miss.map(function(r){ return '<button type="button" data-act="topic-quick" data-t="' + h(GZ_RUB[r].n) + '">+ ' + h(GZ_RUB[r].n) + '</button>'; }).join("") + '</div>' : ""; })()
-    + '<form id="fT" class="fgrid" style="margin-top:12px"><div class="field"><label for="tName">Nouveau sujet</label><input id="tName" type="text" required placeholder="Un acteur, une série, un lieu…"></div><button class="btn green" type="submit">Ajouter</button></form>'
-    + learnSettingsHTML()
-    + planningSettingsHTML()
-    + (st.ivyPos && Object.keys(st.ivyPos).length ? '<h3 style="margin:26px 0 6px">Lanceur Apps</h3><p style="font-size:13px;color:var(--muted);margin-bottom:10px">Tu as déplacé ' + Object.keys(st.ivyPos).length + ' appli' + (Object.keys(st.ivyPos).length > 1 ? 's' : '') + ' sur la plante (appui long pour déplacer).</p><button type="button" class="btn light" data-act="ivy-reset">Remettre les applis à leur place</button>' : '')
-    + '<h3 style="margin:26px 0 6px">Google Agenda</h3>' + gcalSettingsHTML()
-    + '<h3 style="margin:26px 0 6px">Sauvegarde</h3><p style="font-size:13px;color:var(--muted);margin-bottom:10px">Télécharge une copie de toutes tes données, ou importe une sauvegarde.</p><div class="bk-row"><button type="button" class="btn light" data-act="export">Télécharger</button><button type="button" class="btn light" data-act="import">Importer</button><input type="file" id="impFile" accept="application/json,.json" hidden></div>'
-    + '<div style="margin-top:26px"><button type="button" class="mini" data-act="signout">Se déconnecter</button></div>'
-    + newsSettingsHTML()
-    + '<h3 style="margin:26px 0 6px">Mise à jour</h3><p style="font-size:13px;color:var(--muted);margin-bottom:10px">Si une nouvelle version tarde à arriver : l\'appli retélécharge tout son code depuis internet puis redémarre. Tes données ne bougent pas.</p><button type="button" class="btn light" data-act="force-upd">Forcer la mise à jour</button>'
-    + '<p style="margin:18px 0 0;font-size:12px;font-weight:700;color:#85858F">Version ' + APP_VERSION + '</p>';
+    + '<form id="fT" class="fgrid" style="margin-top:12px"><div class="field" style="margin:0"><label for="tName">Nouveau sujet</label><input id="tName" type="text" required placeholder="Un acteur, une série, un lieu…"></div><button class="btn green" type="submit">Ajouter</button></form>';
+  var L = learnData(), nP = Object.keys(L.places).length, nK = L.kinds.length, nW = noteKeys().length;
+  var apSum = [nP ? nP + " lieu" + (nP > 1 ? "x" : "") : "", nK ? nK + " type" + (nK > 1 ? "s" : "") : "", nW ? nW + " titre" + (nW > 1 ? "s" : "") + " de notes" : ""].filter(Boolean).join(" · ") || "Rien pour l'instant";
+  var pr = notePrefs(), SZ = {petite:"petit", moyenne:"moyen", grande:"grand"};
+  var notes = rgSelect("rgNpSize", "Taille du texte", [["petite","Petite"],["moyenne","Moyenne"],["grande","Grande"]], pr.size) + rgSelect("rgNpSort", "Trier", [["modif","Par date de modification"],["creation","Par date de création"]], pr.sort) + rgSelect("rgNpLayout", "Disposition", [["grille","Affichage grille"],["liste","Affichage liste"]], pr.layout)
+    + '<button type="button" class="btn light" data-act="note-trash" style="width:100%">Éléments supprimés récemment</button>';
+  /* Compte et données */
+  var gOn = mcp && mcp.hasConsented && mcp.hasConsented();
+  var save = '<p class="rg-hint">Télécharge une copie de toutes tes données, ou importe une sauvegarde.</p><div class="bk-row"><button type="button" class="btn light" data-act="import">Importer</button><button type="button" class="btn light" data-act="export">Télécharger</button><input type="file" id="impFile" accept="application/json,.json" hidden></div>';
+  /* L'appli */
+  var nIvy = st.ivyPos ? Object.keys(st.ivyPos).length : 0;
+  var ivy = '<p class="rg-hint">Tu as déplacé ' + nIvy + ' appli' + (nIvy > 1 ? 's' : '') + ' sur la plante (appui long pour déplacer).</p><button type="button" class="btn light" data-act="ivy-reset" style="width:100%">Remettre les applis à leur place</button>';
+  var maj = '<p class="rg-hint">Si une nouvelle version tarde à arriver : l\'appli retélécharge tout son code depuis internet puis redémarre. Tes données ne bougent pas.</p><button type="button" class="btn light" data-act="force-upd" style="width:100%">Forcer la mise à jour</button><p class="rg-ver">Version ' + APP_VERSION + '</p>';
+  return '<section class="section gut rg-page" id="rgPage">'
+    + '<h2 class="rg-gt">Moi</h2>' + rgCard("anniv", "Mon anniversaire", bdSum, anniv) + rgCard("plan", "Mon planning", planSum, planningSettingsHTML()) + rgCard("som", "Sommeil", "Objectif " + slHM(sl.target) + " · lever " + slHM(sl.lead) + " avant", som)
+    + '<h2 class="rg-gt">Contenus</h2>' + rgCard("news", "Sujets des News", topics.length ? topics.length + " sujet" + (topics.length > 1 ? "s" : "") : "Aucun sujet", news) + rgCard("appris", "Mots appris", apSum, learnSettingsHTML()) + rgCard("notes", "Affichage des notes", "Texte " + SZ[pr.size] + " · " + (pr.layout === "liste" ? "liste" : "grille"), notes)
+    + '<h2 class="rg-gt">Compte et données</h2>' + rgCard("gcal", "Google Agenda", gOn ? "Synchronisé" : "Pas encore synchronisé", gcalSettingsHTML()) + rgCard("save", "Sauvegarde", "Télécharger ou importer tes données", save)
+    + '<h2 class="rg-gt">L\'appli</h2>' + (nIvy ? rgCard("ivy", "Lanceur Apps", nIvy + " appli" + (nIvy > 1 ? "s déplacées" : " déplacée"), ivy) : "") + rgCard("maj", "Mise à jour", APP_VERSION, maj)
+    + '<button type="button" class="rg-out" data-act="signout">Se déconnecter</button></section>';
+}
+function rgToggle(k){
+  var was = S.regOpen === k; S.regOpen = was ? "" : k;
+  var card = null;
+  document.querySelectorAll("#rgPage .rg-card").forEach(function(c){
+    var on = c.dataset.k === S.regOpen, bd = c.querySelector(".rg-bd");
+    c.classList.toggle("op", on); c.querySelector(".rg-row").setAttribute("aria-expanded", String(on));
+    if (on){ bd.removeAttribute("inert"); card = c; } else bd.setAttribute("inert", "");
+  });
+  if (card) setTimeout(function(){
+    var r = card.getBoundingClientRect(), nav = document.querySelector("nav.tabs"), bot = innerHeight - (nav ? nav.offsetHeight + 12 : 96);
+    var dy = r.top < 8 ? r.top - 12 : r.bottom > bot ? Math.min(r.bottom - bot, r.top - 12) : 0;
+    if (dy) window.scrollBy({top: dy, behavior: "smooth"});
+  }, 330);
 }
 function newsDayLabel(d){
   var t = iso(new Date()), y = iso(new Date(Date.now() - 864e5));
@@ -4451,7 +4540,7 @@ function newsGroupHTML(list, curV, prevDay){
 /* MyWorld_1.33 : section « Nouveautés » des Réglages : les 3 dernières versions, puis tout l'historique à déplier */
 function newsSettingsHTML(){
   var cur = APP_VERSION.replace("MyWorld_", ""), first = MW_NEWS.slice(0, 3), rest = MW_NEWS.slice(3);
-  return '<h3 style="margin:26px 0 6px">Nouveautés</h3><p style="font-size:13px;color:var(--muted);margin-bottom:10px">Ce qui a changé dans l\'appli, version par version.</p>'
+  return '<p style="font-size:13px;color:var(--muted);margin-bottom:10px">Ce qui a changé dans l\'appli, version par version.</p>'
     + '<div class="nw-list">' + newsGroupHTML(first, cur) + '</div>'
     + (rest.length ? '<details class="nw-more"><summary>Tout l\'historique <span>' + MW_NEWS.length + ' versions</span></summary><div class="nw-list">' + newsGroupHTML(rest, cur, first.length ? first[first.length - 1].d : "") + '</div></details>' : '');
 }
@@ -4460,19 +4549,23 @@ function mountSettings(){
   var fb = document.getElementById("fBd"), ft = document.getElementById("fT");
   if (fb) fb.onsubmit = function(e){ e.preventDefault(); var v = document.getElementById("bdIn").value; saveSettings({birthday: v ? v.slice(5) : null}).then(function(){ toast(v ? "Ton anniversaire est noté." : "Date retirée."); render(); }); };
   mountLearn(); mountPlanning();
-  ft.onsubmit = function(e){ e.preventDefault(); var n = document.getElementById("tName").value.trim(); if (!n) return; var topics = ((S.settings && S.settings.topics) || []).slice(); if (topics.indexOf(n) < 0) topics.push(n); saveSettings({topics:topics}).then(function(){ toast("Sujet ajouté. Il apparaîtra dès qu'il y aura du nouveau."); refreshSettings(); }); };
+  var sT = document.getElementById("rgSlT"), sL = document.getElementById("rgSlL");
+  if (sT) sT.onchange = sL.onchange = function(){ if (!needDb()) return; saveSettings({ sleep: { target: +sT.value, lead: +sL.value } }).then(function(){ toast("Réglage du sommeil enregistré."); }); };
+  ["rgNpSize","rgNpSort","rgNpLayout"].forEach(function(k){ var el = document.getElementById(k); if (el) el.onchange = function(){ var p = {}; p[{rgNpSize:"size", rgNpSort:"sort", rgNpLayout:"layout"}[k]] = this.value; saveNotePrefs(p).then(render); }; });
+  if (ft) ft.onsubmit = function(e){ e.preventDefault(); var n = document.getElementById("tName").value.trim(); if (!n) return; var topics = ((S.settings && S.settings.topics) || []).slice(); if (topics.indexOf(n) < 0) topics.push(n); saveSettings({topics:topics}).then(function(){ toast("Sujet ajouté. Il apparaîtra dès qu'il y aura du nouveau."); refreshSettings(); }); };
 }
 function learnSettingsHTML(){
   var L = learnData(), pk = Object.keys(L.places), rk = Object.keys(L.rewrites);
   var line = function(lbl, t, k){ return '<div class="list-line"><span>' + lbl + '</span><button type="button" class="mini" data-act="learn-del" data-t="' + t + '" data-k="' + h(k) + '">Retirer</button></div>'; };
   var opts = ["event","todo","rappel","note","birthday","exploit"].map(function(k){ return '<option value="' + k + '">' + KIND_LBL[k] + '</option>'; }).join("");
-  return keywordsSettingsHTML() + '<h3 style="margin:26px 0 6px">Ce que l\'appli a appris</h3><p style="font-size:13px;color:var(--muted);margin-bottom:6px">Quand tu corriges l\'aperçu avant de valider, l\'appli retient ta correction. Tu peux aussi lui apprendre tes mots ici.</p>'
+  return '<p class="rg-hint">Quand tu corriges l\'aperçu avant de valider, l\'appli retient ta correction. Tu peux aussi lui apprendre tes mots ici.</p>'
     + '<p class="learn-sub">Lieux</p>' + (pk.length ? pk.map(function(k){ return line("« " + h(k) + " » → " + h(L.places[k]), "place", k); }).join("") : '<p class="soft-empty" style="padding:0">Aucun pour l\'instant.</p>')
     + '<form id="fLp" class="fgrid" style="margin:8px 0 6px"><div class="field"><label for="lpRaw">Quand j\'écris</label><input id="lpRaw" type="text" required placeholder="l\'aéroport"></div><div class="field"><label for="lpVal">C\'est le lieu</label><input id="lpVal" type="text" required placeholder="Aéroport Nice Côte d\'Azur"></div><button class="btn green" type="submit" style="grid-column:1/-1">Ajouter ce lieu</button></form>'
     + '<p class="learn-sub">Types</p>' + (L.kinds.length ? L.kinds.map(function(r, i){ return line("« " + h(r.w.join(" ")) + " » → " + KIND_LBL[r.k], "kind", i); }).join("") : '<p class="soft-empty" style="padding:0">Aucun pour l\'instant.</p>')
     + '<form id="fLk" class="fgrid" style="margin:8px 0 6px"><div class="field"><label for="lkRaw">Quand j\'écris</label><input id="lkRaw" type="text" required placeholder="véto"></div><div class="field"><label for="lkVal">C\'est</label><select id="lkVal">' + opts + '</select></div><button class="btn green" type="submit" style="grid-column:1/-1">Ajouter ce type</button></form>'
     + (L.cats.length ? '<p class="learn-sub">Domaines (couleurs)</p>' + L.cats.map(function(r, i){ return line("« " + h(r.w.join(" ")) + " » → " + CATS[r.c].n, "cat", i); }).join("") : "")
-    + (rk.length ? '<p class="learn-sub">Titres</p>' + rk.map(function(k){ return line("« " + h(k) + " » → " + h(L.rewrites[k]), "rw", k); }).join("") : "");
+    + (rk.length ? '<p class="learn-sub">Titres</p>' + rk.map(function(k){ return line("« " + h(k) + " » → " + h(L.rewrites[k]), "rw", k); }).join("") : "")
+    + keywordsSettingsHTML();
 }
 function mountLearn(){
   var fp = document.getElementById("fLp"), fk = document.getElementById("fLk");
@@ -4482,7 +4575,7 @@ function mountLearn(){
 function gcalSettingsHTML(){
   var on = mcp && mcp.hasConsented && mcp.hasConsented();
   return '<p style="font-size:13px;color:var(--muted);margin-bottom:10px">' + (on ? 'Synchronisé avec l\'agenda ' + h(CAL) + '. L\'accès se renouvelle tout seul.' : 'Pas encore synchronisé.') + '</p>'
-    + (on ? '<div class="bk-row"><button type="button" class="btn light" data-act="gcal-connect">Resynchroniser</button><button type="button" class="btn light" data-act="gcal-change">Changer de compte</button></div><div style="margin-top:8px"><button type="button" class="mini" data-act="gcal-off">Déconnecter Google Agenda</button></div>'
+    + (on ? '<div class="bk-row"><button type="button" class="btn light" data-act="gcal-connect">Resynchroniser</button><button type="button" class="btn light" data-act="gcal-change">Changer de compte</button></div><button type="button" class="btn light rg-danger" data-act="gcal-off" style="width:100%;margin-top:10px">Déconnecter Google Agenda</button>'
           : '<button type="button" class="btn green" data-act="gcal-connect" style="width:100%">Synchroniser Google Agenda</button>');
 }
 function exportBackup(){
@@ -4490,7 +4583,7 @@ function exportBackup(){
   var data = {version:1, exportedAt: nowISO(), collections:{items:strip(S.items), people:strip(S.people), log:strip(S.log), gazette:strip(S.gazette), notes:strip(S.notes)}, settings: S.settings || {}};
   var a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([JSON.stringify(data, null, 1)], {type:"application/json"})); a.download = "sauvegarde-carnet-" + iso(today()) + ".json"; document.body.appendChild(a); a.click(); a.remove();
 }
-function refreshSettings(){ var b = document.getElementById("sheetBody"); if (b && document.getElementById("fT")){ b.innerHTML = settingsHTML(); mountSettings(); } }
+function refreshSettings(){ if (S.view === "reglages") render(); }
 function saveSettings(patch){
   if (!needDb()) return Promise.resolve();
   var ref = db.doc("settings/main");
@@ -5351,7 +5444,10 @@ document.addEventListener("click", function(e){
   if (act === "mday"){ S.monthSel = b.dataset.d; document.getElementById("mBody").innerHTML = monthHTML(); var fb2 = document.querySelector('.mcell[data-d="' + S.monthSel + '"]'); if (fb2) fb2.focus({preventScroll:true}); return; }
   if (act === "month"){ S.monthOffset = 0; S.monthSel = null; openSheet("Le mois", '<div id="mBody">' + monthHTML() + '</div>'); return; }
   if (act === "mprev" || act === "mnext"){ S.monthOffset += act === "mnext" ? 1 : -1; document.getElementById("mBody").innerHTML = monthHTML(); return; }
-  if (act === "settings"){ openSheet("Réglages", settingsHTML(), mountSettings); return; }
+  if (act === "settings"){ S.regOpen = b.dataset.sec || ""; if (S.view === "reglages") render(); else location.hash = "reglages"; return; }
+  if (act === "reg-tog"){ rgToggle(b.dataset.k); return; }
+  if (act === "reg-info"){ openSheet("Nouveautés", newsSettingsHTML()); return; }
+  if (act === "bd-del"){ saveSettings({birthday: null}).then(function(){ toast("Date retirée."); render(); }); return; }
   if (act === "gcal-change"){ if (mcp && mcp.connect) mcp.connect(true).then(function(){ toast("Compte Google Agenda mis à jour."); refreshSettings(); }).catch(function(){ toast("Le changement de compte n'a pas abouti."); }); return; }
   if (act === "gcal-off"){ if (mcp && mcp.disconnect){ mcp.disconnect(); S.gcal = []; toast("Google Agenda est déconnecté."); refreshSettings(); } return; }
   if (act === "gcal-connect"){ if (mcp && mcp.connect) mcp.connect().then(function(){ toast("Google Agenda est synchronisé."); refreshSettings(); }).catch(function(){ toast(navigator.onLine ? "La connexion à Google Agenda n'a pas abouti." : "Pas de connexion internet pour l'instant."); }); return; }
@@ -5423,7 +5519,7 @@ document.addEventListener("click", function(e){
 document.addEventListener("keydown", function(e){ if (e.key === "Escape" && document.getElementById("neMn")) { neMenuClose(); return; } if (e.key === "Escape") { closeSheet(); var l = document.querySelector(".levelup"); if (l) l.remove(); } });
 document.getElementById("captureForm").addEventListener("submit", onCapture);
 
-var TABS = ["accueil","notes","listes","courses","fiche","gazette","meteo","jeu","cartes","sommeil","bienetre","conclusions"];
+var TABS = ["accueil","notes","listes","courses","fiche","gazette","meteo","jeu","cartes","sommeil","bienetre","conclusions","reglages"];
 
 
 /* ===== MyWorld_0.13 : page « Tes listes » (À faire / Rappels) ===== */
@@ -5678,7 +5774,7 @@ function offerNoteKey(title){
 }
 function keywordsSettingsHTML(){
   var nk = noteKeys();
-  return '<h3 style="margin:26px 0 6px">Mots-clés</h3><p style="font-size:13px;color:var(--muted);margin-bottom:6px">En début de phrase dans le +, ils forcent la compréhension.</p>'
+  return '<p class="learn-sub" style="margin-top:18px">Mots-clés</p><p class="rg-hint">En début de phrase dans le +, ils forcent la compréhension.</p>'
     + KEYWORDS.map(function(K){ return '<div class="kw-line"><b>' + h(K.lbl) + '</b><span>' + h(K.d) + '</span></div>'; }).join("")
     + '<p class="learn-sub">Titres de notes</p>' + (nk.length ? nk.map(function(k){ return '<div class="kw-line"><b>' + h(k) + '</b><span>ajoute à cette note</span><button type="button" class="kw-del" data-act="nk-del" data-t="' + h(k) + '" aria-label="Retirer ' + h(k) + '">×</button></div>'; }).join("") : '<p class="soft-empty" style="padding:0">Aucun pour l\'instant. Ils te seront proposés à chaque nouvelle note.</p>');
 }
@@ -6828,8 +6924,8 @@ function fanGo(k){
   if (!a) return;
   if (a.soon){ toast(a.n + " arrive bientôt dans My World."); return; }
   fanClose(function(){
-    if (k === "reglages") openSheet("Réglages", settingsHTML(), mountSettings);
-    else location.hash = k;
+    if (k === "reglages") S.regOpen = "";
+    location.hash = k;
   });
 }
 document.addEventListener("keydown", function(e){
