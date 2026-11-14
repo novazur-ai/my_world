@@ -326,6 +326,11 @@ body.nsel-on nav.tabs *{pointer-events:none!important}
 @media (prefers-reduced-motion: reduce){.nsel-bar,.nc-chk{transition:none}body.nsel-on .nsel-top{animation:none}}
 .n-search{flex:1;min-width:0;display:flex;align-items:center;gap:8px;height:46px;padding:0 14px;border-radius:999px;border:1.5px solid var(--line);background:rgba(255,255,255,.92);color:var(--muted)}
 .n-search input{flex:1;min-width:0;border:0;background:transparent;font-size:16px;color:var(--text);outline:none}
+.n-seg{flex:none;height:46px;display:flex;align-items:center;gap:2px;padding:3px;border-radius:999px;border:1.5px solid var(--line);background:rgba(255,255,255,.92);box-sizing:border-box} /* MyWorld_1.30 : îlot dossiers · options · + (maquette C) */
+.n-seg button{width:40px;height:38px;border:0;border-radius:19px;background:transparent;color:var(--ink);display:grid;place-items:center;padding:0}
+.n-seg button:active{background:rgba(0,0,0,.06)}
+.n-seg .n-seg-add{width:48px;background:linear-gradient(135deg,var(--acc,#2766A8),var(--acc-grad,#4C8BCB));color:#FFFFFF;box-shadow:0 4px 10px rgba(39,102,168,.25)}
+.n-seg .n-seg-add:active{filter:brightness(.92);background:linear-gradient(135deg,var(--acc,#2766A8),var(--acc-grad,#4C8BCB))}
 .n-icbtn{width:46px;height:46px;flex-shrink:0;border-radius:50%;border:1.5px solid var(--line);background:rgba(255,255,255,.9);color:var(--ink);display:grid;place-items:center}
 .n-chips{margin-top:12px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
 .n-chips::-webkit-scrollbar{display:none}
@@ -2370,7 +2375,7 @@ var DECO = (function(){
 
 </script>
 <script>
-var APP_VERSION = "MyWorld_1.29";
+var APP_VERSION = "MyWorld_1.30";
 (function(){
 "use strict";
 var CAL = "t.mallet06@gmail.com";
@@ -4537,15 +4542,14 @@ function noteCard(n){
 function viewNotes(){
   var pr = notePrefs(), folders = noteFolders(), list = sortedNotes();
   var chips = [["__all","Tous"]].concat(folders.map(function(f){ return [f, f]; })).concat([["__none","Sans catégorie"]]).map(function(c){ return '<button type="button" class="tchip" data-act="note-folder" data-f="' + h(c[0]) + '" aria-pressed="' + (S.noteFolder === c[0]) + '">' + h(c[1]) + '</button>'; }).join("");
-  var tools = '<div class="n-tools"><label class="n-search">' + ICON.search + '<span class="sr">Rechercher des notes</span><input id="noteSearch" type="search" placeholder="Rechercher des notes" value="' + h(S.noteQuery) + '" autocomplete="off"></label><button type="button" class="n-icbtn" data-act="note-folders" aria-label="Dossiers">' + ICON.folder + '</button><button type="button" class="n-icbtn" data-act="note-prefs" aria-label="Options des notes">' + ICON.more + '</button></div>';
+  var tools = '<div class="n-tools"><label class="n-search">' + ICON.search + '<span class="sr">Rechercher des notes</span><input id="noteSearch" type="search" placeholder="Rechercher des notes" value="' + h(S.noteQuery) + '" autocomplete="off"></label><div class="n-seg"><button type="button" data-act="note-folders" aria-label="Dossiers">' + ICON.folder + '</button><button type="button" data-act="note-prefs" aria-label="Options des notes">' + ICON.more + '</button><button type="button" class="n-seg-add" data-act="note-new" aria-label="Nouvelle note"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button></div></div>';
   var fsz = '--nfs:' + ({petite:13, moyenne:14, grande:16})[pr.size] + 'px';
   var cols = pr.layout === "liste" ? '<div class="n-col">' + list.map(noteCard).join("") + '</div>' : [0, 1].map(function(c){ return '<div class="n-col">' + list.filter(function(x, i){ return i % 2 === c; }).map(noteCard).join("") + '</div>'; }).join("");
   var body = list.length ? '<div class="n-grid' + (pr.layout === "liste" ? " liste" : "") + '" style="' + fsz + '">' + cols + '</div>'
-    : '<div class="card soft-empty" style="margin-top:14px">' + (S.noteQuery ? "Aucune note ne correspond à ta recherche." : liveNotes().length ? "Aucune note dans ce dossier." : "Pas encore de note. Touche le <b>+</b> pour écrire, dessiner, ajouter une photo ou t'enregistrer.") + '</div>';
+    : '<div class="card soft-empty" style="margin-top:14px">' + (S.noteQuery ? "Aucune note ne correspond à ta recherche." : liveNotes().length ? "Aucune note dans ce dossier." : "Pas encore de note. Touche le <b>+</b> en haut pour écrire, dessiner, ajouter une photo ou t'enregistrer.") + '</div>';
   var selTop = '<div class="nsel-top"><button type="button" class="n-icbtn" data-act="nsel-exit" aria-label="Annuler la sélection">' + ICON.close + '</button><b id="nselN" aria-live="polite">' + nselLabel() + '</b><button type="button" class="nsel-all" data-act="nsel-all">' + nselAllLabel() + '</button></div>';
   var selBar = '<div class="nsel-bar" role="toolbar" aria-label="Actions sur la sélection"><button type="button" class="nsel-del" data-act="nsel-del">' + ICON.trash + '<span>Supprimer</span></button><button type="button" data-act="nsel-pin">' + ICON.pin + '<span id="nselPinL">' + nselPinLabel() + '</span></button><button type="button" class="nsel-main" data-act="nsel-move">' + ICON.folder + '<span>Déplacer</span></button></div>';
-  return '<section class="section gut" style="margin-top:18px" aria-label="Notes">' + tools + selTop + '<div class="topics n-chips">' + chips + '</div>' + body + '</section>' + selBar
-    + '<button type="button" class="fab" data-act="note-new" aria-label="Nouvelle note"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>';
+  return '<section class="section gut" style="margin-top:18px" aria-label="Notes">' + tools + selTop + '<div class="topics n-chips">' + chips + '</div>' + body + '</section>' + selBar;
 }
 function afterNotesRender(){
   var inp = document.getElementById("noteSearch");
