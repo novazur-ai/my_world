@@ -11,7 +11,18 @@ const SHELL = [
   "fonts/dancing-script-latin-600-normal.woff2", "fonts/dancing-script-latin-700-normal.woff2"
 ];
 const SHELL_PATHS = new Set(SHELL.map((u) => new URL(u, self.location).pathname));
-self.addEventListener("install", (e) => { e.waitUntil(caches.open(VERSION).then((c) => c.addAll(SHELL.map((u) => new Request(u, { cache: "reload" })))).then(() => self.skipWaiting())); });
+/* MyWorld_1.25 : chaque fichier est téléchargé avec ?b=<numéro de version> (GitHub Pages garde les fichiers 10 min en cache :
+   sans cela, une version pouvait garder l'ancienne page). La page doit contenir le numéro de cette version, sinon
+   l'installation échoue et sera retentée à la prochaine vérification (on ne garde jamais une page périmée). */
+const BUILD = VERSION.replace("carnet-", "");
+self.addEventListener("install", (e) => { e.waitUntil(caches.open(VERSION).then((c) => Promise.all(SHELL.map((u) => {
+  const url = new URL(u, self.location); url.searchParams.set("b", BUILD);
+  return fetch(url.href, { cache: "reload" }).then((res) => {
+    if (!res.ok) throw new Error("fichier " + u + " : " + res.status);
+    if ((u === "./" || u === "index.html") && BUILD.indexOf("__") < 0) return res.clone().text().then((t) => { if (t.indexOf(BUILD) < 0) throw new Error("page pas encore à jour"); return c.put(new Request(u), res); });
+    return c.put(new Request(u), res);
+  });
+}))).then(() => self.skipWaiting())); });
 self.addEventListener("activate", (e) => { e.waitUntil(caches.keys().then((keys) => Promise.all(keys.filter((k) => k !== VERSION && k !== ASSETS).map((k) => caches.delete(k)))).then(() => self.clients.claim())); });
 self.addEventListener("fetch", (e) => {
   const req = e.request;

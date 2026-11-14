@@ -28,7 +28,11 @@ jobs:
         run: |
           BUILD="$(date -u +%Y%m%d%H%M)-${GITHUB_SHA::7}"
           sed -i "s/__BUILD__/${BUILD}/" sw.js
+          sed -i "s/window.APP_BUILD = \"__BUILD__\"/window.APP_BUILD = \"${BUILD}\"/" index.html
+          printf '{"build":"%s"}\n' "${BUILD}" > version.json
           grep -n 'const VERSION' sw.js
+          grep -c "window.APP_BUILD = \"${BUILD}\"" index.html
+          cat version.json
       - name: Préparer le site (sans les fichiers techniques)
         run: |
           mkdir -p _site

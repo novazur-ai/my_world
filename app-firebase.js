@@ -259,8 +259,26 @@ function showUpdateBtn(){
   if (updShown || document.getElementById("updBtn")) return; updShown = true;
   const b = document.createElement("button"); b.type = "button"; b.id = "updBtn"; b.className = "upd-btn";
   b.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></svg><span>Mettre à jour l\'app</span>';
-  b.addEventListener("click", () => { b.disabled = true; b.classList.add("busy"); b.querySelector("span").textContent = "Mise à jour…"; location.reload(); });
+  b.addEventListener("click", () => { b.disabled = true; b.classList.add("busy"); b.querySelector("span").textContent = "Mise à jour…"; hardUpdate(); });
   document.body.appendChild(b);
+}
+/* MyWorld_1.25 : mise à jour sûre. On laisse d'abord la nouvelle version s'installer (6 s au plus) ; si elle ne
+   prend pas la main, on efface la copie locale de l'appli (pas les données) et on recharge depuis le réseau. */
+function hardUpdate(){
+  let done = false;
+  const go = () => { if (done) return; done = true; location.replace(location.pathname + "?maj=" + Date.now() + location.hash); };
+  if (!("serviceWorker" in navigator)) return go();
+  const fresh = () => fetch("version.json?t=" + Date.now(), { cache: "no-store" }).then((r) => r.ok ? r.json() : null).catch(() => null);
+  navigator.serviceWorker.addEventListener("controllerchange", () => setTimeout(go, 150));
+  if (swReg) swReg.update().catch(() => {});
+  setTimeout(() => {
+    if (done) return;
+    caches.keys().then((ks) => Promise.all(ks.filter((k) => k.indexOf("carnet-") === 0 && k !== "carnet-assets-1").map((k) => caches.delete(k)))).catch(() => {}).then(fresh).then(go, go);
+  }, 6000);
+}
+function checkBuild(){
+  const mine = window.APP_BUILD; if (!mine || mine.indexOf("__") >= 0 || !navigator.onLine) return;
+  fetch("version.json?t=" + Date.now(), { cache: "no-store" }).then((r) => r.ok ? r.json() : null).then((j) => { if (j && j.build && j.build !== mine) showUpdateBtn(); }).catch(() => {});
 }
 function checkUpdate(){
   if (!("serviceWorker" in navigator)) return;
@@ -276,7 +294,7 @@ function checkUpdate(){
 function recheckUpdate(force){
   if (!swReg || !navigator.onLine) return;
   if (!force && Date.now() - lastUpdCheck < 30000) return;
-  lastUpdCheck = Date.now(); swReg.update().catch(() => {});
+  lastUpdCheck = Date.now(); swReg.update().catch(() => {}); checkBuild();
 }
 document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") recheckUpdate(false); });
 window.addEventListener("online", () => recheckUpdate(true));
