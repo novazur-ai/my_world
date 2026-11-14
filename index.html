@@ -875,6 +875,24 @@ body[data-view="meteo"] #app::before{height:calc(var(--mtH,250px) + 8px)}
 .mt-part .top b{font-size:24px;font-weight:900;color:#1E2530}
 .mt-part .x{font-size:13px;font-weight:700;color:#5B6B7C}
 .mt-part .x em{font-style:normal;color:#2F7FC1;font-weight:900}
+/* MyWorld_1.35 : météo heure par heure (courbe) */
+.mt-hr{background:#fff;border:1px solid #E6ECF2;border-radius:18px;box-shadow:0 6px 20px rgba(11,58,92,.06);padding:12px 0 12px}
+.mt-hr-top{display:flex;align-items:baseline;justify-content:space-between;gap:8px;padding:0 14px}
+.mt-hr-top b{font-size:11.5px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#5B6B7C}
+.mt-hr-top span{font-size:12.5px;font-weight:700;color:#5B6B7C}
+.mt-hr-sc{overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;padding:6px 6px 0}
+.mt-hr-sc::-webkit-scrollbar{display:none}
+.mt-hr-cv{position:relative;height:200px}
+.mt-hr-g{position:absolute;left:0;top:58px}
+.mt-hr-c{position:absolute;top:0;width:58px;height:200px;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0 0;border:0;border-radius:14px;background:transparent;font:inherit;color:#1E2530;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.mt-hr-c.on{background:rgba(47,94,140,.08)}
+.mt-hr-h{font-size:12px;font-weight:800;color:#5B6B7C}
+.mt-hr-c.on .mt-hr-h{color:#1E2530}
+.mt-hr-t{position:absolute;left:0;right:0;text-align:center;font-size:14px;font-weight:900;line-height:18px}
+.mt-hr-bar{position:absolute;bottom:24px;left:50%;width:22px;margin-left:-11px;border-radius:6px 6px 3px 3px;background:#BFDDF5}
+.mt-hr-p{position:absolute;bottom:5px;left:0;right:0;text-align:center;font-size:11.5px;font-weight:900;line-height:15px;color:#1E5D93;white-space:nowrap}
+.mt-hr-det{margin:8px 14px 0;padding:9px 12px;border-radius:12px;background:#F2F6F9;font-size:13.5px;line-height:1.35;color:#1E2530}
+.mt-hr-det b{font-weight:900}.mt-hr-det span{font-weight:700;color:#5B6B7C}
 .mt-alert{display:flex;gap:10px;align-items:center;background:#FCE9DC;color:#9A4316;border-radius:16px;padding:10px 12px;font-size:14px;font-weight:800;line-height:1.35}
 .mt-alert .mtic{flex:none}
 .mt-week{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;background:#fff;border:1px solid #E6ECF2;border-radius:18px;box-shadow:0 6px 20px rgba(11,58,92,.06);padding:12px 8px}
@@ -2440,10 +2458,11 @@ var DECO = (function(){
 
 </script>
 <script>
-var APP_VERSION = "MyWorld_1.34";
+var APP_VERSION = "MyWorld_1.35";
 /* MyWorld_1.33 : nouveautés affichées dans les Réglages. À CHAQUE VERSION (appli ou jeu) : ajouter une entrée EN TÊTE,
    {v: numéro, d: date AAAA-MM-JJ, t: titre court, l: 1 à 3 phrases simples, sans jargon}. */
 var MW_NEWS = [
+  {"v": "1.35", "d": "2026-11-14", "t": "Météo heure par heure", "l": ["Dans la page Météo, la journée heure par heure jusqu'à minuit : courbe des températures, ciel et risque de pluie.", "Touche une heure pour voir son détail."]},
   {"v": "1.34", "d": "2026-11-14", "t": "Réglages rangés", "l": ["Les Réglages deviennent une vraie page, rangée en 4 rubriques : Moi, Contenus, Compte et données, L'appli.", "Chaque réglage est une carte qui se déplie d'un toucher, avec un résumé visible d'un coup d'œil. Le sommeil et l'affichage des notes y sont aussi.", "Les nouveautés s'ouvrent avec le bouton « i » en haut à droite."]},
   {"v": "1.33", "d": "2026-11-14", "t": "Historique des nouveautés", "l": ["Dans les Réglages, la liste des dernières nouveautés de l'appli, version par version."]},
   {"v": "1.32", "d": "2026-11-14", "t": "Pastilles à copier plus fiables", "l": ["Les pastilles à copier se créent correctement même au milieu d'une phrase."]},
@@ -3207,6 +3226,36 @@ function mtAlert(d){
   }
   return "";
 }
+/* MyWorld_1.35 : aujourd'hui heure par heure (maquette B « courbe ») : de l'heure en cours à minuit, seulement sur la page Météo */
+var MT_HW = 58;
+function mtHours(d){
+  var H = d.hourly, c = d.current, nowH = c.time.slice(0, 13), day = c.time.slice(0, 10), out = [];
+  for (var i = 0; i < H.time.length; i++){
+    var t = H.time[i]; if (t.slice(0, 13) < nowH) continue; if (t.slice(0, 10) !== day) break;
+    var first = !out.length;
+    out.push({h: first ? "Maint." : +t.slice(11, 13) + "h", now: first, t: first ? c.temperature_2m : H.temperature_2m[i], c: first ? c.weather_code : H.weather_code[i], d: first ? !!c.is_day : !!H.is_day[i], p: H.precipitation_probability[i] || 0});
+  }
+  return out;
+}
+function mtHourDet(x){ return '<b>' + (x.now ? "Maintenant" : x.h) + ' · ' + h(mtLabel(x.c)) + '</b><span> · ' + mtRound(x.t) + ' · pluie ' + x.p + ' %</span>'; }
+function mtHoursHTML(d){
+  var L = mtHours(d); if (L.length < 2) return "";
+  var W = MT_HW, n = L.length, TW = n * W, ts = L.map(function(x){ return x.t; }), lo = Math.min.apply(null, ts), hi = Math.max.apply(null, ts);
+  var Y = function(t){ return hi - lo < .5 ? 42 : 62 - (t - lo) / (hi - lo) * 40; };   /* zone de la courbe : 22 → 62 px */
+  var pts = L.map(function(x, k){ return [k * W + W / 2, Y(x.t)]; });
+  var line = "M" + pts.map(function(q){ return q[0].toFixed(1) + " " + q[1].toFixed(1); }).join(" L");
+  var area = line + " L" + pts[n - 1][0].toFixed(1) + " 84 L" + pts[0][0].toFixed(1) + " 84 Z";
+  var svg = '<svg class="mt-hr-g" width="' + TW + '" height="84" viewBox="0 0 ' + TW + ' 84" aria-hidden="true"><defs><linearGradient id="mtHrA" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F2B84B" stop-opacity=".3"/><stop offset="1" stop-color="#F2B84B" stop-opacity="0"/></linearGradient></defs><path d="' + area + '" fill="url(#mtHrA)"/><path d="' + line + '" fill="none" stroke="#E9A23B" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>'
+    + pts.map(function(q){ return '<circle cx="' + q[0].toFixed(1) + '" cy="' + q[1].toFixed(1) + '" r="3.5" fill="#FFFFFF" stroke="#E9A23B" stroke-width="2.5"/>'; }).join("") + '</svg>';
+  var sel = Math.min(S.mtHrSel || 0, n - 1);
+  var cols = L.map(function(x, k){
+    var bar = x.p >= 20 ? '<span class="mt-hr-bar" style="height:' + Math.max(4, Math.round(x.p * .3)) + 'px"></span><span class="mt-hr-p">' + x.p + ' %</span>' : '';
+    return '<button type="button" class="mt-hr-c' + (k === sel ? ' on' : '') + '" style="left:' + (k * W) + 'px" data-act="mt-hr" data-i="' + k + '" aria-pressed="' + (k === sel) + '" aria-label="' + h((x.now ? "Maintenant" : x.h) + " : " + mtLabel(x.c) + ", " + Math.round(x.t) + " degrés, pluie " + x.p + " %") + '">'
+      + '<span class="mt-hr-h">' + x.h + '</span>' + wIcon(x.c, x.d, 26) + '<span class="mt-hr-t" style="top:' + (pts[k][1] + 58 - 21).toFixed(1) + 'px">' + mtRound(x.t) + '</span>' + bar + '</button>';
+  }).join("");
+  S.mtHrL = L;
+  return '<div class="mt-hr"><div class="mt-hr-top"><b>Aujourd\'hui heure par heure</b><span>jusqu\'à minuit</span></div><div class="mt-hr-sc"><div class="mt-hr-cv" style="width:' + TW + 'px">' + svg + cols + '</div></div><p class="mt-hr-det" id="mtHrDet" aria-live="polite">' + mtHourDet(L[sel]) + '</p></div>';
+}
 function viewMeteo(){
   ensureMeteo();
   var d = mtData(), html = '<div class="mt gut">';
@@ -3215,6 +3264,7 @@ function viewMeteo(){
     if (S.meteoErr) html += '<button type="button" class="btn-ink mt-retry" data-act="mt-retry">Réessayer</button>';
     return html + '</div>';
   }
+  html += mtHoursHTML(d);
   html += '<div class="mt-parts">' + mtParts(d).map(function(o){
     return '<div class="mt-part"><span class="n">' + h(o.name) + '</span><span class="top"><b>' + mtRound(o.temp) + '</b>' + wIcon(o.code, o.day, 36) + '</span><span class="x">' + h(mtLabel(o.code)) + (o.prob >= 20 ? ' · <em>' + o.prob + ' %</em>' : "") + '</span></div>';
   }).join("") + '</div>';
@@ -5463,6 +5513,9 @@ document.addEventListener("click", function(e){
   if (act === "gz-days"){ if (S.hist.length > 1 && S.hist[S.hist.length - 2] === "gazette") history.back(); else location.hash = "gazette"; return; }
   if (act === "gz-open"){ gzOpen(b.dataset.id); return; }
   if (act === "mt-place"){ mtPlaceSheet(); return; }
+  if (act === "mt-hr"){ var hi2 = +b.dataset.i, L2 = S.mtHrL || []; if (!L2[hi2]) return; S.mtHrSel = hi2;
+    document.querySelectorAll(".mt-hr-c").forEach(function(c){ var on = c === b; c.classList.toggle("on", on); c.setAttribute("aria-pressed", String(on)); });
+    var dt2 = document.getElementById("mtHrDet"); if (dt2) dt2.innerHTML = mtHourDet(L2[hi2]); return; }
   if (act === "mt-retry"){ S.meteoErr = false; ensureMeteo(true); render(); return; }
   if (act === "mt-pick"){ var x = (S.mtFound || [])[+b.dataset.i]; if (!x) return; closeSheet(); saveSettings({meteoPlace:{name:x.name, lat:x.latitude, lon:x.longitude}}).then(function(){ ensureMeteo(true); render(); }); toast("Météo de " + x.name + "."); return; }
   if (act === "mt-home"){ closeSheet(); saveSettings({meteoPlace:null}).then(function(){ ensureMeteo(true); render(); }); toast("Retour à la météo de Cagnes-sur-Mer."); return; }
@@ -6987,7 +7040,7 @@ function route(){
   document.addEventListener("touchstart", function(e){
     if (!isApp(S.view) || S.view === "jeu") { x0 = null; return; }
     if (e.touches.length !== 1 || document.querySelector(".sheet-wrap,.levelup,.note-editor,.draw-pad,#gzPop,#fidRoot:not([hidden]),#beYear:not([hidden])")) { x0 = null; return; }
-    if (e.target.closest(".bubbles-wrap,.topics,input,select,textarea,.month,.ncard2,#slBars,#beGrid,.ht-row")) { x0 = null; return; }
+    if (e.target.closest(".bubbles-wrap,.topics,input,select,textarea,.month,.ncard2,#slBars,#beGrid,.ht-row,.mt-hr-sc")) { x0 = null; return; }
     x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; t0 = Date.now();
   }, {passive:true});
   document.addEventListener("touchend", function(e){
