@@ -297,6 +297,33 @@ nav.tabs .nav-add.mw-pop{animation:mwPop .32s cubic-bezier(.3,1.6,.5,1)}
 
 /* Notes */
 .n-tools{display:flex;gap:8px;align-items:center}
+/* MyWorld_1.29 : sélection multiple */
+.nsel-top{display:none;align-items:center;gap:10px;min-height:46px}
+.nsel-top b{flex:1;font-size:17px;font-weight:800}
+.nsel-all{border:0;background:transparent;color:var(--acc-ink,#1E5A8C);font:inherit;font-size:14px;font-weight:800;padding:10px 4px}
+body.nsel-on .n-tools{display:none}
+body.nsel-on .nsel-top{display:flex;animation:nselIn .2s ease-out}
+.nc-chk{position:absolute;top:8px;right:8px;z-index:2;width:22px;height:22px;border-radius:50%;border:2px solid rgba(120,120,135,.55);background:rgba(255,255,255,.75);color:#FFFFFF;display:none;place-items:center;transform:scale(.6);opacity:0;transition:transform .18s cubic-bezier(.3,1.4,.5,1),opacity .15s,background .15s,border-color .15s}
+.ncard2.dark .nc-chk{background:rgba(0,0,0,.25);border-color:rgba(255,255,255,.5)}
+.nc-chk svg{opacity:0;transition:opacity .12s}
+body.nsel-on .nc-chk{display:grid;transform:none;opacity:1}
+body.nsel-on .ncard2 .nc-body{padding-right:30px}
+.ncard2.sel .nc-chk{background:#2D7BEF;border-color:#2D7BEF}
+.ncard2.sel .nc-chk svg{opacity:1}
+.ncard2.sel{outline:2.5px solid #2D7BEF;outline-offset:1px}
+body.nsel-on .ncard2{transition:transform .15s}
+body.nsel-on .ncard2:active{transform:scale(.97)}
+.nsel-bar{position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:30;transform:translate(-50%,140%);display:flex;gap:4px;padding:6px;border-radius:22px;background:#1F1F24;color:#FFFFFF;box-shadow:0 12px 30px rgba(15,15,25,.3);transition:transform .26s cubic-bezier(.2,.9,.3,1.1);width:min(calc(100% - 32px),420px)}
+body.nsel-on .nsel-bar{transform:translate(-50%,0)}
+.nsel-bar button{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;min-height:56px;justify-content:center;border:0;border-radius:16px;background:transparent;color:inherit;font:inherit;font-size:12px;font-weight:800}
+.nsel-bar button svg{width:21px;height:21px}
+.nsel-bar button:active{background:rgba(255,255,255,.1)}
+.nsel-bar .nsel-del{color:#FF8A7A}
+.nsel-bar .nsel-main{background:rgba(255,255,255,.1)}
+body.nsel-on nav.tabs,body.nsel-on .fab,body.nsel-on #navFade{opacity:0;visibility:hidden;transition:opacity .15s,visibility 0s .15s}
+body.nsel-on nav.tabs *{pointer-events:none!important}
+@keyframes nselIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion: reduce){.nsel-bar,.nc-chk{transition:none}body.nsel-on .nsel-top{animation:none}}
 .n-search{flex:1;min-width:0;display:flex;align-items:center;gap:8px;height:46px;padding:0 14px;border-radius:999px;border:1.5px solid var(--line);background:rgba(255,255,255,.92);color:var(--muted)}
 .n-search input{flex:1;min-width:0;border:0;background:transparent;font-size:16px;color:var(--text);outline:none}
 .n-icbtn{width:46px;height:46px;flex-shrink:0;border-radius:50%;border:1.5px solid var(--line);background:rgba(255,255,255,.9);color:var(--ink);display:grid;place-items:center}
@@ -321,7 +348,7 @@ nav.tabs .nav-add.mw-pop{animation:mwPop .32s cubic-bezier(.3,1.6,.5,1)}
 /* fonds */
 .bg-papier{background:#FFFFFF}
 .bg-noir{background:#0E0E10}
-.ncard2.bg-noir,.hn-card.bg-noir{background:#1D1D20;border-color:#2A2A2E}
+.ncard2.bg-noir,.hn-card.bg-noir,.ncard2.dark.bg-noir,.hn-card.dark.bg-noir{background:#1D1D20;border-color:#2A2A2E}
 .ncard2.bg-noir .nc-p,.ncard2.bg-noir .nc-d,.note-editor.bg-noir .ne-meta{color:#9C9CA6}
 .bg-sw.bg-noir{color:#F4F1FF}
 .bg-creme{background:linear-gradient(160deg,#FFF9E8,#FBEBC4)}
@@ -2343,7 +2370,7 @@ var DECO = (function(){
 
 </script>
 <script>
-var APP_VERSION = "MyWorld_1.28";
+var APP_VERSION = "MyWorld_1.29";
 (function(){
 "use strict";
 var CAL = "t.mallet06@gmail.com";
@@ -2512,7 +2539,7 @@ function heroHTML(){
   var sub = "";
   if (S.view === "courses"){ var nc = coOpen().filter(function(x){ return !x.done; }).length; sub = '<p class="sub">' + (nc ? nc + " article" + (nc > 1 ? "s" : "") + " à prendre" : "Liste vide") + '</p>'; }
   if (S.view === "cartes"){ var nf = fidAll().length; sub = '<p class="sub">' + (nf ? nf + " carte" + (nf > 1 ? "s" : "") + " de fidélité" : "Aucune carte pour l'instant") + '</p>'; }
-  var title = S.view === "conclusions" ? "Conclusions" : S.view === "sommeil" ? "Sommeil" : S.view === "cartes" ? "Tes cartes" : S.view === "listes" ? "Tes listes" : S.view === "courses" ? "Tes courses" : S.view === "fiche" ? "Ta fiche" : S.view === "notes" ? "Tes notes" : "Les News";
+  var title = S.view === "conclusions" ? "Conclusions" : S.view === "sommeil" ? "Sommeil" : S.view === "cartes" ? "Tes cartes" : S.view === "listes" ? "Tes listes" : S.view === "courses" ? "Tes courses" : S.view === "fiche" ? "Ta fiche" : S.view === "notes" ? "Notes" : "Les News";
   if (S.view === "gazette"){ var u = S.settings && S.settings.gazetteUpdatedAt, ds0 = gzDays();
     if (S.gzDay){ var nb = gzBatch(S.gzDay).length; title = "Les News"; sub = '<p class="sub">' + h(gzDayLabel(S.gzDay) + (S.gzDay === iso(today()) || S.gzDay === iso(addDays(today(), -1)) ? " · " + parseISO(S.gzDay).getDate() + " " + MOIS[parseISO(S.gzDay).getMonth()] : "") + " · " + nb + " info" + (nb > 1 ? "s" : "")) + '</p>'; }
     else sub = '<p class="sub"><span class="pulse" aria-hidden="true" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#2F7440;margin-right:6px"></span>' + h(u ? (iso(new Date(u)) === iso(today()) ? "Mise à jour à " + new Date(u).getHours() + " h " + pad(new Date(u).getMinutes()) : "Mise à jour " + ago(u)) + " · " + ds0.length + " jour" + (ds0.length > 1 ? "s" : "") + " d'archives" : "En attente de la première mise à jour") + '</p>'; }
@@ -2713,7 +2740,7 @@ function homeNotesHTML(){
   var O = noteOpens(), L = liveNotes().filter(function(n){ return (n.title || n.text || n.thumb); }).sort(function(a, b){ return (!!b.pinned - !!a.pinned) || ((O[b._id] || 0) - (O[a._id] || 0)) || String(b.updatedAt || "").localeCompare(String(a.updatedAt || "")); }).slice(0, 8);
   var PLUS = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>';
   /* 1.23 : tirer le carrousel vers la droite → « + Lâche pour créer » → nouvelle note. Bouton caché pour clavier et lecteur d'écran. */
-  return '<section class="section gut hn" aria-labelledby="hnT"><div class="section-head"><h2 id="hnT">Tes notes</h2><button type="button" class="sr" data-act="note-new">Nouvelle note</button>' + (L.length ? '<button type="button" class="link-btn" data-act="home-go" data-k="notes">Tout voir</button>' : '') + '</div><div class="hn-wrap" id="hnWrap"><div class="hn-pull" aria-hidden="true"><span class="hn-pdot">' + PLUS + '</span><i>Tire pour<br>créer</i></div><div class="hn-row" id="hnRow">'
+  return '<section class="section gut hn" aria-labelledby="hnT"><div class="section-head"><h2 id="hnT">Notes</h2><button type="button" class="sr" data-act="note-new">Nouvelle note</button>' + (L.length ? '<button type="button" class="link-btn" data-act="home-go" data-k="notes">Tout voir</button>' : '') + '</div><div class="hn-wrap" id="hnWrap"><div class="hn-pull" aria-hidden="true"><span class="hn-pdot">' + PLUS + '</span><i>Tire pour<br>créer</i></div><div class="hn-row" id="hnRow">'
     + (L.length ? L.map(function(n){ var bg = noteBg(n.bg), pv = (n.text || "").split("\n").filter(function(l){ return l.trim(); }).slice(0, 3).join("\n");
         return '<button type="button" class="hn-card bg-' + bg.id + (bg.dark ? ' dark' : '') + '" data-act="note-open" data-id="' + h(n._id) + '" style="' + noteBgStyle(bg.id) + '">' + (n.pinned ? '<span class="hn-pin" aria-label="Épinglée">' + ICON.pin + '</span>' : '') + (n.title ? '<b>' + h(n.title) + '</b>' : '') + (pv ? '<span>' + h(pv) + '</span>' : '') + '</button>'; }).join("")
       : '<button type="button" class="hn-empty" data-act="note-new">' + PLUS + 'Nouvelle note</button>')
@@ -4500,7 +4527,9 @@ var ICON = {
 function noteCard(n){
   var bg = noteBg(n.bg), thumb = n.thumb ? '<div class="nc-img"><img data-mid="' + h(n.thumb) + '" alt=""></div>' : "";
   var preview = (n.text || "").split("\n").filter(function(l){ return l.trim(); }).slice(0, 5).join("\n");
-  return '<button type="button" class="ncard2 bg-' + bg.id + (bg.dark ? " dark" : "") + '" data-act="note-open" data-id="' + h(n._id) + '" style="' + noteBgStyle(bg.id) + '">'
+  var sel = S.nSel && S.nSel.indexOf(n._id) >= 0;
+  return '<button type="button" class="ncard2 bg-' + bg.id + (bg.dark ? " dark" : "") + (sel ? " sel" : "") + '" data-act="note-open" data-id="' + h(n._id) + '" style="' + noteBgStyle(bg.id) + '"' + (S.nSel ? ' aria-pressed="' + sel + '"' : '') + '>'
+    + '<span class="nc-chk" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>'
     + thumb + '<span class="nc-body">' + (n.title ? '<span class="nc-t">' + h(n.title) + '</span>' : "")
     + (preview ? '<span class="nc-p">' + h(preview) + '</span>' : (!n.title && !thumb ? '<span class="nc-p nc-empty">Note vide</span>' : ""))
     + '<span class="nc-d">' + h(noteDate(n.updatedAt)) + (n.hasAudio ? ICON.audio : "") + (n.pinned ? '<span class="nc-pin" aria-label="Épinglée">' + ICON.pin + '</span>' : "") + '</span></span></button>';
@@ -4513,7 +4542,9 @@ function viewNotes(){
   var cols = pr.layout === "liste" ? '<div class="n-col">' + list.map(noteCard).join("") + '</div>' : [0, 1].map(function(c){ return '<div class="n-col">' + list.filter(function(x, i){ return i % 2 === c; }).map(noteCard).join("") + '</div>'; }).join("");
   var body = list.length ? '<div class="n-grid' + (pr.layout === "liste" ? " liste" : "") + '" style="' + fsz + '">' + cols + '</div>'
     : '<div class="card soft-empty" style="margin-top:14px">' + (S.noteQuery ? "Aucune note ne correspond à ta recherche." : liveNotes().length ? "Aucune note dans ce dossier." : "Pas encore de note. Touche le <b>+</b> pour écrire, dessiner, ajouter une photo ou t'enregistrer.") + '</div>';
-  return '<section class="section gut" style="margin-top:18px" aria-label="Notes">' + tools + '<div class="topics n-chips">' + chips + '</div>' + body + '</section>'
+  var selTop = '<div class="nsel-top"><button type="button" class="n-icbtn" data-act="nsel-exit" aria-label="Annuler la sélection">' + ICON.close + '</button><b id="nselN" aria-live="polite">' + nselLabel() + '</b><button type="button" class="nsel-all" data-act="nsel-all">' + nselAllLabel() + '</button></div>';
+  var selBar = '<div class="nsel-bar" role="toolbar" aria-label="Actions sur la sélection"><button type="button" class="nsel-del" data-act="nsel-del">' + ICON.trash + '<span>Supprimer</span></button><button type="button" data-act="nsel-pin">' + ICON.pin + '<span id="nselPinL">' + nselPinLabel() + '</span></button><button type="button" class="nsel-main" data-act="nsel-move">' + ICON.folder + '<span>Déplacer</span></button></div>';
+  return '<section class="section gut" style="margin-top:18px" aria-label="Notes">' + tools + selTop + '<div class="topics n-chips">' + chips + '</div>' + body + '</section>' + selBar
     + '<button type="button" class="fab" data-act="note-new" aria-label="Nouvelle note"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>';
 }
 function afterNotesRender(){
@@ -4526,10 +4557,65 @@ function afterNotesRender(){
 function bindLongPress(){
   document.querySelectorAll(".ncard2").forEach(function(c){
     var t = null;
-    c.addEventListener("pointerdown", function(){ t = setTimeout(function(){ t = null; c.dataset.long = "1"; noteQuickMenu(c.dataset.id); }, 520); });
+    c.addEventListener("pointerdown", function(){ t = setTimeout(function(){ t = null; c.dataset.long = "1"; nselLong(c.dataset.id); }, 480); });
     ["pointerup","pointerleave","pointercancel","pointermove"].forEach(function(ev){ c.addEventListener(ev, function(e){ if (ev === "pointermove" && t && (Math.abs(e.movementX) + Math.abs(e.movementY) < 4)) return; if (t){ clearTimeout(t); t = null; } }); });
     c.addEventListener("contextmenu", function(e){ e.preventDefault(); });
   });
+}
+/* MyWorld_1.29 : sélection multiple dans Notes (façon Notes Xiaomi). Appui long sur une note = mode sélection
+   (petite vibration) ; ensuite un toucher coche / décoche ; en haut : × , « n sélectionnées », Tout sélectionner ;
+   en bas (à la place du +) : Supprimer (gauche, avec Annuler), Épingler, Déplacer vers un dossier (droite).
+   Retour Android ou × = sortie ; plus rien de coché = sortie. */
+S.nSel = null;
+function nselLabel(){ var k = S.nSel ? S.nSel.length : 0; return k + (k > 1 ? " sélectionnées" : " sélectionnée"); }
+function nselVisible(){ return sortedNotes().map(function(n){ return n._id; }); }
+function nselAllLabel(){ var v = nselVisible(); return S.nSel && v.length && v.every(function(i){ return S.nSel.indexOf(i) >= 0; }) ? "Tout désélectionner" : "Tout sélectionner"; }
+function nselPinLabel(){ var l = S.nSel ? S.notes.filter(function(n){ return S.nSel.indexOf(n._id) >= 0; }) : []; return l.length && l.every(function(n){ return n.pinned; }) ? "Désépingler" : "Épingler"; }
+function nselSync(){
+  document.body.classList.toggle("nsel-on", !!S.nSel);
+  document.querySelectorAll(".ncard2").forEach(function(c){ var on = !!S.nSel && S.nSel.indexOf(c.dataset.id) >= 0; c.classList.toggle("sel", on); if (S.nSel) c.setAttribute("aria-pressed", on); else c.removeAttribute("aria-pressed"); });
+  var n = document.getElementById("nselN"); if (n) n.textContent = nselLabel();
+  var a = document.querySelector(".nsel-all"); if (a) a.textContent = nselAllLabel();
+  var p = document.getElementById("nselPinL"); if (p) p.textContent = nselPinLabel();
+}
+function nselLong(id){
+  if (navigator.vibrate) try { navigator.vibrate(12); } catch(e){}
+  if (!S.nSel){ S.nSel = [id]; history.pushState({nsel:1}, ""); } else nselToggle(id, true);
+  nselSync();
+}
+function nselToggle(id, noSync){
+  var i = S.nSel.indexOf(id); if (i >= 0) S.nSel.splice(i, 1); else S.nSel.push(id);
+  if (!S.nSel.length){ nselExit(); return; }
+  if (!noSync) nselSync();
+}
+function nselExit(fromPop){
+  if (!S.nSel) return;
+  S.nSel = null; nselSync();
+  if (!fromPop && history.state && history.state.nsel) history.back();
+}
+window.addEventListener("popstate", function(){ if (S.nSel && !(history.state || {}).nsel) nselExit(true); });
+function nselIds(){ return (S.nSel || []).slice(); }
+function nselAction(act){
+  var ids = nselIds(); if (!ids.length) return;
+  if (act === "nsel-all"){ var v = nselVisible(); S.nSel = nselAllLabel() === "Tout désélectionner" ? [] : v.slice(); if (!S.nSel.length) nselExit(); else nselSync(); return; }
+  if (act === "nsel-del"){
+    var at = nowISO(); nselExit();
+    Promise.all(ids.map(function(id){ return db.collection("notes").doc(id).update({deleted:true, deletedAt:at}); })).then(function(){
+      toast((ids.length > 1 ? ids.length + " notes supprimées." : "Note supprimée."), {undo:function(){ ids.forEach(function(id){ db.collection("notes").doc(id).update({deleted:false, deletedAt:null}).catch(dbErr); }); }});
+    }).catch(dbErr);
+    return;
+  }
+  if (act === "nsel-pin"){
+    var pin = nselPinLabel() === "Épingler"; nselExit();
+    Promise.all(ids.map(function(id){ return db.collection("notes").doc(id).update({pinned: pin}); })).then(function(){ toast(pin ? (ids.length > 1 ? ids.length + " notes épinglées." : "Note épinglée.") : (ids.length > 1 ? ids.length + " notes désépinglées." : "Note désépinglée.")); }).catch(dbErr);
+    return;
+  }
+  if (act === "nsel-move"){
+    folderPicker(function(f){
+      nselExit();
+      Promise.all(ids.map(function(id){ return db.collection("notes").doc(id).update({folder: f || null}); })).then(function(){ toast((ids.length > 1 ? ids.length + " notes déplacées" : "Note déplacée") + (f ? " dans « " + f + " »." : " dans Sans catégorie.")); }).catch(dbErr);
+    });
+  }
 }
 function noteQuickMenu(id){
   var n = S.notes.find(function(x){ return x._id === id; }); if (!n) return;
@@ -5026,7 +5112,9 @@ function noteAction(act, b){
   var id = b.dataset.id;
   switch (act){
     case "note-new": openNote(null, null, b); return true;
-    case "note-open": if (b.dataset.long === "1"){ delete b.dataset.long; return true; } openNote(id, null, b); return true;
+    case "note-open": if (b.dataset.long === "1"){ delete b.dataset.long; return true; } if (S.nSel && b.classList.contains("ncard2")){ nselToggle(id); return true; } openNote(id, null, b); return true;
+    case "nsel-exit": nselExit(); return true;
+    case "nsel-all": case "nsel-del": case "nsel-pin": case "nsel-move": nselAction(act); return true;
     case "note-folder": S.noteFolder = b.dataset.f; if (b.dataset.close) closeSheet(); render(); return true;
     case "note-folders": foldersSheet(); return true;
     case "note-prefs": notePrefsSheet(); return true;
@@ -5094,7 +5182,7 @@ document.addEventListener("click", function(e){
   if (/^fid-/.test(act) && fidAct(act, b)) return;
   if (/^sl-/.test(act) && slAct(act, b)) return;
   if (/^(mood-|be-|by-|cc-)/.test(act) && beAct(act, b)) return;
-  if (/^(note-|ne-|fmt$|nf$|fig-|aud-|rec-|dp-|pick-folder$|folder-)/.test(act) && noteAction(act, b)) return;
+  if (/^(note-|ne-|nsel-|fmt$|nf$|fig-|aud-|rec-|dp-|pick-folder$|folder-)/.test(act) && noteAction(act, b)) return;
   if (act === "mday"){ S.monthSel = b.dataset.d; document.getElementById("mBody").innerHTML = monthHTML(); var fb2 = document.querySelector('.mcell[data-d="' + S.monthSel + '"]'); if (fb2) fb2.focus({preventScroll:true}); return; }
   if (act === "month"){ S.monthOffset = 0; S.monthSel = null; openSheet("Le mois", '<div id="mBody">' + monthHTML() + '</div>'); return; }
   if (act === "mprev" || act === "mnext"){ S.monthOffset += act === "mnext" ? 1 : -1; document.getElementById("mBody").innerHTML = monthHTML(); return; }
@@ -6614,6 +6702,7 @@ function navSide(dir){
 function route(){
   if (FIDC) fidClose(); if (FIDS) fidScanStop(); beYearClose(); if (window.htStop) window.htStop();
   var hsh = (location.hash || "").replace("#",""), prev = S.view, prevKey = S.viewKey;
+  if (S.nSel && hsh !== "notes"){ S.nSel = null; document.body.classList.remove("nsel-on"); }
   var gd = hsh.match(/^gazette-(\d{4}-\d{2}-\d{2})$/);
   S.gzDay = gd ? gd[1] : null;
   S.view = gd ? "gazette" : TABS.indexOf(hsh) >= 0 ? hsh : "accueil";
