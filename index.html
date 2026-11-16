@@ -1482,6 +1482,8 @@ body.game-on #navFade,body.fid-on #navFade{display:none}
 .md-ban-h b{font-size:16px;font-weight:900;color:#2A2340}
 .md-x{width:32px;height:32px;border-radius:50%;border:0;background:#fff;color:var(--muted);font:900 17px/1 var(--f-body);display:grid;place-items:center;cursor:pointer}
 .md-home{margin-top:14px}
+.md-ban-t{display:flex;flex-direction:column;gap:1px}.md-ban-t>span{font-size:12.5px;font-weight:700;color:#5E5A73}
+.be-ask .md-ban-t>b{font-size:16px;font-weight:900}
 .be-hd .be-ph{font-size:30px;line-height:1.18;font-weight:900;letter-spacing:-.01em;margin:10px 0 4px;max-width:330px;text-wrap:balance}
 .be-hl{position:relative;display:inline-block;color:#FFE29A}
 .be-nw{white-space:nowrap}
@@ -2458,10 +2460,11 @@ var DECO = (function(){
 
 </script>
 <script>
-var APP_VERSION = "MyWorld_1.35";
+var APP_VERSION = "MyWorld_1.36";
 /* MyWorld_1.33 : nouveautés affichées dans les Réglages. À CHAQUE VERSION (appli ou jeu) : ajouter une entrée EN TÊTE,
    {v: numéro, d: date AAAA-MM-JJ, t: titre court, l: 1 à 3 phrases simples, sans jargon}. */
 var MW_NEWS = [
+  {"v": "1.36", "d": "2026-11-16", "t": "Humeur de la veille", "l": ["Si tu n'as pas noté ta journée la veille au soir, l'appli te la redemande le lendemain jusqu'à 15 h, sur l'accueil et dans Bien-être."]},
   {"v": "1.35", "d": "2026-11-14", "t": "Météo heure par heure", "l": ["Dans la page Météo, la journée heure par heure jusqu'à minuit : courbe des températures, ciel et risque de pluie.", "Touche une heure pour voir son détail."]},
   {"v": "1.34", "d": "2026-11-14", "t": "Réglages rangés", "l": ["Les Réglages deviennent une vraie page, rangée en 4 rubriques : Moi, Contenus, Compte et données, L'appli.", "Chaque réglage est une carte qui se déplie d'un toucher, avec un résumé visible d'un coup d'œil. Le sommeil et l'affichage des notes y sont aussi.", "Les nouveautés s'ouvrent avec le bouton « i » en haut à droite."]},
   {"v": "1.33", "d": "2026-11-14", "t": "Historique des nouveautés", "l": ["Dans les Réglages, la liste des dernières nouveautés de l'appli, version par version."]},
@@ -6366,15 +6369,20 @@ function moodSet(di, m){
   }).catch(dbErr);
 }
 function moodEvening(){ return new Date().getHours() >= 20; }
-function moodLater(){ try { return localStorage.getItem("mw-mood-later") === iso(today()); } catch(e){ return false; } }
-/* rangée de 5 visages à toucher */
-function moodPickRow(size){
-  var di = iso(today());
+function moodLater(y){ try { return localStorage.getItem(y ? "mw-mood-later-y" : "mw-mood-later") === iso(today()); } catch(e){ return false; } }
+/* MyWorld_1.36 : journée d'hier pas notée → on la redemande le lendemain jusqu'à 15 h (renvoie la date d'hier, sinon "") */
+function moodYest(){ if (new Date().getHours() >= 15) return ""; var y = iso(addDays(today(), -1)); return moodOf(y) == null ? y : ""; }
+function moodYestDay(y){ var d = parseISO(y); return cap(JOURS_LONG[d.getDay()]) + " " + d.getDate() + " " + MOIS[d.getMonth()]; }
+/* rangée de 5 visages à toucher (di = jour noté, aujourd'hui par défaut) */
+function moodPickRow(size, di){
+  di = di || iso(today());
   return '<div class="md-row">' + [0, 1, 2, 3, 4].map(function(l){ return '<button type="button" class="md-pick" data-act="mood-set" data-m="' + l + '" data-d="' + di + '" aria-label="' + MD_J[l] + '">' + mdFace(l, size) + '</button>'; }).join("") + '</div>';
 }
 function moodDoneRow(m){ return '<div class="md-done">' + mdFace(m, 40) + '<b>' + MD_J[m] + ' · noté</b><button type="button" class="link-btn" data-act="mood-change">Changer</button></div>'; }
 /* bandeau de l'accueil, de 20 h à minuit */
 function homeMoodHTML(){
+  var y = moodYest();
+  if (y && !moodLater(true)) return '<section class="section gut md-home"><div class="md-ban"><div class="md-ban-h"><span class="md-ban-t"><b>Comment était ta journée d\'hier ?</b><span>' + h(moodYestDay(y)) + '</span></span><button type="button" class="md-x" data-act="mood-later" data-y="1" aria-label="Plus tard">×</button></div>' + moodPickRow(46, y) + '</div></section>';
   if (!moodEvening()) return "";
   var m = moodOf(iso(today()));
   if (m != null && !S.moodEdit) return '<section class="section gut md-home">' + moodDoneRow(m) + '</section>';
@@ -6455,8 +6463,9 @@ function beSleepLine(n){ return n ? "Nuit " + slHM(n.sleep) + " · " + n.score :
 /* ---- page ---- */
 function viewBienetre(){
   var di = iso(today()); if (!S.beSel) S.beSel = di;
-  var m = moodOf(di), ask = moodEvening() && (m == null || S.moodEdit);
-  var top = ask ? '<section class="section gut"><div class="sl-card be-ask"><b>Ta journée ?</b>' + moodPickRow(50) + '</div></section>'
+  var m = moodOf(di), ask = moodEvening() && (m == null || S.moodEdit), y = moodYest();
+  var top = y ? '<section class="section gut"><div class="sl-card be-ask"><span class="md-ban-t"><b>Et hier, ta journée ?</b><span>' + h(moodYestDay(y)) + '</span></span>' + moodPickRow(50, y) + '</div></section>'
+    : ask ? '<section class="section gut"><div class="sl-card be-ask"><b>Ta journée ?</b>' + moodPickRow(50) + '</div></section>'
     : m != null ? '<section class="section gut">' + moodDoneRow(m) + '</section>' : "";
   return '<div class="be-page">' + top + beCalHTML() + beSleepHTML() + '</div>';
 }
@@ -6574,7 +6583,7 @@ function viewConclusions(){
 function beAct(act, b){
   if (act === "mood-set"){ moodSet(b.dataset.d, +b.dataset.m); return true; }
   if (act === "mood-change"){ S.moodEdit = true; render(); return true; }
-  if (act === "mood-later"){ try { localStorage.setItem("mw-mood-later", iso(today())); } catch(e){} render(); return true; }
+  if (act === "mood-later"){ try { localStorage.setItem(b.dataset.y ? "mw-mood-later-y" : "mw-mood-later", iso(today())); } catch(e){} render(); return true; }
   if (act === "be-view"){ S.beView = b.dataset.v; render(); return true; }
   if (act === "be-pick"){ S.beSel = b.dataset.d; render(); return true; }
   if (act === "be-month"){ S.beMonth = Math.min(0, (S.beMonth || 0) + +b.dataset.n); render(); return true; }
