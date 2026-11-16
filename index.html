@@ -522,6 +522,12 @@ body.ne-open{overflow:hidden}
 .ne-mn.ne-cpm{min-width:190px}
 #noteEd .cpy{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 #noteEd .cpb{-webkit-touch-callout:none}
+/* MyWorld_1.40 : édition en direct */
+#noteEd .cpy[data-cped]{-webkit-user-select:text;user-select:text;cursor:text;outline:2px solid #2D7BEF;outline-offset:2px}
+#noteEd .cpy[data-cped]::after{display:none}
+#noteEd .cpb[data-cped]{outline:2px solid #2D7BEF;outline-offset:2px}
+.cp-edbar{position:absolute;z-index:5;display:flex;align-items:center;gap:10px;padding:5px 5px 5px 13px;border-radius:14px;background:#26262C;color:#FFFFFF;font-size:13px;font-weight:800;box-shadow:0 8px 22px rgba(0,0,0,.28);animation:neMnIn .18s cubic-bezier(.2,.9,.3,1.15) both;transform-origin:bottom left}
+.cp-edbar button{min-height:36px;padding:0 14px;border:0;border-radius:10px;background:#2D7BEF;color:#FFFFFF;font:inherit;font-weight:900;cursor:pointer}
 /* les messages (et leur « Annuler ») passent devant la note ouverte */
 body.ne-open .toast{z-index:62}
 .ne-mn hr{border:0;height:1px;margin:4px 8px;background:rgba(0,0,0,.08)}
@@ -1215,6 +1221,11 @@ body.scroll-lock{position:fixed;left:0;right:0;width:100%;overflow:hidden}
 .hn-card span{font-size:12px;line-height:1.35;color:var(--muted);white-space:pre-line;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
 .hn-card.dark span{color:rgba(255,255,255,.8)}.hn-card.dark{color:#fff}
 .hn-pin{position:absolute;top:8px;right:8px;opacity:.6}.hn-pin svg{width:13px;height:13px}
+/* MyWorld_1.40 : notes épinglées en petites tuiles fines, deux par colonne */
+.hn-pcol{flex:none;display:flex;flex-direction:column;gap:8px;width:118px}
+.hn-card.hn-mini{width:118px;height:48px;flex-direction:row;align-items:center;gap:6px;padding:0 10px 0 11px;border-radius:11px}
+.hn-card.hn-mini b{flex:1;min-width:0;font-size:12.5px;-webkit-line-clamp:2;line-height:1.2}
+.hn-card.hn-mini .hn-pin{position:static;flex:none;opacity:.55;display:grid}.hn-card.hn-mini .hn-pin svg{width:12px;height:12px}
 /* MyWorld_1.22 → 1.23 : tirer les notes vers la droite pour en créer une (maquette D « Tirer pour créer ») */
 .hn{position:relative;overflow:hidden}
 .hn-wrap{position:relative}
@@ -2492,10 +2503,11 @@ var DECO = (function(){
 
 </script>
 <script>
-var APP_VERSION = "MyWorld_1.39";
+var APP_VERSION = "MyWorld_1.40";
 /* MyWorld_1.33 : nouveautés affichées dans les Réglages. À CHAQUE VERSION (appli ou jeu) : ajouter une entrée EN TÊTE,
    {v: numéro, d: date AAAA-MM-JJ, t: titre court, l: 1 à 3 phrases simples, sans jargon}. */
 var MW_NEWS = [
+  {"v": "1.40", "d": "2026-11-16", "t": "Notes de l'accueil et textes à copier", "l": ["Accueil : les notes épinglées d'abord, en petites tuiles sur deux lignes, puis les 5 dernières notes modifiées (la plus récente à gauche).", "Texte à copier : « Modifier » se fait directement dans la pastille ou le bloc, et « Désactiver » le remet en texte normal."]},
   {"v": "1.39", "d": "2026-11-16", "t": "Modifier un texte à copier", "l": ["Dans une note, un appui long sur une pastille ou un bloc à copier propose de le modifier ou de le supprimer."]},
   {"v": "1.38", "d": "2026-11-16", "t": "Minuteur et rappels « dans 20 minutes »", "l": ["« Mets un minuteur de 10 minutes » lance un compte à rebours (pastille en bas à gauche, sonnerie à la fin) et une notification de secours dans ton agenda.", "« Rappelle-moi dans 20 minutes de sortir le linge » : le rappel tombe à la bonne heure. Marche aussi avec « dans 2 heures », « dans une demi-heure », « dans 3 jours »."]},
   {"v": "1.37", "d": "2026-11-16", "t": "Le + écoute directement", "l": ["Un toucher sur le + le transforme en micro rouge : parle, et c'est ajouté. La fenêtre d'ajout ne s'ouvre que si l'appli n'a pas tout compris.", "Nouveau : « Ouvre … » pour aller dans une appli ou une note (« Ouvre la note travail », « Ouvre le suivi du sommeil », « Ouvre mes cartes de fidélité »).", "Le petit chevron « Apps » au-dessus du + disparaît : tire le + vers le haut pour les applis."]},
@@ -2903,12 +2915,17 @@ function homeGameHTML(){
 /* notes les plus utilisées : épinglées, puis les plus ouvertes sur ce téléphone, puis les plus récentes */
 function noteOpens(){ try { return JSON.parse(localStorage.getItem("mw-nopen") || "{}") || {}; } catch(e){ return {}; } }
 function homeNotesHTML(){
-  var O = noteOpens(), L = liveNotes().filter(function(n){ return (n.title || n.text || n.thumb); }).sort(function(a, b){ return (!!b.pinned - !!a.pinned) || ((O[b._id] || 0) - (O[a._id] || 0)) || String(b.updatedAt || "").localeCompare(String(a.updatedAt || "")); }).slice(0, 8);
+  /* MyWorld_1.40 : d'abord toutes les épinglées (petites tuiles, 2 par colonne), puis les 5 dernières modifiées, la plus récente à gauche */
+  var A = liveNotes().filter(function(n){ return (n.title || n.text || n.thumb); }).sort(function(a, b){ return String(b.updatedAt || b.createdAt || "").localeCompare(String(a.updatedAt || a.createdAt || "")); });
+  var P = A.filter(function(n){ return n.pinned; }), L = A.filter(function(n){ return !n.pinned; }).slice(0, 5);
+  var pinT = function(n){ var bg = noteBg(n.bg), t = n.title || (n.text || "").split("\n").filter(function(l){ return l.trim(); })[0] || "Note";
+    return '<button type="button" class="hn-card hn-mini bg-' + bg.id + (bg.dark ? ' dark' : '') + '" data-act="note-open" data-id="' + h(n._id) + '" style="' + noteBgStyle(bg.id) + '" aria-label="' + h(t) + ', épinglée"><b>' + h(t) + '</b><span class="hn-pin" aria-hidden="true">' + ICON.pin + '</span></button>'; };
+  var pinCols = ""; for (var pi = 0; pi < P.length; pi += 2) pinCols += '<div class="hn-pcol">' + pinT(P[pi]) + (P[pi + 1] ? pinT(P[pi + 1]) : '') + '</div>';
   var PLUS = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>';
   /* 1.23 : tirer le carrousel vers la droite → « + Lâche pour créer » → nouvelle note. Bouton caché pour clavier et lecteur d'écran. */
-  return '<section class="section gut hn" aria-labelledby="hnT"><div class="section-head"><h2 id="hnT">Notes</h2><button type="button" class="sr" data-act="note-new">Nouvelle note</button>' + (L.length ? '<button type="button" class="link-btn" data-act="home-go" data-k="notes">Tout voir</button>' : '') + '</div><div class="hn-wrap" id="hnWrap"><div class="hn-pull" aria-hidden="true"><span class="hn-pdot">' + PLUS + '</span><i>Tire pour<br>créer</i></div><div class="hn-row" id="hnRow">'
-    + (L.length ? L.map(function(n){ var bg = noteBg(n.bg), pv = (n.text || "").split("\n").filter(function(l){ return l.trim(); }).slice(0, 3).join("\n");
-        return '<button type="button" class="hn-card bg-' + bg.id + (bg.dark ? ' dark' : '') + '" data-act="note-open" data-id="' + h(n._id) + '" style="' + noteBgStyle(bg.id) + '">' + (n.pinned ? '<span class="hn-pin" aria-label="Épinglée">' + ICON.pin + '</span>' : '') + (n.title ? '<b>' + h(n.title) + '</b>' : '') + (pv ? '<span>' + h(pv) + '</span>' : '') + '</button>'; }).join("")
+  return '<section class="section gut hn" aria-labelledby="hnT"><div class="section-head"><h2 id="hnT">Notes</h2><button type="button" class="sr" data-act="note-new">Nouvelle note</button>' + (A.length ? '<button type="button" class="link-btn" data-act="home-go" data-k="notes">Tout voir</button>' : '') + '</div><div class="hn-wrap" id="hnWrap"><div class="hn-pull" aria-hidden="true"><span class="hn-pdot">' + PLUS + '</span><i>Tire pour<br>créer</i></div><div class="hn-row" id="hnRow">'
+    + (A.length ? pinCols + L.map(function(n){ var bg = noteBg(n.bg), pv = (n.text || "").split("\n").filter(function(l){ return l.trim(); }).slice(0, 3).join("\n");
+        return '<button type="button" class="hn-card bg-' + bg.id + (bg.dark ? ' dark' : '') + '" data-act="note-open" data-id="' + h(n._id) + '" style="' + noteBgStyle(bg.id) + '">' + (n.title ? '<b>' + h(n.title) + '</b>' : '') + (pv ? '<span>' + h(pv) + '</span>' : '') + '</button>'; }).join("")
       : '<button type="button" class="hn-empty" data-act="note-new">' + PLUS + 'Nouvelle note</button>')
     + '</div></div></section>';
 }
@@ -5294,31 +5311,52 @@ function neCpMenu(el, x, y){
   var PEN = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg>';
   var bg = document.createElement("div"); bg.className = "ne-mbg"; bg.id = "neMnBg"; bg.setAttribute("data-act", "ne-menu-close");
   var m = document.createElement("div"); m.className = "ne-mn ne-cpm"; m.id = "neMn"; m.setAttribute("role", "menu"); m.setAttribute("aria-label", isChip ? "Pastille à copier" : "Bloc à copier");
-  m.innerHTML = '<button type="button" role="menuitem" data-act="ne-cp-edit">' + PEN + 'Modifier</button><hr><button type="button" role="menuitem" class="del" data-act="ne-cp-del">' + ICON.trash + 'Supprimer</button>';
+  var OFF = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/><path d="M3 3l18 18"/></svg>';
+  m.innerHTML = '<button type="button" role="menuitem" data-act="ne-cp-edit">' + PEN + 'Modifier</button><button type="button" role="menuitem" data-act="ne-cp-off">' + OFF + 'Désactiver</button><hr><button type="button" role="menuitem" class="del" data-act="ne-cp-del">' + ICON.trash + 'Supprimer</button>';
   ed.appendChild(bg); ed.appendChild(m);
   var w = m.offsetWidth || 220, hh = m.offsetHeight || 110, left = Math.min(Math.max(8, x - er.left - w / 2), er.width - w - 8), top = y - er.top + 14;
   if (top + hh > er.height - 12) top = Math.max(8, y - er.top - hh - 14);
   m.style.left = left + "px"; m.style.top = top + "px"; m.style.right = "auto"; m.style.transformOrigin = "top center";
   var first = m.querySelector("button"); if (first) first.focus({preventScroll: true});
 }
-function neCpEdit(){
+/* MyWorld_1.40 : « Modifier » se fait en direct dans la pastille ou le bloc ; une petite barre « Terminé » flotte au-dessus */
+function neCpLive(){
   var el = NE && NE.cpEl; neMenuClose(true); if (!el || !el.isConnected) return;
-  var isChip = el.tagName === "SPAN", v = isChip ? el.textContent.trim() : noteText(el).replace(/\u200b/g, "");
-  openSheet(isChip ? "Modifier la pastille" : "Modifier le bloc à copier", '<form id="fCpEd">'
-    + (isChip ? '<div class="field"><label for="cpEdIn">Texte copié d\'un toucher</label><input id="cpEdIn" type="text" maxlength="80" value="' + h(v) + '"></div>'
-              : '<div class="field"><label for="cpEdIn">Texte copié d\'un toucher</label><textarea id="cpEdIn" rows="6">' + h(v) + '</textarea></div>')
-    + '<div class="rg-act"><button type="button" class="btn light rg-danger" data-act="ne-cp-del">Supprimer</button><button class="btn green" type="submit">Enregistrer</button></div></form>', function(){
-    var f = document.getElementById("fCpEd"), inp = document.getElementById("cpEdIn");
-    setTimeout(function(){ inp.focus(); try { inp.setSelectionRange(inp.value.length, inp.value.length); } catch(e){} }, 80);
-    f.onsubmit = function(e){
-      e.preventDefault(); var nv = inp.value.replace(/\s+$/, "");
-      if (!el.isConnected){ closeSheet(); return; }
-      if (!nv.trim()){ closeSheet(); neCpDel(el); return; }
-      if (isChip) el.textContent = nv.trim().replace(/\n/g, " ");
-      else el.innerHTML = nv.split("\n").map(function(l){ return h(l); }).join("<br>");
-      closeSheet(); updateNeMeta(); queueSave(); toast(isChip ? "Pastille modifiée." : "Bloc modifié.");
-    };
-  });
+  neCpLiveEnd();
+  var b = document.getElementById("neBody"), ed = document.getElementById("noteEd"), isChip = el.tagName === "SPAN";
+  el.setAttribute("data-cped", "1"); if (isChip) el.setAttribute("contenteditable", "true");
+  b.focus({preventScroll: true});
+  var r = document.createRange(); r.selectNodeContents(el); if (!isChip) r.collapse(false);
+  var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
+  var bar = document.createElement("div"); bar.className = "cp-edbar"; bar.id = "cpEdBar";
+  bar.innerHTML = '<span>' + (isChip ? "Modifie la pastille" : "Modifie le bloc") + '</span><button type="button" data-act="ne-cp-done">Terminé</button>';
+  bar.addEventListener("mousedown", function(e){ e.preventDefault(); });
+  ed.appendChild(bar);
+  NE.cpLive = {el: el, bar: bar, chip: isChip};
+  neCpBarPos();
+  if (el.scrollIntoView) el.scrollIntoView({block: "nearest", behavior: "smooth"});
+}
+function neCpBarPos(){
+  var L = NE && NE.cpLive; if (!L) return; var ed = document.getElementById("noteEd"); if (!ed || !L.el.isConnected) return;
+  var r = L.el.getBoundingClientRect(), er = ed.getBoundingClientRect(), w = L.bar.offsetWidth || 220;
+  var top = r.top - er.top - L.bar.offsetHeight - 8; if (top < 56) top = r.bottom - er.top + 8;
+  L.bar.style.top = top + "px"; L.bar.style.left = Math.min(Math.max(8, r.left - er.left), er.width - w - 8) + "px";
+}
+function neCpLiveEnd(){
+  var L = NE && NE.cpLive; if (!L) return; NE.cpLive = null;
+  L.bar.remove(); L.el.removeAttribute("data-cped");
+  if (L.el.isConnected){
+    if (L.chip){ L.el.setAttribute("contenteditable", "false"); var t = L.el.textContent.replace(/\s+/g, " ").trim(); if (!t){ L.el.remove(); toast("Pastille vide retirée."); } else if (t !== L.el.textContent) L.el.textContent = t; }
+    updateNeMeta(); queueSave();
+  }
+}
+function neCpOff(){
+  var el = NE && NE.cpEl; neMenuClose(true); if (!el || !el.isConnected) return;
+  var b = document.getElementById("neBody"), before = b.innerHTML, nid = NE.note && NE.note._id, isChip = el.tagName === "SPAN";
+  if (isChip) el.replaceWith(document.createTextNode(el.textContent));
+  else { while (el.firstChild) el.parentNode.insertBefore(el.firstChild, el); el.remove(); }
+  NE.cpEl = null; updateNeMeta(); queueSave();
+  toast(isChip ? "Ce n'est plus une pastille à copier." : "Ce n'est plus un bloc à copier.", {undo: function(){ var b2 = document.getElementById("neBody"); if (!b2 || !NE || (NE.note && NE.note._id) !== nid) return; b2.innerHTML = before; neCpHydrate(b2); updateNeMeta(); queueSave(); }});
 }
 function neCpDel(el){
   el = el || (NE && NE.cpEl); neMenuClose(true); if (!el || !el.isConnected) return;
@@ -5334,7 +5372,7 @@ function neCpBind(b){
   var lpEnd = function(){ if (lp){ clearTimeout(lp.t); lp = null; } };
   b.addEventListener("pointerdown", function(e){
     if (e.button > 0) return;
-    var el = e.target.closest && (e.target.closest("span.cpy") || e.target.closest("div.cpb")); if (!el || !b.contains(el)) return;
+    var el = e.target.closest && (e.target.closest("span.cpy") || e.target.closest("div.cpb")); if (!el || !b.contains(el) || el.hasAttribute("data-cped")) return;
     lpEnd(); lp = {x: e.clientX, y: e.clientY, el: el, t: setTimeout(lpFire, 420)};
   });
   var lpFire = function(){
@@ -5353,13 +5391,20 @@ function neCpBind(b){
     e.preventDefault();
     if (!NE.cpLongAt || Date.now() - NE.cpLongAt > 900){ if (!lp) lp = {x: e.clientX, y: e.clientY, el: el, sys: 1}; lp.sys = 1; lpFire(); }
   });
+  b.addEventListener("keydown", function(e){ var L = NE && NE.cpLive; if (L && L.chip && e.key === "Enter"){ e.preventDefault(); neCpLiveEnd(); b.blur(); } });
+  b.addEventListener("input", function(){ if (NE && NE.cpLive) neCpBarPos(); });
+  b.addEventListener("blur", function(){ setTimeout(function(){ if (NE && NE.cpLive && document.activeElement !== b) neCpLiveEnd(); }, 150); });
+  if (!window._cpSelBound){ window._cpSelBound = 1; document.addEventListener("selectionchange", function(){ var L = NE && NE.cpLive; if (!L) return; var s0 = window.getSelection(); if (!s0.rangeCount) return; var n = s0.getRangeAt(0).startContainer; if (!L.el.contains(n) && n !== L.el) neCpLiveEnd(); }); }
+  var scr = b.closest(".ne-scroll"); if (scr) scr.addEventListener("scroll", function(){ if (NE && NE.cpLive) neCpBarPos(); }, { passive: true });
   b.addEventListener("mousedown", function(e){
     var chip = e.target.closest && e.target.closest("span.cpy"), blk = e.target.closest && e.target.closest("div.cpb");
+    if ((chip || blk) && (chip || blk).hasAttribute("data-cped")) return;
     if (chip || (blk && (document.activeElement !== b || neCpHead(blk, e)))) e.preventDefault();
   });
   b.addEventListener("click", function(e){
     var chip = e.target.closest && e.target.closest("span.cpy"), blk = e.target.closest && e.target.closest("div.cpb");
     if ((chip || blk) && NE && NE.cpLongAt && Date.now() - NE.cpLongAt < 900){ e.preventDefault(); return; }
+    if ((chip || blk) && (chip || blk).hasAttribute("data-cped")) return;
     if (chip){ e.preventDefault(); var t = chip.textContent.trim(); neCopyText(t, chip, "« " + (t.length > 28 ? t.slice(0, 26) + "…" : t) + " » copié"); return; }
     if (blk && (document.activeElement !== b || neCpHead(blk, e))){ e.preventDefault(); var tx = noteText(blk); if (!tx){ toast("Le bloc est vide."); return; } neCopyText(tx, blk, "Texte copié"); }
   });
@@ -5727,8 +5772,10 @@ function noteAction(act, b){
     case "ne-setbg": setNoteField({bg: b.dataset.bg}); neBgPicker(); neBgPicker(); return true;
     case "ne-menu": neMenu(); return true;
     case "ne-menu-close": neMenuClose(); return true;
-    case "ne-cp-edit": neCpEdit(); return true;
-    case "ne-cp-del": closeSheet(); neCpDel(); return true;
+    case "ne-cp-edit": neCpLive(); return true;
+    case "ne-cp-off": neCpOff(); return true;
+    case "ne-cp-done": neCpLiveEnd(); var bd0 = document.getElementById("neBody"); if (bd0) bd0.blur(); return true;
+    case "ne-cp-del": neCpDel(); return true;
     case "ne-pin": setNoteField({pinned: !NE.note.pinned}); nePop(null); toast(NE.note.pinned ? "Note épinglée." : "Note désépinglée."); return true;
     case "ne-folder": nePop(null); folderPicker(function(f){ setNoteField({folder: f || null}); }); return true;
     case "ne-share": nePop(null); var d = collectNote(); navigator.share({title: d.title || "Note", text: (d.title ? d.title + "\n\n" : "") + d.text}).catch(function(){}); return true;
