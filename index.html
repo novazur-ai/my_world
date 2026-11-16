@@ -1355,9 +1355,25 @@ nav.tabs .nav-apps.isl-b{position:absolute!important;left:50%;bottom:100%;width:
 nav.tabs .nav-apps.isl-b:focus-visible{width:auto!important;height:36px!important;padding:0 14px!important;clip-path:none;opacity:1;transform:translate(-50%,-70px);background:#fff!important;color:var(--acc-ink,#0B3A5C)!important;gap:6px}
 nav.tabs .nav-apps.isl-b:focus-visible .lb{max-width:80px;opacity:1}
 nav.tabs .nav-add{margin:0!important;touch-action:none!important;box-shadow:0 10px 24px rgba(20,60,110,.38),0 0 0 4px var(--page,#F5F8FB)!important}
-nav.tabs .nav-add svg{transition:transform .3s cubic-bezier(.3,1.4,.5,1)}
+nav.tabs .nav-add .np{transition:transform .3s cubic-bezier(.3,1.4,.5,1),opacity .18s}
 body.fan-on nav.tabs .nav-add{pointer-events:auto!important}
-body.fan-on nav.tabs .nav-add svg{transform:rotate(45deg)}
+body.fan-on nav.tabs .nav-add .np{transform:rotate(45deg)}
+/* MyWorld_1.37 : le + devient un micro rouge pendant l'écoute */
+nav.tabs .nav-add{position:relative;isolation:isolate}
+nav.tabs .nav-add>svg{grid-area:1/1}
+nav.tabs .nav-add::before{content:"";position:absolute;inset:0;border-radius:50%;background:linear-gradient(160deg,#F2614E,#D63A2C);transform:scale(.25);opacity:0;transition:transform .34s cubic-bezier(.3,1.35,.5,1),opacity .2s;z-index:-1}
+nav.tabs .nav-add::after{content:"";position:absolute;inset:-2px;border-radius:50%;border:3px solid rgba(226,74,58,.6);opacity:0;pointer-events:none}
+nav.tabs .nav-add .nm{transform:scale(0) rotate(-25deg);opacity:0;transition:transform .34s cubic-bezier(.3,1.5,.5,1),opacity .16s}
+body.mic-on nav.tabs .nav-add::before{transform:scale(1);opacity:1}
+body.mic-on nav.tabs .nav-add .np{transform:rotate(90deg) scale(0);opacity:0}
+body.mic-on nav.tabs .nav-add .nm{transform:none;opacity:1;transition-delay:.07s}
+body.mic-on nav.tabs .nav-add::after{animation:micRing 1.4s cubic-bezier(.2,.6,.4,1) .2s infinite}
+body.mic-on nav.tabs .nav-add{box-shadow:0 10px 24px rgba(200,52,40,.42),0 0 0 4px var(--page,#F5F8FB)!important}
+@keyframes micRing{0%{transform:scale(1);opacity:.85}100%{transform:scale(1.75);opacity:0}}
+#micBub{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 98px);transform:translateX(-50%);z-index:42;max-width:min(86vw,360px);padding:9px 15px;border-radius:16px;background:rgba(22,26,34,.9);color:#FFFFFF;font-size:14.5px;font-weight:700;line-height:1.35;text-align:center;box-shadow:0 10px 26px rgba(0,0,0,.22);pointer-events:none;animation:micBubIn .2s cubic-bezier(.2,0,0,1)}
+#micBub.wait{color:rgba(255,255,255,.75)}
+@keyframes micBubIn{from{opacity:0;transform:translate(-50%,8px)}to{opacity:1;transform:translateX(-50%)}}
+@media (prefers-reduced-motion: reduce){body.mic-on nav.tabs .nav-add::after{animation:none}nav.tabs .nav-add::before,nav.tabs .nav-add .nm,nav.tabs .nav-add .np{transition:opacity .15s}}
 .nav-hint{display:flex;flex-direction:column;align-items:center;gap:0;border:0;background:none;padding:2px 14px 3px;margin:0;color:var(--acc-ink,#0B3A5C);opacity:.55;cursor:pointer;font:inherit;-webkit-tap-highlight-color:transparent;position:relative;transition:opacity .25s}
 .nav-hint .nh-lb{display:none;font-size:10.5px;font-weight:900;letter-spacing:.04em;line-height:1}
 body.nav-hint-full .nav-hint{opacity:.85}
@@ -1605,13 +1621,13 @@ body.by-on #navFade{display:none}
 <nav class="tabs" aria-label="Navigation">
   <div class="in">
     <a href="#accueil" data-tab="accueil" class="isl-b"><span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg></span><span class="lb">Home</span></a>
-    <button type="button" class="nav-hint" data-act="apps" aria-label="Toutes les apps (ou tire le + vers le haut)"><svg width="18" height="10" viewBox="0 0 18 10" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 8l7-6 7 6"/></svg><span class="nh-lb">Apps</span></button>
-    <button type="button" class="nav-add" data-act="add-open" aria-label="Ajouter en parlant (appui long : écrire)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
+    <button type="button" class="nav-add" data-act="add-open" aria-label="Parler (appui long : écrire · tirer vers le haut : applis)"><svg class="np" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><svg class="nm" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="2.5" width="6" height="11.5" rx="3" fill="currentColor"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5v3.5M9 21h6"/></svg></button>
     <button type="button" class="nav-apps isl-b" data-act="apps" aria-label="Toutes les apps" aria-expanded="false" aria-controls="appsFan"><span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g class="ap-grid"><rect x="4" y="4" width="6.5" height="6.5" rx="2"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="2"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="2"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="2"/></g><path class="ap-x" d="M6 6l12 12M18 6L6 18"/></svg><i class="nbadge" id="gazBadge" hidden></i></span><span class="lb">Apps</span><span class="sr" id="gazBadgeSr"></span></button>
   </div>
 </nav>
 <div id="appsFan" hidden><div class="fan-veil" data-act="apps-close"></div><div class="fan iv-plant" role="dialog" aria-modal="true" aria-label="Toutes les apps"></div></div>
 <div id="ivyRim" hidden></div>
+<div id="micBub" hidden aria-live="polite"></div>
 
 <div id="addRoot" hidden><div class="add-wrap" id="addWrap"><div class="add-sheet" id="addSheet" role="dialog" aria-modal="true" aria-labelledby="addT"><span class="add-grab" aria-hidden="true"></span><div class="add-head"><h2 id="addT">Ajouter</h2><button type="button" class="close" data-act="add-close" aria-label="Fermer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div><div id="addSlot"></div><p class="add-tip" id="addTip">Écris ou dicte, comme tu le dirais : « dentiste mardi 14h », « rappelle-moi d'appeler maman », « note : idées cadeaux »…</p></div></div></div>
 <div id="sheetRoot"></div>
@@ -2460,10 +2476,11 @@ var DECO = (function(){
 
 </script>
 <script>
-var APP_VERSION = "MyWorld_1.36";
+var APP_VERSION = "MyWorld_1.37";
 /* MyWorld_1.33 : nouveautés affichées dans les Réglages. À CHAQUE VERSION (appli ou jeu) : ajouter une entrée EN TÊTE,
    {v: numéro, d: date AAAA-MM-JJ, t: titre court, l: 1 à 3 phrases simples, sans jargon}. */
 var MW_NEWS = [
+  {"v": "1.37", "d": "2026-11-16", "t": "Le + écoute directement", "l": ["Un toucher sur le + le transforme en micro rouge : parle, et c'est ajouté. La fenêtre d'ajout ne s'ouvre que si l'appli n'a pas tout compris.", "Nouveau : « Ouvre … » pour aller dans une appli ou une note (« Ouvre la note travail », « Ouvre le suivi du sommeil », « Ouvre mes cartes de fidélité »).", "Le petit chevron « Apps » au-dessus du + disparaît : tire le + vers le haut pour les applis."]},
   {"v": "1.36", "d": "2026-11-16", "t": "Humeur de la veille", "l": ["Si tu n'as pas noté ta journée la veille au soir, l'appli te la redemande le lendemain jusqu'à 15 h, sur l'accueil et dans Bien-être."]},
   {"v": "1.35", "d": "2026-11-14", "t": "Météo heure par heure", "l": ["Dans la page Météo, la journée heure par heure jusqu'à minuit : courbe des températures, ciel et risque de pluie.", "Touche une heure pour voir son détail."]},
   {"v": "1.34", "d": "2026-11-14", "t": "Réglages rangés", "l": ["Les Réglages deviennent une vraie page, rangée en 4 rubriques : Moi, Contenus, Compte et données, L'appli.", "Chaque réglage est une carte qui se déplie d'un toucher, avec un résumé visible d'un coup d'œil. Le sommeil et l'affichage des notes y sont aussi.", "Les nouveautés s'ouvrent avec le bouton « i » en haut à droite."]},
@@ -4271,6 +4288,10 @@ function onCapture(e){
   var input = document.getElementById("captureInput"), hint = document.getElementById("captureHint");
   var text = input.value.trim(); if (!text) return;
   if (!needDb()) return;
+  /* MyWorld_1.37 : « Ouvre la note travail », « Ouvre le suivi du sommeil »… */
+  var oc = openCmd(text); if (oc){ input.value = ""; hint.textContent = "";
+    if (oc === "miss"){ if (document.getElementById("addRoot").hidden) addOpen("text"); input.value = text; return; }
+    if (!document.getElementById("addRoot").hidden) addClose(); return; }
   /* MyWorld_1.4 : « carte Casto » ouvre directement la carte en mode caisse */
   var fc = fidFind(text); if (fc){ input.value = ""; hint.textContent = ""; if (!document.getElementById("addRoot").hidden) addClose(); fidOpen(fc._id); return; }
   understand(text).then(function(r){
@@ -4284,8 +4305,52 @@ function onCapture(e){
       return;
     }
     CP = {text:text, F0:Object.assign({}, F), F:F, learnedBefore:!!r.learned};
+    if (document.getElementById("addRoot").hidden) addOpen("quiet");   /* depuis le micro : la fenêtre ne s'ouvre que si ce n'est pas clair */
     renderPreview(true);
   });
+}
+/* MyWorld_1.37 : « Ouvre … » → une appli, une note ou une carte de fidélité. Renvoie true (fait), "miss" (commande comprise mais rien trouvé) ou null (pas une commande) */
+var OPEN_APPS = [
+  ["accueil", /^(?:l')?(?:accueil|home|page d'accueil)$/],
+  ["listes:rappels", /^(?:mes |les )?rappels?$/],
+  ["listes:todo", /^(?:mes |la |les |ma )?(?:a faire|liste a faire|liste des choses a faire|choses a faire|to ?do)$/],
+  ["courses", /^(?:ma |la |les |mes )?(?:liste de |liste des )?courses$/],
+  ["cartes", /^(?:mes |les |ma )?cartes?(?: de fidelite)?$|^(?:la )?fidelite$|^(?:mon |le )?portefeuille$/],
+  ["sommeil", /^(?:mon |le |la )?(?:suivi du |suivi de )?(?:sommeil|mon sommeil)$|^(?:mes |les |ma )?nuits?$/],
+  ["bienetre", /^(?:mon |le |la )?(?:bien[- ]?etre|humeur|mood ?board|mood)$/],
+  ["conclusions", /^(?:mes |les )?(?:conclusions|tendances)$/],
+  ["meteo", /^(?:la )?meteo$|^(?:le )?temps qu'il fait$/],
+  ["gazette", /^(?:les |mes |la |le )?(?:news|infos|actus?|actualites|gazette|journal)$/],
+  ["fiche", /^(?:ma |la )?fiche$|^(?:mon |le )?(?:perso|personnage|profil)$/],
+  ["jeu", /^(?:le |mon )?jeu$|^(?:la veille de )?forpharos$|^(?:le )?phare$/],
+  ["reglages", /^(?:les |mes )?(?:reglages|parametres)$/],
+  ["notes", /^(?:mes |les )?notes$/],
+  ["month", /^(?:le |mon )?(?:mois|calendrier|agenda)$/]
+];
+function openCmd(text){
+  var t = noAcc(String(text || "").toLowerCase()).replace(/[’]/g, "'").replace(/[.!?]+$/, "").trim();
+  var m = t.match(/^(?:ouvre|ouvres|ouvrir|affiche|afficher|montre|montrer|lance|lancer|va|aller)(?:[\s-]*moi)?\s+(?:sur\s+|a\s+|dans\s+|vers\s+)?(.+)$/);
+  if (!m) return null;
+  var strong = /^(?:ouvr|affich|montr)/.test(t), pre = /^(?:l'appli(?:cation)?|l'app|l'application|appli|app|la page|page)\s/.test(m[1]);
+  var q = m[1].replace(/^(?:l'appli(?:cation)?|l'app|l'application|appli|app|la page|page)\s+/, "").replace(/^(?:de |du |des |d')/, "").trim();
+  if (!q) return null;
+  for (var i = 0; i < OPEN_APPS.length; i++){
+    if (!OPEN_APPS[i][1].test(q)) continue;
+    var k = OPEN_APPS[i][0];
+    if (!document.getElementById("appsFan").hidden) fanClose();
+    if (k === "month"){ S.monthOffset = 0; S.monthSel = null; openSheet("Le mois", '<div id="mBody">' + monthHTML() + '</div>'); return true; }
+    if (k.indexOf("listes:") === 0){ S.listTab = k.slice(7); if (k === "listes:todo") S.todoMom = "auj"; k = "listes"; }
+    if (k === "reglages") S.regOpen = "";
+    if (location.hash.replace("#", "") === k) render(); else location.hash = k;
+    return true;
+  }
+  var fc = fidFind("carte " + q.replace(/^(?:ma |la |une )?cartes?\s+/, "")); if (/^(?:ma |la |une )?cartes?\s/.test(q) && fc){ fidOpen(fc._id); return true; }
+  /* une note : avec « ouvre / affiche / montre », ou si la phrase dit « la note … » (« va », « lance » restent des phrases normales : « lance une machine ») */
+  var isNote = /^(?:la |ma |mes |une )?notes?\s/.test(q);
+  var n = strong || isNote ? findNoteByTitle(q) : null;
+  if (n){ if (!document.getElementById("appsFan").hidden) fanClose(); openNote(n._id); return true; }
+  if (/^ouvr/.test(t) || (strong && (isNote || pre))){ toast("Je n'ai pas trouvé « " + cap(m[1]) + " ». Corrige si besoin."); return "miss"; }
+  return null;
 }
 /* La carte « J'ai compris » ne s'affiche qu'en cas de doute.
    Clair = rendez-vous avec quoi + jour + heure + domaine reconnu, anniversaire avec prénom + date, ou note. */
@@ -4368,7 +4433,7 @@ function addOpen(mode){
   addFit();
   var inp = document.getElementById("captureInput");
   if (mode === "voice" && S.dictate && S.dictate(true)){ if (document.activeElement && document.activeElement.blur) document.activeElement.blur(); return; }
-  setTimeout(function(){ inp.focus(); }, 60);
+  if (mode !== "quiet") setTimeout(function(){ inp.focus(); }, 60);
 }
 function addClose(){
   var root = document.getElementById("addRoot"); if (root.hidden) return;
@@ -5550,7 +5615,10 @@ document.addEventListener("click", function(e){
   if (act === "apps"){ if (document.getElementById("appsFan").hidden){ try { localStorage.setItem("mw-apps-n", String((+localStorage.getItem("mw-apps-n") || 0) + 1)); } catch(er){} navHint(); fanOpen(); } else fanClose(); return; }
   if (act === "apps-close"){ fanClose(); return; }
   if (act === "fan-go"){ fanGo(b.dataset.app); return; }
-  if (act === "add-open"){ if (S.lpFired){ S.lpFired = false; return; } if (!document.getElementById("appsFan").hidden){ fanClose(); return; } addOpen("voice"); return; }
+  if (act === "add-open"){ if (S.lpFired){ S.lpFired = false; return; } if (!document.getElementById("appsFan").hidden){ fanClose(); return; }
+    /* MyWorld_1.37 : le + écoute sans ouvrir la fenêtre ; un 2e toucher arrête l'écoute ; sans dictée possible → fenêtre clavier */
+    if (S.micOn){ S.dictate && S.dictate(); return; }
+    if (!(S.dictate && S.dictate(true, true))) addOpen("text"); return; }
   if (act === "add-close"){ addClose(); return; }
   if (act === "ev-open"){ openEvent(b.dataset.gid || null, b.dataset.id || null, b.dataset.d || null); return; }
   if (act === "ev-close"){ closeEvent(); return; }
@@ -7079,19 +7147,25 @@ document.addEventListener("wheel", function(e){
   var SR = window.SpeechRecognition || window.webkitSpeechRecognition, btn = document.getElementById("micBtn");
   if (!SR || !btn) return;
   btn.hidden = false;
-  var rec = null, input = document.getElementById("captureInput"), hint = document.getElementById("captureHint"), base = "", auto = false;
-  function stop(){ if (hint.textContent === "Je t'écoute…") hint.textContent = ""; btn.classList.remove("on"); btn.setAttribute("aria-pressed","false"); btn.setAttribute("aria-label","Dicter"); rec = null; }
+  var rec = null, input = document.getElementById("captureInput"), hint = document.getElementById("captureHint"), base = "", auto = false, plus = false, bub = document.getElementById("micBub"), nav = document.querySelector(".nav-add");
+  function bubSet(t, wait){ if (!plus) return; bub.hidden = false; bub.textContent = t; bub.classList.toggle("wait", !!wait); }
+  function stop(){ if (hint.textContent === "Je t'écoute…") hint.textContent = ""; btn.classList.remove("on"); btn.setAttribute("aria-pressed","false"); btn.setAttribute("aria-label","Dicter"); rec = null;
+    if (plus){ plus = false; document.body.classList.remove("mic-on"); S.micOn = false; if (nav) nav.setAttribute("aria-label", "Parler (appui long : écrire · tirer vers le haut : applis)"); bub.hidden = true; } }
   /* renvoie true si l'écoute a démarré ; autoSend : la phrase dictée part seule à l'analyse */
-  S.dictate = function(autoSend){
+  /* fromPlus (MyWorld_1.37) : écoute lancée par le + sans ouvrir la fenêtre d'ajout ; le + devient un micro rouge */
+  S.dictate = function(autoSend, fromPlus){
     if (rec){ rec.stop(); return true; }
     if (!navigator.onLine){ toast("La dictée a besoin d'internet. Tu peux écrire ta phrase."); return false; }
-    auto = !!autoSend;
+    auto = !!autoSend; plus = !!fromPlus;
+    if (plus) input.value = "";
     rec = new SR(); rec.lang = "fr-FR"; rec.interimResults = true; rec.continuous = false; rec.maxAlternatives = 1;
     base = input.value ? input.value.replace(/\s+$/,"") + " " : "";
-    rec.onresult = function(ev){ var txt = ""; for (var i = 0; i < ev.results.length; i++) txt += ev.results[i][0].transcript; input.value = base + txt.trim(); };
+    rec.onresult = function(ev){ var txt = ""; for (var i = 0; i < ev.results.length; i++) txt += ev.results[i][0].transcript; input.value = base + txt.trim(); if (txt.trim()) bubSet(cap(txt.trim())); };
     rec.onerror = function(ev){ var c = ev && ev.error; if (c === "not-allowed" || c === "service-not-allowed") toast("Autorise le micro pour cette appli dans les réglages de Chrome."); else if (c === "no-speech") toast("Je n'ai rien entendu. Réessaie."); else if (c !== "aborted") toast("La dictée n'a pas fonctionné. Réessaie."); stop(); };
-    rec.onend = function(){ var had = rec !== null; stop(); if (had && auto && input.value.trim()){ auto = false; var f = document.getElementById("captureForm"); if (f.requestSubmit) f.requestSubmit(); else f.dispatchEvent(new Event("submit", {cancelable:true})); return; } if (had && input.value.trim()){ input.focus(); hint.innerHTML = "<strong>Vérifie, puis touche +</strong>"; setTimeout(function(){ if (hint.textContent === "Vérifie, puis touche +") hint.textContent = ""; }, 5000); } };
-    try { rec.start(); btn.classList.add("on"); btn.setAttribute("aria-pressed","true"); btn.setAttribute("aria-label","Arrêter la dictée"); hint.textContent = "Je t'écoute…"; return true; }
+    rec.onend = function(){ var had = rec !== null, wasPlus = plus; stop(); if (had && wasPlus && !input.value.trim()) toast("Je n'ai rien entendu. Réessaie."); if (had && auto && input.value.trim()){ auto = false; var f = document.getElementById("captureForm"); if (f.requestSubmit) f.requestSubmit(); else f.dispatchEvent(new Event("submit", {cancelable:true})); return; } if (had && input.value.trim()){ input.focus(); hint.innerHTML = "<strong>Vérifie, puis touche +</strong>"; setTimeout(function(){ if (hint.textContent === "Vérifie, puis touche +") hint.textContent = ""; }, 5000); } };
+    try { rec.start(); btn.classList.add("on"); btn.setAttribute("aria-pressed","true"); btn.setAttribute("aria-label","Arrêter la dictée"); hint.textContent = "Je t'écoute…";
+      if (plus){ S.micOn = true; document.body.classList.add("mic-on"); bubSet("Je t'écoute…", true); if (nav) nav.setAttribute("aria-label", "Arrêter l'écoute"); try { navigator.vibrate && navigator.vibrate(12); } catch(e){} }
+      return true; }
     catch(e){ stop(); toast("La dictée n'a pas pu démarrer."); return false; }
   };
   btn.addEventListener("click", function(){ S.dictate(false); });
