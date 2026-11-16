@@ -1372,6 +1372,16 @@ body.mic-on nav.tabs .nav-add{box-shadow:0 10px 24px rgba(200,52,40,.42),0 0 0 4
 @keyframes micRing{0%{transform:scale(1);opacity:.85}100%{transform:scale(1.75);opacity:0}}
 #micBub{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 98px);transform:translateX(-50%);z-index:42;max-width:min(86vw,360px);padding:9px 15px;border-radius:16px;background:rgba(22,26,34,.9);color:#FFFFFF;font-size:14.5px;font-weight:700;line-height:1.35;text-align:center;box-shadow:0 10px 26px rgba(0,0,0,.22);pointer-events:none;animation:micBubIn .2s cubic-bezier(.2,0,0,1)}
 #micBub.wait{color:rgba(255,255,255,.75)}
+/* MyWorld_1.38 : minuteurs en cours, en bas à gauche */
+#tmBox{position:fixed;left:14px;bottom:calc(env(safe-area-inset-bottom,0px) + 30px);z-index:34;display:flex;flex-direction:column-reverse;align-items:flex-start;gap:8px}
+.tm-chip{display:inline-flex;align-items:center;gap:7px;min-height:44px;padding:0 13px 0 9px;border:0;border-radius:22px;background:rgba(22,26,34,.9);color:#FFFFFF;font:inherit;font-size:15px;font-weight:900;font-variant-numeric:tabular-nums;box-shadow:0 8px 20px rgba(0,0,0,.2);cursor:pointer;animation:micBubIn2 .22s cubic-bezier(.2,0,0,1)}
+.tm-chip .tm-l{font-size:12.5px;font-weight:700;color:rgba(255,255,255,.75);max-width:96px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+@keyframes micBubIn2{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+body.fan-on #tmBox,body.add-on #tmBox{opacity:0;pointer-events:none}
+.tm-end{display:flex;flex-direction:column;gap:4px}
+.tm-end-n{margin:0;font-size:30px;font-weight:900;font-variant-numeric:tabular-nums}
+.tm-end-d{margin:0 0 14px;font-size:14px;font-weight:700;color:var(--muted)}
+.tm-end-act{display:flex;justify-content:space-between;gap:10px}.tm-end-act .btn{min-width:120px}
 @keyframes micBubIn{from{opacity:0;transform:translate(-50%,8px)}to{opacity:1;transform:translateX(-50%)}}
 @media (prefers-reduced-motion: reduce){body.mic-on nav.tabs .nav-add::after{animation:none}nav.tabs .nav-add::before,nav.tabs .nav-add .nm,nav.tabs .nav-add .np{transition:opacity .15s}}
 .nav-hint{display:flex;flex-direction:column;align-items:center;gap:0;border:0;background:none;padding:2px 14px 3px;margin:0;color:var(--acc-ink,#0B3A5C);opacity:.55;cursor:pointer;font:inherit;-webkit-tap-highlight-color:transparent;position:relative;transition:opacity .25s}
@@ -1628,6 +1638,7 @@ body.by-on #navFade{display:none}
 <div id="appsFan" hidden><div class="fan-veil" data-act="apps-close"></div><div class="fan iv-plant" role="dialog" aria-modal="true" aria-label="Toutes les apps"></div></div>
 <div id="ivyRim" hidden></div>
 <div id="micBub" hidden aria-live="polite"></div>
+<div id="tmBox" hidden aria-live="off"></div>
 
 <div id="addRoot" hidden><div class="add-wrap" id="addWrap"><div class="add-sheet" id="addSheet" role="dialog" aria-modal="true" aria-labelledby="addT"><span class="add-grab" aria-hidden="true"></span><div class="add-head"><h2 id="addT">Ajouter</h2><button type="button" class="close" data-act="add-close" aria-label="Fermer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div><div id="addSlot"></div><p class="add-tip" id="addTip">Écris ou dicte, comme tu le dirais : « dentiste mardi 14h », « rappelle-moi d'appeler maman », « note : idées cadeaux »…</p></div></div></div>
 <div id="sheetRoot"></div>
@@ -2476,10 +2487,11 @@ var DECO = (function(){
 
 </script>
 <script>
-var APP_VERSION = "MyWorld_1.37";
+var APP_VERSION = "MyWorld_1.38";
 /* MyWorld_1.33 : nouveautés affichées dans les Réglages. À CHAQUE VERSION (appli ou jeu) : ajouter une entrée EN TÊTE,
    {v: numéro, d: date AAAA-MM-JJ, t: titre court, l: 1 à 3 phrases simples, sans jargon}. */
 var MW_NEWS = [
+  {"v": "1.38", "d": "2026-11-16", "t": "Minuteur et rappels « dans 20 minutes »", "l": ["« Mets un minuteur de 10 minutes » lance un compte à rebours (pastille en bas à gauche, sonnerie à la fin) et une notification de secours dans ton agenda.", "« Rappelle-moi dans 20 minutes de sortir le linge » : le rappel tombe à la bonne heure. Marche aussi avec « dans 2 heures », « dans une demi-heure », « dans 3 jours »."]},
   {"v": "1.37", "d": "2026-11-16", "t": "Le + écoute directement", "l": ["Un toucher sur le + le transforme en micro rouge : parle, et c'est ajouté. La fenêtre d'ajout ne s'ouvre que si l'appli n'a pas tout compris.", "Nouveau : « Ouvre … » pour aller dans une appli ou une note (« Ouvre la note travail », « Ouvre le suivi du sommeil », « Ouvre mes cartes de fidélité »).", "Le petit chevron « Apps » au-dessus du + disparaît : tire le + vers le haut pour les applis."]},
   {"v": "1.36", "d": "2026-11-16", "t": "Humeur de la veille", "l": ["Si tu n'as pas noté ta journée la veille au soir, l'appli te la redemande le lendemain jusqu'à 15 h, sur l'accueil et dans Bien-être."]},
   {"v": "1.35", "d": "2026-11-14", "t": "Météo heure par heure", "l": ["Dans la page Météo, la journée heure par heure jusqu'à minuit : courbe des températures, ciel et risque de pluie.", "Touche une heure pour voir son détail."]},
@@ -3958,8 +3970,53 @@ function parseTodo(rest){
   var title = cap(stripWhen(rest) || rest);
   return {kind:"todo", title:title, due: later ? null : iso(d || today()), later:later, cat:guessCat(title, "", [], false), forced:true};
 }
+/* MyWorld_1.38 : durées dites (« 20 minutes », « 1 h 30 », « une demi-heure », « 45 s »…) */
+var DUR_W = {un:1,une:1,deux:2,trois:3,quatre:4,cinq:5,six:6,sept:7,huit:8,neuf:9,dix:10,onze:11,douze:12,treize:13,quatorze:14,quinze:15,seize:16,"dix-sept":17,"dix-huit":18,"dix-neuf":19,vingt:20,"vingt-cinq":25,trente:30,quarante:40,"quarante-cinq":45,cinquante:50,soixante:60,"quatre-vingt-dix":90};
+var DUR_N = "(\\d+(?:[.,]5)?|quatre[- ]vingt[- ]dix|dix[- ]sept|dix[- ]huit|dix[- ]neuf|vingt[- ]cinq|quarante[- ]cinq|un|une|deux|trois|quatre|cinq|six|sept|huit|neuf|dix|onze|douze|treize|quatorze|quinze|seize|vingt|trente|quarante|cinquante|soixante)";
+function durNum(w){ w = String(w).replace(/ /g, "-").replace(",", "."); return /^\d/.test(w) ? parseFloat(w) : DUR_W[w]; }
+/* lit une durée au tout début de n (texte sans accents, minuscules) → {sec, len} ou null */
+function durAt(n){
+  var m;
+  if ((m = n.match(/^(?:une\s+)?demi[- ]heure(?![a-z])/))) return {sec:1800, len:m[0].length};
+  if ((m = n.match(/^(?:un\s+)?quart d'heure(?![a-z])/))) return {sec:900, len:m[0].length};
+  if ((m = n.match(/^trois quarts? d'heure(?![a-z])/))) return {sec:2700, len:m[0].length};
+  if ((m = n.match(new RegExp("^" + DUR_N + "\\s*(?:h|heures?)(?![a-z])(?:\\s*(?:et\\s+)?(demie?|quart|" + DUR_N.slice(1, -1) + ")(?:\\s*(?:min(?:ute)?s?|mn)(?![a-z]))?)?")))){
+    var hs = durNum(m[1]) * 3600, extra = m[2] ? (/^demi/.test(m[2]) ? 1800 : m[2] === "quart" ? 900 : durNum(m[2]) * 60) : 0;
+    return isNaN(hs + extra) ? null : {sec:hs + extra, len:m[0].length};
+  }
+  if ((m = n.match(new RegExp("^" + DUR_N + "\\s*(?:min(?:ute)?s?|mn)(?![a-z])(?:\\s*(?:et\\s+)?" + DUR_N + "\\s*(?:s|sec(?:onde)?s?)(?![a-z]))?")))){
+    var ms = durNum(m[1]) * 60 + (m[2] ? durNum(m[2]) : 0); return isNaN(ms) ? null : {sec:ms, len:m[0].length};
+  }
+  if ((m = n.match(new RegExp("^" + DUR_N + "\\s*(?:s|sec(?:onde)?s?)(?![a-z])")))){ var ss = durNum(m[1]); return isNaN(ss) ? null : {sec:ss, len:m[0].length}; }
+  return null;
+}
+function durLbl(sec){ var h0 = Math.floor(sec / 3600), m0 = Math.floor(sec % 3600 / 60), s0 = Math.round(sec % 60);
+  return h0 ? h0 + " h" + (m0 ? " " + pad(m0) : "") : m0 ? m0 + " min" + (s0 ? " " + pad(s0) : "") : s0 + " s"; }
+/* « rappelle-moi dans 20 minutes de … » → « rappelle-moi à 12h40 de … » ; « dans 3 jours » → « le 19 novembre » */
+function relRewrite(text){
+  var n = noAcc(text.toLowerCase()).replace(/[’]/g, "'"); if (n.length !== text.length) return text;
+  var re = /(^|\s)dans\s+/g, m;
+  while ((m = re.exec(n))){
+    var at = m.index + m[0].length, rest = n.slice(at), rep2 = null, len = 0, dm;
+    if ((dm = rest.match(new RegExp("^" + DUR_N + "\\s*(jours?|semaines?)(?![a-z])"))) || (dm = rest.match(/^(une)\s+(semaine)(?![a-z])/))){
+      var nd = durNum(dm[1]) * (/^semaine/.test(dm[2]) ? 7 : 1); if (!nd) continue;
+      var d = addDays(today(), nd); rep2 = "le " + d.getDate() + " " + MOIS_N[d.getMonth()]; len = dm[0].length;
+    } else {
+      var du = durAt(rest); if (!du || du.sec < 60 || du.sec > 86400 * 2) continue;
+      var tgt = new Date(Math.round((Date.now() + du.sec * 1000) / 60000) * 60000), t0 = today();
+      var dd = Math.round((new Date(tgt.getFullYear(), tgt.getMonth(), tgt.getDate()) - t0) / 86400000);
+      rep2 = "à " + tgt.getHours() + "h" + pad(tgt.getMinutes()) + (dd === 1 ? " demain" : dd >= 2 ? " le " + tgt.getDate() + " " + MOIS_N[tgt.getMonth()] : ""); len = du.len;
+    }
+    var out = text.slice(0, m.index) + m[1] + rep2 + text.slice(at + len);
+    /* sans mot de rappel ni de rendez-vous, c'est un rappel */
+    if (!/\b(rappel|rappelle|rdv|rendez|fais[- ]moi penser)/i.test(noAcc(out))) out = "rappelle-moi " + out;
+    return out;
+  }
+  return text;
+}
 function localParse(text){
   var co0 = parseCourses(text); if (co0) return co0;
+  text = relRewrite(text);
   text = wordsToDigits(text);
   /* titres de notes gardés comme mots-clés : « films à voir Dune » → ajoute Dune à la note */
   var nt = noAcc(text.toLowerCase().trim());
@@ -4288,6 +4345,10 @@ function onCapture(e){
   var input = document.getElementById("captureInput"), hint = document.getElementById("captureHint");
   var text = input.value.trim(); if (!text) return;
   if (!needDb()) return;
+  /* MyWorld_1.38 : minuteur */
+  var tc = timerCmd(text); if (tc){ input.value = ""; hint.textContent = "";
+    if (tc.miss){ toast("Dis la durée : « minuteur de 10 minutes »."); if (document.getElementById("addRoot").hidden) addOpen("text"); input.value = text; return; }
+    if (!document.getElementById("addRoot").hidden) addClose(); tmStart(tc.sec, tc.label); return; }
   /* MyWorld_1.37 : « Ouvre la note travail », « Ouvre le suivi du sommeil »… */
   var oc = openCmd(text); if (oc){ input.value = ""; hint.textContent = "";
     if (oc === "miss"){ if (document.getElementById("addRoot").hidden) addOpen("text"); input.value = text; return; }
@@ -4309,6 +4370,86 @@ function onCapture(e){
     renderPreview(true);
   });
 }
+/* MyWorld_1.38 : minuteur (« mets un minuteur de 10 minutes », « minuteur 5 min pour les pâtes ») */
+function timerCmd(text){
+  var n = noAcc(String(text || "").toLowerCase()).replace(/[’]/g, "'").replace(/[.!?]+$/, "").trim();
+  var m = n.match(/^(?:(?:mets?|mettre|met|lance|lancer|demarre|demarrer|programme|programmer|active|activer|fais|regle|regler|ajoute)(?:[\s-]*moi)?\s+)?(?:un\s+|le\s+|mon\s+)?(?:minuteur|minuterie|timer|compte a rebours)(?:\s+(?:de|d'|pour|sur|a))?\s*(.*)$/);
+  if (!m) return null;
+  var raw = String(text || "").replace(/[.!?]+$/, "").trim(), off = n.length - m[1].length;
+  var rest = m[1].replace(/^d'/, ""), lead = rest.length - rest.trimStart().length; rest = rest.trim(); off += m[1].length - m[1].replace(/^d'/, "").length + lead;
+  var du = durAt(rest);
+  if (!du || du.sec < 1 || du.sec > 86400) return {miss:true};
+  /* le libellé est repris du texte d'origine (avec les accents) quand c'est possible */
+  var tail = raw.length === n.length ? raw.slice(off + du.len) : rest.slice(du.len);
+  var lab = tail.replace(/^\s*(?:pour|:|-)\s*(?:les?\s+|la\s+|l'|mes\s+|du\s+|des\s+)?/, "").trim();
+  return {sec: Math.round(du.sec), label: lab ? cap(lab) : ""};
+}
+var TM = {list: [], loop: null, ctx: null, beep: null};
+function tmLoad(){ try { TM.list = JSON.parse(localStorage.getItem("mw-timers") || "[]") || []; } catch(e){ TM.list = []; } }
+function tmSave(){ try { localStorage.setItem("mw-timers", JSON.stringify(TM.list)); } catch(e){} }
+function tmFmt(ms){ var s0 = Math.max(0, Math.ceil(ms / 1000)), h0 = Math.floor(s0 / 3600), m0 = Math.floor(s0 % 3600 / 60), x = s0 % 60; return (h0 ? h0 + ":" + pad(m0) : m0) + ":" + pad(x); }
+function tmName(t){ return t.label || ("Minuteur " + durLbl(t.sec)); }
+function tmCalDel(gid){ if (gid && mcp) mcp.callTool(GC, "delete_event", {calendarId:CAL, eventId:gid}).then(function(){ try { mcp.invalidate(GC, "list_events"); } catch(e){} }).catch(function(){}); }
+function tmStart(sec, label){
+  var now = Date.now(), t = {id: "t" + now, end: now + sec * 1000, sec: sec, label: label || ""};
+  TM.list.push(t); tmSave(); tmRender(); tmRun();
+  try { var AC = window.AudioContext || window.webkitAudioContext; if (AC && !TM.ctx) TM.ctx = new AC(); if (TM.ctx && TM.ctx.state === "suspended") TM.ctx.resume(); } catch(e){}
+  var e0 = new Date(t.end);
+  toast("Minuteur de " + durLbl(sec) + (label ? " · " + label : "") + " lancé, fin à " + e0.getHours() + " h " + pad(e0.getMinutes()) + ".", {undo: function(){ tmStop(t.id); }});
+  /* secours si l'appli est fermée : une notification de ton agenda à la fin (au-delà de 2 min) */
+  if (sec >= 120 && mcp){
+    var rd = new Date(Math.round(t.end / 60000) * 60000);
+    createCalEvent({title: "Fin du minuteur" + (label ? " · " + label : " de " + durLbl(sec)), date: iso(rd), time: pad(rd.getHours()) + ":" + pad(rd.getMinutes()), reminder: true}).then(function(res){
+      var ev = res && res.payload, x = TM.list.find(function(z){ return z.id === t.id; });
+      if (ev && ev.id){ if (x){ x.gid = ev.id; tmSave(); } else tmCalDel(ev.id); }
+    }).catch(function(){});
+  }
+}
+function tmStop(id){ var t = TM.list.find(function(z){ return z.id === id; }); TM.list = TM.list.filter(function(z){ return z.id !== id; }); tmSave(); if (t) tmCalDel(t.gid); tmRender(); }
+function tmRender(){
+  var box = document.getElementById("tmBox"); if (!box) return;
+  var L = TM.list.slice().sort(function(a, b){ return a.end - b.end; });
+  box.hidden = !L.length;
+  /* mêmes minuteurs : on ne met à jour que le temps et l'anneau (le bouton reste en place sous le doigt) */
+  var ids = L.slice(0, 3).map(function(t){ return t.id; }).join(",");
+  if (box.dataset.ids === ids){
+    L.slice(0, 3).forEach(function(t){ var c = box.querySelector('[data-id="' + t.id + '"]'); if (!c) return; var left = t.end - Date.now(), pr = Math.max(0, Math.min(1, 1 - left / (t.sec * 1000)));
+      c.querySelector(".tm-t").textContent = tmFmt(left); c.querySelector(".tm-ring circle:last-child").setAttribute("stroke-dashoffset", (62.83 * pr).toFixed(2)); c.setAttribute("aria-label", tmName(t) + ", reste " + tmFmt(left)); });
+    return;
+  }
+  box.dataset.ids = ids;
+  box.innerHTML = L.slice(0, 3).map(function(t){
+    var left = t.end - Date.now(), pr = Math.max(0, Math.min(1, 1 - left / (t.sec * 1000)));
+    return '<button type="button" class="tm-chip" data-act="tm-open" data-id="' + t.id + '" aria-label="' + h(tmName(t)) + ', reste ' + tmFmt(left) + '"><svg class="tm-ring" width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><circle cx="13" cy="13" r="10" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="3"/><circle cx="13" cy="13" r="10" fill="none" stroke="#FFB84D" stroke-width="3" stroke-linecap="round" stroke-dasharray="62.83" stroke-dashoffset="' + (62.83 * pr).toFixed(2) + '" transform="rotate(-90 13 13)"/></svg><span class="tm-t">' + tmFmt(left) + '</span>' + (t.label ? '<span class="tm-l">' + h(t.label) + '</span>' : '') + '</button>';
+  }).join("");
+}
+function tmRun(){
+  if (TM.loop) return;
+  TM.loop = setInterval(function(){
+    if (!TM.list.length){ clearInterval(TM.loop); TM.loop = null; tmRender(); return; }
+    var now = Date.now(), done = TM.list.filter(function(t){ return t.end <= now; });
+    if (done.length && document.visibilityState === "visible"){
+      TM.list = TM.list.filter(function(t){ return t.end > now; }); tmSave();
+      done.forEach(function(t){ tmCalDel(t.gid); });
+      var late = now - done[0].end;
+      if (late < 120000) tmRing(done); else toast(tmName(done[0]) + " terminé à " + new Date(done[0].end).getHours() + " h " + pad(new Date(done[0].end).getMinutes()) + ".");
+    }
+    tmRender();
+  }, 250);
+}
+function tmBeepStop(){ if (TM.beep){ clearInterval(TM.beep); TM.beep = null; } try { navigator.vibrate && navigator.vibrate(0); } catch(e){} }
+function tmRing(done){
+  var n = 0, beep = function(){
+    try { navigator.vibrate && navigator.vibrate([280, 140, 280, 140, 280]); } catch(e){}
+    try { var c = TM.ctx; if (!c){ var AC = window.AudioContext || window.webkitAudioContext; if (AC) c = TM.ctx = new AC(); } if (!c) return; if (c.state === "suspended") c.resume();
+      [0, .22, .44].forEach(function(d){ var o = c.createOscillator(), g = c.createGain(), t0 = c.currentTime + d; o.type = "sine"; o.frequency.value = 880; g.gain.setValueAtTime(0.0001, t0); g.gain.exponentialRampToValueAtTime(0.35, t0 + .02); g.gain.exponentialRampToValueAtTime(0.0001, t0 + .18); o.connect(g); g.connect(c.destination); o.start(t0); o.stop(t0 + .2); });
+    } catch(e){}
+    if (++n >= 15) tmBeepStop();
+  };
+  tmBeepStop(); beep(); TM.beep = setInterval(beep, 2000);
+  openSheet("Minuteur terminé", '<div class="tm-end">' + done.map(function(t){ return '<p class="tm-end-n">' + h(tmName(t)) + '</p><p class="tm-end-d">' + durLbl(t.sec) + ' · lancé à ' + new Date(t.end - t.sec * 1000).getHours() + ' h ' + pad(new Date(t.end - t.sec * 1000).getMinutes()) + '</p>'; }).join("") + '<div class="tm-end-act"><button type="button" class="btn light" data-act="tm-again" data-sec="' + done[0].sec + '" data-l="' + h(done[0].label) + '">Relancer</button><button type="button" class="btn green" data-act="tm-ok">OK</button></div></div>');
+}
+document.addEventListener("visibilitychange", function(){ if (document.visibilityState === "visible" && TM.list.length){ tmRun(); tmRender(); } });
 /* MyWorld_1.37 : « Ouvre … » → une appli, une note ou une carte de fidélité. Renvoie true (fait), "miss" (commande comprise mais rien trouvé) ou null (pas une commande) */
 var OPEN_APPS = [
   ["accueil", /^(?:l')?(?:accueil|home|page d'accueil)$/],
@@ -4473,7 +4614,7 @@ function openSheet(title, body, onMount){
   if (onMount) onMount();
   var f = root.querySelector(".close"); if (f) f.focus();
 }
-function closeSheet(){ document.getElementById("sheetRoot").innerHTML = ""; }
+function closeSheet(){ document.getElementById("sheetRoot").innerHTML = ""; if (TM.beep) tmBeepStop(); }
 
 function monthKey(d){ return d.getFullYear() + "-" + pad(d.getMonth()+1); }
 function ensureMonth(m0){
@@ -5615,6 +5756,12 @@ document.addEventListener("click", function(e){
   if (act === "apps"){ if (document.getElementById("appsFan").hidden){ try { localStorage.setItem("mw-apps-n", String((+localStorage.getItem("mw-apps-n") || 0) + 1)); } catch(er){} navHint(); fanOpen(); } else fanClose(); return; }
   if (act === "apps-close"){ fanClose(); return; }
   if (act === "fan-go"){ fanGo(b.dataset.app); return; }
+  if (act === "tm-open"){ var tmx = TM.list.find(function(z){ return z.id === b.dataset.id; }); if (!tmx) return; var tme = new Date(tmx.end);
+    openSheet(tmName(tmx), '<div class="tm-end"><p class="tm-end-n" id="tmLeft">' + tmFmt(tmx.end - Date.now()) + '</p><p class="tm-end-d">' + durLbl(tmx.sec) + ' · fin à ' + tme.getHours() + ' h ' + pad(tme.getMinutes()) + '</p><div class="tm-end-act"><button type="button" class="btn light rg-danger" data-act="tm-stop" data-id="' + tmx.id + '">Arrêter</button><button type="button" class="btn green" data-act="tm-ok">Continuer</button></div></div>');
+    var tmi = setInterval(function(){ var el = document.getElementById("tmLeft"), z = TM.list.find(function(q){ return q.id === tmx.id; }); if (!el || !z){ clearInterval(tmi); return; } el.textContent = tmFmt(z.end - Date.now()); }, 250); return; }
+  if (act === "tm-stop"){ tmStop(b.dataset.id); closeSheet(); toast("Minuteur arrêté."); return; }
+  if (act === "tm-ok"){ tmBeepStop(); closeSheet(); return; }
+  if (act === "tm-again"){ tmBeepStop(); closeSheet(); tmStart(+b.dataset.sec, b.dataset.l || ""); return; }
   if (act === "add-open"){ if (S.lpFired){ S.lpFired = false; return; } if (!document.getElementById("appsFan").hidden){ fanClose(); return; }
     /* MyWorld_1.37 : le + écoute sans ouvrir la fenêtre ; un 2e toucher arrête l'écoute ; sans dictée possible → fenêtre clavier */
     if (S.micOn){ S.dictate && S.dictate(); return; }
@@ -7197,6 +7344,7 @@ function snap(col, key, order){
   ref.onSnapshot(function(s){ S[key] = s.docs.map(function(d){ var o = Object.assign({}, d.data()); o._id = d.id; return o; }); if (key === "notes") S.notesLoaded = true; S.dbState = "ok"; render(); if (key === "items" || key === "notes") markReady(key); }, function(e){ if (e && e.code === "revoked"){ S.dbState = "off"; render(); } });
 }
 applyMonth(); route();
+tmLoad(); if (TM.list.length){ tmRender(); tmRun(); }
 setInterval(render, 600000);
 
 var readyParts = {items:0, notes:0, settings:0}, readySent = false;
