@@ -848,6 +848,80 @@ body.add-on{overflow:hidden}
 #addSlot .capture{margin:0}
 .add-tip{margin-top:10px;font-size:13px;font-weight:600;color:var(--muted);line-height:1.45}
 #addSlot .cap-prev~.add-tip,#addSlot:has(.cap-prev)+.add-tip{display:none}
+/* MyWorld_1.42 : « Je n'ai pas bien compris » (bouton +) */
+#addSlot:has(.wf)+.add-tip,#addSheet.wf-on .add-head,#addSheet.wf-on #captureForm,#addSheet.wf-on #captureHint{display:none}
+.add-sheet{overscroll-behavior:contain}
+#addSheet.wf-on{padding-bottom:0}
+.wf{display:flex;flex-direction:column;animation:cpIn .32s cubic-bezier(.16,1,.3,1)}
+.wf-hd{display:flex;align-items:center;gap:12px;padding:2px 0 12px}
+.wf-bub{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:#FFF1DE;color:#C9781C;flex:none}
+.wf-hd h3{font-size:21px;font-weight:900;line-height:1.15;color:var(--text)}
+.wf-hd p{margin-top:2px;font-size:13px;font-weight:700;color:var(--muted);line-height:1.35}
+.wf-x{margin-left:auto;align-self:flex-start;width:38px;height:38px;border-radius:12px;border:1px solid var(--line);background:#FFFFFF;display:grid;place-items:center;color:var(--text);padding:0;flex:none}
+.wf-heard{display:flex;align-items:center;gap:8px;padding:11px 10px 11px 14px;border-radius:16px;background:#EEF3F8}
+.wf-heard .t{flex:1;min-width:0}
+.wf-heard small{display:block;font-size:10.5px;font-weight:900;letter-spacing:.1em;color:var(--muted)}
+.wf-heard b{display:block;font-size:16px;font-weight:800;line-height:1.3;margin-top:1px;color:var(--text);overflow-wrap:anywhere}
+.wf-rb{width:38px;height:38px;border-radius:50%;border:0;background:#FFFFFF;color:var(--ink);display:grid;place-items:center;flex:none;padding:0;box-shadow:0 1px 3px rgba(11,58,92,.12)}
+.wf-sec{margin:16px 2px 8px;font-size:11.5px;font-weight:900;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.wf-sug{display:flex;flex-direction:column;gap:8px}
+.wf-sc,.wf-blk{border-radius:18px;border:1.5px solid var(--line);background:#FFFFFF;overflow:hidden;transition:border-color .2s,box-shadow .2s}
+.wf-sc.on{border-color:var(--ink);box-shadow:0 0 0 3px rgba(11,58,92,.08)}
+.wf-blk.op{border-color:var(--ink);box-shadow:0 8px 20px rgba(11,58,92,.10)}
+.wf-sh,.wf-bhb{display:flex;align-items:center;gap:12px;width:100%;min-height:62px;padding:8px 14px 8px 12px;border:0;background:transparent;font:inherit;color:var(--text);text-align:left;cursor:pointer}
+.wf-ib{width:42px;height:42px;border-radius:14px;background:#EEF3F8;color:var(--ink);display:grid;place-items:center;flex:none}
+.wf-sc.on .wf-ib{background:var(--ink);color:#FFFFFF}
+.wf-tt{flex:1;min-width:0;display:flex;flex-direction:column}
+.wf-tt b{font-size:16px;font-weight:900;line-height:1.25}
+.wf-tt>span{font-size:13px;font-weight:700;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wf-badge{display:inline-block;margin-left:6px;padding:2px 8px;border-radius:999px;background:#E3F4EA;color:#23784F;font-size:11px;font-weight:900;vertical-align:2px;white-space:nowrap}
+.wf-rd{width:22px;height:22px;border-radius:50%;border:2px solid #C9D6E3;flex:none;box-sizing:border-box}
+.wf-sc.on .wf-rd{border:7px solid var(--ink)}
+.wf-body{padding:2px 14px 14px;animation:cpIn .25s ease-out}
+.wf .field input,.wf .field select{height:46px}
+.wf .field textarea{box-sizing:border-box;width:100%;border:1.5px solid var(--line);border-radius:10px;padding:10px 14px;font:inherit;font-size:16px;color:var(--text)}
+.wf-stp{display:flex;align-items:center;justify-content:center;gap:18px;padding:4px 0 8px}
+.wf-stp b{min-width:130px;text-align:center;font-size:32px;font-weight:900;letter-spacing:-.02em;font-variant-numeric:tabular-nums;color:var(--text)}
+.wf-sb{width:46px;height:46px;border-radius:50%;border:1.5px solid var(--line);background:#FFFFFF;font:900 24px/1 var(--f-body);color:var(--ink);padding:0;cursor:pointer}
+.wf-chs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.wf-ch{min-height:38px;padding:0 13px;border-radius:999px;border:1.5px solid var(--line);background:#FFFFFF;font:800 13.5px var(--f-body);color:var(--text);cursor:pointer}
+.wf-ch[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#FFFFFF}
+.wf-lbl{font-size:13px;font-weight:800;color:var(--muted);margin:2px 0 6px}
+.wf-more{display:flex;align-items:center;gap:10px;width:100%;min-height:52px;padding:0 14px;border-radius:16px;border:1.5px dashed #C9D6E3;background:#FFFFFF;font:800 14.5px var(--f-body);color:var(--ink);cursor:pointer;margin-top:8px}
+.wf-more span{flex:1;text-align:left}
+.wf-more[aria-expanded="true"]{border-style:solid;border-color:var(--ink)}
+.wf-more[aria-expanded="true"] svg:last-child{transform:rotate(180deg)}
+.wf-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-top:8px}
+.wf-tile{display:flex;flex-direction:column;align-items:center;gap:4px;padding:9px 2px;border-radius:12px;border:1.5px solid var(--line);background:#FFFFFF;color:var(--ink);font:800 11px/1.15 var(--f-body);cursor:pointer;text-align:center}
+.wf-tile span{color:var(--text)}
+.wf-tile[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#FFFFFF}.wf-tile[aria-pressed="true"] span{color:#FFFFFF}
+.wf-pick{padding:10px;border-radius:16px;background:#F2F6F9;margin-top:8px}
+.wf-pick .wf-grid{margin-top:0}.wf-pick .wf-tile{border-color:transparent}
+.wf-other{margin-top:10px;border-radius:18px;border:1.5px solid var(--ink);box-shadow:0 0 0 3px rgba(11,58,92,.08);padding:12px 14px 14px}
+.wf-other .wf-tt{margin-bottom:10px}
+.wf-then{margin:14px 4px 6px;font-size:11.5px;font-weight:900;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.wf-bh{display:flex;align-items:center;padding-right:8px}
+.wf-bhb{padding-right:4px}
+.wf-num{font-size:11px;font-weight:900;color:#9AA8B6;letter-spacing:.06em}
+.wf-rm{width:38px;height:38px;border-radius:10px;border:0;background:transparent;color:#7D8C9B;display:grid;place-items:center;padding:0;flex:none}
+.wf-add{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:50px;margin-top:12px;border-radius:16px;border:1.5px dashed #9FB3C8;background:#F7FAFC;color:var(--ink);font:900 14.5px var(--f-body);cursor:pointer}
+.wf-learn{display:flex;gap:12px;align-items:flex-start;margin-top:16px;padding:12px 14px;border-radius:16px;border:1.5px dashed #C9D6E3}
+.wf-lt{flex:1;min-width:0;font-size:13.5px;font-weight:700;color:var(--muted);line-height:1.45;overflow-wrap:anywhere}
+.wf-lt b{display:block;color:var(--text);font-size:14.5px;font-weight:900;margin-bottom:2px}
+.wf-lt em{font-style:normal;color:var(--text);font-weight:800}
+.wf-slot{display:inline-block;padding:0 7px;border-radius:7px;background:#FFE7C2;color:#8A4F0B;font-weight:900;line-height:1.5}
+.wf-tg{position:relative;width:48px;height:28px;border-radius:999px;border:0;padding:0;background:#CBD5DF;flex:none;cursor:pointer;transition:background .2s;margin-top:2px}
+.wf-tg::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#FFFFFF;box-shadow:0 1px 3px rgba(0,0,0,.2);transition:transform .2s}
+.wf-tg[aria-checked="true"]{background:#2F9E6B}.wf-tg[aria-checked="true"]::after{transform:translateX(20px)}
+.wf-tg:disabled{opacity:.45}
+.wf-foot{position:sticky;bottom:0;z-index:2;display:flex;justify-content:space-between;gap:10px;margin:14px calc(-1 * max(18px,env(safe-area-inset-right,0px))) 0;padding:12px max(18px,env(safe-area-inset-right,0px)) calc(16px + env(safe-area-inset-bottom,0px));border-top:1px solid #EEF2F6;background:#FFFFFF}
+.wf-bl{min-height:48px;padding:0 20px;border-radius:999px;border:1.5px solid var(--ink);background:#FFFFFF;color:var(--ink);font:800 15px var(--f-body);cursor:pointer}
+.wf-bi{min-height:48px;padding:0 24px;border-radius:999px;border:0;background:var(--ink);color:#FFFFFF;font:900 15px var(--f-body);cursor:pointer}
+.ph-row{display:flex;align-items:center;gap:10px;padding:12px 0;border-top:1px solid #EEF2F6}
+.ph-row:first-of-type{border-top:0}
+.ph-tx{flex:1;min-width:0;font-size:14px;font-weight:700;line-height:1.4;color:var(--text);overflow-wrap:anywhere}
+.ph-tx em{display:flex;align-items:center;gap:6px;font-style:normal;font-size:13px;font-weight:900;color:var(--ink);margin-top:3px}
+.ph-del{width:40px;height:40px;border-radius:12px;border:0;background:#FBECEC;color:#B83227;display:grid;place-items:center;flex:none;padding:0;cursor:pointer}
 
 /* MyWorld_0.2 : ambiance Riviera. Grand bandeau bleu Méditerranée, texte blanc, semaine qui flotte dessus */
 html{background:var(--page,#F5F8FB)!important;transition:background-color 1.5s linear}
@@ -2502,10 +2576,11 @@ var DECO = (function(){
 
 </script>
 <script>
-var APP_VERSION = "MyWorld_1.41";
+var APP_VERSION = "MyWorld_1.42";
 /* MyWorld_1.33 : nouveautés affichées dans les Réglages. À CHAQUE VERSION (appli ou jeu) : ajouter une entrée EN TÊTE,
    {v: numéro, d: date AAAA-MM-JJ, t: titre court, l: 1 à 3 phrases simples, sans jargon}. */
 var MW_NEWS = [
+  {"v": "1.42", "d": "2026-11-17", "t": "Quand le bouton + n'a pas compris", "l": ["Nouvel écran : l'appli propose ses 3 meilleures idées, « Autre chose… » montre toutes les actions (minuteur, rappel, rendez-vous, note, courses, ouvrir une appli ou une note, carte de fidélité…).", "« Ajouter une action » permet d'enchaîner jusqu'à 3 actions, et l'appli retient ta phrase : la durée, l'heure ou le texte peuvent changer la fois suivante.", "Réglages : nouvelle carte « Phrases apprises » pour voir et oublier ces phrases.", "La page derrière la fenêtre d'ajout ne défile plus."]},
   {"v": "1.41", "d": "2026-11-16", "t": "Correctifs des textes à copier", "l": ["Modifier une pastille ne la fait plus disparaître, même en effaçant tout son texte : le curseur se place à la fin.", "Dans un bloc à copier, Entrée fait un retour à la ligne dans le bloc (au lieu d'en créer un second)."]},
   {"v": "1.40", "d": "2026-11-16", "t": "Notes de l'accueil et textes à copier", "l": ["Accueil : les notes épinglées d'abord, en petites tuiles sur deux lignes, puis les 5 dernières notes modifiées (la plus récente à gauche).", "Texte à copier : « Modifier » se fait directement dans la pastille ou le bloc, et « Désactiver » le remet en texte normal."]},
   {"v": "1.39", "d": "2026-11-16", "t": "Modifier un texte à copier", "l": ["Dans une note, un appui long sur une pastille ou un bloc à copier propose de le modifier ou de le supprimer."]},
@@ -4180,9 +4255,9 @@ function learnData(){
   Object.assign(places, l.places || {});
   /* les règles apprises sur des mots trop généraux (« rendez-vous », « acheter »…) sont nettoyées */
   var clean = function(list){ return (list || []).map(function(r){ return Object.assign({}, r, {w:(r.w || []).filter(function(w){ return !STOPW.test(w); })}); }).filter(function(r){ return r.w.length; }); };
-  return {places:places, kinds:clean(l.kinds), cats:clean(l.cats), rewrites:Object.assign({}, l.rewrites || {}), removed:removed.slice()};
+  return {places:places, kinds:clean(l.kinds), cats:clean(l.cats), rewrites:Object.assign({}, l.rewrites || {}), removed:removed.slice(), phrases:(l.phrases || []).filter(function(r){ return r && r.t && r.acts && r.acts.length; })};
 }
-function saveLearn(L){ return saveSettings({learn:{places:L.places, kinds:L.kinds.slice(-80), cats:(L.cats || []).slice(-80), rewrites:L.rewrites, removed:L.removed}}); }
+function saveLearn(L){ return saveSettings({learn:{places:L.places, kinds:L.kinds.slice(-80), cats:(L.cats || []).slice(-80), rewrites:L.rewrites, removed:L.removed, phrases:(L.phrases || []).slice(-60)}}); }
 function keyWords(t){
   return normS(t).split(/[^a-z0-9']+/).map(function(w){ return w.replace(/^(l|d|j|qu|n|s|m|t)'/, ""); }).filter(function(w){ return w.length >= 3 && !STOPW.test(w) && !/^\d/.test(w); }).slice(0, 3);
 }
@@ -4250,8 +4325,8 @@ function buildFinal(F, text){
   return o;
 }
 /* ce que tes corrections m'apprennent */
-function learnFrom(F0, F, text){
-  var L = learnData(), learned = [];
+function learnFrom(F0, F, text, Lin){
+  var L = Lin || learnData(), learned = [];
   if (F.kind !== F0.kind && F.kind !== "note-add" && F0.kind !== "note-add"){
     var w = keyWords(F0.core || stripWords(text) || text);
     if (w.length){ L.kinds = L.kinds.filter(function(r){ return r.w.join(" ") !== w.join(" "); }); L.kinds.push({w:w, k:F.kind}); learned.push("type"); }
@@ -4275,7 +4350,7 @@ function learnFrom(F0, F, text){
     var a = (F0.core || "").trim(), b = (F.core || "").trim();
     if (a && b && normS(a) !== normS(b) && learned.indexOf("lieu") < 0 && a.length <= 80){ L.rewrites[normS(a)] = b; learned.push("titre"); }
   }
-  if (learned.length) saveLearn(L);
+  if (learned.length && !Lin) saveLearn(L);
   return learned;
 }
 
@@ -4362,19 +4437,21 @@ function commit(r){
 }
 
 var KIND_LBL = {courses:"Courses", event:"Rendez-vous", todo:"À faire", rappel:"Rappel", exploit:"Exploit", note:"Note", birthday:"Anniversaire", "note-add":"Ajout à une note", quest:"À faire"};
-var CP = null;
 function onCapture(e){
   e.preventDefault();
   var input = document.getElementById("captureInput"), hint = document.getElementById("captureHint");
   var text = input.value.trim(); if (!text) return;
   if (!needDb()) return;
+  if (WF){ WF = null; wfRender(); }
+  /* MyWorld_1.42 : une phrase que tu m'as apprise passe avant tout le reste */
+  var lm = wfMatch(text); if (lm){ input.value = ""; hint.textContent = ""; if (!document.getElementById("addRoot").hidden) addClose(); wfRunAll(wfFromRule(lm, text), text); return; }
   /* MyWorld_1.38 : minuteur */
   var tc = timerCmd(text); if (tc){ input.value = ""; hint.textContent = "";
-    if (tc.miss){ toast("Dis la durée : « minuteur de 10 minutes »."); if (document.getElementById("addRoot").hidden) addOpen("text"); input.value = text; return; }
+    if (tc.miss){ understand(text).then(function(r){ wfStart(text, r, ["minuteur"]); }); return; }
     if (!document.getElementById("addRoot").hidden) addClose(); tmStart(tc.sec, tc.label); return; }
   /* MyWorld_1.37 : « Ouvre la note travail », « Ouvre le suivi du sommeil »… */
   var oc = openCmd(text); if (oc){ input.value = ""; hint.textContent = "";
-    if (oc === "miss"){ if (document.getElementById("addRoot").hidden) addOpen("text"); input.value = text; return; }
+    if (oc === "miss"){ understand(text).then(function(r){ wfStart(text, r, ["ouvrir"]); }); return; }
     if (!document.getElementById("addRoot").hidden) addClose(); return; }
   /* MyWorld_1.4 : « carte Casto » ouvre directement la carte en mode caisse */
   var fc = fidFind(text); if (fc){ input.value = ""; hint.textContent = ""; if (!document.getElementById("addRoot").hidden) addClose(); fidOpen(fc._id); return; }
@@ -4383,14 +4460,12 @@ function onCapture(e){
     var F = fieldsFix(fieldsOf(r, text), r);
     if (isClear(F)){
       /* tout est compris : création directe, avec « Annuler » dans le message */
-      CP = null; renderPreview();
       if (!document.getElementById("addRoot").hidden) setTimeout(addClose, 150);
       Promise.resolve(commit(buildFinal(F, text))).catch(dbErr);
       return;
     }
-    CP = {text:text, F0:Object.assign({}, F), F:F, learnedBefore:!!r.learned};
-    if (document.getElementById("addRoot").hidden) addOpen("quiet");   /* depuis le micro : la fenêtre ne s'ouvre que si ce n'est pas clair */
-    renderPreview(true);
+    /* pas clair : « Je n'ai pas bien compris », tu montres ce qu'il fallait faire (la fenêtre ne s'ouvre que dans ce cas depuis le micro) */
+    wfStart(text, r);
   });
 }
 /* MyWorld_1.38 : minuteur (« mets un minuteur de 10 minutes », « minuteur 5 min pour les pâtes ») */
@@ -4500,12 +4575,7 @@ function openCmd(text){
   if (!q) return null;
   for (var i = 0; i < OPEN_APPS.length; i++){
     if (!OPEN_APPS[i][1].test(q)) continue;
-    var k = OPEN_APPS[i][0];
-    if (!document.getElementById("appsFan").hidden) fanClose();
-    if (k === "month"){ S.monthOffset = 0; S.monthSel = null; openSheet("Le mois", '<div id="mBody">' + monthHTML() + '</div>'); return true; }
-    if (k.indexOf("listes:") === 0){ S.listTab = k.slice(7); if (k === "listes:todo") S.todoMom = "auj"; k = "listes"; }
-    if (k === "reglages") S.regOpen = "";
-    if (location.hash.replace("#", "") === k) render(); else location.hash = k;
+    appOpen(OPEN_APPS[i][0]);
     return true;
   }
   var fc = fidFind("carte " + q.replace(/^(?:ma |la |une )?cartes?\s+/, "")); if (/^(?:ma |la |une )?cartes?\s/.test(q) && fc){ fidOpen(fc._id); return true; }
@@ -4532,14 +4602,8 @@ function isClear(F){
 function cpField(id, label, val, type, wide, ph){
   return '<div class="field' + (wide ? " wide" : "") + '"><label for="' + id + '">' + label + '</label><input id="' + id + '" type="' + (type || "text") + '" value="' + h(val || "") + '"' + (ph ? ' placeholder="' + h(ph) + '"' : "") + ' enterkeyhint="done"></div>';
 }
-function renderPreview(first){
-  var form = document.getElementById("captureForm"), box = document.getElementById("capPrev");
-  if (!CP){ if (box) box.remove(); return; }
-  if (!box){ box = document.createElement("div"); box.id = "capPrev"; box.className = "cap-prev"; box.setAttribute("role", "group"); box.setAttribute("aria-label", "Ce que j'ai compris"); form.parentNode.insertBefore(box, form.nextSibling); }
-  else if (!first) box.style.animation = "none";
-  var F = CP.F, kinds = ["event","todo","rappel","note","birthday","exploit"];
-  if (kinds.indexOf(CP.F0.kind) < 0) kinds.push(CP.F0.kind);
-  var chips = kinds.map(function(k){ return '<button type="button" data-cpk="' + k + '" aria-pressed="' + (F.kind === k) + '">' + KIND_LBL[k] + '</button>'; }).join("");
+function catChips(cur){ return CAT_ORDER.map(function(k){ return '<button type="button" class="k-' + k + '" data-cat="' + k + '" aria-pressed="' + (k === cur) + '">' + CATS[k].n + '</button>'; }).join(""); }
+function cpFieldsHTML(F){
   var f = "";
   if (F.kind === "event") f = cpField("cpCore", "Quoi", F.core, "text", true) + cpField("cpWith", "Avec", F.people, "text", false, "Prénoms") + cpField("cpWhere", "Où", F.place, "text", false, "Lieu") + cpField("cpDate", "Jour", F.date, "date") + cpField("cpTime", "Heure", F.time, "time")
     + '<div class="wide"><p class="cat-lbl">Domaine</p><div class="cat-chips" id="cpCats">' + catChips(F.catManual && F.cat ? F.cat : guessCatPlain(F)) + '</div></div>';
@@ -4552,41 +4616,420 @@ function renderPreview(first){
     + '<div class="wide"><p class="cat-lbl">Domaine</p><div class="cat-chips" id="cpCats">' + catChips(F.catManual && F.cat ? F.cat : guessCatPlain(F)) + '</div></div>';
   else if (F.kind === "rappel") f = cpField("cpCore", "Quoi", F.core, "text", true) + cpField("cpDate", "Jour (facultatif)", F.date, "date") + cpField("cpTime", "Heure (facultatif)", F.time, "time");
   else f = cpField("cpCore", "Titre", F.core, "text", true);
-  box.innerHTML = '<p class="cp-eyebrow">J\'ai compris' + (CP.learnedBefore ? ' <span class="cp-learned">· d\'après tes corrections</span>' : '') + '</p>'
-    + '<div class="cp-kinds" role="group" aria-label="Type">' + chips + '</div>'
-    + (f ? '<div class="cp-f">' + f + '</div>' : "")
-    + '<p class="cp-out" id="cpOut" aria-live="polite"></p>'
-    + '<div class="cp-act"><button type="button" class="btn-line" data-cp="cancel">Annuler</button><button type="button" class="btn-ink" data-cp="ok">Valider</button></div>';
-  updatePreviewOut();
-  box.querySelectorAll("[data-cpk]").forEach(function(b){ b.onclick = function(){ readPreview(); var k = b.dataset.cpk; F.kind = k; if ((k === "event" || k === "birthday" || k === "todo") && !F.date) F.date = iso(today()); if (k === "todo") F.later = false; if (k === "birthday" && !F.person) F.person = F.core; if (k === "note" && !F.noteBody && CP.F0.kind !== "note"){ var fn = freeNote(stripPolite(CP.text).replace(/^(?:(?:cr[ée]{1,2}(?:r|s|z)?|fais|écris|ecris|prends|mets|ajoute)[\s-]+)?(?:moi\s+)?(?:une\s+)?(?:nouvelle\s+)?note\s*(?:pour\s+(?:noter|dire|retenir)\s+)?(?:que\s+|qu['’]\s*)?/i, "")); F.noteBody = fn.text; if (!F.noteTitle) F.noteTitle = fn.title; F.todo = false; } renderPreview(false); }; });
-  box.querySelectorAll("input,textarea").forEach(function(inp){ inp.addEventListener("input", function(){ readPreview(); updatePreviewOut(); refreshCatChips(); }); if (inp.tagName === "INPUT") inp.addEventListener("keydown", function(e){ if (e.key === "Enter"){ e.preventDefault(); validatePreview(); } }); });
-  box.querySelectorAll("[data-cat]").forEach(function(b){ b.onclick = function(){ readPreview(); F.cat = b.dataset.cat; F.catManual = true; refreshCatChips(); }; });
-  box.querySelector('[data-cp="cancel"]').onclick = cancelPreview;
-  box.querySelector('[data-cp="ok"]').onclick = validatePreview;
-  if (first){ var ci = document.getElementById("captureInput"); if (document.activeElement === ci) ci.blur(); setTimeout(function(){ try { box.scrollIntoView({block:"nearest", behavior: REDUCED ? "auto" : "smooth"}); } catch(e){} }, 60); }
+  return f;
 }
-function catChips(cur){ return CAT_ORDER.map(function(k){ return '<button type="button" class="k-' + k + '" data-cat="' + k + '" aria-pressed="' + (k === cur) + '">' + CATS[k].n + '</button>'; }).join(""); }
-function refreshCatChips(){
-  var box = document.getElementById("cpCats"); if (!box || !CP) return; var F = CP.F, cur = F.catManual && F.cat ? F.cat : guessCatPlain(F);
-  box.querySelectorAll("[data-cat]").forEach(function(b){ b.setAttribute("aria-pressed", String(b.dataset.cat === cur)); });
-}
-function readPreview(){
-  if (!CP) return; var F = CP.F, v = function(id){ var el = document.getElementById(id); return el ? el.value : null; };
+function wfReadKind(F){
+  var v = function(id){ var el = document.getElementById(id); return el ? el.value : null; };
   if (v("cpCore") != null) F.core = v("cpCore");
   if (v("cpWith") != null) F.people = v("cpWith");
   if (v("cpWhere") != null) F.place = v("cpWhere");
-  if (v("cpDate") != null) F.date = v("cpDate");
+  if (v("cpDate") != null){ F.date = v("cpDate"); if (F.kind === "todo") F.later = !F.date; }
   if (v("cpTime") != null) F.time = v("cpTime");
   if (v("cpPerson") != null) F.person = v("cpPerson");
   if (v("cpNoteTitle") != null) F.noteTitle = v("cpNoteTitle");
   if (v("cpNoteBody") != null) F.noteBody = v("cpNoteBody");
 }
-function updatePreviewOut(){
-  var out = document.getElementById("cpOut"); if (!out || !CP) return;
-  var r = buildFinal(CP.F, CP.text);
-  out.hidden = r.kind === "note";
-  out.innerHTML = r.kind === "event" ? '<b>' + h(r.title || "Sans titre") + '</b>' + (r.date ? ' · ' + h(fmtDay(parseISO(r.date))) : "") + (r.place ? '<br>Lieu dans ton agenda : ' + h(r.place) : "")
-    : '<b>' + h(describe(r)) + '</b>';
+/* ---------- MyWorld_1.42 : « Je n'ai pas bien compris » → tu montres ce qu'il fallait faire, l'appli retient la phrase ---------- */
+var WF = null;
+var WF_ACTS = {
+  minuteur:{n:"Minuteur", l:"Lancer un minuteur", b:"Lancer"},
+  rappel:{n:"Rappel", l:"Me le rappeler", b:"Créer le rappel", kind:"rappel"},
+  rdv:{n:"Rendez-vous", l:"Créer un rendez-vous", b:"Créer", kind:"event"},
+  afaire:{n:"À faire", l:"Ajouter à faire", b:"Ajouter", kind:"todo"},
+  note:{n:"Note", l:"Nouvelle note", b:"Créer la note", kind:"note"},
+  addnote:{n:"Dans une note", l:"Ajouter à une note", b:"Ajouter"},
+  courses:{n:"Courses", l:"Ajouter aux courses", b:"Ajouter"},
+  ouvrir:{n:"Ouvrir", l:"Ouvrir une appli ou une note", b:"Ouvrir"},
+  carte:{n:"Carte", l:"Sortir une carte de fidélité", b:"Ouvrir"},
+  anniv:{n:"Anniversaire", l:"Noter un anniversaire", b:"Créer", kind:"birthday"},
+  exploit:{n:"Exploit", l:"Noter un exploit", b:"Valider", kind:"exploit"}
+};
+var WF_ORDER = ["minuteur","rappel","rdv","afaire","note","addnote","courses","ouvrir","carte","anniv","exploit"];
+var KIND_ACT = {event:"rdv", todo:"afaire", quest:"afaire", rappel:"rappel", note:"note", birthday:"anniv", exploit:"exploit", "note-add":"addnote", courses:"courses", contact:"rappel"};
+var WF_IC = {
+  minuteur:'<circle cx="12" cy="13.5" r="7.5"/><path d="M12 10v3.5l2.5 2M9.5 2.5h5M12 2.5V6"/>',
+  rappel:'<path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.8 1.8H4.2z"/><path d="M10 21h4"/>',
+  rdv:'<rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/>',
+  afaire:'<circle cx="12" cy="12" r="8.5"/><path d="M8.3 12.2l2.6 2.6 4.8-5.4"/>',
+  note:'<path d="M6 3h8.5L19 7.5V21H6z"/><path d="M14 3v5h5M9 13h7M9 17h5"/>',
+  addnote:'<path d="M6 3h8.5L19 7.5V21H6z"/><path d="M14 3v5h5M12.5 11v7M9 14.5h7"/>',
+  courses:'<path d="M3 4h2.2l2.4 11h10l2.1-8H6.4"/><circle cx="9" cy="19.5" r="1.4"/><circle cx="16.5" cy="19.5" r="1.4"/>',
+  ouvrir:'<path d="M14 4h6v6M20 4l-8.5 8.5"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/>',
+  carte:'<rect x="3" y="6" width="18" height="13" rx="2.5"/><path d="M3 10.5h18M7 15h4"/>',
+  anniv:'<path d="M4.5 20.5h15v-7.5h-15z"/><path d="M4.5 16.5c2.5 1.6 4.5 1.6 7.5 0s5-1.6 7.5 0M12 13V9.5"/><path d="M12 7c-1.2-1.2 0-3 0-3.5.1.6 1.2 2.3 0 3.5z"/>',
+  exploit:'<path d="M12 3.2l2.7 5.5 6 .9-4.4 4.2 1 6L12 17l-5.3 2.8 1-6L3.3 9.6l6-.9z"/>',
+  ear:'<path d="M7 9a5 5 0 0 1 10 0c0 3-3 4-3 6.5a3 3 0 0 1-5.5 1.6"/><path d="M10 9.5a2 2 0 0 1 4 0"/>',
+  pen:'<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/>',
+  mic:'<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/>',
+  x:'<path d="M6 6l12 12M18 6L6 18"/>',
+  plus:'<path d="M12 5v14M5 12h14"/>',
+  grid:'<rect x="4" y="4" width="6" height="6" rx="1.5"/><rect x="14" y="4" width="6" height="6" rx="1.5"/><rect x="4" y="14" width="6" height="6" rx="1.5"/><rect x="14" y="14" width="6" height="6" rx="1.5"/>',
+  down:'<path d="M6 9l6 6 6-6"/>',
+  trash:'<path d="M4.5 7h15M9.5 7V4.5h5V7M6.5 7l1 13h9l1-13"/>'
+};
+function wfIc(k, sz){ return '<svg width="' + (sz || 22) + '" height="' + (sz || 22) + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + WF_IC[k] + '</svg>'; }
+var WF_APPS = [["meteo","Météo"],["sommeil","Sommeil"],["bienetre","Bien-être"],["courses","Courses"],["cartes","Cartes"],["listes:todo","À faire"],["listes:rappels","Rappels"],["month","Le mois"],["notes","Notes"],["gazette","News"],["conclusions","Conclusions"],["fiche","Fiche"],["reglages","Réglages"],["accueil","Accueil"]];
+var WF_SLOT = {d:"durée", h:"heure", x:"texte"};
+/* texte en minuscules sans accents, de même longueur que l'original (pour retrouver les morceaux d'origine) */
+function wfN(t){ return noAcc(String(t || "").toLowerCase()).replace(/[’]/g, "'").replace(/[{}]/g, " "); }
+function wfSame(t){ return wfN(t).length === String(t || "").length; }
+function wfDurSpan(n){
+  for (var i = 0; i < n.length; i++){
+    if (i && !/[\s']/.test(n[i - 1])) continue;
+    var du = durAt(n.slice(i)); if (du && du.sec >= 1) return {a:i, b:i + du.len, sec:du.sec};
+  }
+  return null;
+}
+function wfHourSpan(n){
+  var re = /(^|\s)(\d{1,2})\s*(?:h|heures?|:)\s*(\d{2})?(?![a-z0-9])/g, m;
+  while ((m = re.exec(n))){ var H = +m[2], M = +(m[3] || 0); if (H < 24 && M < 60){ var a = m.index + m[1].length; return {a:a, b:m.index + m[0].length, v:pad(H) + ":" + pad(M)}; } }
+  return null;
+}
+function wfWordAt(n, q){
+  if (!q || q.length < 2) return -1;
+  var i = -1; while ((i = n.indexOf(q, i + 1)) >= 0){ if ((i === 0 || !/[a-z0-9]/.test(n[i - 1])) && !/[a-z0-9]/.test(n[i + q.length] || "")) return i; }
+  return -1;
+}
+function wfAppIn(text){
+  var n = wfN(text).replace(/[.!?]+$/, "").trim();
+  for (var i = 0; i < n.length; i++){
+    if (i && n[i - 1] !== " ") continue;
+    var q = n.slice(i).replace(/^(?:l'appli(?:cation)?|l'app|appli|app|la page|page)\s+/, "").replace(/^(?:de |du |des |d')/, "");
+    for (var j = 0; j < OPEN_APPS.length; j++) if (OPEN_APPS[j][1].test(q)) return OPEN_APPS[j][0];
+  }
+  return null;
+}
+function wfNoteIn(text){ var n = wfN(text); return liveNotes().find(function(x){ var t = wfN(x.title || "").trim(); return t.length >= 3 && wfWordAt(n, t) >= 0; }) || null; }
+function wfFidIn(text){ var n = wfN(text); return fidAll().find(function(c){ var t = wfN(c.name || "").trim(); return t.length >= 3 && wfWordAt(n, t) >= 0; }) || null; }
+function wfNotesList(sel){
+  var L = liveNotes().slice().sort(function(a, b){ return (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0) || String(b.updatedAt || "").localeCompare(String(a.updatedAt || "")); }).filter(function(x){ return (x.title || "").trim(); }).slice(0, 8);
+  if (sel && !L.some(function(x){ return x._id === sel; })){ var s0 = liveNotes().find(function(x){ return x._id === sel; }); if (s0) L.unshift(s0); }
+  return L;
+}
+/* passer les champs d'un type à l'autre (même logique que l'ancien aperçu) */
+function wfSwitch(F0, k, text){
+  var F = Object.assign({}, F0), kind = WF_ACTS[k].kind;
+  if (F.kind === kind) return F;
+  if (!F.core || F0.kind === "courses" || F0.kind === "note-add" || F0.kind === "note") F.core = cap(stripPolite(String(text).trim()).replace(/[.!?]+$/, ""));
+  F.kind = kind;
+  if ((kind === "event" || kind === "birthday" || kind === "todo") && !F.date) F.date = iso(today());
+  if (kind === "todo") F.later = false;
+  if (kind === "birthday" && !F.person) F.person = F.core;
+  if (kind === "note" && !F.noteBody){ var fn = freeNote(stripPolite(text).replace(/^(?:(?:cr[ée]{1,2}(?:r|s|z)?|fais|écris|ecris|prends|mets|ajoute)[\s-]+)?(?:moi\s+)?(?:une\s+)?(?:nouvelle\s+)?note\s*(?:pour\s+(?:noter|dire|retenir)\s+)?(?:que\s+|qu['’]\s*)?/i, "")); F.noteBody = fn.text; if (!F.noteTitle) F.noteTitle = fn.title; F.todo = false; }
+  return F;
+}
+/* une action avec ses réglages pré-remplis depuis la phrase */
+function wfInit(k, text, F0){
+  if (WF_ACTS[k].kind) return {k:k, F:wfSwitch(F0, k, text)};
+  var o = (F0 && F0.orig) || {}, plain = cap(stripPolite(String(text).trim()).replace(/[.!?]+$/, ""));
+  if (k === "minuteur"){ var ds = wfDurSpan(wfN(text)); return {k:k, F:{sec: ds ? Math.round(ds.sec) : 300, label:""}}; }
+  if (k === "addnote"){
+    if (o.kind === "note-add") return {k:k, F:{noteId:o.noteId, what:(o.raw || o.items || []).join(", ")}};
+    var nt = wfNoteIn(text); return {k:k, F:{noteId: nt ? nt._id : null, what:plain}};
+  }
+  if (k === "courses") return {k:k, F:{items: o.kind === "courses" ? (o.items || []).map(function(i){ return (i.q > 1 ? i.q + " " : "") + i.t; }).join(", ") : plain}};
+  if (k === "ouvrir"){ var ap = wfAppIn(text), nn = ap ? null : wfNoteIn(text); return {k:k, F:{tgt: ap || (nn ? "n:" + nn._id : "")}}; }
+  if (k === "carte"){ var fc = wfFidIn(text), fl = fidSorted(); return {k:k, F:{fid: fc ? fc._id : fl.length === 1 ? fl[0]._id : null}}; }
+  return {k:k, F:{}};
+}
+function wfSuggest(text, F0, prefer){
+  var n = wfN(text), out = [], add = function(k){ if (k && WF_ACTS[k] && out.indexOf(k) < 0) out.push(k); };
+  (prefer || []).forEach(add);
+  var ds = wfDurSpan(n), app = wfAppIn(text), nt = wfNoteIn(text), fc = wfFidIn(text);
+  if (ds && /alarm|minut|timer|sonn|chrono|compte a rebours|reveil|cuisson|cuire|\bfour\b|pates|oeuf/.test(n)) add("minuteur");
+  if ((app || nt) && /^(?:ouvr|affich|montr|va |aller |lance |file |go )/.test(n)) add("ouvrir");
+  if (fc && /carte|fidelit|caisse/.test(n)) add("carte");
+  add(KIND_ACT[F0.kind]);
+  if (ds) add("minuteur");
+  if (app) add("ouvrir");
+  if (fc) add("carte");
+  if (nt) add("addnote");
+  if (F0.date || F0.time){ add("rdv"); add("rappel"); }
+  ["rappel","afaire","note"].forEach(add);
+  return out.slice(0, 3);
+}
+function wfStart(text, r, prefer){
+  var F0 = fieldsFix(fieldsOf(r, text), r), voice = S.capVoice && Date.now() - S.capVoice < 4000;
+  WF = {text:text, voice:!!voice, F0:Object.assign({}, F0), items:wfSuggest(text, F0, prefer).map(function(k){ return wfInit(k, text, F0); }), sel:0, open:"s0", more:false, other:null, blocks:[], pick:false, learn:true};
+  if (document.getElementById("addRoot").hidden) addOpen("quiet");
+  wfRender(true);
+}
+function wfMain(){ return !WF ? null : WF.sel === "o" ? WF.other : WF.items[WF.sel]; }
+function wfOpenItem(){
+  if (!WF) return null; var o = WF.open || "";
+  if (o === "o") return WF.other;
+  if (o[0] === "s") return WF.items[+o.slice(1)] || null;
+  if (o[0] === "b") return WF.blocks[+o.slice(1)] || null;
+  return null;
+}
+function wfRead(){
+  var it = wfOpenItem(); if (!it) return;
+  if (WF_ACTS[it.k].kind){ wfReadKind(it.F); return; }
+  var v = function(id){ var el = document.getElementById(id); return el ? el.value : null; };
+  if (v("wfLab") != null) it.F.label = v("wfLab");
+  if (v("wfWhat") != null) it.F.what = v("wfWhat");
+  if (v("wfItems") != null) it.F.items = v("wfItems");
+}
+function wfTgtLbl(t){
+  if (!t) return "";
+  if (/^n:/.test(t)){ var n = liveNotes().find(function(x){ return x._id === t.slice(2); }); return n ? "Note « " + (n.title || "Sans titre") + " »" : "Note supprimée"; }
+  var a = WF_APPS.find(function(x){ return x[0] === t; }); return a ? a[1] : t;
+}
+function wfSum(it, text){
+  var F = it.F;
+  if (WF_ACTS[it.k].kind){ try { var r = buildFinal(Object.assign({}, F, {date: F.date || (F.kind === "event" ? iso(today()) : F.date)}), text); return describe(r); } catch(e){ return ""; } }
+  if (it.k === "minuteur") return durLbl(F.sec) + ((F.label || "").trim() ? " · " + F.label.trim() : "");
+  if (it.k === "addnote"){ var n = liveNotes().find(function(x){ return x._id === F.noteId; }); return n ? "Dans « " + (n.title || "Sans titre") + " »" + ((F.what || "").trim() ? " : " + F.what.trim() : "") : "Choisis la note"; }
+  if (it.k === "courses") return (F.items || "").trim() || "À préciser";
+  if (it.k === "ouvrir") return wfTgtLbl(F.tgt) || "Choisis quoi ouvrir";
+  if (it.k === "carte"){ var c = fidAll().find(function(x){ return x._id === F.fid; }); return c ? c.name : "Choisis une carte"; }
+  return "";
+}
+function wfChip(act, v, lbl, on){ return '<button type="button" class="wf-ch" data-wf="' + act + '" data-v="' + h(v) + '" aria-pressed="' + !!on + '">' + h(lbl) + '</button>'; }
+function wfParamsHTML(it){
+  var F = it.F, k = it.k;
+  if (WF_ACTS[k].kind) return '<div class="cp-f">' + cpFieldsHTML(F) + '</div>';
+  if (k === "minuteur") return '<p class="wf-lbl">Durée</p><div class="wf-stp"><button type="button" class="wf-sb" data-wf="dm" aria-label="Moins">−</button><b>' + durLbl(F.sec) + '</b><button type="button" class="wf-sb" data-wf="dp" aria-label="Plus">+</button></div>'
+    + '<div class="wf-chs">' + [60,180,300,600,900,1800].map(function(s){ return wfChip("dur", s, durLbl(s), F.sec === s); }).join("") + '</div>'
+    + '<div class="cp-f">' + cpField("wfLab", "Pour (facultatif)", F.label, "text", true, "les pâtes, le four…") + '</div>';
+  if (k === "addnote"){ var NL = wfNotesList(F.noteId);
+    return '<p class="wf-lbl">Quelle note</p>' + (NL.length ? '<div class="wf-chs">' + NL.map(function(n){ return wfChip("pnote", n._id, n.title || "Sans titre", n._id === F.noteId); }).join("") + '</div>' : '<p class="wf-lbl">Aucune note pour l\'instant.</p>')
+      + '<div class="cp-f">' + cpField("wfWhat", "Quoi ajouter", F.what, "text", true) + '</div>'; }
+  if (k === "courses") return '<div class="cp-f">' + cpField("wfItems", "Article(s), séparés par des virgules", F.items, "text", true, "lait, pain…") + '</div>';
+  if (k === "ouvrir"){ var NO = wfNotesList(/^n:/.test(F.tgt) ? F.tgt.slice(2) : null).slice(0, 6);
+    return '<p class="wf-lbl">Une appli</p><div class="wf-chs">' + WF_APPS.map(function(a){ return wfChip("ptgt", a[0], a[1], F.tgt === a[0]); }).join("") + '</div>'
+      + (NO.length ? '<p class="wf-lbl">Une note</p><div class="wf-chs">' + NO.map(function(n){ return wfChip("ptgt", "n:" + n._id, n.title || "Sans titre", F.tgt === "n:" + n._id); }).join("") + '</div>' : ""); }
+  if (k === "carte"){ var FL = fidSorted();
+    return FL.length ? '<p class="wf-lbl">Quelle carte</p><div class="wf-chs">' + FL.map(function(c){ return wfChip("pfid", c._id, c.name || "Carte", F.fid === c._id); }).join("") + '</div>' : '<p class="wf-lbl">Aucune carte enregistrée pour l\'instant.</p>'; }
+  return "";
+}
+function wfMissing(it){
+  var F = it.F, k = it.k;
+  if (k === "minuteur") return !(+F.sec >= 1) ? "Choisis une durée." : "";
+  if (k === "addnote") return !F.noteId ? "Choisis la note." : !(F.what || "").trim() ? "Dis ce qu'il faut ajouter à la note." : "";
+  if (k === "courses") return !coItems(F.items || "").length ? "Dis ce qu'il faut ajouter aux courses." : "";
+  if (k === "ouvrir") return !F.tgt ? "Choisis quoi ouvrir." : "";
+  if (k === "carte") return !F.fid ? "Choisis une carte." : "";
+  if (k === "anniv") return !(F.person || F.core || "").trim() ? "Il manque le prénom." : "";
+  if (k === "note") return !((F.noteTitle || "").trim() || (F.noteBody || "").trim()) ? "La note est vide." : "";
+  return !(F.core || "").trim() ? "Il manque « Quoi »." : "";
+}
+/* ce que l'appli retiendra : la phrase, avec ses morceaux variables (durée, heure, texte) */
+function wfStore(it){
+  var F = it.F;
+  if (it.k === "minuteur") return {sec:Math.round(+F.sec || 300), label:(F.label || "").trim()};
+  if (it.k === "addnote") return {noteId:F.noteId, what:(F.what || "").trim()};
+  if (it.k === "courses") return {items:(F.items || "").trim()};
+  if (it.k === "ouvrir") return {tgt:F.tgt};
+  if (it.k === "carte") return {fid:F.fid};
+  var p = {core:(F.core || "").trim(), people:F.people || "", place:F.place || "", time:F.time || "", later:!!F.later, noteTitle:F.noteTitle || "", noteBody:F.noteBody || "", todo:!!F.todo, person:F.person || ""};
+  if (F.catManual && F.cat) p.cat = F.cat;
+  p.dOff = F.date ? Math.round((parseISO(F.date) - today()) / 86400000) : null;
+  return p;
+}
+function wfTextKey(k){ return {rappel:"core", afaire:"core", rdv:"core", exploit:"core", anniv:"person", note:"noteBody", addnote:"what", courses:"items"}[k] || null; }
+function wfLearnPlan(text, items){
+  var n = wfN(text), same = wfSame(text), spans = [], acts = [], ds = wfDurSpan(n), hs = wfHourSpan(n);
+  var free = function(a, b){ return spans.every(function(s){ return b <= s.a || a >= s.b; }); };
+  var has = function(s){ return spans.some(function(x){ return x.s === s; }); };
+  var litOf = function(sp){ var t = "", last = 0; sp.slice().sort(function(a, b){ return a.a - b.a; }).forEach(function(s){ t += n.slice(last, s.a) + " "; last = s.b; }); t += n.slice(last); return t.split(/[^a-z0-9]+/).filter(function(w){ return w.length >= 3; }).length; };
+  items.forEach(function(it){
+    var p = wfStore(it);
+    if (it.k === "minuteur" && ds && Math.round(ds.sec) === p.sec){ if (free(ds.a, ds.b)) spans.push({a:ds.a, b:ds.b, s:"d"}); if (has("d")) p.sec = "{d}"; }
+    if (WF_ACTS[it.k].kind && hs && p.time === hs.v){ if (free(hs.a, hs.b)) spans.push({a:hs.a, b:hs.b, s:"h"}); if (has("h")) p.time = "{h}"; }
+    var tk = wfTextKey(it.k), v = tk ? wfN(String(p[tk] || "")).trim() : "";
+    if (tk && v && !has("x") && v.length <= n.length * 0.5){
+      var at = wfWordAt(n, v);
+      if (at >= 0 && free(at, at + v.length)){ var sp2 = spans.concat([{a:at, b:at + v.length, s:"x"}]); if (litOf(sp2) >= 2){ spans = sp2; p[tk] = "{x}"; } }
+    }
+    acts.push({k:it.k, p:p});
+  });
+  spans.sort(function(a, b){ return a.a - b.a; });
+  var src = same ? String(text) : n, t = "", disp = "", last = 0;
+  spans.forEach(function(s){ t += n.slice(last, s.a) + "{" + s.s + "}"; disp += h(src.slice(last, s.a)) + '<span class="wf-slot">' + WF_SLOT[s.s] + '</span>'; last = s.b; });
+  t += n.slice(last); disp += h(src.slice(last));
+  t = t.replace(/[\s.!?]+$/, "").replace(/\s+/g, " ").trim(); disp = disp.replace(/[\s.!?]+$/, "").trim();
+  return {t:t, disp:disp, acts:acts, ok: !!t && litOf(spans) >= 1};
+}
+function wfRuleRe(t){
+  var src = "^\\s*";
+  t.split(/(\{[dhx]\})/).forEach(function(p){
+    if (!p) return;
+    if (p === "{d}" || p === "{x}") src += "(.+?)";
+    else if (p === "{h}") src += "(\\d{1,2}\\s*(?:h|heures?|:)\\s*(?:\\d{2})?)";
+    else src += p.split(/[\s-]+/).map(function(w){ return escRe(w); }).join("[\\s-]+");
+  });
+  src += "[\\s.!?]*$";
+  try { return new RegExp(src, "d"); } catch(e){ try { return new RegExp(src); } catch(e2){ return null; } }
+}
+function wfMatch(text){
+  var P = learnData().phrases; if (!P.length) return null;
+  var n = wfN(text), same = wfSame(text), best = null;
+  P.forEach(function(rule, ri){
+    var re = wfRuleRe(rule.t || ""), m = re && re.exec(n); if (!m) return;
+    var names = (rule.t.match(/\{[dhx]\}/g) || []), vals = {}, ok = true;
+    names.forEach(function(nm, j){
+      var raw = m[j + 1] || "", s = nm[1];
+      if (s === "d"){ var rt = raw.trim(), du = durAt(rt); if (!du || du.len !== rt.length || du.sec < 1) ok = false; else vals.d = Math.round(du.sec); }
+      else if (s === "h"){ var hm = raw.match(/(\d{1,2})\s*(?:h|heures?|:)\s*(\d{2})?/), H = hm ? +hm[1] : 99, M = hm ? +(hm[2] || 0) : 99; if (H > 23 || M > 59) ok = false; else vals.h = pad(H) + ":" + pad(M); }
+      else { var x = raw; if (same && m.indices && m.indices[j + 1]) x = String(text).slice(m.indices[j + 1][0], m.indices[j + 1][1]); vals.x = x.trim(); if (!vals.x) ok = false; }
+    });
+    if (!ok) return;
+    var lit = rule.t.replace(/\{[dhx]\}/g, "").length;
+    if (!best || lit >= best.lit) best = {rule:rule, vals:vals, lit:lit};
+  });
+  return best;
+}
+function wfFromRule(best, text){
+  return (best.rule.acts || []).filter(function(a){ return WF_ACTS[a.k]; }).map(function(a){
+    var p = Object.assign({}, a.p);
+    Object.keys(p).forEach(function(q){ if (p[q] === "{d}") p[q] = best.vals.d; else if (p[q] === "{h}") p[q] = best.vals.h; else if (p[q] === "{x}") p[q] = best.vals.x; });
+    if (!WF_ACTS[a.k].kind) return {k:a.k, F:p};
+    var r = localParse(text), F = wfSwitch(fieldsFix(fieldsOf(r, text), r), a.k, text);
+    ["core","people","place","noteTitle","noteBody","person"].forEach(function(q){ if (p[q]) F[q] = p[q]; });
+    if (p.time) F.time = p.time;
+    if (p.cat){ F.cat = p.cat; F.catManual = true; }
+    if (p.todo) F.todo = true;
+    if (p.later && !r.date && !r.due){ F.later = true; F.date = ""; }
+    else if (!r.date && !r.due && p.dOff != null) F.date = iso(addDays(today(), p.dOff));
+    return {k:a.k, F:F};
+  });
+}
+function appOpen(k){
+  if (!document.getElementById("appsFan").hidden) fanClose();
+  if (k === "month"){ S.monthOffset = 0; S.monthSel = null; openSheet("Le mois", '<div id="mBody">' + monthHTML() + '</div>'); return; }
+  if (k.indexOf("listes:") === 0){ S.listTab = k.slice(7); if (k === "listes:todo") S.todoMom = "auj"; k = "listes"; }
+  if (k === "reglages") S.regOpen = "";
+  if (location.hash.replace("#", "") === k) render(); else location.hash = k;
+}
+function wfRun(it, text){
+  var F = it.F;
+  if (WF_ACTS[it.k].kind){ var F2 = Object.assign({}, F); if (F2.kind === "event" && !F2.date) F2.date = iso(today()); return Promise.resolve(commit(buildFinal(F2, text))); }
+  if (it.k === "minuteur"){ tmStart(Math.max(1, Math.round(+F.sec || 300)), (F.label || "").trim() ? cap(F.label.trim()) : ""); return Promise.resolve(); }
+  if (it.k === "addnote"){ var tn = liveNotes().find(function(x){ return x._id === F.noteId; }); if (!tn){ toast("Je ne trouve plus cette note."); return Promise.resolve(); }
+    return Promise.resolve(commit({kind:"note-add", noteId:tn._id, title:tn.title, items:splitItems(F.what || ""), raw:splitItems(F.what || "", true)})); }
+  if (it.k === "courses"){ var its = coItems(F.items || ""); return its.length ? Promise.resolve(commit({kind:"courses", items:its, title:"Courses"})) : Promise.resolve(); }
+  if (it.k === "ouvrir"){ if (/^n:/.test(F.tgt || "")){ var nt = liveNotes().find(function(x){ return x._id === F.tgt.slice(2); }); if (nt) openNote(nt._id); else toast("Je ne trouve plus cette note."); } else if (F.tgt) appOpen(F.tgt); return Promise.resolve(); }
+  if (it.k === "carte"){ if (F.fid && fidAll().some(function(c){ return c._id === F.fid; })) fidOpen(F.fid); else toast("Je ne trouve plus cette carte."); return Promise.resolve(); }
+  return Promise.resolve();
+}
+/* les actions qui changent d'écran passent en dernier */
+function wfRunAll(items, text){
+  var nav = items.filter(function(it){ return it.k === "ouvrir" || it.k === "carte"; }), rest = items.filter(function(it){ return nav.indexOf(it) < 0; });
+  return rest.reduce(function(p, it){ return p.then(function(){ return wfRun(it, text); }); }, Promise.resolve())
+    .then(function(){ nav.forEach(function(it){ wfRun(it, text); }); }).catch(dbErr);
+}
+function wfOk(){
+  if (!WF) return; wfRead();
+  var main = wfMain(); if (!main){ toast("Choisis ce que tu voulais."); return; }
+  var all = [main].concat(WF.blocks), text = WF.text;
+  for (var i = 0; i < all.length; i++){
+    var miss = wfMissing(all[i]);
+    if (miss){ toast(miss); WF.open = i === 0 ? (WF.sel === "o" ? "o" : "s" + WF.sel) : "b" + (i - 1); if (i === 0 && WF.sel === "o") WF.more = true; wfRender(); return; }
+  }
+  if (WF.learn){
+    var plan = wfLearnPlan(text, all);
+    if (plan.ok){
+      var L = learnData();
+      if (WF_ACTS[main.k].kind && WF.F0.kind !== "courses" && WF.F0.kind !== "note-add") learnFrom(WF.F0, main.F, text, L);
+      L.phrases = L.phrases.filter(function(r){ return r.t !== plan.t; }); L.phrases.push({t:plan.t, acts:plan.acts, at:nowISO()});
+      saveLearn(L);
+    }
+  }
+  WF = null; wfRender();
+  addClose();
+  wfRunAll(all, text);
+}
+function wfRender(first){
+  var form = document.getElementById("captureForm"), box = document.getElementById("capPrev"), sh = document.getElementById("addSheet");
+  if (!WF){ if (box) box.remove(); if (sh) sh.classList.remove("wf-on"); return; }
+  if (!box){
+    box = document.createElement("div"); box.id = "capPrev"; box.className = "wf"; box.setAttribute("role", "group"); box.setAttribute("aria-label", "Je n'ai pas bien compris");
+    form.parentNode.insertBefore(box, form.nextSibling);
+    box.addEventListener("click", wfClick);
+    box.addEventListener("keydown", function(e){ if (e.key === "Enter" && e.target.tagName === "INPUT"){ e.preventDefault(); wfOk(); } });
+  }
+  if (sh) sh.classList.add("wf-on");
+  var main = wfMain(), all = (main ? [main] : []).concat(WF.blocks), plan = main ? wfLearnPlan(WF.text, all) : {ok:false};
+  var card = function(it, i){
+    var key = "s" + i, on = WF.sel === i, open = WF.open === key;
+    return '<div class="wf-sc' + (on ? " on" : "") + '"><button type="button" class="wf-sh" data-wf="sel" data-i="' + i + '" aria-expanded="' + open + '"><span class="wf-ib">' + wfIc(it.k) + '</span><span class="wf-tt"><b>' + h(WF_ACTS[it.k].l) + (i === 0 ? '<span class="wf-badge">Le plus probable</span>' : '') + '</b><span>' + h(wfSum(it, WF.text)) + '</span></span><span class="wf-rd" aria-hidden="true"></span></button>'
+      + (open ? '<div class="wf-body">' + wfParamsHTML(it) + '</div>' : '') + '</div>';
+  };
+  var grid = function(act, cur){ return '<div class="wf-grid">' + WF_ORDER.map(function(k){ return '<button type="button" class="wf-tile" data-wf="' + act + '" data-k="' + k + '"' + (cur != null ? ' aria-pressed="' + (cur === k) + '"' : '') + '>' + wfIc(k) + '<span>' + WF_ACTS[k].n + '</span></button>'; }).join("") + '</div>'; };
+  var html = '<div class="wf-hd"><span class="wf-bub">' + wfIc("ear", 24) + '</span><div><h3>Je n\'ai pas bien compris</h3><p>Choisis ce que tu voulais, je m\'en souviendrai.</p></div><button type="button" class="wf-x" data-wf="close" aria-label="Fermer">' + wfIc("x", 18) + '</button></div>'
+    + '<div class="wf-heard"><div class="t"><small>' + (WF.voice ? "TU AS DIT" : "TU AS ÉCRIT") + '</small><b>« ' + h(WF.text) + ' »</b></div><button type="button" class="wf-rb" data-wf="edit" aria-label="Corriger la phrase">' + wfIc("pen", 17) + '</button><button type="button" class="wf-rb" data-wf="mic" aria-label="Redire la phrase">' + wfIc("mic", 17) + '</button></div>'
+    + '<p class="wf-sec">Tu voulais peut-être…</p><div class="wf-sug">' + WF.items.map(card).join("") + '</div>'
+    + '<button type="button" class="wf-more" data-wf="more" aria-expanded="' + WF.more + '">' + wfIc("grid", 18) + '<span>Autre chose…</span>' + wfIc("down", 16) + '</button>';
+  if (WF.more){
+    html += grid("other", WF.other ? WF.other.k : "");
+    if (WF.other) html += '<div class="wf-other"><div class="wf-tt"><b>' + h(WF_ACTS[WF.other.k].l) + '</b></div>' + (WF.open === "o" ? wfParamsHTML(WF.other) : '<button type="button" class="wf-ch" data-wf="oopen">Modifier les réglages</button>') + '</div>';
+  }
+  WF.blocks.forEach(function(it, i){
+    var key = "b" + i, open = WF.open === key;
+    html += '<p class="wf-then">Puis</p><div class="wf-blk' + (open ? " op" : "") + '"><div class="wf-bh"><button type="button" class="wf-bhb" data-wf="bopen" data-i="' + i + '" aria-expanded="' + open + '"><span class="wf-ib">' + wfIc(it.k) + '</span><span class="wf-tt"><b>' + h(WF_ACTS[it.k].l) + '</b><span>' + h(wfSum(it, WF.text)) + '</span></span><span class="wf-num">' + (i + 2) + '</span></button><button type="button" class="wf-rm" data-wf="brm" data-i="' + i + '" aria-label="Retirer cette action">' + wfIc("x", 16) + '</button></div>'
+      + (open ? '<div class="wf-body">' + wfParamsHTML(it) + '</div>' : '') + '</div>';
+  });
+  if (WF.blocks.length < 2){
+    html += '<button type="button" class="wf-add" data-wf="add" aria-expanded="' + WF.pick + '">' + wfIc("plus", 18) + 'Ajouter une action</button>';
+    if (WF.pick) html += '<div class="wf-pick">' + grid("pick", null) + '</div>';
+  }
+  var mainLbl = main ? WF_ACTS[main.k].l + (WF.blocks.length ? " + " + WF.blocks.length + " action" + (WF.blocks.length > 1 ? "s" : "") : "") : "…";
+  html += '<div class="wf-learn"><div class="wf-lt"><b>Retenir pour la prochaine fois</b>' + (plan.ok ? '« ' + plan.disp + ' » → <em>' + h(mainLbl) + '</em>' : 'Phrase trop courte pour être retenue.') + '</div><button type="button" class="wf-tg" data-wf="learn" role="switch" aria-checked="' + !!(WF.learn && plan.ok) + '" aria-label="Retenir pour la prochaine fois"' + (plan.ok ? "" : " disabled") + '></button></div>'
+    + '<div class="wf-foot"><button type="button" class="wf-bl" data-wf="cancel">Annuler</button><button type="button" class="wf-bi" data-wf="ok">' + (WF.blocks.length ? "Tout lancer" : main ? WF_ACTS[main.k].b : "Valider") + '</button></div>';
+  var sc = sh ? sh.scrollTop : 0;
+  box.innerHTML = html;
+  if (first){ var ci = document.getElementById("captureInput"); if (document.activeElement === ci) ci.blur(); if (sh) sh.scrollTop = 0; }
+  else { box.style.animation = "none"; if (sh) sh.scrollTop = sc; }
+}
+function wfClick(e){
+  var b = e.target.closest("[data-wf],[data-cat]"); if (!b || !WF) return;
+  if (b.hasAttribute("data-cat") && !b.hasAttribute("data-wf")){ wfRead(); var it0 = wfOpenItem(); if (it0){ it0.F.cat = b.dataset.cat; it0.F.catManual = true; } wfRender(); return; }
+  var a = b.dataset.wf, i = +b.dataset.i, it = wfOpenItem();
+  if (a === "ok"){ wfOk(); return; }
+  if (a === "cancel" || a === "close"){ addClose(); return; }
+  if (a === "edit"){ var t = WF.text, inp = document.getElementById("captureInput"); WF = null; wfRender(); inp.value = t; setTimeout(function(){ inp.focus(); try { inp.setSelectionRange(t.length, t.length); } catch(er){} }, 60); return; }
+  if (a === "mic"){ WF = null; wfRender(); document.getElementById("captureInput").value = ""; if (!(S.dictate && S.dictate(true))) document.getElementById("captureInput").focus(); return; }
+  wfRead();
+  if (a === "learn"){ WF.learn = !WF.learn; }
+  else if (a === "sel"){ WF.sel = i; WF.open = WF.open === "s" + i ? "" : "s" + i; WF.more = false; }
+  else if (a === "more"){ WF.more = !WF.more; if (!WF.more && WF.sel === "o"){ WF.sel = 0; WF.open = "s0"; } }
+  else if (a === "other"){ var k = b.dataset.k; if (!WF.other || WF.other.k !== k) WF.other = wfInit(k, WF.text, WF.F0); WF.sel = "o"; WF.open = "o"; }
+  else if (a === "oopen"){ WF.open = "o"; }
+  else if (a === "add"){ WF.pick = !WF.pick; }
+  else if (a === "pick"){ WF.blocks.push(wfInit(b.dataset.k, WF.text, WF.F0)); WF.pick = false; WF.open = "b" + (WF.blocks.length - 1); }
+  else if (a === "bopen"){ WF.open = WF.open === "b" + i ? "" : "b" + i; }
+  else if (a === "brm"){ WF.blocks.splice(i, 1); WF.open = WF.sel === "o" ? "o" : "s" + WF.sel; }
+  else if (it){
+    var F = it.F, v = b.dataset.v;
+    if (a === "dur") F.sec = +v;
+    else if (a === "dp"){ var s0 = Math.round(F.sec / 60) * 60; F.sec = s0 < 600 ? s0 + 60 : s0 + 300; F.sec = Math.min(F.sec, 86400); }
+    else if (a === "dm"){ var s1 = Math.round(F.sec / 60) * 60; F.sec = Math.max(60, s1 > 600 ? s1 - 300 : s1 - 60); }
+    else if (a === "pnote") F.noteId = v;
+    else if (a === "ptgt") F.tgt = v;
+    else if (a === "pfid") F.fid = v;
+  }
+  wfRender();
+}
+/* Réglages : « Phrases apprises » */
+function phDisp(t){ return h(t).replace(/\{([dhx])\}/g, function(_, s){ return '<span class="wf-slot">' + WF_SLOT[s] + '</span>'; }); }
+function phActLbl(a){
+  var p = a.p || {}, l = WF_ACTS[a.k] ? WF_ACTS[a.k].l : a.k, x = "";
+  if (a.k === "minuteur" && p.sec !== "{d}") x = durLbl(+p.sec);
+  else if (a.k === "ouvrir") return "Ouvrir " + (wfTgtLbl(p.tgt) || "…");
+  else if (a.k === "carte"){ var c = fidAll().find(function(z){ return z._id === p.fid; }); return "Sortir la carte " + (c ? c.name : "…"); }
+  else if (a.k === "addnote"){ var n = liveNotes().find(function(z){ return z._id === p.noteId; }); x = n ? "« " + (n.title || "Sans titre") + " »" : ""; }
+  else if (a.k === "rappel" && p.time && p.time !== "{h}") x = fmtTime(p.time);
+  return l + (x ? " · " + x : "");
+}
+function phrasesSettingsHTML(){
+  var P = learnData().phrases;
+  if (!P.length) return '<p class="rg-hint">Aucune phrase pour l\'instant. Quand je ne comprends pas ce que tu dis avec le bouton +, montre-moi ce que je devais faire : la phrase arrive ici.</p>';
+  return '<p class="rg-hint">Quand tu dis une de ces phrases, je fais l\'action tout de suite. Les morceaux en orange changent selon ce que tu dis.</p>'
+    + P.map(function(r, i){ return {r:r, i:i}; }).reverse().map(function(o){
+      var acts = (o.r.acts || []).filter(function(a){ return WF_ACTS[a.k]; });
+      return '<div class="ph-row"><div class="ph-tx">« ' + phDisp(o.r.t) + ' »' + acts.map(function(a, j){ return '<em>' + wfIc(a.k, 15) + h((j ? "Puis " : "") + (j ? phActLbl(a).charAt(0).toLowerCase() + phActLbl(a).slice(1) : phActLbl(a))) + '</em>'; }).join("") + '</div><button type="button" class="ph-del" data-act="phr-del" data-i="' + o.i + '" aria-label="Oublier cette phrase">' + wfIc("trash", 17) + '</button></div>';
+    }).join("");
 }
 /* ---------- panneau d'ajout (bouton + au milieu) ---------- */
 function addOpen(mode){
@@ -4594,6 +5037,8 @@ function addOpen(mode){
   var root = document.getElementById("addRoot"), slot = document.getElementById("addSlot");
   ["captureForm","capPrev","captureHint"].forEach(function(id){ var el = document.getElementById(id); if (el) slot.appendChild(el); });
   root.hidden = false; document.body.classList.add("add-on");
+  /* MyWorld_1.42 : la page derrière ne défile plus (overflow:hidden ne suffit pas sur téléphone) */
+  if (!document.body.classList.contains("scroll-lock")){ scrollLock(true); S.addLock = true; }
   addFit();
   var inp = document.getElementById("captureInput");
   if (mode === "voice" && S.dictate && S.dictate(true)){ if (document.activeElement && document.activeElement.blur) document.activeElement.blur(); return; }
@@ -4601,10 +5046,11 @@ function addOpen(mode){
 }
 function addClose(){
   var root = document.getElementById("addRoot"); if (root.hidden) return;
-  if (CP){ CP = null; renderPreview(); }
+  if (WF){ WF = null; wfRender(); }
   var zone = document.getElementById("captureZone");
   ["captureForm","captureHint"].forEach(function(id){ var el = document.getElementById(id); if (el) zone.appendChild(el); });
   root.hidden = true; document.body.classList.remove("add-on");
+  if (S.addLock){ S.addLock = false; scrollLock(false); }
   var inp = document.getElementById("captureInput"); if (inp) inp.blur();
 }
 function addFit(){
@@ -4614,20 +5060,6 @@ function addFit(){
 }
 if (window.visualViewport){ window.visualViewport.addEventListener("resize", addFit); window.visualViewport.addEventListener("scroll", addFit); }
 document.addEventListener("keydown", function(e){ if (e.key === "Escape" && !document.getElementById("addRoot").hidden) addClose(); });
-function cancelPreview(){
-  var input = document.getElementById("captureInput"); if (CP) input.value = CP.text;
-  CP = null; renderPreview(); input.focus();
-}
-function validatePreview(){
-  if (!CP) return; readPreview();
-  var F = CP.F, text = CP.text, hint = document.getElementById("captureHint");
-  if (F.kind === "event" && !F.date){ var d = document.getElementById("cpDate"); if (d) d.focus(); return; }
-  var r = buildFinal(F, text), learned = learnFrom(CP.F0, F, text);
-  CP = null; renderPreview();
-  if (!document.getElementById("addRoot").hidden) setTimeout(addClose, 250);
-  if (learned.length){ hint.textContent = "C'est noté, je m'en souviendrai la prochaine fois."; setTimeout(function(){ hint.textContent = ""; }, 4000); }
-  Promise.resolve(commit(r)).catch(dbErr);
-}
 
 /* ---------- fenêtres ---------- */
 function openSheet(title, body, onMount){
@@ -4741,13 +5173,14 @@ var RG_IC = {
   som:'<path d="M20 15A8 8 0 1 1 9 4a6.5 6.5 0 0 0 11 11z"/>',
   news:'<path d="M4 5h13v14H6a2 2 0 0 1-2-2z"/><path d="M17 9h3v8a2 2 0 0 1-2 2"/><path d="M8 9h5M8 13h5"/>',
   appris:'<path d="M12 3l2.5 5 5.5.8-4 3.9 1 5.5L12 15.6 7 18.2l1-5.5-4-3.9 5.5-.8z"/>',
+  phr:'<path d="M4 5h16v10H9l-4 4z"/><path d="M8 9h8M8 12h5"/>',
   notes:'<path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 13h7M9 17h5"/>',
   gcal:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4M9 15l2 2 4-4"/>',
   save:'<path d="M12 4v11M7 10l5 5 5-5M5 20h14"/>',
   ivy:'<path d="M12 21V11M12 11c-4 0-6-3-6-6 3 0 6 2 6 6zM12 14c3 0 5-2 5-5-3 0-5 2-5 5z"/>',
   maj:'<path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/>'
 };
-var RG_COL = {anniv:["#FAD3CB","#A8402F"], plan:["#D9DFF7","#33449A"], som:["#E3D3F7","#6640A6"], news:["#FBE6B4","#8E6312"], appris:["#FDDCC6","#AA4A1C"], notes:["#FFF1C2","#8E6312"], gcal:["#D2E8FA","#2C679C"], save:["#D4EED6","#2F7440"], ivy:["#E6EDC8","#56661A"], maj:["#E3EEF8","#1E4F84"]};
+var RG_COL = {anniv:["#FAD3CB","#A8402F"], plan:["#D9DFF7","#33449A"], som:["#E3D3F7","#6640A6"], news:["#FBE6B4","#8E6312"], appris:["#FDDCC6","#AA4A1C"], phr:["#FFE7C2","#8A4F0B"], notes:["#FFF1C2","#8E6312"], gcal:["#D2E8FA","#2C679C"], save:["#D4EED6","#2F7440"], ivy:["#E6EDC8","#56661A"], maj:["#E3EEF8","#1E4F84"]};
 var RG_CHEV = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>';
 var RG_INFO = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 11v7"/><circle cx="12" cy="6.6" r="1.1" fill="currentColor" stroke="none"/></svg>';
 function rgCard(k, title, sum, body){
@@ -4787,7 +5220,7 @@ function settingsHTML(){
   var maj = '<p class="rg-hint">Si une nouvelle version tarde à arriver : l\'appli retélécharge tout son code depuis internet puis redémarre. Tes données ne bougent pas.</p><button type="button" class="btn light" data-act="force-upd" style="width:100%">Forcer la mise à jour</button><p class="rg-ver">Version ' + APP_VERSION + '</p>';
   return '<section class="section gut rg-page" id="rgPage">'
     + '<h2 class="rg-gt">Moi</h2>' + rgCard("anniv", "Mon anniversaire", bdSum, anniv) + rgCard("plan", "Mon planning", planSum, planningSettingsHTML()) + rgCard("som", "Sommeil", "Objectif " + slHM(sl.target) + " · lever " + slHM(sl.lead) + " avant", som)
-    + '<h2 class="rg-gt">Contenus</h2>' + rgCard("news", "Sujets des News", topics.length ? topics.length + " sujet" + (topics.length > 1 ? "s" : "") : "Aucun sujet", news) + rgCard("appris", "Mots appris", apSum, learnSettingsHTML()) + rgCard("notes", "Affichage des notes", "Texte " + SZ[pr.size] + " · " + (pr.layout === "liste" ? "liste" : "grille"), notes)
+    + '<h2 class="rg-gt">Contenus</h2>' + rgCard("news", "Sujets des News", topics.length ? topics.length + " sujet" + (topics.length > 1 ? "s" : "") : "Aucun sujet", news) + rgCard("appris", "Mots appris", apSum, learnSettingsHTML()) + rgCard("phr", "Phrases apprises", (function(){ var n = learnData().phrases.length; return n ? n + " phrase" + (n > 1 ? "s" : "") : "Aucune pour l'instant"; })(), phrasesSettingsHTML()) + rgCard("notes", "Affichage des notes", "Texte " + SZ[pr.size] + " · " + (pr.layout === "liste" ? "liste" : "grille"), notes)
     + '<h2 class="rg-gt">Compte et données</h2>' + rgCard("gcal", "Google Agenda", gOn ? "Synchronisé" : "Pas encore synchronisé", gcalSettingsHTML()) + rgCard("save", "Sauvegarde", "Télécharger ou importer tes données", save)
     + '<h2 class="rg-gt">L\'appli</h2>' + (nIvy ? rgCard("ivy", "Lanceur Apps", nIvy + " appli" + (nIvy > 1 ? "s déplacées" : " déplacée"), ivy) : "") + rgCard("maj", "Mise à jour", APP_VERSION, maj)
     + '<button type="button" class="rg-out" data-act="signout">Se déconnecter</button></section>';
@@ -5927,6 +6360,8 @@ document.addEventListener("click", function(e){
   if (act === "complete-event"){ completeEventSheet(id); return; }
   if (!needDb()) return;
   if (act === "del-item"){ var it = S.items.find(function(i){ return i._id === id; }); db.collection("items").doc(id).delete().then(function(){ closeSheet(); toast("Supprimé.", {undo: it ? function(){ var c = Object.assign({}, it); delete c._id; db.collection("items").doc(id).set(c).catch(dbErr); } : null}); }).catch(dbErr); return; }
+  if (act === "phr-del"){ var LP = learnData(), gone = LP.phrases[+b.dataset.i]; if (!gone) return; LP.phrases.splice(+b.dataset.i, 1);
+    saveLearn(LP).then(function(){ refreshSettings(); toast("Phrase oubliée.", {undo:function(){ var L2 = learnData(); L2.phrases.push(gone); saveLearn(L2).then(refreshSettings); }}); }); return; }
   if (act === "learn-del"){ var L = learnData(), t = b.dataset.t, k = b.dataset.k;
     if (t === "place"){ delete L.places[k]; if (DEFAULT_PLACES[k] && L.removed.indexOf(k) < 0) L.removed.push(k); }
     else if (t === "kind") L.kinds.splice(+k, 1); else if (t === "cat") L.cats.splice(+k, 1); else if (t === "rw") delete L.rewrites[k];
@@ -7455,7 +7890,7 @@ document.addEventListener("wheel", function(e){
     base = input.value ? input.value.replace(/\s+$/,"") + " " : "";
     rec.onresult = function(ev){ var txt = ""; for (var i = 0; i < ev.results.length; i++) txt += ev.results[i][0].transcript; input.value = base + txt.trim(); if (txt.trim()) bubSet(cap(txt.trim())); };
     rec.onerror = function(ev){ var c = ev && ev.error; if (c === "not-allowed" || c === "service-not-allowed") toast("Autorise le micro pour cette appli dans les réglages de Chrome."); else if (c === "no-speech") toast("Je n'ai rien entendu. Réessaie."); else if (c !== "aborted") toast("La dictée n'a pas fonctionné. Réessaie."); stop(); };
-    rec.onend = function(){ var had = rec !== null, wasPlus = plus; stop(); if (had && wasPlus && !input.value.trim()) toast("Je n'ai rien entendu. Réessaie."); if (had && auto && input.value.trim()){ auto = false; var f = document.getElementById("captureForm"); if (f.requestSubmit) f.requestSubmit(); else f.dispatchEvent(new Event("submit", {cancelable:true})); return; } if (had && input.value.trim()){ input.focus(); hint.innerHTML = "<strong>Vérifie, puis touche +</strong>"; setTimeout(function(){ if (hint.textContent === "Vérifie, puis touche +") hint.textContent = ""; }, 5000); } };
+    rec.onend = function(){ var had = rec !== null, wasPlus = plus; stop(); if (had && wasPlus && !input.value.trim()) toast("Je n'ai rien entendu. Réessaie."); if (had && auto && input.value.trim()){ auto = false; S.capVoice = Date.now(); var f = document.getElementById("captureForm"); if (f.requestSubmit) f.requestSubmit(); else f.dispatchEvent(new Event("submit", {cancelable:true})); return; } if (had && input.value.trim()){ input.focus(); hint.innerHTML = "<strong>Vérifie, puis touche +</strong>"; setTimeout(function(){ if (hint.textContent === "Vérifie, puis touche +") hint.textContent = ""; }, 5000); } };
     try { rec.start(); btn.classList.add("on"); btn.setAttribute("aria-pressed","true"); btn.setAttribute("aria-label","Arrêter la dictée"); hint.textContent = "Je t'écoute…";
       if (plus){ S.micOn = true; document.body.classList.add("mic-on"); bubSet("Je t'écoute…", true); if (nav) nav.setAttribute("aria-label", "Arrêter l'écoute"); try { navigator.vibrate && navigator.vibrate(12); } catch(e){} }
       return true; }
