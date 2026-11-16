@@ -519,6 +519,11 @@ body.ne-open{overflow:hidden}
 .ne-mn button:active{background:rgba(0,0,0,.06)}
 .ne-mn button svg{flex-shrink:0;width:20px;height:20px;opacity:.8}
 .ne-mn .del{color:#C0392B}
+.ne-mn.ne-cpm{min-width:190px}
+#noteEd .cpy{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+#noteEd .cpb{-webkit-touch-callout:none}
+/* les messages (et leur « Annuler ») passent devant la note ouverte */
+body.ne-open .toast{z-index:62}
 .ne-mn hr{border:0;height:1px;margin:4px 8px;background:rgba(0,0,0,.08)}
 .note-editor.dark .ne-mn{background:#2B2B31;color:#F4F1FF}
 .note-editor.dark .ne-mn button:active{background:rgba(255,255,255,.08)}
@@ -2487,10 +2492,11 @@ var DECO = (function(){
 
 </script>
 <script>
-var APP_VERSION = "MyWorld_1.38";
+var APP_VERSION = "MyWorld_1.39";
 /* MyWorld_1.33 : nouveautés affichées dans les Réglages. À CHAQUE VERSION (appli ou jeu) : ajouter une entrée EN TÊTE,
    {v: numéro, d: date AAAA-MM-JJ, t: titre court, l: 1 à 3 phrases simples, sans jargon}. */
 var MW_NEWS = [
+  {"v": "1.39", "d": "2026-11-16", "t": "Modifier un texte à copier", "l": ["Dans une note, un appui long sur une pastille ou un bloc à copier propose de le modifier ou de le supprimer."]},
   {"v": "1.38", "d": "2026-11-16", "t": "Minuteur et rappels « dans 20 minutes »", "l": ["« Mets un minuteur de 10 minutes » lance un compte à rebours (pastille en bas à gauche, sonnerie à la fin) et une notification de secours dans ton agenda.", "« Rappelle-moi dans 20 minutes de sortir le linge » : le rappel tombe à la bonne heure. Marche aussi avec « dans 2 heures », « dans une demi-heure », « dans 3 jours »."]},
   {"v": "1.37", "d": "2026-11-16", "t": "Le + écoute directement", "l": ["Un toucher sur le + le transforme en micro rouge : parle, et c'est ajouté. La fenêtre d'ajout ne s'ouvre que si l'appli n'a pas tout compris.", "Nouveau : « Ouvre … » pour aller dans une appli ou une note (« Ouvre la note travail », « Ouvre le suivi du sommeil », « Ouvre mes cartes de fidélité »).", "Le petit chevron « Apps » au-dessus du + disparaît : tire le + vers le haut pour les applis."]},
   {"v": "1.36", "d": "2026-11-16", "t": "Humeur de la veille", "l": ["Si tu n'as pas noté ta journée la veille au soir, l'appli te la redemande le lendemain jusqu'à 15 h, sur l'accueil et dans Bien-être."]},
@@ -5280,14 +5286,80 @@ function neCopyText(text, el, label){
   if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(ok, legacy); else legacy();
 }
 function neCpHead(blk, ev){ return ev.clientY - blk.getBoundingClientRect().top < 36; }
+/* MyWorld_1.39 : appui long (0,5 s) sur une pastille ou un bloc à copier → petit menu Modifier / Supprimer */
+function neCpMenu(el, x, y){
+  var ed = document.getElementById("noteEd"); if (!ed || !el) return;
+  nePop(null); NE.cpEl = el;
+  var er = ed.getBoundingClientRect(), isChip = el.tagName === "SPAN";
+  var PEN = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg>';
+  var bg = document.createElement("div"); bg.className = "ne-mbg"; bg.id = "neMnBg"; bg.setAttribute("data-act", "ne-menu-close");
+  var m = document.createElement("div"); m.className = "ne-mn ne-cpm"; m.id = "neMn"; m.setAttribute("role", "menu"); m.setAttribute("aria-label", isChip ? "Pastille à copier" : "Bloc à copier");
+  m.innerHTML = '<button type="button" role="menuitem" data-act="ne-cp-edit">' + PEN + 'Modifier</button><hr><button type="button" role="menuitem" class="del" data-act="ne-cp-del">' + ICON.trash + 'Supprimer</button>';
+  ed.appendChild(bg); ed.appendChild(m);
+  var w = m.offsetWidth || 220, hh = m.offsetHeight || 110, left = Math.min(Math.max(8, x - er.left - w / 2), er.width - w - 8), top = y - er.top + 14;
+  if (top + hh > er.height - 12) top = Math.max(8, y - er.top - hh - 14);
+  m.style.left = left + "px"; m.style.top = top + "px"; m.style.right = "auto"; m.style.transformOrigin = "top center";
+  var first = m.querySelector("button"); if (first) first.focus({preventScroll: true});
+}
+function neCpEdit(){
+  var el = NE && NE.cpEl; neMenuClose(true); if (!el || !el.isConnected) return;
+  var isChip = el.tagName === "SPAN", v = isChip ? el.textContent.trim() : noteText(el).replace(/\u200b/g, "");
+  openSheet(isChip ? "Modifier la pastille" : "Modifier le bloc à copier", '<form id="fCpEd">'
+    + (isChip ? '<div class="field"><label for="cpEdIn">Texte copié d\'un toucher</label><input id="cpEdIn" type="text" maxlength="80" value="' + h(v) + '"></div>'
+              : '<div class="field"><label for="cpEdIn">Texte copié d\'un toucher</label><textarea id="cpEdIn" rows="6">' + h(v) + '</textarea></div>')
+    + '<div class="rg-act"><button type="button" class="btn light rg-danger" data-act="ne-cp-del">Supprimer</button><button class="btn green" type="submit">Enregistrer</button></div></form>', function(){
+    var f = document.getElementById("fCpEd"), inp = document.getElementById("cpEdIn");
+    setTimeout(function(){ inp.focus(); try { inp.setSelectionRange(inp.value.length, inp.value.length); } catch(e){} }, 80);
+    f.onsubmit = function(e){
+      e.preventDefault(); var nv = inp.value.replace(/\s+$/, "");
+      if (!el.isConnected){ closeSheet(); return; }
+      if (!nv.trim()){ closeSheet(); neCpDel(el); return; }
+      if (isChip) el.textContent = nv.trim().replace(/\n/g, " ");
+      else el.innerHTML = nv.split("\n").map(function(l){ return h(l); }).join("<br>");
+      closeSheet(); updateNeMeta(); queueSave(); toast(isChip ? "Pastille modifiée." : "Bloc modifié.");
+    };
+  });
+}
+function neCpDel(el){
+  el = el || (NE && NE.cpEl); neMenuClose(true); if (!el || !el.isConnected) return;
+  var b = document.getElementById("neBody"), before = b.innerHTML, nid = NE.note && NE.note._id, isChip = el.tagName === "SPAN";
+  if (isChip){ var nx = el.nextSibling; if (nx && nx.nodeType === 3 && /^\u00a0/.test(nx.data)) nx.data = nx.data.slice(1); }
+  el.remove(); NE.cpEl = null; updateNeMeta(); queueSave();
+  toast(isChip ? "Pastille supprimée." : "Bloc supprimé.", {undo: function(){ var b2 = document.getElementById("neBody"); if (!b2 || !NE || (NE.note && NE.note._id) !== nid) return; b2.innerHTML = before; neCpHydrate(b2); updateNeMeta(); queueSave(); }});
+}
 function neCpBind(b){
   neCpHydrate(b);
+  /* appui long : le toucher qui suit ne copie pas */
+  var lp = null;
+  var lpEnd = function(){ if (lp){ clearTimeout(lp.t); lp = null; } };
+  b.addEventListener("pointerdown", function(e){
+    if (e.button > 0) return;
+    var el = e.target.closest && (e.target.closest("span.cpy") || e.target.closest("div.cpb")); if (!el || !b.contains(el)) return;
+    lpEnd(); lp = {x: e.clientX, y: e.clientY, el: el, t: setTimeout(lpFire, 420)};
+  });
+  var lpFire = function(){
+    var L = lp; lp = null; if (!L) return; clearTimeout(L.t); NE.cpLongAt = Date.now();
+    try { navigator.vibrate && navigator.vibrate(12); } catch(e2){}
+    setTimeout(function(){ try { window.getSelection().removeAllRanges(); } catch(e3){} }, 0);
+    if (document.activeElement === b) b.blur();
+    neCpMenu(L.el, L.x, L.y);
+  };
+  b.addEventListener("pointermove", function(e){ if (lp && Math.hypot(e.clientX - lp.x, e.clientY - lp.y) > 10) lpEnd(); });
+  b.addEventListener("pointerup", lpEnd);
+  /* le téléphone peut annuler le toucher en commençant sa propre sélection : l'appui long du système ouvre alors le menu aussi */
+  b.addEventListener("pointercancel", function(){ setTimeout(function(){ if (lp && !lp.sys) lpEnd(); }, 0); });
+  b.addEventListener("contextmenu", function(e){
+    var el = e.target.closest && (e.target.closest("span.cpy") || e.target.closest("div.cpb")); if (!el) return;
+    e.preventDefault();
+    if (!NE.cpLongAt || Date.now() - NE.cpLongAt > 900){ if (!lp) lp = {x: e.clientX, y: e.clientY, el: el, sys: 1}; lp.sys = 1; lpFire(); }
+  });
   b.addEventListener("mousedown", function(e){
     var chip = e.target.closest && e.target.closest("span.cpy"), blk = e.target.closest && e.target.closest("div.cpb");
     if (chip || (blk && (document.activeElement !== b || neCpHead(blk, e)))) e.preventDefault();
   });
   b.addEventListener("click", function(e){
     var chip = e.target.closest && e.target.closest("span.cpy"), blk = e.target.closest && e.target.closest("div.cpb");
+    if ((chip || blk) && NE && NE.cpLongAt && Date.now() - NE.cpLongAt < 900){ e.preventDefault(); return; }
     if (chip){ e.preventDefault(); var t = chip.textContent.trim(); neCopyText(t, chip, "« " + (t.length > 28 ? t.slice(0, 26) + "…" : t) + " » copié"); return; }
     if (blk && (document.activeElement !== b || neCpHead(blk, e))){ e.preventDefault(); var tx = noteText(blk); if (!tx){ toast("Le bloc est vide."); return; } neCopyText(tx, blk, "Texte copié"); }
   });
@@ -5655,6 +5727,8 @@ function noteAction(act, b){
     case "ne-setbg": setNoteField({bg: b.dataset.bg}); neBgPicker(); neBgPicker(); return true;
     case "ne-menu": neMenu(); return true;
     case "ne-menu-close": neMenuClose(); return true;
+    case "ne-cp-edit": neCpEdit(); return true;
+    case "ne-cp-del": closeSheet(); neCpDel(); return true;
     case "ne-pin": setNoteField({pinned: !NE.note.pinned}); nePop(null); toast(NE.note.pinned ? "Note épinglée." : "Note désépinglée."); return true;
     case "ne-folder": nePop(null); folderPicker(function(f){ setNoteField({folder: f || null}); }); return true;
     case "ne-share": nePop(null); var d = collectNote(); navigator.share({title: d.title || "Note", text: (d.title ? d.title + "\n\n" : "") + d.text}).catch(function(){}); return true;
