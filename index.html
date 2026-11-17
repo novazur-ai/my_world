@@ -848,6 +848,97 @@ body.add-on{overflow:hidden}
 #addSlot .capture{margin:0}
 .add-tip{margin-top:10px;font-size:13px;font-weight:600;color:var(--muted);line-height:1.45}
 #addSlot .cap-prev~.add-tip,#addSlot:has(.cap-prev)+.add-tip{display:none}
+/* MyWorld_1.43 : « Apprends à ton App » */
+.vx{padding-bottom:150px}
+.vx-hud{display:flex;gap:8px;margin-top:14px}
+.vx-hc{flex:1;min-width:0;border-radius:16px;background:var(--card,#FFFFFF);border:1.5px solid var(--line);padding:9px 12px}
+.vx-hc small{display:block;font-size:10.5px;font-weight:900;letter-spacing:.08em;color:var(--muted)}
+.vx-hc b{display:block;font-size:20px;font-weight:900;color:var(--text);margin-top:1px;font-variant-numeric:tabular-nums}
+.vx-g{flex:2}
+.vx-bar{height:7px;border-radius:9px;background:#E8EEF4;margin-top:6px;overflow:hidden}
+.vx-bar i{display:block;height:100%;border-radius:9px;background:linear-gradient(90deg,#2F9E6B,#7BD39F);transition:width .5s ease}
+.vx-combo{display:inline-flex;align-items:center;gap:3px;color:#C2481A}
+.vx-prog{height:5px;border-radius:9px;background:#E3EAF1;margin:12px 2px 0;overflow:hidden}
+.vx-prog i{display:block;height:100%;border-radius:9px;background:var(--ink);transition:width .4s ease}
+.vx-stack{position:relative;margin-top:26px}
+.vx-bk,.vx-bk2{position:absolute;height:40px;border-radius:22px}
+.vx-bk{left:14px;right:14px;top:-10px;background:#E3EAF1}
+.vx-bk2{left:28px;right:28px;top:-19px;background:#EDF2F6}
+.vx-card{position:relative;border-radius:24px;background:#FFFFFF;box-shadow:0 14px 30px rgba(11,58,92,.12);padding:22px 16px 20px;display:flex;flex-direction:column;gap:12px;align-items:center;min-height:200px;justify-content:center;text-align:center}
+.vx-pts{position:absolute;right:14px;top:12px;font-size:15px;font-weight:900;color:#23784F;animation:vxUp .5s ease-out}
+@keyframes vxUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.vx-tags{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
+.vx-tag{display:inline-flex;align-items:center;min-height:28px;padding:0 11px;border-radius:999px;background:#E3EEF8;color:#2C679C;font-size:12.5px;font-weight:900}
+.vx-tag.new{background:#FFE7C2;color:#8A4F0B}
+.vx-kara{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 4px;margin:0;line-height:1.25}
+.vx-kw{font-size:26px;font-weight:900;letter-spacing:-.01em;padding:1px 7px;border-radius:10px;color:#55687B;transition:color .2s,background .2s,transform .2s}
+.vx-kw.cur{color:var(--text);background:#EEF3F8;transform:scale(1.05)}
+.vx-kw.lit{color:#1F6E4A;background:#E3F4EA}
+.vx-kw.bad{color:#8A4F0B;background:#FFE0B8;text-decoration:underline wavy #E39A3B 2px;text-underline-offset:6px}
+.vx-hint{font-size:14px;font-weight:700;color:var(--muted);line-height:1.45;text-align:center}
+.vx-msg{font-size:14px;font-weight:800;color:#9A5A0E;text-align:center}
+.vx-ok{display:flex;align-items:center;justify-content:center;gap:8px;font-size:16px;font-weight:900;color:#23784F}
+.vx-below{display:flex;flex-direction:column;gap:12px;margin-top:16px}
+.vx-below:empty{display:none}
+.vx-heard{border-radius:18px;padding:12px 14px;background:#FFF7EC;border:1.5px solid #E39A3B;font-size:16px;font-weight:800;line-height:1.4;text-align:center;color:var(--text);overflow-wrap:anywhere;animation:vxUp .3s ease-out}
+.vx-heard small{display:block;font-size:10.5px;font-weight:900;letter-spacing:.1em;color:var(--muted);margin-bottom:2px}
+.vx-bw{padding:0 5px;border-radius:7px;background:#FFE0B8;color:#8A4F0B;text-decoration:underline wavy #E39A3B 1.5px;text-underline-offset:4px}
+.vx-verdict{display:flex;align-items:center;justify-content:center;gap:8px;font-size:15.5px;font-weight:900;color:#9A5A0E}
+.vx-acts{display:flex;gap:8px;justify-content:space-between}
+.vx-bl,.vx-bi{min-height:48px;padding:0 18px;border-radius:999px;font:900 14.5px var(--f-body);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.vx-bl{border:1.5px solid var(--ink);background:#FFFFFF;color:var(--ink)}
+.vx-bi{border:0;background:var(--ink);color:#FFFFFF}
+.vx-lnk{align-self:center;border:0;background:transparent;color:var(--muted);font:800 13.5px var(--f-body);text-decoration:underline;min-height:44px;cursor:pointer}
+.vx-learned{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:16px;background:var(--ink);color:#FFFFFF;font-size:14px;font-weight:800;line-height:1.4;animation:vxUp .3s ease-out}
+.vx-learned b{color:#FFD79A}
+.vx-learned svg{flex:none}
+.vx-auto{display:flex;align-items:center;justify-content:flex-end;gap:8px;margin-top:8px;font-size:12.5px;font-weight:800;color:var(--muted)}
+.vx-auto .vx-tg{transform:scale(.85);transform-origin:right center}
+.vx-tg{position:relative;width:46px;height:28px;border-radius:999px;border:0;padding:0;background:#CBD5DF;flex:none;cursor:pointer;transition:background .2s}
+.vx-tg::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#FFFFFF;box-shadow:0 1px 3px rgba(0,0,0,.2);transition:transform .2s}
+.vx-tg[aria-checked="true"]{background:#2F9E6B}.vx-tg[aria-checked="true"]::after{transform:translateX(18px)}
+.vx-res{margin-top:16px;border-radius:24px;background:#FFFFFF;box-shadow:0 14px 30px rgba(11,58,92,.12);padding:20px 18px;text-align:center}
+.vx-big{font-size:44px;font-weight:900;letter-spacing:-.02em;color:var(--text);line-height:1.1}
+.vx-big span{font-size:17px;color:var(--muted);letter-spacing:0}
+.vx-sub{font-size:14px;font-weight:800;color:var(--muted);margin-top:4px}
+.vx-gauge{margin-top:12px;text-align:left}
+.vx-gauge small{font-size:12px;font-weight:900;color:var(--muted)}
+.vx-gauge em{font-style:normal}.vx-gauge em.up{color:#23784F}.vx-gauge em.dn{color:#9A5A0E}
+.vx-gt{margin:20px 4px 8px;font-size:11.5px;font-weight:900;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.vx-lst{border-radius:20px;background:#FFFFFF;border:1.5px solid var(--line);overflow:hidden}
+.vx-li{display:flex;align-items:center;gap:10px;padding:12px 14px;border-top:1px solid #EEF2F6;font-size:14px;font-weight:800;line-height:1.35;color:var(--text)}
+.vx-li:first-child{border-top:0}
+.vx-tx{flex:1;min-width:0;overflow-wrap:anywhere}.vx-tx span{display:block;font-size:12px;font-weight:700;color:var(--muted)}
+.vx-dot{width:30px;height:30px;border-radius:10px;display:grid;place-items:center;flex:none}
+.vx-foot{display:flex;justify-content:space-between;gap:10px;margin-top:20px}
+.vx-sym{position:relative;overflow:hidden;margin-top:16px;border-radius:24px;padding:20px 18px;text-align:center;color:#FFFFFF;background:linear-gradient(135deg,#0B4F7C,#2F9E6B 55%,#E9B949);box-shadow:0 16px 34px rgba(11,58,92,.25);animation:vxSym .6s cubic-bezier(.3,1.4,.5,1)}
+.vx-sym b{display:block;font-size:26px;font-weight:900;letter-spacing:-.01em;margin-top:6px}
+.vx-sym>span:not(.vx-sym-ic){display:block;font-size:14px;font-weight:800;opacity:.92;margin-top:2px}
+.vx-sym-ic{display:inline-grid;place-items:center;width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.18);animation:vxBeat 1.4s ease-in-out infinite}
+.vx-sym i{position:absolute;width:8px;height:8px;border-radius:2px;background:#FFE7A8;opacity:0;animation:vxConf 2.4s ease-out infinite}
+.vx-sym i:nth-of-type(1){left:12%;top:70%;animation-delay:.1s}.vx-sym i:nth-of-type(2){left:28%;top:80%;animation-delay:.7s;background:#FFFFFF}
+.vx-sym i:nth-of-type(3){left:48%;top:75%;animation-delay:1.2s}.vx-sym i:nth-of-type(4){left:66%;top:82%;animation-delay:.4s;background:#BFF0D3}
+.vx-sym i:nth-of-type(5){left:82%;top:72%;animation-delay:1.6s}.vx-sym i:nth-of-type(6){left:92%;top:85%;animation-delay:.9s;background:#FFFFFF}
+@keyframes vxSym{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:none}}
+@keyframes vxBeat{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+@keyframes vxConf{0%{opacity:0;transform:translateY(0) rotate(0)}15%{opacity:1}100%{opacity:0;transform:translateY(-90px) rotate(200deg)}}
+@media (prefers-reduced-motion: reduce){.vx-sym,.vx-sym-ic,.vx-sym i,.vx-pts,.vx-heard,.vx-learned{animation:none}.vx-kw{transition:none}}
+.vx-hero{margin-bottom:6px;border-radius:22px;background:linear-gradient(150deg,#0B3A5C,#16588A);color:#FFFFFF;padding:16px;box-shadow:0 14px 30px rgba(11,58,92,.22)}
+.vx-hrow{display:flex;align-items:center;gap:12px}
+.vx-hib{width:46px;height:46px;border-radius:15px;background:rgba(255,255,255,.14);display:grid;place-items:center;flex:none}
+.vx-hrow b{display:block;font-size:18px;font-weight:900}
+.vx-hrow span{font-size:13px;font-weight:700;opacity:.88;line-height:1.35}
+.vx-hbar{height:8px;border-radius:9px;background:rgba(255,255,255,.2);margin:14px 0 6px;overflow:hidden}
+.vx-hbar i{display:block;height:100%;border-radius:9px;background:linear-gradient(90deg,#7BD39F,#C8F2D8)}
+.vx-hmeta{display:flex;justify-content:space-between;gap:8px;font-size:12.5px;font-weight:800;opacity:.92}
+.vx-chs{display:flex;gap:6px;overflow-x:auto;margin:12px -16px 0;padding:0 16px 2px;scrollbar-width:none}
+.vx-chs::-webkit-scrollbar{display:none}
+.vx-ch{flex:none;min-height:36px;padding:0 13px;border-radius:999px;border:1.5px solid rgba(255,255,255,.35);background:transparent;color:#FFFFFF;font:800 13px var(--f-body);cursor:pointer}
+.vx-ch[aria-pressed="true"]{background:#FFFFFF;border-color:#FFFFFF;color:#0B3A5C}
+.vx-ch em{font-style:normal;margin-left:5px;padding:0 6px;border-radius:999px;background:#FFE7C2;color:#8A4F0B;font-size:11px}
+.vx-go{margin-top:12px;width:100%;min-height:50px;border-radius:999px;border:0;background:#FFFFFF;color:#0B3A5C;font:900 15.5px var(--f-body);display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer}
+.rg-tgl{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:15px;font-weight:800;color:var(--text)}
+.rg-tgl small{display:block;font-size:12.5px;font-weight:700;color:var(--muted)}
 /* MyWorld_1.42 : « Je n'ai pas bien compris » (bouton +) */
 #addSlot:has(.wf)+.add-tip,#addSheet.wf-on .add-head,#addSheet.wf-on #captureForm,#addSheet.wf-on #captureHint{display:none}
 .add-sheet{overscroll-behavior:contain}
@@ -2576,10 +2667,11 @@ var DECO = (function(){
 
 </script>
 <script>
-var APP_VERSION = "MyWorld_1.42";
+var APP_VERSION = "MyWorld_1.43";
 /* MyWorld_1.33 : nouveautés affichées dans les Réglages. À CHAQUE VERSION (appli ou jeu) : ajouter une entrée EN TÊTE,
    {v: numéro, d: date AAAA-MM-JJ, t: titre court, l: 1 à 3 phrases simples, sans jargon}. */
 var MW_NEWS = [
+  {"v": "1.43", "d": "2026-11-17", "t": "Apprends à ton App", "l": ["Nouveau dans les Réglages : un petit jeu de 10 phrases à dire au +, pour que l'appli comprenne mieux ta voix. Les mots s'allument au fur et à mesure.", "Quand un mot est mal entendu, « Retenir la correction » l'apprend : la correction sert ensuite à tout ce que tu dis au bouton +.", "Une jauge suit la compréhension ; 10/10 du premier coup = « Symbiose parfaite »."]},
   {"v": "1.42", "d": "2026-11-17", "t": "Quand le bouton + n'a pas compris", "l": ["Nouvel écran : l'appli propose ses 3 meilleures idées, « Autre chose… » montre toutes les actions (minuteur, rappel, rendez-vous, note, courses, ouvrir une appli ou une note, carte de fidélité…).", "« Ajouter une action » permet d'enchaîner jusqu'à 3 actions, et l'appli retient ta phrase : la durée, l'heure ou le texte peuvent changer la fois suivante.", "Réglages : nouvelle carte « Phrases apprises » pour voir et oublier ces phrases.", "La page derrière la fenêtre d'ajout ne défile plus."]},
   {"v": "1.41", "d": "2026-11-16", "t": "Correctifs des textes à copier", "l": ["Modifier une pastille ne la fait plus disparaître, même en effaçant tout son texte : le curseur se place à la fin.", "Dans un bloc à copier, Entrée fait un retour à la ligne dans le bloc (au lieu d'en créer un second)."]},
   {"v": "1.40", "d": "2026-11-16", "t": "Notes de l'accueil et textes à copier", "l": ["Accueil : les notes épinglées d'abord, en petites tuiles sur deux lignes, puis les 5 dernières notes modifiées (la plus récente à gauche).", "Texte à copier : « Modifier » se fait directement dans la pastille ou le bloc, et « Désactiver » le remet en texte normal."]},
@@ -2788,6 +2880,7 @@ function heroHTML(){
   }
   if (S.view === "meteo") return meteoHero(date);
   if (S.view === "bienetre") return beHeroHTML(date);
+  if (S.view === "voix") return '<div class="hd2 gut"><p class="eb">Entraînement · voix</p><h1>Apprends à ton App</h1><button type="button" class="av" data-act="vx-end" aria-label="Quitter l\'entraînement"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>';
   if (S.view === "reglages") return '<div class="hd2 gut"><p class="eb">' + h(date) + '</p><h1>Réglages</h1><button type="button" class="av rg-i" data-act="reg-info" aria-label="Nouveautés de l\'appli">' + RG_INFO + '</button></div>';
   var sub = "";
   if (S.view === "courses"){ var nc = coOpen().filter(function(x){ return !x.done; }).length; sub = '<p class="sub">' + (nc ? nc + " article" + (nc > 1 ? "s" : "") + " à prendre" : "Liste vide") + '</p>'; }
@@ -3633,6 +3726,7 @@ function fmtShort(d){ var x = parseISO(String(d).slice(0,10)); return x.getDate(
 
 function render(){
   var v = S.view;
+  if (v !== "voix" && VX && (VX.rec || VX.ph === "listen")){ vxStop(); VX.ph = "idle"; }
   document.body.setAttribute("data-view", v);
   var hero = document.getElementById("hero");
   hero.className = "hd" + (v === "accueil" ? "" : " small");
@@ -3644,7 +3738,7 @@ function render(){
   document.getElementById("gazBadge").hidden = !unseenN;
   document.getElementById("gazBadgeSr").textContent = unseenN ? ", " + unseenN + " nouveauté" + (unseenN > 1 ? "s" : "") : "";
   var ae = document.activeElement, keepRg = v === "reglages" && document.getElementById("rgPage") && ae && ae.closest && ae.closest("#rgPage") && (ae.tagName === "TEXTAREA" || (ae.tagName === "INPUT" && /^(text|date|search)$/.test(ae.type)));
-  var html = keepRg ? "" : v === "reglages" ? settingsHTML() : v === "jeu" ? "" : v === "listes" ? viewListes() : v === "courses" ? viewCourses() : v === "cartes" ? viewCartes() : v === "sommeil" ? viewSommeil() : v === "bienetre" ? viewBienetre() : v === "conclusions" ? viewConclusions() : v === "fiche" ? viewFiche() : v === "gazette" ? viewGazette() : v === "meteo" ? viewMeteo() : v === "notes" ? viewNotes() : viewAccueil();
+  var html = keepRg ? "" : v === "reglages" ? settingsHTML() : v === "voix" ? vxHTML() : v === "jeu" ? "" : v === "listes" ? viewListes() : v === "courses" ? viewCourses() : v === "cartes" ? viewCartes() : v === "sommeil" ? viewSommeil() : v === "bienetre" ? viewBienetre() : v === "conclusions" ? viewConclusions() : v === "fiche" ? viewFiche() : v === "gazette" ? viewGazette() : v === "meteo" ? viewMeteo() : v === "notes" ? viewNotes() : viewAccueil();
   if (S.dbState === "off") html = '<section class="section gut" style="margin-top:24px"><div class="card soft-empty">Tes données ne sont pas disponibles pour l\'instant. Vérifie ta connexion, puis recharge l\'appli.</div></section>' + html;
   if (!keepRg) document.getElementById("view").innerHTML = html;
   if (v === "reglages" && !keepRg) mountSettings();
@@ -4443,6 +4537,11 @@ function onCapture(e){
   var text = input.value.trim(); if (!text) return;
   if (!needDb()) return;
   if (WF){ WF = null; wfRender(); }
+  /* MyWorld_1.43 : corrections apprises avec « Apprends à ton App » (seulement pour ce qui est dit au +) */
+  var spoken = S.capVoice && Date.now() - S.capVoice < 4000;
+  if (spoken) text = vxFix(text);
+  /* phrase dite, mal entendue puis corrigée au crayon → elle rejoint les phrases à revoir */
+  if (S.vxMiss){ if (!spoken && Date.now() - S.vxMiss.at < 600000 && vxNorm(text).join(" ") !== vxNorm(S.vxMiss.heard).join(" ")) vxAddMiss(text, S.vxMiss.heard); S.vxMiss = null; }
   /* MyWorld_1.42 : une phrase que tu m'as apprise passe avant tout le reste */
   var lm = wfMatch(text); if (lm){ input.value = ""; hint.textContent = ""; if (!document.getElementById("addRoot").hidden) addClose(); wfRunAll(wfFromRule(lm, text), text); return; }
   /* MyWorld_1.38 : minuteur */
@@ -4988,7 +5087,7 @@ function wfClick(e){
   var a = b.dataset.wf, i = +b.dataset.i, it = wfOpenItem();
   if (a === "ok"){ wfOk(); return; }
   if (a === "cancel" || a === "close"){ addClose(); return; }
-  if (a === "edit"){ var t = WF.text, inp = document.getElementById("captureInput"); WF = null; wfRender(); inp.value = t; setTimeout(function(){ inp.focus(); try { inp.setSelectionRange(t.length, t.length); } catch(er){} }, 60); return; }
+  if (a === "edit"){ S.vxMiss = WF.voice ? {heard:WF.text, at:Date.now()} : null; var t = WF.text, inp = document.getElementById("captureInput"); WF = null; wfRender(); inp.value = t; setTimeout(function(){ inp.focus(); try { inp.setSelectionRange(t.length, t.length); } catch(er){} }, 60); return; }
   if (a === "mic"){ WF = null; wfRender(); document.getElementById("captureInput").value = ""; if (!(S.dictate && S.dictate(true))) document.getElementById("captureInput").focus(); return; }
   wfRead();
   if (a === "learn"){ WF.learn = !WF.learn; }
@@ -5021,6 +5120,347 @@ function phActLbl(a){
   else if (a.k === "addnote"){ var n = liveNotes().find(function(z){ return z._id === p.noteId; }); x = n ? "« " + (n.title || "Sans titre") + " »" : ""; }
   else if (a.k === "rappel" && p.time && p.time !== "{h}") x = fmtTime(p.time);
   return l + (x ? " · " + x : "");
+}
+/* ---------- MyWorld_1.43 : « Apprends à ton App » (entraînement de la voix, piste C + karaoké de B) ---------- */
+var VX_VER = "1.43";
+/* Phrases d'entraînement : à enrichir à chaque nouvelle fonction (v = version qui les ajoute → badge « Nouveau ») */
+var VX_CAT = [
+  {id:"kw-afaire1", g:"kw", t:"À faire : rappeler le garage"},
+  {id:"kw-afaire2", g:"kw", t:"À faire : sortir les poubelles ce soir"},
+  {id:"kw-rdv1", g:"kw", t:"Rdv chez le dentiste mardi à 14 h"},
+  {id:"kw-rdv2", g:"kw", t:"Rendez-vous chez le kiné jeudi à 18 h 30"},
+  {id:"kw-rappel1", g:"kw", t:"Rappel : payer la cantine vendredi"},
+  {id:"kw-rappel2", g:"kw", t:"Rappelle-moi d'appeler maman demain"},
+  {id:"kw-anniv", g:"kw", t:"Anniversaire de Léa le 12 mars"},
+  {id:"kw-note", g:"kw", t:"Note : idée de cadeau pour Noël"},
+  {id:"kw-courses1", g:"kw", t:"Courses : lait, pain et œufs"},
+  {id:"kw-courses2", g:"kw", t:"Acheter des piles et du liquide vaisselle"},
+  {id:"kw-exploit", g:"kw", t:"Exploit : dix kilomètres en courant"},
+  {id:"du-min10", g:"dur", tag:"Minuteur", t:"Mets un minuteur de 10 minutes"},
+  {id:"du-quart", g:"dur", tag:"Minuteur", t:"Mets un minuteur d'un quart d'heure"},
+  {id:"du-3quarts", g:"dur", tag:"Minuteur", t:"Lance un minuteur de trois quarts d'heure"},
+  {id:"du-pates", g:"dur", tag:"Minuteur", t:"Minuteur de 5 minutes pour les pâtes"},
+  {id:"du-demi", g:"dur", t:"Rappelle-moi dans une demi-heure de sortir le linge"},
+  {id:"du-1h30", g:"dur", t:"Rappelle-moi dans 1 h 30 de partir"},
+  {id:"du-four", g:"dur", t:"Dans 20 minutes, vérifier le four"},
+  {id:"du-lundi", g:"dur", t:"Rappel lundi prochain à 9 h"},
+  {id:"du-apdem", g:"dur", t:"Rendez-vous après-demain à 11 h 15"},
+  {id:"du-midi", g:"dur", t:"Rappel le 3 décembre à midi"},
+  {id:"op-meteo", g:"open", t:"Ouvre la météo"},
+  {id:"op-sommeil", g:"open", t:"Ouvre le suivi du sommeil"},
+  {id:"op-cartes", g:"open", t:"Ouvre mes cartes de fidélité"},
+  {id:"op-news", g:"open", t:"Ouvre les News"},
+  {id:"op-be", g:"open", t:"Ouvre le bien-être"},
+  {id:"op-rappels", g:"open", t:"Ouvre mes rappels"},
+  {id:"op-mois", g:"open", t:"Affiche le mois"},
+  {id:"op-reglages", g:"open", t:"Ouvre les réglages"},
+  {id:"op-courses", g:"open", t:"Ouvre ma liste de courses"}
+].map(function(x){ x.v = x.v || "1.43"; return x; });
+var VX_TAG = {kw:"Mot-clé du +", dur:"Durées et heures", open:"Ouvrir", notes:"Tes notes", cards:"Tes cartes", miss:"Tes ratés"};
+var VX_TH = [["mix","Tout mélanger"],["rev","À revoir"],["kw","Mots-clés"],["dur","Durées et heures"],["open","Ouvrir et cartes"],["notes","Tes notes"],["new","Nouveautés " + VX_VER]];
+var VX = null;
+function vxData(){
+  var v = (S.settings && S.settings.voix) || {};
+  return {st:JSON.parse(JSON.stringify(v.st || {})), rules:(v.rules || []).slice(), hist:(v.hist || []).slice(), miss:(v.miss || []).slice(), auto: v.auto !== false, th: v.th || "mix"};
+}
+function vxSave(V){
+  var o = {st:V.st, rules:V.rules.slice(-80), hist:V.hist.slice(-50), miss:V.miss.slice(-20), auto:!!V.auto, th:V.th || "mix"};
+  if (S.settings) S.settings.voix = JSON.parse(JSON.stringify(o));   /* à jour tout de suite, sans attendre la base */
+  return saveSettings({voix:o});
+}
+function vxItems(V){
+  var out = VX_CAT.slice();
+  liveNotes().slice().sort(function(a, b){ return (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0) || String(b.updatedAt || "").localeCompare(String(a.updatedAt || "")); })
+    .filter(function(n){ var t = (n.title || "").trim(); return t.length >= 2 && t.length <= 40; }).slice(0, 10)
+    .forEach(function(n){ out.push({id:"n:" + n._id, g:"notes", t:"Ouvre la note " + n.title.trim(), v:"perso"}); });
+  fidSorted().slice(0, 8).forEach(function(c){ if ((c.name || "").trim()) out.push({id:"f:" + c._id, g:"cards", t:"Montre ma carte " + c.name.trim(), v:"perso"}); });
+  (V.miss || []).forEach(function(m){ out.push({id:m.id, g:"miss", t:m.t, v:"miss"}); });
+  return out;
+}
+function vxSt(V, it){ return V.st[it.id] || {n:0, ok:0, lastOk:false, last:0}; }
+function vxIsRev(V, it){ var s = vxSt(V, it); return s.n > 0 && !s.lastOk; }
+function vxIsNew(V, it){ var s = vxSt(V, it); return !s.n && (it.v === VX_VER || it.v === "miss"); }
+function vxPct(V){ return V.hist.length ? Math.round(V.hist.reduce(function(a, b){ return a + b; }, 0) / V.hist.length * 100) : null; }
+function vxShuffle(a){ for (var i = a.length - 1; i > 0; i--){ var j = Math.floor(Math.random() * (i + 1)), t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+function vxPick(V, th){
+  var all = vxItems(V).filter(function(it){
+    if (th === "rev") return vxIsRev(V, it);
+    if (th === "new") return vxIsNew(V, it);
+    if (th === "open") return it.g === "open" || it.g === "cards";
+    if (th === "mix") return true;
+    return it.g === th;
+  });
+  var rev = vxShuffle(all.filter(function(it){ return vxIsRev(V, it); })), nw = vxShuffle(all.filter(function(it){ return !vxIsRev(V, it) && !vxSt(V, it).n; }));
+  var rest = all.filter(function(it){ return vxSt(V, it).n && !vxIsRev(V, it); }).sort(function(a, b){ var A = vxSt(V, a), B = vxSt(V, b); return (Math.min(A.ok, 3) - Math.min(B.ok, 3)) || (A.last - B.last); });
+  var list = th === "mix" ? rev.slice(0, 4).concat(nw, rev.slice(4), rest) : rev.concat(nw, rest);
+  return list.slice(0, 10);
+}
+/* --- comparer ce qui est dit et ce qui est attendu (sans accents, ponctuation ni différence chiffres / lettres) --- */
+var VX_NUM = {zero:0, un:1, une:1, deux:2, trois:3, quatre:4, cinq:5, six:6, sept:7, huit:8, neuf:9, dix:10, onze:11, douze:12, treize:13, quatorze:14, quinze:15, seize:16, vingt:20, trente:30, quarante:40, cinquante:50, soixante:60, cent:100};
+var VX_SYN = {heure:"h", heures:"h", minute:"min", minutes:"min", mn:"min", seconde:"s", secondes:"s", rdv:"rendez vous", km:"kilometres", kilometre:"kilometres"};
+function vxNorm(s){
+  var t = noAcc(String(s || "").toLowerCase()).replace(/œ/g, "oe").replace(/æ/g, "ae").replace(/(\d)([a-z])/g, "$1 $2").replace(/([a-z])(\d)/g, "$1 $2").replace(/[^a-z0-9]+/g, " ").trim();
+  var out = [];
+  (t ? t.split(" ") : []).forEach(function(x){ (VX_SYN[x] || x).split(" ").forEach(function(z){ out.push(VX_NUM[z] != null ? String(VX_NUM[z]) : z); }); });
+  var o = [];
+  for (var i = 0; i < out.length; i++){
+    var a = o[o.length - 1];
+    if (a && /^(20|30|40|50|60)$/.test(a) && /^[1-9]$/.test(out[i])){ o[o.length - 1] = String(+a + +out[i]); continue; }
+    if (a && /^(20|30|40|50|60)$/.test(a) && out[i] === "et" && out[i + 1] === "1"){ o[o.length - 1] = String(+a + 1); i++; continue; }
+    if (a === "10" && /^[7-9]$/.test(out[i])){ o[o.length - 1] = String(10 + +out[i]); continue; }
+    if (a === "60" && /^(10|11|12|13|14|15|16|17|18|19)$/.test(out[i])){ o[o.length - 1] = String(60 + +out[i]); continue; }
+    o.push(out[i]);
+  }
+  return o;
+}
+/* mots affichés (avec leur ponctuation) et leurs morceaux normalisés */
+function vxWords(s){
+  var W = [], N = [];
+  String(s || "").replace(/[’]/g, "'").split(/\s+/).forEach(function(w){
+    if (!w) return; var n = vxNorm(w); if (!n.length) return;
+    var k = W.length; W.push({w:w, i0:N.length, n:n.length}); n.forEach(function(x){ N.push({t:x, wi:k}); });
+  });
+  return {W:W, N:N};
+}
+function vxLCS(a, b){
+  var n = a.length, m = b.length, L = [], i, j;
+  for (i = 0; i <= n; i++){ L.push(new Array(m + 1).fill(0)); }
+  for (i = n - 1; i >= 0; i--) for (j = m - 1; j >= 0; j--) L[i][j] = a[i] === b[j] ? L[i + 1][j + 1] + 1 : Math.max(L[i + 1][j], L[i][j + 1]);
+  var pairs = []; i = 0; j = 0;
+  while (i < n && j < m){ if (a[i] === b[j]){ pairs.push([i, j]); i++; j++; } else if (L[i + 1][j] >= L[i][j + 1]) i++; else j++; }
+  return pairs;
+}
+/* --- dictionnaire de ta voix : appliqué aux phrases dites au bouton + --- */
+function vxRuleRe(r){
+  var f = r.f.split(/\s+/).map(escRe).join("[\\s-]+"), E = "(?=$|[^\\p{L}\\p{N}])";
+  try {
+    if (r.at === "start") return new RegExp("^(\\s*)()" + f + E, "iu");
+    if (r.after) return new RegExp("(^|[^\\p{L}\\p{N}])(" + r.after.split(/\s+/).map(escRe).join("[\\s-]+") + "[\\s-]+)" + f + E, "giu");
+    return new RegExp("(^|[^\\p{L}\\p{N}])()" + f + E, "giu");
+  } catch(e){ return null; }
+}
+function vxFix(text, V){
+  var R = (V || vxData()).rules, s = String(text || "");
+  R.forEach(function(r){ var re = vxRuleRe(r); if (re) s = s.replace(re, function(m, a, b){ return a + b + r.t; }); });
+  return s;
+}
+function vxRuleWhere(r){ return r.at === "start" ? "En début de phrase" : r.after ? "Après « " + r.after + " »" : "Partout dans le +"; }
+/* --- ce qui a été mal entendu : mots à surligner et corrections possibles --- */
+function vxDiff(target, heard){
+  var T = vxWords(target), H = vxWords(heard), P = vxLCS(T.N.map(function(x){ return x.t; }), H.N.map(function(x){ return x.t; }));
+  var bad = {}, props = [], badT = {};
+  var gaps = [], pt = 0, ph = 0;
+  P.concat([[T.N.length, H.N.length]]).forEach(function(p){ if (p[0] > pt || p[1] > ph) gaps.push({t0:pt, t1:p[0], h0:ph, h1:p[1]}); pt = p[0] + 1; ph = p[1] + 1; });
+  var clean = function(w){ return w.replace(/^[«"(\[]+|[»".,;:!?)\]]+$/g, ""); };
+  gaps.forEach(function(g){
+    var hw = [], tw = [];
+    for (var k = g.h0; k < g.h1; k++){ var wi = H.N[k].wi; bad[wi] = 1; if (hw.indexOf(wi) < 0) hw.push(wi); }
+    for (var q = g.t0; q < g.t1; q++){ var ti = T.N[q].wi; badT[ti] = 1; if (tw.indexOf(ti) < 0) tw.push(ti); }
+    if (!hw.length || !tw.length || hw.length > 4 || tw.length > 5) return;
+    var f = hw.map(function(i){ return clean(H.W[i].w).toLowerCase(); }).join(" "), t = tw.map(function(i){ return clean(T.W[i].w); }).join(" ");
+    if (!f || !t || vxNorm(f).join(" ") === vxNorm(t).join(" ")) return;
+    if (tw[0] === 0 && /^[A-ZÀ-ÖØ-Þ]/.test(t) && !/^[A-ZÀ-ÖØ-Þ]{2,}/.test(t) && t.length > 1 && T.W.length > 1) t = t.charAt(0).toLowerCase() + t.slice(1);
+    var prev = hw[0] > 0 ? clean(H.W[hw[0] - 1].w).toLowerCase() : "";
+    props.push({f:f, t:t, at: g.t0 === 0 && g.h0 === 0 ? "start" : "any", after: g.t0 === 0 && g.h0 === 0 ? null : (prev || null)});
+  });
+  return {H:H, T:T, bad:bad, badT:badT, props:props};
+}
+/* --- une série --- */
+function vxStart(th){
+  var V = vxData(); th = th || V.th || "mix";
+  var list = vxPick(V, th);
+  if (!list.length){ toast(th === "rev" ? "Rien à revoir pour l'instant, bravo !" : "Pas de phrase dans ce thème pour l'instant."); return false; }
+  VX = {V:V, th:th, list:list, i:0, ph:"idle", heard:"", alts:[], tries:0, pts:0, combo:0, first:0, late:0, learned:[], failed:[], mastered:[], t0:Date.now(), pct0:vxPct(V), msg:"", props:[], diff:null, viaRule:false};
+  if (location.hash.replace("#", "") === "voix") render(); else location.hash = "voix";
+  vxAutoSoon(900);
+  return true;
+}
+function vxCur(){ return VX && VX.list[VX.i]; }
+function vxAutoSoon(ms){ setTimeout(function(){ if (VX && VX.V.auto && VX.ph === "idle" && S.view === "voix" && !document.hidden) vxListen(); }, ms || 700); }
+function vxBub(t, wait){ var b = document.getElementById("micBub"); if (!b) return; if (t == null){ b.hidden = true; return; } b.hidden = false; b.textContent = t; b.classList.toggle("wait", !!wait); }
+function vxMicUI(on){ document.body.classList.toggle("mic-on", !!on); S.micOn = !!on; if (!on) vxBub(null); else vxBub("Je t'écoute…", true); }
+function vxStop(){ if (VX && VX.rec){ var r = VX.rec; VX.rec = null; try { r.abort(); } catch(e){} } vxMicUI(false); }
+function vxListen(){
+  if (!VX || VX.ph === "listen" || VX.ph === "end") return;
+  var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR){ VX.msg = "La dictée n'est pas disponible sur ce navigateur."; vxDraw(); return; }
+  var rec = new SR(), got = false, err = "";
+  rec.lang = "fr-FR"; rec.interimResults = true; rec.continuous = false; rec.maxAlternatives = 5;
+  VX.rec = rec; VX.ph = "listen"; VX.heard = ""; VX.alts = []; VX.msg = ""; VX.viaRule = false;
+  rec.onresult = function(e){
+    var txt = "", alts = [];
+    for (var i = 0; i < e.results.length; i++){
+      var r = e.results[i]; txt += (r[0] && r[0].transcript) || "";
+      if (r.isFinal !== false && e.results.length === 1) for (var j = 1; j < r.length; j++) if (r[j] && r[j].transcript) alts.push(r[j].transcript);
+    }
+    got = !!txt.trim(); VX.heard = txt.trim(); VX.alts = alts;
+    vxBub(VX.heard || "Je t'écoute…", !VX.heard); vxKara();
+  };
+  rec.onerror = function(e){ err = e && e.error || ""; };
+  rec.onend = function(){
+    if (VX && VX.rec === rec) VX.rec = null; vxMicUI(false);
+    if (!VX || VX.ph !== "listen") return;
+    if (!got){ VX.ph = "idle"; VX.msg = err === "not-allowed" || err === "service-not-allowed" ? "Le micro est bloqué : autorise-le dans les réglages du téléphone." : err === "network" ? "Pas de connexion : la dictée en a besoin." : "Je n'ai rien entendu. Touche le + pour réessayer."; vxDraw(); return; }
+    vxJudge();
+  };
+  vxMicUI(true); vxDraw();
+  try { rec.start(); try { navigator.vibrate && navigator.vibrate(12); } catch(e2){} } catch(e){ VX.rec = null; VX.ph = "idle"; vxMicUI(false); VX.msg = "Le micro n'a pas pu démarrer. Réessaie."; vxDraw(); }
+}
+/* karaoké : les mots s'allument pendant que tu parles (sans redessiner toute la page) */
+function vxKara(){
+  var it = vxCur(), box = document.getElementById("vxKara"); if (!it || !box) return;
+  var T = vxWords(it.t), hn = vxNorm(vxFix(VX.heard, VX.V)), P = vxLCS(T.N.map(function(x){ return x.t; }), hn), hit = {};
+  P.forEach(function(p){ hit[p[0]] = 1; });
+  var lastHit = P.length ? P[P.length - 1][0] : -1, curSet = false;
+  box.querySelectorAll(".vx-kw").forEach(function(el, wi){
+    var w = T.W[wi], all = true; for (var k = w.i0; k < w.i0 + w.n; k++) if (!hit[k]) all = false;
+    el.classList.toggle("lit", all); var cur = !all && !curSet && w.i0 > lastHit - 1; if (cur) curSet = true; el.classList.toggle("cur", cur);
+  });
+}
+function vxRecord(it, ok){
+  var V = VX.V, s = vxSt(V, it), was = Math.min(s.ok, 3);
+  s.n++; s.ok = ok ? s.ok + 1 : 0; s.lastOk = ok; s.last = Date.now(); V.st[it.id] = s;
+  V.hist.push(ok ? 1 : 0); if (V.hist.length > 50) V.hist = V.hist.slice(-50);
+  if (ok && was < 3 && s.ok >= 3) VX.mastered.push(it.t);
+  vxSave(V);
+}
+function vxJudge(){
+  var it = vxCur(), want = vxNorm(it.t).join(" "), cands = [VX.heard].concat(VX.alts).filter(function(c, i, a){ return c && a.indexOf(c) === i; }), hitK = -1, rule = false;
+  cands.some(function(c, k){ var fx = vxNorm(vxFix(c, VX.V)).join(" "); if (fx === want){ hitK = k; rule = vxNorm(c).join(" ") !== fx; return true; } return false; });
+  if (hitK >= 0){
+    var first = VX.tries === 0;
+    if (first){ VX.first++; VX.pts += 10; VX.combo++; vxRecord(it, true); } else { VX.late++; VX.pts += 5; }
+    VX.ph = "ok"; VX.viaRule = rule; VX.viaAlt = hitK > 0; vxDraw();
+    try { navigator.vibrate && navigator.vibrate(18); } catch(e){}
+    setTimeout(vxNext, 1300); return;
+  }
+  if (VX.tries === 0){ VX.combo = 0; vxRecord(it, false); if (VX.failed.indexOf(it.t) < 0) VX.failed.push(it.t); }
+  VX.diff = vxDiff(it.t, vxFix(VX.heard, VX.V)); VX.props = VX.diff.props; VX.ph = "bad"; vxDraw();
+}
+function vxNext(){
+  if (!VX || S.view !== "voix") return;
+  if (VX.ph === "listen") return;
+  VX.i++; VX.tries = 0; VX.heard = ""; VX.alts = []; VX.props = []; VX.diff = null; VX.msg = "";
+  if (VX.i >= VX.list.length){ VX.ph = "end"; VX.i = VX.list.length - 1; vxDraw(); return; }
+  VX.ph = "idle"; vxDraw(); vxAutoSoon(800);
+}
+function vxLearn(){
+  if (!VX || !VX.props.length) return;
+  var V = VX.V;
+  VX.props.forEach(function(p){
+    V.rules = V.rules.filter(function(r){ return !(r.f === p.f && r.at === p.at && (r.after || null) === (p.after || null)); });
+    V.rules.push({f:p.f, t:p.t, at:p.at, after:p.after || null, d:Date.now()}); VX.learned.push(p);
+  });
+  vxSave(V); VX.ph = "learned"; vxDraw(); setTimeout(vxNext, 1900);
+}
+function vxAddMiss(meant, heard){
+  var V = vxData(), id = "m:" + vxNorm(meant).join("-").slice(0, 60);
+  if (!vxNorm(meant).length || V.miss.some(function(m){ return m.id === id; })) return;
+  V.miss.push({id:id, t:meant.trim(), h:heard, at:Date.now()}); vxSave(V);
+}
+/* --- dessin de la page --- */
+var VX_IC = {
+  flame:'<path d="M12 21c-3.9 0-6.5-2.6-6.5-6.2 0-3.3 2.3-5.3 3.8-7.4.4 1.6 1.2 2.7 2.4 3.2C11.5 7.4 12.4 5 14.6 3c.3 3.1 3.9 5.3 3.9 10 0 4.1-2.7 8-6.5 8z"/>',
+  check:'<path d="M5 12.5l4.5 4.5L19 7.5"/>', redo:'<path d="M4 12a8 8 0 1 0 2.4-5.7L4 8.5"/><path d="M4 4v4.5h4.5"/>',
+  book:'<path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/>',
+  star:'<path d="M12 3.2l2.7 5.5 6 .9-4.4 4.2 1 6L12 17l-5.3 2.8 1-6L3.3 9.6l6-.9z"/>',
+  mic:'<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/>',
+  ear:'<path d="M7 9a5 5 0 0 1 10 0c0 3-3 4-3 6.5a3 3 0 0 1-5.5 1.6"/><path d="M10 9.5a2 2 0 0 1 4 0"/>',
+  trash:'<path d="M4.5 7h15M9.5 7V4.5h5V7M6.5 7l1 13h9l1-13"/>',
+  heart:'<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>'
+};
+function vxIc(k, sz){ return '<svg width="' + (sz || 20) + '" height="' + (sz || 20) + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + VX_IC[k] + '</svg>'; }
+function vxHeardHTML(){
+  var d = VX.diff; if (!d) return h(VX.heard);
+  return d.H.W.map(function(w, i){ return d.bad[i] ? '<span class="vx-bw">' + h(w.w) + '</span>' : h(w.w); }).join(" ");
+}
+function vxEndHTML(){
+  var n = VX.list.length, sec = Math.max(1, Math.round((Date.now() - VX.t0) / 1000)), dur = sec < 60 ? sec + " s" : Math.round(sec / 60) + " min";
+  var p0 = VX.pct0, p1 = vxPct(VX.V), perfect = VX.first === n && n >= 10;
+  var line = function(ic, bg, fg, t, s){ return '<div class="vx-li"><span class="vx-dot" style="background:' + bg + ';color:' + fg + '">' + vxIc(ic, 16) + '</span><div class="vx-tx">' + t + (s ? '<span>' + s + '</span>' : '') + '</div></div>'; };
+  var subs = []; if (VX.late) subs.push(VX.late + " au 2e essai"); subs.push(dur);
+  var html = (perfect ? '<div class="vx-sym" role="status"><span class="vx-sym-ic">' + vxIc("heart", 30) + '</span><b>Symbiose parfaite</b><span>10 sur 10 du premier coup : on se comprend à merveille.</span><i></i><i></i><i></i><i></i><i></i><i></i></div>' : '')
+    + '<div class="vx-res"><div class="vx-big">' + VX.first + '<span> / ' + n + ' compris du premier coup</span></div><p class="vx-sub">' + h(subs.join(" · ")) + '</p>'
+    + (p1 != null ? '<div class="vx-gauge"><small>L\'APP TE COMPREND À ' + p1 + ' %' + (p0 != null && p1 !== p0 ? ' <em class="' + (p1 > p0 ? "up" : "dn") + '">(' + (p1 > p0 ? "+" : "") + (p1 - p0) + ')</em>' : '') + '</small><div class="vx-bar"><i style="width:' + p1 + '%"></i></div></div>' : '') + '</div>';
+  if (VX.learned.length) html += '<h3 class="vx-gt">Ce que j\'ai appris de ta voix</h3><div class="vx-lst">' + VX.learned.map(function(r){ return line("book", "var(--ink)", "#FFFFFF", "« " + h(r.f) + " » → « " + h(r.t) + " »", vxRuleWhere(r)); }).join("") + '</div>';
+  if (VX.failed.length) html += '<h3 class="vx-gt">À revoir</h3><div class="vx-lst">' + VX.failed.map(function(t){ return line("redo", "#FFE7C2", "#8A4F0B", "« " + h(t) + " »", "Reviendra dans une prochaine série"); }).join("") + '</div>';
+  if (VX.mastered.length) html += '<h3 class="vx-gt">Maîtrisées</h3><div class="vx-lst">' + VX.mastered.map(function(t){ return line("check", "#E3F4EA", "#23784F", "« " + h(t) + " »", "3 fois de suite sans faute"); }).join("") + '</div>';
+  return html + '<div class="vx-foot"><button type="button" class="vx-bl" data-act="vx-end">Terminer</button><button type="button" class="vx-bi" data-act="vx-again">Encore une série</button></div>';
+}
+function vxHTML(){
+  if (!VX){ var V0 = vxData(), L0 = vxPick(V0, V0.th); VX = {V:V0, th:V0.th, list:L0.length ? L0 : vxPick(V0, "mix"), i:0, ph:"idle", heard:"", alts:[], tries:0, pts:0, combo:0, first:0, late:0, learned:[], failed:[], mastered:[], t0:Date.now(), pct0:vxPct(V0), msg:"", props:[], diff:null}; }
+  var it = vxCur(), n = VX.list.length, pct = vxPct(VX.V);
+  if (!it) return '<section class="section gut vx" id="vxPage"><div class="card soft-empty">Aucune phrase à travailler pour l\'instant.</div></section>';
+  var done = VX.i + (VX.ph === "ok" || VX.ph === "learned" || VX.ph === "end" ? 1 : 0);
+  var hud = '<div class="vx-hud"><div class="vx-hc vx-g"><small>COMPRÉHENSION</small><b>' + (pct == null ? "—" : pct + " %") + '</b><div class="vx-bar"><i style="width:' + (pct || 0) + '%"></i></div></div>'
+    + '<div class="vx-hc"><small>POINTS</small><b>' + VX.pts + '</b></div><div class="vx-hc"><small>SÉRIE</small><b>' + (VX.combo >= 2 ? '<span class="vx-combo">' + vxIc("flame", 18) + '×' + VX.combo + '</span>' : "–") + '</b></div></div>'
+    + '<div class="vx-prog" role="progressbar" aria-valuemin="0" aria-valuemax="' + n + '" aria-valuenow="' + done + '" aria-label="Phrase ' + Math.min(VX.i + 1, n) + ' sur ' + n + '"><i style="width:' + Math.round(done / n * 100) + '%"></i></div>';
+  if (VX.ph === "end") return '<section class="section gut vx" id="vxPage">' + hud + vxEndHTML() + '</section>';
+  var T = vxWords(it.t), V = VX.V, ph = VX.ph, d = VX.diff;
+  var kara = T.W.map(function(w, i){ var cls = ph === "ok" || ph === "learned" ? " lit" : ph === "bad" && d ? (d.badT[i] ? " bad" : " lit") : ""; return '<span class="vx-kw' + cls + '">' + h(w.w) + '</span>'; }).join(" ");
+  var tag = it.tag || VX_TAG[it.g] || "", nw = vxIsNew(V, it) && VX.tries === 0 && ph !== "ok";
+  var status = ph === "idle" ? (VX.msg ? '<p class="vx-msg">' + h(VX.msg) + '</p>' : '<p class="vx-hint">' + (V.auto ? "Le micro s'allume, dis la phrase…" : "À toi ! Touche le + et dis la phrase.") + '</p>')
+    : ph === "listen" ? '<p class="vx-hint">Je t\'écoute…</p>'
+    : ph === "ok" ? '<p class="vx-ok">' + vxIc("check", 20) + (VX.tries ? "Compris au 2e essai" : VX.viaRule ? "Parfait, grâce à ta correction" : "Parfait") + '</p>'
+    : "";
+  var card = '<div class="vx-stack"><span class="vx-bk2"></span><span class="vx-bk"></span><div class="vx-card">'
+    + (ph === "ok" ? '<span class="vx-pts">+' + (VX.tries ? 5 : 10) + '</span>' : '')
+    + '<div class="vx-tags"><span class="vx-tag">' + h(tag) + '</span>' + (nw ? '<span class="vx-tag new">Nouveau</span>' : '') + '</div>'
+    + '<p class="vx-kara" id="vxKara" aria-label="Phrase à dire : ' + h(it.t) + '">' + kara + '</p>' + status + '</div></div>';
+  var below = "";
+  if (ph === "bad"){
+    below = '<div class="vx-heard"><small>J\'AI ENTENDU</small>« ' + vxHeardHTML() + ' »</div>'
+      + '<p class="vx-verdict">' + vxIc("ear", 20) + (VX.props.length ? "Presque : un mot m'a échappé" : "Ce n'est pas tout à fait ça") + '</p>'
+      + '<div class="vx-acts"><button type="button" class="vx-bl" data-act="vx-redo">' + vxIc("redo", 18) + 'Redire</button>'
+      + (VX.props.length ? '<button type="button" class="vx-bi" data-act="vx-learn">' + vxIc("check", 18) + 'Retenir la correction</button>' : '') + '</div>'
+      + (VX.props.length ? '<p class="vx-hint">' + VX.props.map(function(p){ return "« <b>" + h(p.f) + "</b> » sera compris « <b>" + h(p.t) + "</b> »" + (p.at === "start" ? " en début de phrase" : p.after ? " après « " + h(p.after) + " »" : ""); }).join("<br>") + '</p>' : '<p class="vx-hint">Je n\'arrive pas à isoler le mot raté : redis la phrase ou passe-la.</p>')
+      + '<button type="button" class="vx-lnk" data-act="vx-skip">Passer cette phrase</button>';
+  } else if (ph === "learned"){
+    below = '<div class="vx-learned">' + vxIc("book", 22) + '<span>Retenu : ' + VX.props.map(function(p){ return "quand j'entends « <b>" + h(p.f) + "</b> », je comprendrai « <b>" + h(p.t) + "</b> »"; }).join(" ; ") + '.</span></div>';
+  }
+  return '<section class="section gut vx" id="vxPage">' + hud
+    + '<div class="vx-auto"><span>Micro automatique</span><button type="button" class="vx-tg" data-act="vx-auto" role="switch" aria-checked="' + !!V.auto + '" aria-label="Micro automatique"></button></div>'
+    + card + '<div class="vx-below">' + below + '</div></section>';
+}
+function vxDraw(){ var p = document.getElementById("vxPage"); if (!p || S.view !== "voix") return; var tmp = document.createElement("div"); tmp.innerHTML = vxHTML(); p.replaceWith(tmp.firstChild); if (VX && VX.ph === "listen") vxKara(); }
+/* --- Réglages : carte « Apprends à ton App » + « Ta voix » --- */
+function vxHeroHTML(){
+  var V = vxData(), items = vxItems(V), pct = vxPct(V), rev = items.filter(function(it){ return vxIsRev(V, it); }).length, nw = items.filter(function(it){ return vxIsNew(V, it); }).length, notes = items.some(function(it){ return it.g === "notes"; });
+  var th = V.th || "mix";
+  if ((th === "rev" && !rev) || (th === "new" && !nw) || (th === "notes" && !notes)) th = "mix";
+  var chips = VX_TH.filter(function(t){ return !(t[0] === "rev" && !rev) && !(t[0] === "new" && !nw) && !(t[0] === "notes" && !notes); }).map(function(t){
+    var c = t[0] === "rev" ? rev : t[0] === "new" ? nw : 0;
+    return '<button type="button" class="vx-ch" data-act="vx-th" data-th="' + t[0] + '" aria-pressed="' + (th === t[0]) + '">' + h(t[1]) + (c ? '<em>' + c + '</em>' : '') + '</button>';
+  }).join("");
+  var meta = []; if (rev) meta.push(rev + " à revoir"); if (nw) meta.push(nw + " nouvelle" + (nw > 1 ? "s" : ""));
+  return '<div class="vx-hero"><div class="vx-hrow"><span class="vx-hib">' + vxIc("ear", 24) + '</span><div><b>Apprends à ton App</b><span>Quelques phrases à dire, pour qu\'elle te comprenne mieux</span></div></div>'
+    + '<div class="vx-hbar"><i style="width:' + (pct || 0) + '%"></i></div><div class="vx-hmeta"><span>' + (pct == null ? "Pas encore mesuré" : "L'app te comprend à " + pct + " %") + '</span><span>' + h(meta.join(" · ")) + '</span></div>'
+    + '<div class="vx-chs" role="group" aria-label="Thème de la série">' + chips + '</div>'
+    + '<button type="button" class="vx-go" data-act="vx-go" data-th="' + th + '">' + vxIc("mic", 20) + 'Lancer une série de 10</button></div>';
+}
+function vxSettingsHTML(){
+  var V = vxData();
+  var rows = V.rules.map(function(r, i){ return {r:r, i:i}; }).reverse().map(function(o){
+    return '<div class="ph-row"><div class="ph-tx">« ' + h(o.r.f) + ' » → « ' + h(o.r.t) + ' »<em>' + h(vxRuleWhere(o.r)) + '</em></div><button type="button" class="ph-del" data-act="vx-rdel" data-i="' + o.i + '" aria-label="Oublier cette correction">' + vxIc("trash", 17) + '</button></div>';
+  }).join("");
+  return '<div class="rg-tgl"><span>Micro automatique<small>Le micro s\'allume tout seul à chaque phrase</small></span><button type="button" class="vx-tg" data-act="vx-auto" role="switch" aria-checked="' + !!V.auto + '" aria-label="Micro automatique"></button></div>'
+    + '<p class="rg-hint" style="margin-top:12px">Ce que l\'app a appris de ta voix : ces corrections s\'appliquent seulement à ce que tu dis au bouton +.</p>'
+    + (rows || '<p class="rg-hint">Rien pour l\'instant. Lance une série : quand un mot est mal entendu, « Retenir la correction » l\'ajoute ici.</p>')
+    + '<p class="rg-hint" style="margin-top:12px">' + h(S.vxDiag || "") + '</p>';
+}
+function vxSum(){ var V = vxData(), n = V.rules.length; return (n ? n + " correction" + (n > 1 ? "s" : "") : "Aucune correction") + " · micro " + (V.auto ? "auto" : "au toucher"); }
+/* liste de mots favoris (Chrome) : seulement avec la reconnaissance sur le téléphone ; ici on regarde juste si c'est possible */
+function vxDiag(){
+  if (S.vxDiagDone) return; S.vxDiagDone = true;
+  var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  var set = function(t){ S.vxDiag = t; if (S.view === "reglages" && S.regOpen === "voix") refreshSettings(); };
+  if (!SR){ set("Dictée indisponible sur ce navigateur."); return; }
+  if (typeof window.SpeechRecognitionPhrase === "undefined" || typeof SR.available !== "function"){ set("Liste de mots à favoriser : pas proposée par ce navigateur (la dictée passe par Google)."); return; }
+  try {
+    SR.available({langs:["fr-FR"], processLocally:true}).then(function(a){
+      set(a === "available" ? "Liste de mots à favoriser : possible sur ce téléphone (reconnaissance sans Internet disponible en français)." : a === "downloadable" || a === "downloading" ? "Liste de mots à favoriser : possible après le téléchargement du français par Chrome." : "Liste de mots à favoriser : pas possible sur ce téléphone (pas de reconnaissance sans Internet en français).");
+    }).catch(function(){ set("Liste de mots à favoriser : réponse inattendue du navigateur."); });
+  } catch(e){ set("Liste de mots à favoriser : pas proposée par ce navigateur."); }
 }
 function phrasesSettingsHTML(){
   var P = learnData().phrases;
@@ -5174,13 +5614,14 @@ var RG_IC = {
   news:'<path d="M4 5h13v14H6a2 2 0 0 1-2-2z"/><path d="M17 9h3v8a2 2 0 0 1-2 2"/><path d="M8 9h5M8 13h5"/>',
   appris:'<path d="M12 3l2.5 5 5.5.8-4 3.9 1 5.5L12 15.6 7 18.2l1-5.5-4-3.9 5.5-.8z"/>',
   phr:'<path d="M4 5h16v10H9l-4 4z"/><path d="M8 9h8M8 12h5"/>',
+  voix:'<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/>',
   notes:'<path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 13h7M9 17h5"/>',
   gcal:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4M9 15l2 2 4-4"/>',
   save:'<path d="M12 4v11M7 10l5 5 5-5M5 20h14"/>',
   ivy:'<path d="M12 21V11M12 11c-4 0-6-3-6-6 3 0 6 2 6 6zM12 14c3 0 5-2 5-5-3 0-5 2-5 5z"/>',
   maj:'<path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/>'
 };
-var RG_COL = {anniv:["#FAD3CB","#A8402F"], plan:["#D9DFF7","#33449A"], som:["#E3D3F7","#6640A6"], news:["#FBE6B4","#8E6312"], appris:["#FDDCC6","#AA4A1C"], phr:["#FFE7C2","#8A4F0B"], notes:["#FFF1C2","#8E6312"], gcal:["#D2E8FA","#2C679C"], save:["#D4EED6","#2F7440"], ivy:["#E6EDC8","#56661A"], maj:["#E3EEF8","#1E4F84"]};
+var RG_COL = {anniv:["#FAD3CB","#A8402F"], plan:["#D9DFF7","#33449A"], som:["#E3D3F7","#6640A6"], news:["#FBE6B4","#8E6312"], appris:["#FDDCC6","#AA4A1C"], phr:["#FFE7C2","#8A4F0B"], voix:["#D7E6F5","#0B3A5C"], notes:["#FFF1C2","#8E6312"], gcal:["#D2E8FA","#2C679C"], save:["#D4EED6","#2F7440"], ivy:["#E6EDC8","#56661A"], maj:["#E3EEF8","#1E4F84"]};
 var RG_CHEV = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>';
 var RG_INFO = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 11v7"/><circle cx="12" cy="6.6" r="1.1" fill="currentColor" stroke="none"/></svg>';
 function rgCard(k, title, sum, body){
@@ -5218,9 +5659,9 @@ function settingsHTML(){
   var nIvy = st.ivyPos ? Object.keys(st.ivyPos).length : 0;
   var ivy = '<p class="rg-hint">Tu as déplacé ' + nIvy + ' appli' + (nIvy > 1 ? 's' : '') + ' sur la plante (appui long pour déplacer).</p><button type="button" class="btn light" data-act="ivy-reset" style="width:100%">Remettre les applis à leur place</button>';
   var maj = '<p class="rg-hint">Si une nouvelle version tarde à arriver : l\'appli retélécharge tout son code depuis internet puis redémarre. Tes données ne bougent pas.</p><button type="button" class="btn light" data-act="force-upd" style="width:100%">Forcer la mise à jour</button><p class="rg-ver">Version ' + APP_VERSION + '</p>';
-  return '<section class="section gut rg-page" id="rgPage">'
+  return '<section class="section gut rg-page" id="rgPage">' + vxHeroHTML()
     + '<h2 class="rg-gt">Moi</h2>' + rgCard("anniv", "Mon anniversaire", bdSum, anniv) + rgCard("plan", "Mon planning", planSum, planningSettingsHTML()) + rgCard("som", "Sommeil", "Objectif " + slHM(sl.target) + " · lever " + slHM(sl.lead) + " avant", som)
-    + '<h2 class="rg-gt">Contenus</h2>' + rgCard("news", "Sujets des News", topics.length ? topics.length + " sujet" + (topics.length > 1 ? "s" : "") : "Aucun sujet", news) + rgCard("appris", "Mots appris", apSum, learnSettingsHTML()) + rgCard("phr", "Phrases apprises", (function(){ var n = learnData().phrases.length; return n ? n + " phrase" + (n > 1 ? "s" : "") : "Aucune pour l'instant"; })(), phrasesSettingsHTML()) + rgCard("notes", "Affichage des notes", "Texte " + SZ[pr.size] + " · " + (pr.layout === "liste" ? "liste" : "grille"), notes)
+    + '<h2 class="rg-gt">Contenus</h2>' + rgCard("news", "Sujets des News", topics.length ? topics.length + " sujet" + (topics.length > 1 ? "s" : "") : "Aucun sujet", news) + rgCard("appris", "Mots appris", apSum, learnSettingsHTML()) + rgCard("phr", "Phrases apprises", (function(){ var n = learnData().phrases.length; return n ? n + " phrase" + (n > 1 ? "s" : "") : "Aucune pour l'instant"; })(), phrasesSettingsHTML()) + rgCard("voix", "Ta voix", vxSum(), vxSettingsHTML()) + rgCard("notes", "Affichage des notes", "Texte " + SZ[pr.size] + " · " + (pr.layout === "liste" ? "liste" : "grille"), notes)
     + '<h2 class="rg-gt">Compte et données</h2>' + rgCard("gcal", "Google Agenda", gOn ? "Synchronisé" : "Pas encore synchronisé", gcalSettingsHTML()) + rgCard("save", "Sauvegarde", "Télécharger ou importer tes données", save)
     + '<h2 class="rg-gt">L\'appli</h2>' + (nIvy ? rgCard("ivy", "Lanceur Apps", nIvy + " appli" + (nIvy > 1 ? "s déplacées" : " déplacée"), ivy) : "") + rgCard("maj", "Mise à jour", APP_VERSION, maj)
     + '<button type="button" class="rg-out" data-act="signout">Se déconnecter</button></section>';
@@ -5260,6 +5701,7 @@ function newsSettingsHTML(){
     + (rest.length ? '<details class="nw-more"><summary>Tout l\'historique <span>' + MW_NEWS.length + ' versions</span></summary><div class="nw-list">' + newsGroupHTML(rest, cur, first.length ? first[first.length - 1].d : "") + '</div></details>' : '');
 }
 function mountSettings(){
+  vxDiag();
   var imp = document.getElementById("impFile"); if (imp) imp.onchange = function(){ var f = imp.files && imp.files[0]; if (!f || !needDb()) return; f.text().then(function(t){ var j = JSON.parse(t); if (!j || !j.collections) throw new Error("format"); return db.importAll(j); }).then(function(n){ toast("Sauvegarde importée (" + n + " éléments)."); closeSheet(); }).catch(function(){ toast("Ce fichier n'est pas une sauvegarde valide."); }); };
   var fb = document.getElementById("fBd"), ft = document.getElementById("fT");
   if (fb) fb.onsubmit = function(e){ e.preventDefault(); var v = document.getElementById("bdIn").value; saveSettings({birthday: v ? v.slice(5) : null}).then(function(){ toast(v ? "Ton anniversaire est noté." : "Date retirée."); render(); }); };
@@ -6342,6 +6784,8 @@ document.addEventListener("click", function(e){
   if (act === "tm-ok"){ tmBeepStop(); closeSheet(); return; }
   if (act === "tm-again"){ tmBeepStop(); closeSheet(); tmStart(+b.dataset.sec, b.dataset.l || ""); return; }
   if (act === "add-open"){ if (S.lpFired){ S.lpFired = false; return; } if (!document.getElementById("appsFan").hidden){ fanClose(); return; }
+    /* MyWorld_1.43 : sur la page « Apprends à ton App », le + écoute pour l'entraînement */
+    if (S.view === "voix" && VX){ if (VX.ph === "listen"){ if (VX.rec) try { VX.rec.stop(); } catch(e){} } else if (VX.ph === "idle") vxListen(); else if (VX.ph === "bad"){ VX.tries++; VX.ph = "idle"; VX.diff = null; vxListen(); } return; }
     /* MyWorld_1.37 : le + écoute sans ouvrir la fenêtre ; un 2e toucher arrête l'écoute ; sans dictée possible → fenêtre clavier */
     if (S.micOn){ S.dictate && S.dictate(); return; }
     if (!(S.dictate && S.dictate(true, true))) addOpen("text"); return; }
@@ -6360,6 +6804,16 @@ document.addEventListener("click", function(e){
   if (act === "complete-event"){ completeEventSheet(id); return; }
   if (!needDb()) return;
   if (act === "del-item"){ var it = S.items.find(function(i){ return i._id === id; }); db.collection("items").doc(id).delete().then(function(){ closeSheet(); toast("Supprimé.", {undo: it ? function(){ var c = Object.assign({}, it); delete c._id; db.collection("items").doc(id).set(c).catch(dbErr); } : null}); }).catch(dbErr); return; }
+  if (act === "vx-go"){ vxStart(b.dataset.th); return; }
+  if (act === "vx-th"){ var Vt = vxData(); Vt.th = b.dataset.th; vxSave(Vt); refreshSettings(); return; }
+  if (act === "vx-auto"){ var Va = vxData(); Va.auto = !Va.auto; vxSave(Va); if (VX) VX.V.auto = Va.auto; if (S.view === "voix") vxDraw(); else refreshSettings(); return; }
+  if (act === "vx-rdel"){ var Vr = vxData(), gr = Vr.rules[+b.dataset.i]; if (!gr) return; Vr.rules.splice(+b.dataset.i, 1); vxSave(Vr); if (VX) VX.V.rules = Vr.rules.slice(); refreshSettings();
+    toast("Correction oubliée.", {undo:function(){ var V2 = vxData(); V2.rules.push(gr); vxSave(V2); refreshSettings(); }}); return; }
+  if (act === "vx-redo"){ if (!VX) return; VX.tries++; VX.ph = "idle"; VX.diff = null; VX.props = []; vxListen(); return; }
+  if (act === "vx-learn"){ vxLearn(); return; }
+  if (act === "vx-skip"){ vxNext(); return; }
+  if (act === "vx-again"){ vxStart(VX ? VX.th : null); return; }
+  if (act === "vx-end"){ vxStop(); VX = null; location.hash = "reglages"; return; }
   if (act === "phr-del"){ var LP = learnData(), gone = LP.phrases[+b.dataset.i]; if (!gone) return; LP.phrases.splice(+b.dataset.i, 1);
     saveLearn(LP).then(function(){ refreshSettings(); toast("Phrase oubliée.", {undo:function(){ var L2 = learnData(); L2.phrases.push(gone); saveLearn(L2).then(refreshSettings); }}); }); return; }
   if (act === "learn-del"){ var L = learnData(), t = b.dataset.t, k = b.dataset.k;
@@ -6371,7 +6825,7 @@ document.addEventListener("click", function(e){
 document.addEventListener("keydown", function(e){ if (e.key === "Escape" && document.getElementById("neMn")) { neMenuClose(); return; } if (e.key === "Escape") { closeSheet(); var l = document.querySelector(".levelup"); if (l) l.remove(); } });
 document.getElementById("captureForm").addEventListener("submit", onCapture);
 
-var TABS = ["accueil","notes","listes","courses","fiche","gazette","meteo","jeu","cartes","sommeil","bienetre","conclusions","reglages"];
+var TABS = ["accueil","notes","listes","courses","fiche","gazette","meteo","jeu","cartes","sommeil","bienetre","conclusions","reglages","voix"];
 
 
 /* ===== MyWorld_0.13 : page « Tes listes » (À faire / Rappels) ===== */
