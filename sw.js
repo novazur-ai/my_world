@@ -7,7 +7,8 @@ const SHELL = [
   "icons/icon-192-v6.png", "icons/maskable-512-v6.png", "icons/apple-touch-180-v6.png",
   "lib/jsbarcode.min.js", "lib/qrcode.min.js",
   "fonts/nunito-latin-400-normal.woff2", "fonts/nunito-latin-600-normal.woff2", "fonts/nunito-latin-700-normal.woff2", "fonts/nunito-latin-800-normal.woff2",
-  "fonts/dancing-script-latin-600-normal.woff2", "fonts/dancing-script-latin-700-normal.woff2"
+  "fonts/dancing-script-latin-600-normal.woff2", "fonts/dancing-script-latin-700-normal.woff2",
+  "fonts/caveat-latin-700-normal.woff2", "fonts/bebas-neue-latin-400-normal.woff2", "fonts/lora-latin-600-normal.woff2", "fonts/jetbrains-mono-latin-500-normal.woff2"
 ];
 const SHELL_PATHS = new Set(SHELL.map((u) => new URL(u, self.location).pathname));
 /* MyWorld_1.27 : GitHub Pages publie aussi directement la branche main (« pages-build-deployment »), et cette publication

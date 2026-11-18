@@ -410,6 +410,71 @@ body.nsel-on nav.tabs *{pointer-events:none!important}
 .ncard2.dark,.note-editor.dark{color:#F4F1FF;border-color:#2E5884}
 .ncard2.dark .nc-p,.ncard2.dark .nc-d,.note-editor.dark .ne-meta{color:#C9D6EA}
 .ncard2.dark .nc-pin{color:#F6D77A}
+/* MyWorld_1.45 : fonds à thème (canevas « Fonds de notes à thème »). .bg-x = cartes et pastilles ; .note-editor.bg-x = la note ouverte */
+@font-face{font-family:Caveat;font-weight:700;font-display:swap;src:url(fonts/caveat-latin-700-normal.woff2) format("woff2")}
+@font-face{font-family:"Bebas Neue";font-weight:400;font-display:swap;src:url(fonts/bebas-neue-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:Lora;font-weight:600;font-display:swap;src:url(fonts/lora-latin-600-normal.woff2) format("woff2")}
+@font-face{font-family:"JetBrains Mono";font-weight:500;font-display:swap;src:url(fonts/jetbrains-mono-latin-500-normal.woff2) format("woff2")}
+/* Carnet */
+.bg-carnet{background:radial-gradient(circle at 9px 50%,#E9E1CF 4px,#D3C9B4 4.5px,transparent 5.5px) 0 0/18px 26px repeat-y,linear-gradient(90deg,transparent 22px,#F0A3A3 22px,#F0A3A3 23.5px,transparent 23.5px),repeating-linear-gradient(180deg,transparent 0 17px,#D5E3F1 17px 18px),#FFFDF5}
+.note-editor.bg-carnet{background:radial-gradient(circle at 12px 50%,#E9E1CF 4px,#D3C9B4 4.5px,transparent 5.5px) 0 0/24px 46px repeat-y 0 20px,linear-gradient(90deg,transparent 33px,#F0A3A3 33px,#F0A3A3 34.5px,transparent 34.5px),#FFFDF5;color:#1F2B4D}
+.note-editor.bg-carnet .ne-scroll{padding-left:46px}
+.note-editor.bg-carnet .ne-body{background:linear-gradient(transparent calc(1.6em - 1px),#C9DCEF calc(1.6em - 1px)) 0 0/100% 1.6em}
+.note-editor.bg-carnet .ne-title,.ncard2.bg-carnet .nc-t,.hn-card.bg-carnet b{font-family:Caveat,cursive;font-weight:700;color:#2B3A67}
+.note-editor.bg-carnet .ne-title{font-size:36px}
+.ncard2.bg-carnet .nc-t{font-size:calc(var(--nfs,14px) + 8px);line-height:1.05}
+.hn-card.bg-carnet b{font-size:19px;line-height:1.05}
+.ncard2.bg-carnet .nc-body{padding-left:32px}.hn-card.bg-carnet{padding-left:30px}
+/* Quadrillé */
+.bg-quadri,.note-editor.bg-quadri{background:linear-gradient(#DCE7F3 1px,transparent 1px) 0 0/16px 16px,linear-gradient(90deg,#DCE7F3 1px,transparent 1px) 0 0/16px 16px,#FFFFFF}
+.note-editor.bg-quadri{background-size:18px 18px}
+/* Coffre-fort (codes à retenir) */
+.bg-coffre{background:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20120%20120%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23FFFFFF%22%20stroke-opacity%3D%22.09%22%20stroke-width%3D%223%22%3E%3Ccircle%20cx%3D%2260%22%20cy%3D%2260%22%20r%3D%2250%22/%3E%3Ccircle%20cx%3D%2260%22%20cy%3D%2260%22%20r%3D%2234%22/%3E%3Ccircle%20cx%3D%2260%22%20cy%3D%2260%22%20r%3D%228%22/%3E%3C/g%3E%3Cg%20stroke%3D%22%23FFFFFF%22%20stroke-opacity%3D%22.09%22%20stroke-width%3D%223%22%3E%3Cline%20x1%3D%2260%22%20y1%3D%226%22%20x2%3D%2260%22%20y2%3D%2216%22%20transform%3D%22rotate%280%2060%2060%29%22/%3E%3Cline%20x1%3D%2260%22%20y1%3D%226%22%20x2%3D%2260%22%20y2%3D%2216%22%20transform%3D%22rotate%2830%2060%2060%29%22/%3E%3Cline%20x1%3D%2260%22%20y1%3D%226%22%20x2%3D%2260%22%20y2%3D%2216%22%20transform%3D%22rotate%2860%2060%2060%29%22/%3E%3Cline%20x1%3D%2260%22%20y1%3D%226%22%20x2%3D%2260%22%20y2%3D%2216%22%20transform%3D%22rotate%2890%2060%2060%29%22/%3E%3Cline%20x1%3D%2260%22%20y1%3D%226%22%20x2%3D%2260%22%20y2%3D%2216%22%20transform%3D%22rotate%28120%2060%2060%29%22/%3E%3Cline%20x1%3D%2260%22%20y1%3D%226%22%20x2%3D%2260%22%20y2%3D%2216%22%20transform%3D%22rotate%28150%2060%2060%29%22/%3E%3Cline%20x1%3D%2260%22%20y1%3D%226%22%20x2%3D%2260%22%20y2%3D%2216%22%20transform%3D%22rotate%28180%2060%2060%29%22/%3E%3Cline%20x1%3D%2260%22%20y1%3D%226%22%20x2%3D%2260%22%20y2%3D%2216%22%20transform%3D%22rotate%28210%2060%2060%29%22/%3E%3Cline%20x1%3D%2260%22%20y1%3D%226%22%20x2%3D%2260%22%20y2%3D%2216%22%20transform%3D%22rotate%28240%2060%2060%29%22/%3E%3Cline%20x1%3D%2260%22%20y1%3D%226%22%20x2%3D%2260%22%20y2%3D%2216%22%20transform%3D%22rotate%28270%2060%2060%29%22/%3E%3Cline%20x1%3D%2260%22%20y1%3D%226%22%20x2%3D%2260%22%20y2%3D%2216%22%20transform%3D%22rotate%28300%2060%2060%29%22/%3E%3Cline%20x1%3D%2260%22%20y1%3D%226%22%20x2%3D%2260%22%20y2%3D%2216%22%20transform%3D%22rotate%28330%2060%2060%29%22/%3E%3C/g%3E%3C/svg%3E") right -26px bottom -26px/110px no-repeat,repeating-linear-gradient(90deg,rgba(255,255,255,.018) 0 2px,transparent 2px 5px),linear-gradient(160deg,#2B3743,#151C24);color:#EAF0F6}
+.note-editor.bg-coffre{background:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20120%20120%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23FFFFFF%22%20stroke-opacity%3D%22.09%22%20stroke-width%3D%223%22%3E%3Ccircle%20cx%3D%2260%22%20cy%3D%2260%22%20r%3D%2250%22/%3E%3Ccircle%20cx%3D%2260%22%20cy%3D%2260%22%20r%3D%2234%22/%3E%3Ccircle%20cx%3D%2260%22%20cy%3D%2260%22%20r%3D%228%22/%3E%3C/g%3E%3Cg%20stroke%3D%22%23FFFFFF%22%20stroke-opacity%3D%22.09%22%20stroke-width%3D%223%22%3E%3Cline%20x1%3D%2260%22%20y1%3D%226%22%20x2%3D%2260%22%20y2%3D%2216%22%20transform%3D%22rotate%280%2060%2060%29%22/%3E%3Cline%20x1%3D%2260%22%20y1%3D%226%22%20x2%3D%2260%22%20y2%3D%2216%22%20transform%3D%22rotate%2830%2060%2060%29%22/%3E%3Cline%20x1%3D%2260%22%20y1%3D%226%22%20x2%3D%2260%22%20y2%3D%2216%22%20transform%3D%22rotate%2860%2060%2060%29%22/%3E%3Cline%20x1%3D%2260%22%20y1%3D%226%22%20x2%3D%2260%22%20y2%3D%2216%22%20transform%3D%22rotate%2890%2060%2060%29%22/%3E%3Cline%20x1%3D%2260%22%20y1%3D%226%22%20x2%3D%2260%22%20y2%3D%2216%22%20transform%3D%22rotate%28120%2060%2060%29%22/%3E%3Cline%20x1%3D%2260%22%20y1%3D%226%22%20x2%3D%2260%22%20y2%3D%2216%22%20transform%3D%22rotate%28150%2060%2060%29%22/%3E%3Cline%20x1%3D%2260%22%20y1%3D%226%22%20x2%3D%2260%22%20y2%3D%2216%22%20transform%3D%22rotate%28180%2060%2060%29%22/%3E%3Cline%20x1%3D%2260%22%20y1%3D%226%22%20x2%3D%2260%22%20y2%3D%2216%22%20transform%3D%22rotate%28210%2060%2060%29%22/%3E%3Cline%20x1%3D%2260%22%20y1%3D%226%22%20x2%3D%2260%22%20y2%3D%2216%22%20transform%3D%22rotate%28240%2060%2060%29%22/%3E%3Cline%20x1%3D%2260%22%20y1%3D%226%22%20x2%3D%2260%22%20y2%3D%2216%22%20transform%3D%22rotate%28270%2060%2060%29%22/%3E%3Cline%20x1%3D%2260%22%20y1%3D%226%22%20x2%3D%2260%22%20y2%3D%2216%22%20transform%3D%22rotate%28300%2060%2060%29%22/%3E%3Cline%20x1%3D%2260%22%20y1%3D%226%22%20x2%3D%2260%22%20y2%3D%2216%22%20transform%3D%22rotate%28330%2060%2060%29%22/%3E%3C/g%3E%3C/svg%3E") right -40px bottom 40px/230px no-repeat,repeating-linear-gradient(90deg,rgba(255,255,255,.018) 0 2px,transparent 2px 5px),linear-gradient(160deg,#2B3743,#151C24);color:#EAF0F6}
+.note-editor.bg-coffre .ne-body{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:calc(var(--nfs,17px) - 1.5px);letter-spacing:.02em}
+.ncard2.bg-coffre .nc-p,.hn-card.bg-coffre span{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:11.5px}
+.ncard2.bg-coffre,.hn-card.bg-coffre{border-color:#33414F}
+/* Recettes */
+.bg-recette{background:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20120%20120%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23B5483A%22%20stroke-opacity%3D%22.12%22%20stroke-width%3D%224%22%20stroke-linecap%3D%22round%22%3E%3Cpath%20d%3D%22M60%20112V70%22/%3E%3Cpath%20d%3D%22M60%2070c-22-8-26-46%200-58%2026%2012%2022%2050%200%2058z%22/%3E%3Cpath%20d%3D%22M60%2070c-10-10-10-44%200-58M60%2070c10-10%2010-44%200-58%22/%3E%3C/g%3E%3C/svg%3E") right -8px bottom -6px/80px no-repeat,linear-gradient(180deg,transparent 22px,#FFFDF9 22px) 0 0/100% 100% no-repeat,repeating-linear-gradient(180deg,rgba(214,82,68,.22) 0 5px,transparent 5px 10px),repeating-linear-gradient(90deg,rgba(214,82,68,.22) 0 5px,transparent 5px 10px),#FFFDF9}
+.bg-recette{background-size:80px,100% 100%,100% 22px,100% 22px,auto;background-repeat:no-repeat}
+.note-editor.bg-recette{background:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20120%20120%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23B5483A%22%20stroke-opacity%3D%22.12%22%20stroke-width%3D%224%22%20stroke-linecap%3D%22round%22%3E%3Cpath%20d%3D%22M60%20112V70%22/%3E%3Cpath%20d%3D%22M60%2070c-22-8-26-46%200-58%2026%2012%2022%2050%200%2058z%22/%3E%3Cpath%20d%3D%22M60%2070c-10-10-10-44%200-58M60%2070c10-10%2010-44%200-58%22/%3E%3C/g%3E%3C/svg%3E") right -10px bottom 70px/150px no-repeat,linear-gradient(180deg,transparent 58px,#FFFDF9 58px) 0 0/100% 100% no-repeat,repeating-linear-gradient(180deg,rgba(214,82,68,.22) 0 8px,transparent 8px 16px),repeating-linear-gradient(90deg,rgba(214,82,68,.22) 0 8px,transparent 8px 16px),#FFFDF9;background-size:150px,100% 100%,100% 58px,100% 58px,auto;background-repeat:no-repeat;color:#3A2A24}
+.note-editor.bg-recette .ne-title,.ncard2.bg-recette .nc-t,.hn-card.bg-recette b{color:#9C3A2E}
+.ncard2.bg-recette .nc-body{padding-top:30px}.hn-card.bg-recette{padding-top:28px}
+.note-editor.bg-recette .ne-scroll{padding-top:10px}
+/* Voyage */
+.bg-voyage{background:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20120%20120%22%3E%3Cg%20fill%3D%22%232C679C%22%20fill-opacity%3D%22.14%22%3E%3Cpath%20d%3D%22M108%2052L70%2058%2050%2022H40l10%2038-24%204-8-10h-8l6%2018-6%2018h8l8-10%2024%204-10%2038h10l20-36%2038%206c6%200%2010-4%2010-8s-4-8-10-8z%22/%3E%3C/g%3E%3C/svg%3E") right 8px top 8px/34px no-repeat,url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20120%20120%22%3E%3Cpath%20d%3D%22M4%20110%20C%2040%2060%2C%2080%2090%2C%20116%2014%22%20fill%3D%22none%22%20stroke%3D%22%232C679C%22%20stroke-opacity%3D%22.22%22%20stroke-width%3D%222.5%22%20stroke-dasharray%3D%226%207%22/%3E%3C/svg%3E") left -10px bottom 0/100% 60% no-repeat,linear-gradient(170deg,#EEF7FD,#DDEEF9)}
+.note-editor.bg-voyage{background:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20120%20120%22%3E%3Cg%20fill%3D%22%232C679C%22%20fill-opacity%3D%22.14%22%3E%3Cpath%20d%3D%22M108%2052L70%2058%2050%2022H40l10%2038-24%204-8-10h-8l6%2018-6%2018h8l8-10%2024%204-10%2038h10l20-36%2038%206c6%200%2010-4%2010-8s-4-8-10-8z%22/%3E%3C/g%3E%3C/svg%3E") right 22px top 150px/60px no-repeat,url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20120%20120%22%3E%3Cpath%20d%3D%22M4%20110%20C%2040%2060%2C%2080%2090%2C%20116%2014%22%20fill%3D%22none%22%20stroke%3D%22%232C679C%22%20stroke-opacity%3D%22.22%22%20stroke-width%3D%222.5%22%20stroke-dasharray%3D%226%207%22/%3E%3C/svg%3E") left -10px bottom 90px/100% 45% no-repeat,linear-gradient(170deg,#EEF7FD,#DDEEF9)}
+.note-editor.bg-voyage .ne-title,.ncard2.bg-voyage .nc-t,.hn-card.bg-voyage b{color:#1E4F84}
+/* Post-it */
+.bg-postit{background:linear-gradient(rgba(255,255,255,.55),rgba(255,255,255,.55)) 50% 0/56px 14px no-repeat,linear-gradient(170deg,#FFF6B8,#FDE98A)}
+.note-editor.bg-postit{background:linear-gradient(rgba(255,255,255,.55),rgba(255,255,255,.55)) 50% 0/110px 26px no-repeat,linear-gradient(170deg,#FFF6B8,#FDE98A);color:#3D3410}
+.ncard2.bg-postit .nc-body{padding-top:20px}.hn-card.bg-postit{padding-top:18px}
+.ncard2.bg-postit .nc-p,.hn-card.bg-postit span{color:#6B5D1E}
+/* Bibliothèque */
+.bg-biblio{background:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20120%20120%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%237A5A33%22%20stroke-opacity%3D%22.16%22%20stroke-width%3D%223.5%22%20stroke-linejoin%3D%22round%22%3E%3Crect%20x%3D%2210%22%20y%3D%2230%22%20width%3D%2218%22%20height%3D%2280%22%20rx%3D%222%22/%3E%3Crect%20x%3D%2230%22%20y%3D%2220%22%20width%3D%2216%22%20height%3D%2290%22%20rx%3D%222%22/%3E%3Crect%20x%3D%2248%22%20y%3D%2240%22%20width%3D%2220%22%20height%3D%2270%22%20rx%3D%222%22/%3E%3Cpath%20d%3D%22M72%20108l14-76%2016%203-14%2076z%22/%3E%3Cpath%20d%3D%22M6%20110h108%22/%3E%3C/g%3E%3C/svg%3E") right -4px bottom -2px/76px no-repeat,radial-gradient(rgba(120,90,50,.06) 1px,transparent 1.2px) 0 0/6px 6px,linear-gradient(170deg,#F6ECDC,#EAD9BE)}
+.note-editor.bg-biblio{background:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20120%20120%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%237A5A33%22%20stroke-opacity%3D%22.16%22%20stroke-width%3D%223.5%22%20stroke-linejoin%3D%22round%22%3E%3Crect%20x%3D%2210%22%20y%3D%2230%22%20width%3D%2218%22%20height%3D%2280%22%20rx%3D%222%22/%3E%3Crect%20x%3D%2230%22%20y%3D%2220%22%20width%3D%2216%22%20height%3D%2290%22%20rx%3D%222%22/%3E%3Crect%20x%3D%2248%22%20y%3D%2240%22%20width%3D%2220%22%20height%3D%2270%22%20rx%3D%222%22/%3E%3Cpath%20d%3D%22M72%20108l14-76%2016%203-14%2076z%22/%3E%3Cpath%20d%3D%22M6%20110h108%22/%3E%3C/g%3E%3C/svg%3E") right -6px bottom 70px/150px no-repeat,radial-gradient(rgba(120,90,50,.06) 1px,transparent 1.2px) 0 0/6px 6px,linear-gradient(170deg,#F6ECDC,#EAD9BE);color:#3B2A16}
+.note-editor.bg-biblio .ne-title,.ncard2.bg-biblio .nc-t,.hn-card.bg-biblio b{font-family:Lora,Georgia,serif;font-weight:600;color:#5B3F1E}
+.ncard2.bg-biblio .nc-p,.hn-card.bg-biblio span{color:#6E5638}
+/* Jardin */
+.bg-jardin{background:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20120%20120%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%233F7A4A%22%20stroke-opacity%3D%22.16%22%20stroke-width%3D%223.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M16%20108C20%2050%2060%2020%20108%2014c-4%2052-40%2088-92%2094z%22/%3E%3Cpath%20d%3D%22M16%20108L84%2040M44%2080l-4-22M62%2062l-2-20M44%2080l22%202M62%2062l20%202%22/%3E%3C/g%3E%3C/svg%3E") right -10px bottom -8px/90px no-repeat,linear-gradient(170deg,#F2F8EE,#DDEED5)}
+.note-editor.bg-jardin{background:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20120%20120%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%233F7A4A%22%20stroke-opacity%3D%22.16%22%20stroke-width%3D%223.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M16%20108C20%2050%2060%2020%20108%2014c-4%2052-40%2088-92%2094z%22/%3E%3Cpath%20d%3D%22M16%20108L84%2040M44%2080l-4-22M62%2062l-2-20M44%2080l22%202M62%2062l20%202%22/%3E%3C/g%3E%3C/svg%3E") right -16px bottom 60px/190px no-repeat,url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20120%20120%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%233F7A4A%22%20stroke-opacity%3D%22.16%22%20stroke-width%3D%223.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M16%20108C20%2050%2060%2020%20108%2014c-4%2052-40%2088-92%2094z%22/%3E%3Cpath%20d%3D%22M16%20108L84%2040M44%2080l-4-22M62%2062l-2-20M44%2080l22%202M62%2062l20%202%22/%3E%3C/g%3E%3C/svg%3E") left -50px top -40px/130px no-repeat,linear-gradient(170deg,#F2F8EE,#DDEED5);color:#20331F}
+.note-editor.bg-jardin .ne-title,.ncard2.bg-jardin .nc-t,.hn-card.bg-jardin b{color:#2F6B3B}
+/* Musique */
+.bg-musique{background:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20120%20120%22%3E%3Cg%20fill%3D%22%236A4FA0%22%20fill-opacity%3D%22.12%22%3E%3Cellipse%20cx%3D%2238%22%20cy%3D%2296%22%20rx%3D%2214%22%20ry%3D%2210%22%20transform%3D%22rotate%28-20%2038%2096%29%22/%3E%3Cellipse%20cx%3D%2288%22%20cy%3D%2284%22%20rx%3D%2214%22%20ry%3D%2210%22%20transform%3D%22rotate%28-20%2088%2084%29%22/%3E%3Cpath%20d%3D%22M50%2094V22l50-12v72h-6V20L56%2029v65z%22/%3E%3C/g%3E%3C/svg%3E") right 4px bottom 4px/64px no-repeat,repeating-linear-gradient(180deg,rgba(106,79,160,.16) 0 1px,transparent 1px 7px) 0 10px/100% 29px no-repeat,linear-gradient(170deg,#FAF7FE,#ECE4F8)}
+.note-editor.bg-musique{background:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20120%20120%22%3E%3Cg%20fill%3D%22%236A4FA0%22%20fill-opacity%3D%22.12%22%3E%3Cellipse%20cx%3D%2238%22%20cy%3D%2296%22%20rx%3D%2214%22%20ry%3D%2210%22%20transform%3D%22rotate%28-20%2038%2096%29%22/%3E%3Cellipse%20cx%3D%2288%22%20cy%3D%2284%22%20rx%3D%2214%22%20ry%3D%2210%22%20transform%3D%22rotate%28-20%2088%2084%29%22/%3E%3Cpath%20d%3D%22M50%2094V22l50-12v72h-6V20L56%2029v65z%22/%3E%3C/g%3E%3C/svg%3E") right 18px bottom 104px/100px no-repeat,repeating-linear-gradient(180deg,rgba(106,79,160,.16) 0 1px,transparent 1px 7px) 0 calc(100% - 118px)/100% 29px no-repeat,linear-gradient(170deg,#FAF7FE,#ECE4F8);color:#2A2140}
+.note-editor.bg-musique .ne-title,.ncard2.bg-musique .nc-t,.hn-card.bg-musique b{color:#5B3F9A}
+/* fenêtre des fonds sur un thème : fond uni (pas de décor qui déborde) */
+.note-editor.bg-carnet .ne-pop{background:#FFFDF5}.note-editor.bg-quadri .ne-pop{background:#FFFFFF}.note-editor.bg-coffre .ne-pop{background:#1C252F}
+.note-editor.bg-recette .ne-pop{background:#FFFDF9}.note-editor.bg-voyage .ne-pop{background:#E6F2FB}.note-editor.bg-postit .ne-pop{background:#FEF0A2}
+.note-editor.bg-biblio .ne-pop{background:#F0E2CC}.note-editor.bg-jardin .ne-pop{background:#E8F3E2}.note-editor.bg-musique .ne-pop{background:#F3EEFB}
+/* panneau des fonds : Thèmes (petites pages) puis Couleurs (ronds) */
+.bg-h{margin:2px 2px 8px;font-size:11.5px;font-weight:900;letter-spacing:.09em;text-transform:uppercase;opacity:.7}
+.bg-h+.bg-row{margin-bottom:12px}
+.bg-sw.bg-dot{width:44px;height:44px;border-radius:50%;padding:0}
+.bg-sw.bg-dot span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.bg-sw.bg-dot.on{outline-offset:3px}
+.bg-sw.th-sw{width:64px;height:84px;align-items:flex-end;padding-bottom:5px;font-size:10.5px}
+.bg-sw.th-sw span{position:relative;z-index:1;padding:1px 6px;border-radius:6px;background:rgba(255,255,255,.82);color:#10263D}
 .fab{position:fixed;z-index:15;right:max(18px,calc(50% - 262px));bottom:calc(96px + env(safe-area-inset-bottom,0px));width:58px;height:58px;border-radius:50%;border:0;background:var(--ink);color:#FFFFFF;display:grid;place-items:center;box-shadow:0 10px 24px rgba(25,25,35,.3)}
 .n-menu{display:flex;flex-direction:column;gap:10px}
 .f-list{display:flex;flex-direction:column;gap:8px}
@@ -2667,10 +2732,11 @@ var DECO = (function(){
 
 </script>
 <script>
-var APP_VERSION = "MyWorld_1.44";
+var APP_VERSION = "MyWorld_1.45";
 /* MyWorld_1.33 : nouveautés affichées dans les Réglages. À CHAQUE VERSION (appli ou jeu) : ajouter une entrée EN TÊTE,
    {v: numéro, d: date AAAA-MM-JJ, t: titre court, l: 1 à 3 phrases simples, sans jargon}. */
 var MW_NEWS = [
+  {"v": "1.45", "d": "2026-11-18", "t": "Fonds de notes à thème", "l": ["9 nouveaux fonds pour les notes : Carnet, Quadrillé, Coffre-fort, Recettes, Voyage, Post-it, Bibliothèque, Jardin et Musique.", "Le panneau des fonds montre d'abord les thèmes, puis les couleurs. Les nouvelles notes restent en Noir.", "Le fond Cinéma arrive juste après."]},
   {"v": "1.44", "d": "2026-11-18", "t": "Notes : deux correctifs", "l": ["Sur l'accueil, les notes s'affichent enfin avec leur fond.", "Les blocs à copier n'ont plus l'étiquette « À copier » : il reste le bouton copier en haut à droite."]},
   {"v": "1.43", "d": "2026-11-17", "t": "Apprends à ton App", "l": ["Nouveau dans les Réglages : un petit jeu de 10 phrases à dire au +, pour que l'appli comprenne mieux ta voix. Les mots s'allument au fur et à mesure.", "Quand un mot est mal entendu, « Retenir la correction » l'apprend : la correction sert ensuite à tout ce que tu dis au bouton +.", "Une jauge suit la compréhension ; 10/10 du premier coup = « Symbiose parfaite »."]},
   {"v": "1.42", "d": "2026-11-17", "t": "Quand le bouton + n'a pas compris", "l": ["Nouvel écran : l'appli propose ses 3 meilleures idées, « Autre chose… » montre toutes les actions (minuteur, rappel, rendez-vous, note, courses, ouvrir une appli ou une note, carte de fidélité…).", "« Ajouter une action » permet d'enchaîner jusqu'à 3 actions, et l'appli retient ta phrase : la durée, l'heure ou le texte peuvent changer la fois suivante.", "Réglages : nouvelle carte « Phrases apprises » pour voir et oublier ces phrases.", "La page derrière la fenêtre d'ajout ne défile plus."]},
@@ -5824,7 +5890,17 @@ var NOTE_BGS = [
   {id:"nuit", name:"Nuit", dark:true},
   {id:"rose", name:"Rose"},
   {id:"lavande", name:"Lavande"},
-  {id:"azur", name:"Azur"}
+  {id:"azur", name:"Azur"},
+  /* MyWorld_1.45 : fonds à thème (th: true → rangée « Thèmes » du panneau) */
+  {id:"carnet", name:"Carnet", th:true},
+  {id:"quadri", name:"Quadrillé", th:true},
+  {id:"coffre", name:"Coffre-fort", th:true, dark:true},
+  {id:"recette", name:"Recettes", th:true},
+  {id:"voyage", name:"Voyage", th:true},
+  {id:"postit", name:"Post-it", th:true},
+  {id:"biblio", name:"Bibliothèque", th:true},
+  {id:"jardin", name:"Jardin", th:true},
+  {id:"musique", name:"Musique", th:true}
 ];
 var NE = null;          /* éditeur ouvert */
 var DP = null;          /* bloc de dessin ouvert */
@@ -6431,7 +6507,9 @@ function setNoteField(patch){ Object.assign(NE.note, patch); var el = document.g
 function nePop(html){ neMenuClose(); var p = document.getElementById("nePop"); if (!html || (!p.hidden && p.dataset.k === html.slice(0, 40))){ p.hidden = true; p.innerHTML = ""; return; } p.dataset.k = html.slice(0, 40); p.innerHTML = html; p.hidden = false; }
 function neBgPicker(){
   var cur = NE.note.bg || "papier";
-  nePop('<div class="bg-row">' + NOTE_BGS.map(function(b){ return '<button type="button" class="bg-sw bg-' + b.id + (b.id === cur ? " on" : "") + '" data-act="ne-setbg" data-bg="' + b.id + '" style="' + noteBgStyle(b.id) + '" aria-label="Fond ' + b.name + '"' + (b.id === cur ? ' aria-pressed="true"' : "") + '>' + '<span>' + b.name + '</span></button>'; }).join("") + '</div>');
+  /* MyWorld_1.45 : « Thèmes » (petites pages avec leur nom) puis « Couleurs » (ronds) */
+  var sw = function(b){ return '<button type="button" class="bg-sw bg-' + b.id + (b.th ? " th-sw" : " bg-dot") + (b.id === cur ? " on" : "") + '" data-act="ne-setbg" data-bg="' + b.id + '" style="' + noteBgStyle(b.id) + '" aria-label="Fond ' + b.name + '"' + (b.id === cur ? ' aria-pressed="true"' : "") + '>' + '<span>' + b.name + '</span></button>'; };
+  nePop('<p class="bg-h">Thèmes</p><div class="bg-row">' + NOTE_BGS.filter(function(b){ return b.th; }).map(sw).join("") + '</div><p class="bg-h">Couleurs</p><div class="bg-row">' + NOTE_BGS.filter(function(b){ return !b.th; }).map(sw).join("") + '</div>');
 }
 function neMenu(){
   var ed = document.getElementById("noteEd"); if (!ed) return;
