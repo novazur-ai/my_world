@@ -1332,6 +1332,8 @@ body.fan-on nav.tabs a,body.fan-on .nav-add{opacity:.35;pointer-events:none;tran
 .gz-card .t{font-size:15.5px;font-weight:800;line-height:1.3;color:#1E2530}
 .gz-card .l{font-size:13.5px;font-weight:600;line-height:1.4;color:#66666F;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .gz-card .meta{font-size:12px;font-weight:800;color:#85858F}.gz-card .meta em{font-style:normal;color:#C2412D}.gz-card.read{opacity:.55}
+.gz-num{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;transition:transform .2s ease}.gz-num.press{transform:scale(.975);transition:transform .45s ease}
+#gzPop .gz-big{display:block;margin-top:12px;font-size:40px;font-weight:800;letter-spacing:-.02em;line-height:1.05;color:#0B4F7C}
 #gzPop{position:fixed;inset:0;z-index:45}
 #gzPop .gz-veil{position:absolute;inset:0;background:rgba(10,30,50,.35);opacity:0;transition:opacity .2s}
 #gzPop .gz-pop{position:absolute;left:0;right:0;bottom:0;max-width:640px;margin:0 auto;background:#fff;border-radius:26px 26px 0 0;box-shadow:0 -14px 40px rgba(10,30,50,.22);padding:10px 20px calc(24px + env(safe-area-inset-bottom,0px));max-height:82vh;overflow:auto;overscroll-behavior:contain;transform:translateY(100%);transition:transform .28s cubic-bezier(.16,1,.3,1)}
@@ -2746,10 +2748,11 @@ var DECO = (function(){
 
 </script>
 <script>
-var APP_VERSION = "MyWorld_1.46";
+var APP_VERSION = "MyWorld_1.47";
 /* MyWorld_1.33 : nouveautés affichées dans les Réglages. À CHAQUE VERSION (appli ou jeu) : ajouter une entrée EN TÊTE,
    {v: numéro, d: date AAAA-MM-JJ, t: titre court, l: 1 à 3 phrases simples, sans jargon}. */
 var MW_NEWS = [
+  {"v": "1.47", "d": "2026-11-18", "t": "Chiffre du jour : l'article d'un appui long", "l": ["Dans les News, un toucher sur le chiffre du jour passe toujours au suivant.", "Un appui long ouvre l'article d'où vient le chiffre, dans la fenêtre des News, sans quitter l'app.", "Les chiffres des prochains jours garderont aussi le titre, le résumé et les phrases clés de leur article."]},
   {"v": "1.46", "d": "2026-11-18", "t": "Fond Cinéma", "l": ["Nouveau fond « Cinéma » pour les notes : une bande de pellicule sur les bords, le grain du film et la lueur du projecteur, avec un titre façon affiche."]},
   {"v": "1.45", "d": "2026-11-18", "t": "Fonds de notes à thème", "l": ["9 nouveaux fonds pour les notes : Carnet, Quadrillé, Coffre-fort, Recettes, Voyage, Post-it, Bibliothèque, Jardin et Musique.", "Le panneau des fonds montre d'abord les thèmes, puis les couleurs. Les nouvelles notes restent en Noir.", "Le fond Cinéma arrive juste après."]},
   {"v": "1.44", "d": "2026-11-18", "t": "Notes : deux correctifs", "l": ["Sur l'accueil, les notes s'affichent enfin avec leur fond.", "Les blocs à copier n'ont plus l'étiquette « À copier » : il reste le bouton copier en haut à droite."]},
@@ -3708,7 +3711,7 @@ function viewGazette(){
   if (une) html += '<button type="button" class="gz-une" data-act="gz-une"><span class="ey">À la une</span><span class="t">' + h(une.title) + '</span>' + (une.lead ? '<span class="l">' + h(une.lead) + '</span>' : "") + '</button>';
   if (nums.length){
     var x = nums[ni], rl = topics.filter(function(t){ return t === x.topic; })[0] || x.topic || "";
-    html += '<button type="button" class="gz-num" data-act="gz-num" aria-label="Chiffre du jour suivant"><span class="top"><span>Chiffre du jour' + (rl ? " · " + h(rl) : "") + '</span>' + (nums.length > 1 ? '<span class="dots">' + nums.map(function(_, i){ return '<i' + (i === ni ? ' class="on"' : "") + '></i>'; }).join("") + '</span>' : "") + '</span><span class="n">' + h(x.n) + '</span><span class="p">' + h(x.text) + '</span>' + (nums.length > 1 ? '<span class="hint">Touche pour le suivant →</span>' : "") + '</button>';
+    html += '<button type="button" class="gz-num" data-act="gz-num" aria-label="Chiffre du jour suivant. Appui long pour lire l\'article."><span class="top"><span>Chiffre du jour' + (rl ? " · " + h(rl) : "") + '</span>' + (nums.length > 1 ? '<span class="dots">' + nums.map(function(_, i){ return '<i' + (i === ni ? ' class="on"' : "") + '></i>'; }).join("") + '</span>' : "") + '</span><span class="n">' + h(x.n) + '</span><span class="p">' + h(x.text) + '</span>' + (nums.length > 1 ? '<span class="hint">Touche pour le suivant · appui long pour lire l\'article</span>' : (x.url ? '<span class="hint">Appui long pour lire l\'article</span>' : "")) + '</button>';
   }
   /* MyWorld_0.43 : les infos du jour classées par importance (calculée chaque matin), sans filtre par sujet */
   var list = batch.slice(), ranked = list.some(function(g){ return g.rank != null; });
@@ -3759,7 +3762,7 @@ function gzOpen(id, obj){
   var c = obj ? ["#E3EDF6", "#0B3A5C"] : gzCol(g.topic);
   var el = document.createElement("div"); el.id = "gzPop";
   el.innerHTML = '<div class="gz-veil" data-act="gz-close"></div><div class="gz-pop" role="dialog" aria-modal="true" aria-labelledby="gzT"><span class="grab" aria-hidden="true"></span>'
-    + '<div class="gz-top"><span class="tag" style="background:' + c[0] + ';color:' + c[1] + '">' + (obj ? "" : gzIcon(g.topic, 14)) + h(obj ? "À la une" : g.topic) + '</span>' + (obj ? '' : gzRateHTML(g._id)) + '</div><h2 id="gzT">' + h(g.title) + '</h2><span class="meta">' + h(g.source || "") + (gzWhen(g) ? " · " + h(gzWhen(g)) : "") + '</span>'
+    + '<div class="gz-top"><span class="tag" style="background:' + c[0] + ';color:' + c[1] + '">' + (obj ? "" : gzIcon(g.topic, 14)) + h(obj ? (obj.tag || "À la une") : g.topic) + '</span>' + (obj ? '' : gzRateHTML(g._id)) + '</div>' + (obj && obj.big ? '<span class="gz-big">' + h(obj.big) + '</span>' : "") + '<h2 id="gzT">' + h(g.title) + '</h2><span class="meta">' + h(g.source || "") + (gzWhen(g) ? " · " + h(gzWhen(g)) : "") + '</span>'
     + (g.lead ? '<h4>L\'essentiel</h4><p>' + h(g.lead) + '</p>' : "")
     + (g.more ? '<h4>En quelques phrases</h4><p class="more">' + h(g.more) + '</p>' : "")
     + (!g.lead && !g.more ? '<p class="more">Pas de résumé pour cet article : le site ne le fournit pas.</p>' : "")
@@ -3771,6 +3774,33 @@ function gzOpen(id, obj){
   setTimeout(function(){ var b = el.querySelector(".b1"); if (b) b.focus({preventScroll:true}); }, 60);
   render();
 }
+/* MyWorld_1.47 : appui long sur le chiffre du jour → l'article d'où vient le chiffre, dans la même fenêtre que les autres News */
+function gzNumOpen(){
+  var nums = gzNumsOf(S.gzDay).filter(function(x){ return x && x.n; }); if (!nums.length) return;
+  var x = nums[(S.gzNum || 0) % nums.length];
+  if (!x.url){ toast("Pas d'article lié à ce chiffre."); return; }
+  var g = (S.gazette || []).find(function(a){ return a.url === x.url; });
+  if (g){ gzOpen(g._id); return; }
+  gzOpen(null, { tag: "Chiffre du jour", big: x.n, title: x.title || x.text, lead: x.title ? (x.lead || "") : "", more: x.more || "", url: x.url, source: x.source || "", ts: x.ts || null });
+}
+(function(){
+  var timer = null, longDone = false, xy = null;
+  document.addEventListener("pointerdown", function(e){
+    longDone = false;
+    var b = e.target.closest && e.target.closest(".gz-num"); if (!b) return;
+    xy = [e.clientX, e.clientY]; clearTimeout(timer);
+    b.classList.add("press");
+    timer = setTimeout(function(){ timer = null; longDone = true; b.classList.remove("press"); if (navigator.vibrate) try { navigator.vibrate(12); } catch(x){} gzNumOpen(); }, 450);
+  });
+  function stop(){ clearTimeout(timer); timer = null; if (longDone) setTimeout(function(){ longDone = false; }, 400); var b = document.querySelector(".gz-num.press"); if (b) b.classList.remove("press"); }
+  document.addEventListener("pointermove", function(e){ if (timer && xy && Math.abs(e.clientX - xy[0]) + Math.abs(e.clientY - xy[1]) > 12) stop(); });
+  ["pointerup","pointercancel"].forEach(function(n){ document.addEventListener(n, stop); });
+  document.addEventListener("contextmenu", function(e){ if (e.target.closest && e.target.closest(".gz-num")) e.preventDefault(); });
+  document.addEventListener("click", function(e){
+    if (!longDone) return;
+    longDone = false; e.preventDefault(); e.stopPropagation();
+  }, true);
+})();
 function gzClose(){ var el = document.getElementById("gzPop"); if (!el) return; el.classList.remove("on"); document.body.classList.remove("gz-on"); scrollLock(false); setTimeout(function(){ el.remove(); }, 220); }
 /* bloque le défilement de la page derrière une fenêtre (la position est rendue à la fermeture) */
 var lockY = 0;

@@ -184,7 +184,7 @@ export function keyNumbers(items, n = 5, min = 3){
         if (val >= 1900 && val <= 2100 && !unit) continue;
         let sc = unit === "%" ? 5 : unit ? 4 : PEOPLE.test(noun) ? (val >= 2 ? 4 : 0) : val >= 1000 ? 3 : val >= 100 ? 0.5 : 0;
         if (!sc) continue; if (t === it.title) sc += 1;
-        const cand = { n: raw.replace(/[ .](?=\d{3}\b)/g, " ") + (/%|€|\$/.test(unit) ? " " + unit : unit ? " " + unit : ""), text: it.lead && it.lead.length <= 200 ? it.lead : it.title, topic: it.topic, url: it.url, score: sc + (it.score ? Math.min(3, Math.max(0, it.score) / 4) : 0), side: /^(tech|sport)$/.test(rubriqueOf(it.topic) || ""), tw: uw(it.title) };
+        const cand = { n: raw.replace(/[ .](?=\d{3}\b)/g, " ") + (/%|€|\$/.test(unit) ? " " + unit : unit ? " " + unit : ""), text: it.lead && it.lead.length <= 200 ? it.lead : it.title, title: it.title, lead: it.lead || "", source: it.source || "", ts: it.ts || null, topic: it.topic, url: it.url, score: sc + (it.score ? Math.min(3, Math.max(0, it.score) / 4) : 0), side: /^(tech|sport)$/.test(rubriqueOf(it.topic) || ""), tw: uw(it.title) };
         if (!best || cand.score > best.score) best = cand;
       }
     }
@@ -337,6 +337,14 @@ export async function build(topics, seen = new Set(), rates = {}, N_PICK = 6, pr
   console.log(`\nCandidats : ${C.length} · notes apprises : ${model.n}`);
   picked.forEach((it, i) => console.log(`${i + 1}. [${it.final}] ${it.topic} · ${it.source} · ${it.title}\n     ${JSON.stringify(it.parts)} (${it.srcs} journal/aux)`));
   const numbers = keyNumbers(pool0.slice(0, 40).concat(N.arts.map((x) => ({ ...x, topic: x.src }))));
+  /* MyWorld_1.47 : chaque chiffre garde son article (titre, résumé, phrases clés) pour l'aperçu dans l'app (appui long) */
+  const toEnrich = [];
+  for (const x of numbers){
+    const p = picked.find((it) => it.url === x.url);
+    if (p){ x.title = p.title; x.lead = p.lead || ""; x.more = p.more || ""; x.source = p.source || x.source; x.url = p.url; }
+    else toEnrich.push(x);
+  }
+  await pool(toEnrich, 3, async (x) => { const it = { title: x.title, lead: x.lead, url: x.url }; try { await enrich(it); } catch (e) {} x.url = it.url; x.lead = it.lead || ""; x.more = it.more || ""; delete it._desc; delete it._rss; });
   const items = picked.map((it, i) => ({ title: it.title, lead: it.lead || "", more: it.more || "", url: it.url, source: it.source, ts: it.ts || null, topic: it.topic, rank: i + 1, score: it.final, why: it.parts }));
   return { items, numbers, une, cands: C.length };
 }
