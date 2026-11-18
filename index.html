@@ -432,11 +432,11 @@ body.ne-open{overflow:hidden}
 .ne-sep{width:1px;height:12px;background:currentColor;opacity:.4}
 .ne-folder{margin-left:auto;padding:4px 10px;border-radius:999px;border:1.5px solid currentColor;background:transparent;color:inherit;font-size:12px;font-weight:800;opacity:.85}
 .ne-body{position:relative;min-height:50vh;font-size:var(--nfs,17px);line-height:1.6;outline:none;overflow-wrap:anywhere}
-.ne-body .cpb{position:relative;margin:10px 0;padding:40px 14px 12px;border:1.5px solid rgba(39,102,168,.28);background:rgba(39,102,168,.06);border-radius:14px;font-size:.94em;line-height:1.5;transition:border-color .2s,background .2s}
-.ne-body .cpb::before{content:"À copier";position:absolute;left:14px;top:12px;font-size:11px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#2766A8;pointer-events:none}
+.ne-body .cpb{position:relative;margin:10px 0;padding:12px 50px 12px 14px;min-height:50px;border:1.5px solid rgba(39,102,168,.28);background:rgba(39,102,168,.06);border-radius:14px;font-size:.94em;line-height:1.5;transition:border-color .2s,background .2s}
+.ne-body .cpb::before{content:none}   /* MyWorld_1.44 : plus d'étiquette « À copier » (demande de Théo) */
 .ne-body .cpb::after{content:"";position:absolute;right:8px;top:6px;width:32px;height:32px;border-radius:9px;background:rgba(39,102,168,.12) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232766A8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='8' y='8' width='12' height='12' rx='2.5'/%3E%3Cpath d='M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2'/%3E%3C/svg%3E") center/18px no-repeat;pointer-events:none}
 .ne-body .cpb.cp-done{border-color:#1E9E5A;background:rgba(30,158,90,.1)}
-.ne-body .cpb.cp-done::before{content:"Copié !";color:#1E9E5A}
+
 .ne-body .cpb.cp-done::after{background:rgba(30,158,90,.16) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231E9E5A' stroke-width='2.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center/18px no-repeat;animation:cpPop .3s cubic-bezier(.3,1.5,.5,1)}
 .ne-body .cpy{display:inline-flex;align-items:center;gap:5px;padding:1px 6px 1px 9px;margin:0 1px;border-radius:8px;border:1.5px solid rgba(39,102,168,.4);background:rgba(39,102,168,.1);color:#1E4F84;font-weight:800;cursor:pointer;-webkit-user-select:none;user-select:none;transition:background .2s,border-color .2s,color .2s,transform .12s;vertical-align:baseline}
 .ne-body .cpy::after{content:"";width:14px;height:14px;flex:none;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='8' y='8' width='12' height='12' rx='2.5'/%3E%3Cpath d='M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='8' y='8' width='12' height='12' rx='2.5'/%3E%3Cpath d='M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2'/%3E%3C/svg%3E") center/contain no-repeat;opacity:.8}
@@ -1380,10 +1380,10 @@ body.scroll-lock{position:fixed;left:0;right:0;width:100%;overflow:hidden}
 @keyframes hgTw{0%,100%{opacity:0;transform:scale(.4)}50%{opacity:.95;transform:scale(1.4)}}
 @media (prefers-reduced-motion:reduce){.hgame,.hg-ic,.hg-soon,.hg-shine,.hg-stars i{animation:none}.hg-stars i{opacity:.6}}
 .hn-row{display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;padding:2px 2px 10px;margin:0 -2px}.hn-row::-webkit-scrollbar{display:none}
-.hn-card{position:relative;flex:none;width:138px;height:104px;display:flex;flex-direction:column;gap:4px;padding:11px 12px;border:1.5px solid var(--line);border-radius:12px;background:#fff;font:inherit;color:var(--text);text-align:left;cursor:pointer;overflow:hidden;box-shadow:0 8px 18px rgba(30,30,45,.06)}
+.hn-card{position:relative;flex:none;width:138px;height:104px;display:flex;flex-direction:column;gap:4px;padding:11px 12px;border:1.5px solid var(--line);border-radius:12px;font:inherit;color:var(--text);text-align:left;cursor:pointer;overflow:hidden;box-shadow:0 8px 18px rgba(30,30,45,.06)}
 .hn-card b{font-size:13.5px;font-weight:900;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
 .hn-card span{font-size:12px;line-height:1.35;color:var(--muted);white-space:pre-line;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
-.hn-card.dark span{color:rgba(255,255,255,.8)}.hn-card.dark{color:#fff}
+.hn-card.dark span{color:rgba(255,255,255,.8)}.hn-card.dark{color:#fff;border-color:#2E5884}
 .hn-pin{position:absolute;top:8px;right:8px;opacity:.6}.hn-pin svg{width:13px;height:13px}
 /* MyWorld_1.40 : notes épinglées en petites tuiles fines, deux par colonne */
 .hn-pcol{flex:none;display:flex;flex-direction:column;gap:8px;width:118px}
@@ -2667,10 +2667,11 @@ var DECO = (function(){
 
 </script>
 <script>
-var APP_VERSION = "MyWorld_1.43";
+var APP_VERSION = "MyWorld_1.44";
 /* MyWorld_1.33 : nouveautés affichées dans les Réglages. À CHAQUE VERSION (appli ou jeu) : ajouter une entrée EN TÊTE,
    {v: numéro, d: date AAAA-MM-JJ, t: titre court, l: 1 à 3 phrases simples, sans jargon}. */
 var MW_NEWS = [
+  {"v": "1.44", "d": "2026-11-18", "t": "Notes : deux correctifs", "l": ["Sur l'accueil, les notes s'affichent enfin avec leur fond.", "Les blocs à copier n'ont plus l'étiquette « À copier » : il reste le bouton copier en haut à droite."]},
   {"v": "1.43", "d": "2026-11-17", "t": "Apprends à ton App", "l": ["Nouveau dans les Réglages : un petit jeu de 10 phrases à dire au +, pour que l'appli comprenne mieux ta voix. Les mots s'allument au fur et à mesure.", "Quand un mot est mal entendu, « Retenir la correction » l'apprend : la correction sert ensuite à tout ce que tu dis au bouton +.", "Une jauge suit la compréhension ; 10/10 du premier coup = « Symbiose parfaite »."]},
   {"v": "1.42", "d": "2026-11-17", "t": "Quand le bouton + n'a pas compris", "l": ["Nouvel écran : l'appli propose ses 3 meilleures idées, « Autre chose… » montre toutes les actions (minuteur, rappel, rendez-vous, note, courses, ouvrir une appli ou une note, carte de fidélité…).", "« Ajouter une action » permet d'enchaîner jusqu'à 3 actions, et l'appli retient ta phrase : la durée, l'heure ou le texte peuvent changer la fois suivante.", "Réglages : nouvelle carte « Phrases apprises » pour voir et oublier ces phrases.", "La page derrière la fenêtre d'ajout ne défile plus."]},
   {"v": "1.41", "d": "2026-11-16", "t": "Correctifs des textes à copier", "l": ["Modifier une pastille ne la fait plus disparaître, même en effaçant tout son texte : le curseur se place à la fin.", "Dans un bloc à copier, Entrée fait un retour à la ligne dans le bloc (au lieu d'en créer un second)."]},
@@ -6177,7 +6178,7 @@ function neCopyText(text, el, label){
   var legacy = function(){ var t = document.createElement("textarea"); t.value = text; t.setAttribute("readonly", ""); t.style.cssText = "position:fixed;top:-100px;opacity:0"; document.body.appendChild(t); t.select(); var r = false; try { r = document.execCommand("copy"); } catch(e){} t.remove(); if (r) ok(); else toast("Copie impossible sur cet appareil."); };
   if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(ok, legacy); else legacy();
 }
-function neCpHead(blk, ev){ return ev.clientY - blk.getBoundingClientRect().top < 36; }
+function neCpHead(blk, ev){ var r = blk.getBoundingClientRect(); return ev.clientY - r.top < 46 && r.right - ev.clientX < 52; }   /* 1.44 : seulement le bouton copier en haut à droite */
 /* MyWorld_1.39 : appui long (0,5 s) sur une pastille ou un bloc à copier → petit menu Modifier / Supprimer */
 function neCpMenu(el, x, y){
   var ed = document.getElementById("noteEd"); if (!ed || !el) return;
