@@ -22,7 +22,7 @@ function doPost(e) {
     }
     else if (body.want === "cles") {
       const p = PropertiesService.getScriptProperties();
-      out = { groq: !!p.getProperty("GROQ_KEY"), tmdb: !!p.getProperty("TMDB_KEY"), youtube: !!p.getProperty("YOUTUBE_KEY"), v: 150 };
+      out = { groq: !!p.getProperty("GROQ_KEY"), tmdb: !!p.getProperty("TMDB_KEY"), youtube: !!p.getProperty("YOUTUBE_KEY"), v: 151 };
     }
     else if (body.want === "voix") out = transcrire_(body);
     else if (body.want === "tmdb") out = tmdb_(body);
@@ -135,7 +135,7 @@ function tmdb_(body) {
   const qs = { language: "fr-FR", region: "FR", include_adult: "false" };
   if (body.q) qs.query = String(body.q).slice(0, 120);
   if (body.year) qs.year = String(body.year).slice(0, 4);
-  if (/^(movie|tv)\/\d+$/.test(path)) qs.append_to_response = "watch/providers";
+  if (/^(movie|tv)\/\d+$/.test(path)) { qs.append_to_response = "watch/providers,videos"; qs.include_video_language = "fr,en,null"; }   /* 1.51 : plateformes + bande-annonce */
   const headers = {};
   if (key.indexOf("eyJ") === 0) headers.Authorization = "Bearer " + key; else qs.api_key = key;   /* jeton v4 ou clé v3 */
   const url = "https://api.themoviedb.org/3/" + path + "?" + Object.keys(qs).map(function (k) { return k + "=" + encodeURIComponent(qs[k]); }).join("&");

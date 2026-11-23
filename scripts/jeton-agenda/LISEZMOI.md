@@ -64,3 +64,6 @@ L'appli demande au script, qui vérifie ta session puis appelle le service.
 
 ## C. Vérifier
 Dans My World : Réglages › Ta voix › « Essai de la dictée Whisper ». En haut, Groq / TMDB / YouTube passent au vert.
+
+MyWorld_1.51 (note Films) : le script renvoie aussi la bande-annonce des films. Si tu as collé `Code.gs` avant la 1.51,
+recolle-le et refais « Nouvelle version » (étape B.2 et B.4) ; sinon tout marche, sauf le bouton « Bande-annonce ».

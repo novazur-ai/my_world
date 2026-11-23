@@ -1396,6 +1396,86 @@ body.fan-on nav.tabs a,body.fan-on .nav-add{opacity:.35;pointer-events:none;tran
 .gz-eph .src{font-size:11px;font-weight:800;color:#A08A5C}
 /* MyWorld_1.50 : essai de la dictée Whisper + recherche TMDB */
 .lab-open{margin-top:12px;width:100%}
+/* MyWorld_1.51 : note Films en mur d'affiches (B) + « C'est lequel ? » (C) + fiche (D) */
+.note-editor.fw-on .ne-body,.note-editor.fw-on .ne-bar,.note-editor.fw-on [data-act="ne-undo"],.note-editor.fw-on [data-act="ne-redo"]{display:none}
+.note-editor.fw-on .ne-scroll{padding-bottom:calc(28px + env(safe-area-inset-bottom,0px))}
+.fw{--fw-gold:#FFD27A;--fw-soft:rgba(255,255,255,.07);--fw-line:rgba(255,255,255,.16);--fw-mut:#B4A994;--fw-tx:#EFE6D4}
+.note-editor:not(.dark) .fw{--fw-gold:#8A5A12;--fw-soft:rgba(0,0,0,.06);--fw-line:rgba(0,0,0,.18);--fw-mut:#6E6658;--fw-tx:#2A2622}
+.fw-tabs{display:flex;gap:8px;margin:10px 0 14px;overflow-x:auto;scrollbar-width:none}
+.fw-tabs button{flex:none;height:36px;padding:0 15px;border-radius:999px;border:0;background:var(--fw-soft);color:var(--fw-tx);font:inherit;font-size:13.5px;font-weight:900;opacity:.85}
+.fw-tabs button.on{background:var(--fw-gold);color:#1B1712;opacity:1}
+.note-editor:not(.dark) .fw-tabs button.on{color:#fff}
+.fw-find{box-sizing:border-box;display:flex;align-items:center;gap:8px;width:100%;height:42px;margin:0 0 14px;padding:0 14px;border-radius:14px;border:0;background:rgba(255,210,122,.12);color:var(--fw-gold);font:inherit;font-size:14px;font-weight:900}
+.fw-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px 10px}
+.fw-cell{display:block;min-width:0;padding:0;border:0;background:none;color:var(--fw-tx);font:inherit;text-align:left;-webkit-tap-highlight-color:transparent}
+.fw-cell:active .fw-pst{transform:scale(.96)}
+.fw-pw{position:relative;display:block}
+.fw-pst{position:relative;display:flex;align-items:flex-end;width:100%;aspect-ratio:2/3;border-radius:9px;overflow:hidden;background:#2A2629;box-shadow:0 6px 16px rgba(0,0,0,.42);transition:transform .15s}
+.fw-pst img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.fw-pst.ph::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 70% 18%,rgba(255,255,255,.2),transparent 55%)}
+.fw-pt{position:relative;z-index:1;padding:7px;font-family:"Bebas Neue",Impact,sans-serif;font-size:19px;line-height:.95;letter-spacing:.02em;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.6);overflow-wrap:anywhere}
+.fw-pf{display:inline-flex;align-items:center;height:28px;padding:0 12px;border-radius:999px;font-size:12px;font-weight:900;letter-spacing:.02em;white-space:nowrap}
+.fw-pf.s{position:absolute;left:5px;top:5px;z-index:2;height:18px;padding:0 6px;font-size:9.5px;box-shadow:0 1px 4px rgba(0,0,0,.4)}
+.fw-pend{position:absolute;right:5px;top:5px;z-index:2;padding:2px 6px;border-radius:6px;background:rgba(0,0,0,.55);color:#FFD27A;font-size:9.5px;font-weight:900}
+.fw-cell small{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-top:6px;font-size:11.5px;font-weight:800;line-height:1.25;color:var(--fw-tx);opacity:.88}
+.fw-cell em{display:block;margin-top:2px;font-style:normal;font-size:10.5px;font-weight:800;color:var(--fw-mut)}
+.fw-empty{margin:18px 0 6px;font-size:14px;font-weight:700;line-height:1.45;color:var(--fw-mut)}
+.fw-add{box-sizing:border-box;display:flex;align-items:center;justify-content:center;gap:8px;width:100%;height:48px;margin-top:18px;border-radius:14px;border:1.5px dashed var(--fw-line);background:none;color:var(--fw-tx);font:inherit;font-size:14px;font-weight:800}
+.fw-cred{margin:16px 0 0;font-size:10.5px;font-weight:700;color:var(--fw-mut);text-align:center;opacity:.8}
+/* fenêtre « C'est lequel ? » */
+.sheet.fw-sh{background:#1E1B1D;color:#EFE6D4}
+.sheet.fw-sh .sheet-head h2{color:#F4ECDD}
+.sheet.fw-sh .close{background:rgba(255,255,255,.08);border-color:transparent;color:#EFE6D4}
+.fw-said{display:inline-flex;max-width:100%;margin:0 0 10px;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.07);font-size:13px;font-weight:800;color:#EFE6D4}
+.fw-step{margin:-4px 0 10px;font-size:12px;font-weight:900;letter-spacing:.06em;color:#A99E8A;text-transform:uppercase}
+.fw-qrow{display:flex;gap:8px;margin:0 0 12px}
+.fw-qrow input{flex:1;min-width:0;height:48px;border-radius:14px;border:1.5px solid #3A3437;background:#151315;color:#F4ECDD;padding:0 14px;font:inherit;font-size:16px}
+.fw-qrow input:focus{outline:none;border-color:#FFD27A}
+.fw-qrow button{flex:none;width:48px;height:48px;border-radius:14px;border:0;background:rgba(255,255,255,.08);color:#EFE6D4;display:grid;place-items:center}
+.fw-cl{min-height:60px}
+.fw-opt{display:grid;grid-template-columns:54px minmax(0,1fr);gap:12px;align-items:center;width:100%;padding:10px;margin-bottom:8px;border-radius:16px;border:1.5px solid transparent;background:rgba(255,255,255,.04);color:#EFE6D4;font:inherit;text-align:left}
+.fw-opt.on{border-color:#FFD27A;background:rgba(255,210,122,.08)}
+.fw-opt .fw-pst{border-radius:6px;box-shadow:0 3px 8px rgba(0,0,0,.4)}
+.fw-opt .fw-pt{font-size:12px;padding:4px}
+.fw-opt b{display:block;font-size:15px;font-weight:900;color:#F4ECDD}
+.fw-opt small{display:block;margin-top:2px;font-size:12px;font-weight:700;color:#A99E8A}
+.fw-opt small.fw-ov{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-weight:600;color:#8C8270}
+.fw-msg{margin:10px 0;font-size:14px;font-weight:700;color:#A99E8A}
+.fw-btns,.fw-fbtns{display:grid;grid-template-columns:1fr 1.3fr;gap:10px}
+.fw-btns{margin-top:10px}
+.fw-b1,.fw-b2{height:50px;border-radius:14px;border:0;font:inherit;font-size:15px;font-weight:900}
+.fw-b1{background:rgba(255,255,255,.08);color:#EFE6D4}
+.fw-b2{background:#FFD27A;color:#1B1712}
+.fw-b1:disabled,.fw-b2:disabled{opacity:.4}
+.fw-tmdb{margin:12px 0 0;font-size:10.5px;font-weight:700;color:#7E7566;text-align:center}
+/* fiche d'un film */
+.fw-fi{position:absolute;inset:0;z-index:8;overflow-y:auto;overscroll-behavior:contain;background:linear-gradient(180deg,#1B181A 300px,#151315);color:#EFE6D4}
+.fw-fi.in{animation:fwIn .22s cubic-bezier(.2,0,0,1)}
+.fw-fi.out{animation:fwOut .18s ease-in forwards}
+@keyframes fwIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes fwOut{to{opacity:0;transform:translateY(14px)}}
+.fw-hero{position:relative;height:280px}
+.fw-hbg{position:absolute;inset:0;background-size:cover;background-position:center 25%}
+.fw-hbg.blur{filter:blur(18px) brightness(.7);transform:scale(1.15)}
+.fw-hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(21,19,21,.35) 0%,rgba(21,19,21,0) 30%,rgba(21,19,21,.2) 55%,#1B181A 100%)}
+.fw-htop{position:absolute;left:0;right:0;top:0;z-index:3;padding:calc(8px + env(safe-area-inset-top,0px)) 14px 0}
+.fw-htop .ne-ic{background:rgba(0,0,0,.4);color:#fff;border-radius:50%}
+.fw-hps{position:absolute;left:24px;bottom:-34px;z-index:2;width:104px}
+.fw-hps .fw-pst{border-radius:10px;box-shadow:0 10px 26px rgba(0,0,0,.6)}
+.fw-info{position:relative;padding:46px 24px 8px}
+.fw-info h2{margin:0;font-family:"Bebas Neue",Impact,sans-serif;font-weight:400;font-size:38px;line-height:1;letter-spacing:.02em;color:#FFD27A}
+.fw-meta{margin:6px 0 10px;font-size:13px;font-weight:800;color:#CFC4AE}
+.fw-seen{display:inline-block;margin:0 0 10px;padding:3px 10px;border-radius:999px;background:rgba(95,211,154,.14);color:#7FE0AE;font-size:12px;font-weight:900}
+.fw-syn{margin:0 0 16px;font-size:14.5px;line-height:1.55;color:#E3D9C6}
+.fw-syn.dim{color:#8C8270;font-weight:700}
+.fw-wh{margin:0 0 7px;font-size:11px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:#A99E8A}
+.fw-whr{display:flex;gap:6px;flex-wrap:wrap}
+.fw-none{font-size:13.5px;font-weight:700;color:#CFC4AE}
+.fw-jw{margin:6px 0 16px;font-size:10.5px;font-weight:700;color:#7E7566}
+.fw-tr{box-sizing:border-box;display:flex;align-items:center;gap:8px;width:100%;height:46px;margin-bottom:14px;padding:0 14px;border-radius:14px;border:0;background:rgba(255,255,255,.07);color:#EFE6D4;font:inherit;font-size:14px;font-weight:800;text-decoration:none}
+.fw-fi .fw-tmdb{text-align:left;margin-top:4px}
+.fw-fbtns{box-sizing:border-box;position:sticky;bottom:0;padding:14px 24px calc(16px + env(safe-area-inset-bottom,0px));background:linear-gradient(180deg,rgba(21,19,21,0),#151315 30%)}
+.fw-fbtns .fw-b1{color:#FF9A8C}
 .lab-keys{display:flex;gap:6px;flex-wrap:wrap;margin:2px 0 8px}.lab-k{font-size:12px;font-weight:800;padding:4px 10px;border-radius:999px;background:#FFEBD9;color:#A34A16}.lab-k.on{background:#E4F4E8;color:#2F7440}
 .lab-err{margin:4px 0 8px;font-size:13px;font-weight:800;color:#A8402F}
 .lab-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0 8px}
@@ -2824,10 +2904,11 @@ var DECO = (function(){
 
 </script>
 <script>
-var APP_VERSION = "MyWorld_1.50";
+var APP_VERSION = "MyWorld_1.51";
 /* MyWorld_1.33 : nouveautés affichées dans les Réglages. À CHAQUE VERSION (appli ou jeu) : ajouter une entrée EN TÊTE,
    {v: numéro, d: date AAAA-MM-JJ, t: titre court, l: 1 à 3 phrases simples, sans jargon}. */
 var MW_NEWS = [
+  {"v": "1.51", "d": "2026-11-23", "t": "Ta note Films en mur d'affiches", "l": ["Ta note Films devient un mur d'affiches avec les onglets À voir, Vus et Séries ; touche une affiche pour sa fiche : résumé, où le regarder en France, bande-annonce, « Marquer vu ».", "Quand tu ajoutes un titre (au + ou avec « Ajouter »), l'appli te demande « C'est lequel ? » s'il y a plusieurs films du même nom.", "Affiches et infos : TMDB ; plateformes : JustWatch."]},
   {"v": "1.50", "d": "2026-11-23", "t": "Essai de la dictée Whisper", "l": ["Réglages › Ta voix › « Essai de la dictée Whisper » : compare la dictée Google et Whisper (IA open source), avec le temps de réponse.", "La même page teste la recherche de films pour la note Films.", "Les clés d'API restent dans ton script Google, jamais dans l'appli."]},
   {"v": "1.49", "d": "2026-11-23", "t": "Air, mer, jours fériés et « Ce jour-là »", "l": ["Page Météo : qualité de l'air, pollen du jour, température de la mer et vagues.", "Les jours fériés apparaissent dans la semaine, le mois et le programme du jour ; les vacances scolaires (zone B) sont soulignées très discrètement.", "Dans les News : un événement « Ce jour-là » tiré de Wikipédia, à ouvrir d'un toucher."]},
   {"v": "1.48", "d": "2026-11-18", "t": "Page Anniversaires", "l": ["Nouvelle fleur « Anniversaires » dans le lanceur : le prochain anniversaire en grand, puis tous les autres par période.", "« Voir l'année » affiche la roue de l'année ; « Ajouter » en haut à droite.", "Les anniversaires qui n'étaient pas encore dans ton Google Agenda y sont ajoutés tout seuls, sans doublon."]},
@@ -4937,6 +5018,7 @@ function commit(r){
   }
   if (r.kind === "note-add"){
     var tn = S.notes.find(function(n){ return n._id === r.noteId; }); if (!tn || !r.items.length) return;
+    if (fwIsWall(tn)) return fwAddTitles(tn._id, r.raw || r.items);   /* MyWorld_1.51 : TMDB + « C'est lequel ? » */
     var d = document.createElement("div"); d.innerHTML = tn.html || "";
     var lines = Array.prototype.slice.call(d.querySelectorAll("div,p,li,h3")).filter(function(el){ return !el.querySelector("div,p,li,h3,ul,ol"); });
     var rest = [], placed = [];
@@ -5131,7 +5213,7 @@ function openCmd(text){
    Clair = rendez-vous avec quoi + jour + heure + domaine reconnu, anniversaire avec prénom + date, ou note. */
 function isClear(F){
   var o = F.orig || {};
-  if (o.kind === "note-add" && o.forced) return true;
+  if (o.kind === "note-add" && (o.forced || fwIsWall(S.notes.find(function(n){ return n._id === o.noteId; })))) return true;   /* 1.51 : la note Films confirme elle-même (« C'est lequel ? ») */
   if (o.kind === "courses") return true;
   if (F.kind === "todo") return !!(F.core || "").trim();
   if (F.kind === "rappel") return !!((F.core || "").trim() && (o.forced || o.clear));
@@ -5564,7 +5646,7 @@ function phActLbl(a){
   return l + (x ? " · " + x : "");
 }
 /* ---------- MyWorld_1.43 : « Apprends à ton App » (entraînement de la voix, piste C + karaoké de B) ---------- */
-var VX_VER = "1.48";
+var VX_VER = "1.51";
 /* Phrases d'entraînement : à enrichir à chaque nouvelle fonction (v = version qui les ajoute → badge « Nouveau ») */
 var VX_CAT = [
   {id:"kw-afaire1", g:"kw", t:"À faire : rappeler le garage"},
@@ -5598,7 +5680,9 @@ var VX_CAT = [
   {id:"op-reglages", g:"open", t:"Ouvre les réglages"},
   {id:"op-courses", g:"open", t:"Ouvre ma liste de courses"},
   {id:"op-anniv", g:"open", t:"Ouvre les anniversaires", v:"1.48"},
-  {id:"kw-anniv2", g:"kw", t:"Anniv de Camille le 3 décembre", v:"1.48"}
+  {id:"kw-anniv2", g:"kw", t:"Anniv de Camille le 3 décembre", v:"1.48"},
+  {id:"kw-films1", g:"kw", t:"Ajoute Interstellar à mes films", v:"1.51"},
+  {id:"op-films", g:"open", t:"Ouvre mes films", v:"1.51"}
 ].map(function(x){ x.v = x.v || "1.43"; return x; });
 var VX_TAG = {kw:"Mot-clé du +", dur:"Durées et heures", open:"Ouvrir", notes:"Tes notes", cards:"Tes cartes", miss:"Tes ratés"};
 var VX_TH = [["mix","Tout mélanger"],["rev","À revoir"],["kw","Mots-clés"],["dur","Durées et heures"],["open","Ouvrir et cartes"],["notes","Tes notes"],["new","Nouveautés " + VX_VER]];
@@ -6051,7 +6135,7 @@ function openSheet(title, body, onMount){
   if (onMount) onMount();
   var f = root.querySelector(".close"); if (f) f.focus();
 }
-function closeSheet(){ document.getElementById("sheetRoot").innerHTML = ""; if (TM.beep) tmBeepStop(); }
+function closeSheet(){ document.getElementById("sheetRoot").innerHTML = ""; if (TM.beep) tmBeepStop(); if (FW_PK){ var P = FW_PK; FW_PK = null; P.res(null); } }
 
 function monthKey(d){ return d.getFullYear() + "-" + pad(d.getMonth()+1); }
 function ensureMonth(m0){
@@ -6645,6 +6729,335 @@ function neAnimClose(el, id, done){
   g.style.zIndex = 62; g.animate([{opacity:0}, {opacity:0, offset:.6}, {opacity:1}], {duration:D, easing:"linear", fill:"forwards"});
   el.animate([{clipPath:"inset(0px 0px 0px 0px round 0px)", opacity:1}, {opacity:1, offset:.75}, {clipPath: neInset(r, el), opacity:0}], {duration:D, easing:NE_EASE_OUT, fill:"forwards"}).onfinish = function(){ card.style.visibility = ""; g.remove(); done(); };
 }
+/* MyWorld_1.51 : note Films en mur d'affiches (canevas « Note Films : 4 pistes » : choix de Théo B mur d'affiches
+   + C « C'est lequel ? » + D fiche d'un film, et un onglet « Vus »).
+   La liste vit dans la note (champ films) ; le texte de la note est réécrit à chaque changement (une ligne par titre,
+   « ✓ » = vu, année entre parenthèses) : la recherche, l'accueil et « Afficher en texte » suivent.
+   Affiches, résumés : TMDB (appelé par le script Google, qui garde la clé) ; plateformes en France : JustWatch (via TMDB). */
+var FW_RX = /\b(films?|s[ée]ries?|cin[ée]ma|watchlist|[àa] voir|[àa] regarder)\b/i;
+var FW_IMG = "https://image.tmdb.org/t/p/";
+var FW_PK = null, FWC = {};
+S.fwTab = "voir"; S.fwFi = null;
+var FW_CH = {"Netflix":["#2A0A0C","#FF6B70"], "Prime Video":["#0B2233","#7FC8FF"], "Disney+":["#0E1640","#9FB2FF"], "Location":["#2A2416","#E9C77B"], "Canal+":["#1A1A1A","#F2F2F2"], "Apple TV+":["#1E1E22","#E6E6EA"], "Max":["#10133A","#A9B4FF"], "Paramount+":["#0A1D3F","#8EB8FF"], "france.tv":["#0C1D33","#8FC6FF"], "Arte":["#2B1308","#FF9C63"], "OCS":["#2A1A0A","#FFB25E"], "Crunchyroll":["#2C1405","#FF9A4D"]};
+function fwProvName(n){
+  n = String(n || "");
+  if (/netflix/i.test(n)) return "Netflix"; if (/prime video/i.test(n)) return "Prime Video"; if (/disney/i.test(n)) return "Disney+";
+  if (/canal/i.test(n)) return "Canal+"; if (/apple tv/i.test(n)) return "Apple TV+"; if (/paramount/i.test(n)) return "Paramount+";
+  if (/^(?:hbo )?max\b/i.test(n)) return "Max"; if (/france\.?tv/i.test(n)) return "france.tv"; if (/^arte/i.test(n)) return "Arte";
+  if (/crunchyroll/i.test(n)) return "Crunchyroll"; if (/^ocs/i.test(n)) return "OCS";
+  return n.replace(/\s+(?:Amazon Channel|with Ads|Standard with Ads)$/i, "");
+}
+function fwNorm(s){ return noAcc(String(s || "").toLowerCase()).replace(/[^a-z0-9]+/g, " ").trim(); }
+function fwKey(){ return "f" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
+function fwLooksList(t){ return String(t || "").split("\n").filter(function(l){ return l.trim(); }).every(function(l){ return l.length <= 90; }); }
+/* une note est un mur d'affiches si on l'a choisi (wall), sinon si son titre parle de films / séries et que c'est une simple liste */
+function fwIsWall(n){ if (!n) return false; if (n.wall != null) return !!n.wall; return FW_RX.test(n.title || "") && !(n.media && n.media.length) && fwLooksList(n.text); }
+function fwOffer(n){ return !!n && (fwIsWall(n) || !!n.films || FW_RX.test(n.title || "") || n.bg === "cine"); }
+/* lignes du texte → titres (« ✓ » ou « ☑ » = vu, « (2024) » = année ; « Séries : » = en-tête, sert d'indice pour la recherche) */
+function fwParse(text){
+  var out = [], hint = null;
+  String(text || "").split("\n").forEach(function(l){
+    l = l.replace(/​/g, "").trim(); if (!l) return;
+    var seen = /^(?:✓|✔|☑|\[x\])/i.test(l);
+    l = l.replace(/^(?:✓|✔|☑|☐|\[[ x]\]|[-–•*·]|\d+[.)])\s*/i, "").trim(); if (!l) return;
+    if (/:\s*$/.test(l) && l.length <= 40){ var hd = fwNorm(l); hint = /serie/.test(hd) ? "tv" : /film/.test(hd) ? "movie" : null; return; }
+    var y = null, m = l.match(/\s*\((\d{4})\)\s*$/); if (m){ y = +m[1]; l = l.slice(0, m.index).trim(); }
+    if (l) out.push({t:l, y:y, seen:seen, hint:hint});
+  });
+  return out;
+}
+/* le texte de la note décide de la liste ; les fiches TMDB déjà trouvées sont reprises */
+function fwFilms(n){
+  var old = (n.films || []).slice(), used = {}, out = [];
+  fwParse(n.text).forEach(function(p){
+    var i = -1;
+    for (var j = 0; j < old.length; j++) if (!used[j] && fwNorm(old[j].t) === fwNorm(p.t) && (!p.y || !old[j].y || p.y === old[j].y)){ i = j; break; }
+    if (i >= 0){ used[i] = 1; var f = Object.assign({}, old[i]); if (p.seen && !f.seen) f.seen = nowISO(); if (!p.seen && f.seen) f.seen = null; out.push(f); }
+    else out.push({k:fwKey(), t:cap(p.t), y:p.y || null, mt:p.hint || null, seen:p.seen ? nowISO() : null, at:nowISO()});
+  });
+  return out;
+}
+function fwLine(f){ return (f.seen ? "✓ " : "") + f.t + (f.y ? " (" + f.y + ")" : ""); }
+function fwHTML(L){ return L.map(function(f){ return "<div>" + h(fwLine(f)) + "</div>"; }).join(""); }
+function fwNote(nid){ return (NE && NE.note._id === nid) ? NE.note : S.notes.find(function(n){ return n._id === nid; }); }
+function fwList(nid){
+  if (NE && NE.note._id === nid && NE.note.films) return NE.note.films.slice();
+  if (FWC[nid] && Date.now() - FWC[nid].at < 10000) return FWC[nid].L.slice();
+  var n = fwNote(nid); return n ? fwFilms(n) : null;
+}
+function fwSave(nid, L){
+  FWC[nid] = {L:L.slice(), at:Date.now()};
+  if (NE && NE.note._id === nid){
+    NE.note.films = L; var b = document.getElementById("neBody");
+    if (b){ b.innerHTML = fwHTML(L); updateNeMeta(); }
+    fwRender(); return saveNote();
+  }
+  var html = fwHTML(L);
+  return db.collection("notes").doc(nid).update({films:L, html:html, text:textFromHTML(html), updatedAt:nowISO(), deleted:false}).catch(dbErr);
+}
+/* ---------- TMDB (par le script Google) ---------- */
+function fwErrTxt(e){ var c = e && e.message; return c === "no_key" ? "La clé TMDB n'est pas encore dans le script Google." : c === "offline" ? "Pas de connexion : je n'ai pas pu chercher sur TMDB." : "TMDB ne répond pas pour l'instant."; }
+function fwApi(path, extra){
+  if (!mcp || !mcp.script) return Promise.reject(new Error("no_script"));
+  return mcp.script("tmdb", Object.assign({path:path}, extra || {})).then(function(j){ if (!j || j.error || !j.data) throw new Error((j && j.error) || "tmdb"); return j.data; });
+}
+function fwSearch(q, y, hint){
+  /* en-tête « Films : » / « Séries : » dans la note = indice ; si rien n'est trouvé ainsi, on cherche partout */
+  if (hint) return fwSearchRaw(q, y, hint).then(function(R){ return R.length ? R : fwSearchRaw(q, y, null); });
+  return fwSearchRaw(q, y, null);
+}
+function fwSearchRaw(q, y, hint){
+  var ex = {q:q}; if (hint === "movie" && y) ex.year = y;
+  return fwApi(hint === "tv" ? "search/tv" : hint === "movie" ? "search/movie" : "search/multi", ex).then(function(d){
+    var nq = fwNorm(q);
+    var L = (d.results || []).map(function(x, i){
+      var mt = x.media_type || hint; if (mt !== "movie" && mt !== "tv") return null;
+      var r = {id:x.id, mt:mt, t:x.title || x.name || "", ot:x.original_title || x.original_name || "", y:+String(x.release_date || x.first_air_date || "").slice(0, 4) || null, p:x.poster_path || null, ov:String(x.overview || "").slice(0, 700)};
+      r.sc = (fwNorm(r.t) === nq || fwNorm(r.ot) === nq ? 100 : 0) + (y && r.y === +y ? 50 : 0) + (r.p ? 5 : 0) - i;
+      return r;
+    }).filter(Boolean);
+    L.sort(function(a, b){ return b.sc - a.sc; });
+    return L.slice(0, 4);
+  });
+}
+function fwDetails(f){
+  return fwApi(f.mt + "/" + f.id).then(function(d){
+    var fr = ((d["watch/providers"] || {}).results || {}).FR || {}, s = [];
+    (fr.flatrate || []).concat(fr.free || [], fr.ads || []).forEach(function(p){ var nm = fwProvName(p.provider_name); if (nm && s.indexOf(nm) < 0) s.push(nm); });
+    var vids = ((d.videos || {}).results || []).filter(function(v){ return v.site === "YouTube" && /Trailer|Teaser/.test(v.type || ""); });
+    vids.sort(function(a, b){ return ((b.iso_639_1 === "fr") - (a.iso_639_1 === "fr")) || ((b.type === "Trailer") - (a.type === "Trailer")) || ((b.official === true) - (a.official === true)); });
+    return {t:d.title || d.name || f.t, y:+String(d.release_date || d.first_air_date || "").slice(0, 4) || f.y || null, p:d.poster_path || f.p || null, bd:d.backdrop_path || null,
+      ov:String(d.overview || f.ov || "").slice(0, 700), g:(d.genres || []).slice(0, 2).map(function(x){ return x.name; }).join(", "),
+      d:f.mt === "movie" ? (d.runtime || null) : (d.number_of_seasons || null), pr:s.slice(0, 5), loc:!!((fr.rent || []).length || (fr.buy || []).length), tr:vids[0] ? vids[0].key : null, pu:nowISO()};
+  });
+}
+function fwEnrich(nid, k){
+  var L = fwList(nid), f = L && L.find(function(x){ return x.k === k; });
+  if (!f || !f.id) return Promise.resolve();
+  return fwDetails(f).then(function(det){
+    var L2 = fwList(nid); if (!L2) return; var j = L2.findIndex(function(x){ return x.k === k; }); if (j < 0) return;
+    L2[j] = Object.assign({}, L2[j], det); return fwSave(nid, L2);
+  }).catch(function(){});
+}
+function fwFromRes(r, base){ return Object.assign({k:fwKey(), seen:null, at:nowISO()}, base || {}, {id:r.id, mt:r.mt, t:r.t, y:r.y, p:r.p, ov:r.ov, nf:null}); }
+/* ajoute une fiche en tête de la liste (sans doublon), avec « Annuler » */
+function fwPush(nid, e, how){
+  var L = fwList(nid); if (!L) return Promise.resolve();
+  var n = fwNote(nid), nt = (n && n.title) || "ta note";
+  if (e.id && L.some(function(x){ return x.id === e.id && x.mt === e.mt; })){ toast("« " + e.t + " » est déjà dans ta liste."); return Promise.resolve(); }
+  L.unshift(e);
+  return Promise.resolve(fwSave(nid, L)).then(function(){
+    toast(how === "nf" ? "« " + e.t + " » ajouté en texte (pas trouvé sur TMDB)." : how === "pend" ? "« " + e.t + " » ajouté en texte : l'affiche sera à retrouver." : "Ajouté à « " + nt + " » : " + e.t + (e.y ? " (" + e.y + ")" : "") + ".",
+      {undo:function(){ var L2 = fwList(nid); if (!L2) return; fwSave(nid, L2.filter(function(x){ return x.k !== e.k; })); }});
+    if (e.id) fwEnrich(nid, e.k);
+  });
+}
+/* titres dits au + (« films à voir Dune », « ajoute Inception à mes films ») */
+function fwAddTitles(nid, titles){
+  titles = (titles || []).map(function(s){ return String(s).trim(); }).filter(Boolean);
+  var i = 0;
+  var next = function(){
+    if (i >= titles.length) return Promise.resolve();
+    var t = titles[i++];
+    return fwSearch(t).then(function(R){
+      if (!R.length) return fwPush(nid, {k:fwKey(), t:cap(t), nf:1, seen:null, at:nowISO()}, "nf");
+      var ex = R.filter(function(r){ return fwNorm(r.t) === fwNorm(t) || fwNorm(r.ot) === fwNorm(t); });
+      if (R.length === 1 || (ex.length === 1 && ex[0] === R[0])) return fwPush(nid, fwFromRes(R[0]));
+      return fwPick({title:"C'est lequel ?", said:"Tu as demandé « " + t + " »", list:R, step:i, total:titles.length}).then(function(c){
+        if (!c) return;
+        if (c.text) return fwPush(nid, {k:fwKey(), t:cap(t), nf:1, seen:null, at:nowISO()}, "nf");
+        return fwPush(nid, fwFromRes(c.r));
+      });
+    }, function(){ return fwPush(nid, {k:fwKey(), t:cap(t), seen:null, at:nowISO()}, "pend"); }).then(next);
+  };
+  return next();
+}
+/* ---------- fenêtre « C'est lequel ? » (choix C) ---------- */
+function fwPick(o){
+  return new Promise(function(res){
+    if (FW_PK){ var P0 = FW_PK; FW_PK = null; P0.res(null); }
+    FW_PK = {o:o, res:res, sel:0, list:o.list || [], q:o.q || ""};
+    var head = (o.input ? '<form class="fw-qrow" id="fwQf" role="search"><input id="fwQ" type="search" enterkeyhint="search" placeholder="Titre d\'un film ou d\'une série" autocomplete="off" maxlength="120" value="' + h(o.q || "") + '" aria-label="Titre"><button type="submit" aria-label="Chercher"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg></button></form>' : "")
+      + (o.said ? '<span class="fw-said">' + h(o.said) + '</span>' : "") + (o.total > 1 ? '<p class="fw-step">' + o.step + ' sur ' + o.total + '</p>' : "");
+    openSheet(o.title, '<div class="fw-c">' + head + '<div id="fwCL" class="fw-cl"></div><div class="fw-btns"><button type="button" class="fw-b1" data-act="fw-pk-text">Juste le texte</button><button type="button" class="fw-b2" data-act="fw-pk-ok">Ajouter</button></div><p class="fw-tmdb">Recherche : TMDB</p></div>', function(){
+      var s = document.querySelector("#sheetRoot .sheet"); if (s) s.classList.add("fw-sh");
+      fwPkDraw();
+      var q = document.getElementById("fwQ");
+      if (q){
+        var tm = null;
+        q.addEventListener("input", function(){ clearTimeout(tm); FW_PK && (FW_PK.q = q.value); tm = setTimeout(function(){ fwPkSearch(q.value); }, 550); fwPkDraw(); });
+        document.getElementById("fwQf").addEventListener("submit", function(e){ e.preventDefault(); clearTimeout(tm); fwPkSearch(q.value); q.blur(); });
+        if (o.q) fwPkSearch(o.q); else setTimeout(function(){ q.focus(); }, 80);
+      }
+    });
+  });
+}
+function fwPkSearch(q){
+  var P = FW_PK; if (!P) return; q = String(q || "").trim(); P.q = q;
+  if (q.length < 2){ P.list = []; P.err = null; P.done = false; fwPkDraw(); return; }
+  P.busy = true; P.err = null; fwPkDraw();
+  var tok = P.tok = Date.now();
+  fwSearch(q).then(function(R){ if (FW_PK !== P || P.tok !== tok) return; P.list = R; P.sel = 0; P.done = true; },
+    function(e){ if (FW_PK !== P || P.tok !== tok) return; P.list = []; P.err = fwErrTxt(e); })
+    .then(function(){ if (FW_PK !== P || P.tok !== tok) return; P.busy = false; fwPkDraw(); });
+}
+function fwPkDraw(){
+  var P = FW_PK, c = document.getElementById("fwCL"); if (!P || !c) return;
+  c.innerHTML = P.busy ? '<p class="fw-msg">Je cherche…</p>' : P.err ? '<p class="fw-msg">' + h(P.err) + '</p>'
+    : P.list.length ? P.list.map(function(r, i){
+        return '<button type="button" class="fw-opt' + (i === P.sel ? " on" : "") + '" data-act="fw-pk" data-i="' + i + '" aria-pressed="' + (i === P.sel) + '">' + fwPoster(r, "w154")
+          + '<span><b>' + h(r.t) + '</b><small>' + (r.mt === "tv" ? "Série" : "Film") + (r.y ? " · " + r.y : "") + (r.ot && fwNorm(r.ot) !== fwNorm(r.t) ? " · " + h(r.ot) : "") + '</small>' + (r.ov ? '<small class="fw-ov">' + h(r.ov) + '</small>' : "") + '</span></button>';
+      }).join("")
+    : (P.o.input && P.done ? '<p class="fw-msg">Rien trouvé sur TMDB. « Juste le texte » l\'ajoute quand même.</p>' : "");
+  var ok = document.querySelector('#sheetRoot [data-act="fw-pk-ok"]'), tx = document.querySelector('#sheetRoot [data-act="fw-pk-text"]');
+  if (ok) ok.disabled = !P.list.length || !!P.busy;
+  if (tx) tx.disabled = P.o.input ? !(P.q || "").trim() : false;
+}
+function fwPkEnd(v){ var P = FW_PK; if (!P) return; FW_PK = null; closeSheet(); P.res(v); }
+/* ---------- le mur d'affiches (choix B) ---------- */
+function fwGrad(t){ var x = 0; String(t).split("").forEach(function(c){ x = (x * 31 + c.charCodeAt(0)) % 360; }); return "background:linear-gradient(160deg,hsl(" + x + " 34% 36%),hsl(" + x + " 40% 9%))"; }
+function fwPoster(f, sz){
+  return '<span class="fw-pst' + (f.p ? "" : " ph") + '" style="' + (f.p ? "" : fwGrad(f.t)) + '">' + (f.p ? '<img src="' + FW_IMG + sz + h(f.p) + '" alt="" loading="lazy" decoding="async">' : '<span class="fw-pt">' + h(f.t) + '</span>') + '</span>';
+}
+function fwChip(p, small){ var c = FW_CH[p] || ["#2A2629","#D9CFBE"]; return '<span class="fw-pf' + (small ? " s" : "") + '" style="background:' + c[0] + ';color:' + c[1] + '">' + h(p) + '</span>'; }
+function fwDur(m){ var hh = Math.floor(m / 60), mm = m % 60; return hh ? hh + " h" + (mm ? " " + pad(mm) : "") : mm + " min"; }
+function fwMeta(f, long){
+  var a = [f.mt === "tv" ? "Série" : f.mt === "movie" ? "Film" : (f.nf ? "Pas trouvé sur TMDB" : "Affiche à retrouver")];
+  if (f.y) a.push(f.mt === "tv" ? "depuis " + f.y : String(f.y));
+  if (f.d) a.push(f.mt === "tv" ? f.d + " saison" + (f.d > 1 ? "s" : "") : fwDur(f.d));
+  if (long && f.g) a.push(f.g);
+  return a.join(" · ");
+}
+var FW_MC = ["janv.","févr.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc."];
+function fwDay(s){ var d = new Date(s); return d.getDate() + " " + FW_MC[d.getMonth()] + (d.getFullYear() !== new Date().getFullYear() ? " " + d.getFullYear() : ""); }
+function fwSplit(L){
+  var voir = L.filter(function(f){ return !f.seen; });
+  return {voir:voir, vus:L.filter(function(f){ return f.seen; }).sort(function(a, b){ return String(b.seen).localeCompare(String(a.seen)); }), series:voir.filter(function(f){ return f.mt === "tv"; })};
+}
+function fwCountTxt(L){ var s = fwSplit(L || []); return s.voir.length + " à voir · " + s.vus.length + " vu" + (s.vus.length > 1 ? "s" : ""); }
+function fwCell(f, tab){
+  var pr = (f.pr && f.pr[0]) || (f.loc ? "Location" : "");
+  return '<button type="button" class="fw-cell" data-act="fw-open" data-k="' + h(f.k) + '" aria-label="' + h(f.t + ", " + fwMeta(f)) + '"><span class="fw-pw">' + fwPoster(f, "w342")
+    + (pr ? fwChip(pr, true) : "") + (!f.id && !f.nf ? '<span class="fw-pend">à retrouver</span>' : "") + '</span><small>' + h(f.t) + '</small>'
+    + (tab === "vus" ? '<em>Vu le ' + fwDay(f.seen) + '</em>' : "") + '</button>';
+}
+function fwWallHTML(n){
+  var L = n.films || [], s = fwSplit(L), tab = S.fwTab in s ? S.fwTab : "voir", list = s[tab];
+  var pend = L.filter(function(f){ return !f.id && !f.nf; }).length;
+  var tb = function(k, lbl, c){ return '<button type="button" role="tab" class="' + (k === tab ? "on" : "") + '" aria-selected="' + (k === tab) + '" data-act="fw-tab" data-t="' + k + '">' + lbl + (c ? " · " + c : "") + '</button>'; };
+  return '<div class="fw-tabs" role="tablist">' + tb("voir", "À voir", s.voir.length) + tb("vus", "Vus", s.vus.length) + tb("series", "Séries", s.series.length) + '</div>'
+    + (pend && tab !== "vus" ? '<button type="button" class="fw-find" data-act="fw-find"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 15l3-3 2 2 3-4"/></svg>Retrouver les affiches · ' + pend + '</button>' : "")
+    + (list.length ? '<div class="fw-grid">' + list.map(function(f){ return fwCell(f, tab); }).join("") + '</div>'
+      : '<p class="fw-empty">' + (tab === "vus" ? "Rien de vu pour l'instant. Dans la fiche d'un film, « Marquer vu » le range ici." : tab === "series" ? "Aucune série à voir pour l'instant." : "Ta liste est vide : ajoute un film ou une série.") + '</p>')
+    + (tab !== "vus" ? '<button type="button" class="fw-add" data-act="fw-add"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Ajouter un film ou une série</button>' : "")
+    + '<p class="fw-cred">Affiches et infos : TMDB · plateformes : JustWatch</p>';
+}
+function fwOn(){ var el = document.getElementById("noteEd"); return !!(el && el.classList.contains("fw-on")); }
+function fwMount(el){
+  el = el || document.getElementById("noteEd"); if (!el || !NE) return;
+  el.classList.add("fw-on");
+  if (!el.querySelector("#fwWall")){ var w = document.createElement("div"); w.className = "fw"; w.id = "fwWall"; var meta = el.querySelector(".ne-meta"); meta.parentNode.insertBefore(w, meta.nextSibling); }
+  NE.note.films = fwFilms(NE.note);
+  fwRender(); updateNeMeta();
+}
+function fwUnmount(){ var el = document.getElementById("noteEd"); if (!el) return; el.classList.remove("fw-on"); var w = el.querySelector("#fwWall"); if (w) w.remove(); fwFiClose(true); updateNeMeta(); }
+function fwRender(){ var w = document.getElementById("fwWall"); if (w && NE) w.innerHTML = fwWallHTML(NE.note); if (S.fwFi) fwFiDraw(); }
+function fwMode(){
+  neMenuClose(true); if (!NE) return;
+  if (fwOn()){ NE.note.wall = false; fwUnmount(); saveNote(); toast("La note s'affiche en texte. ⋮ → « Mur d'affiches » pour revenir."); return; }
+  NE.note.wall = true; NE.note.text = noteText(document.getElementById("neBody")); fwMount(); saveNote(); toast("Mur d'affiches activé : une ligne = un film ou une série.");
+}
+/* « Retrouver les affiches » : les titres déjà écrits dans la note, un par un */
+function fwFindAll(){
+  var nid = NE && NE.note._id; if (!nid) return;
+  var todo = (NE.note.films || []).filter(function(f){ return !f.id && !f.nf; }).map(function(f){ return f.k; }), i = 0;
+  var next = function(){
+    if (i >= todo.length || !NE || NE.note._id !== nid) return;
+    var k = todo[i++], L = fwList(nid), f = L && L.find(function(x){ return x.k === k; }); if (!f) return next();
+    fwSearch(f.t, f.y, f.mt).then(function(R){
+      if (!R.length){ fwRepl(nid, k, {nf:1}); return next(); }
+      return fwPick({title:"C'est lequel ?", said:"Dans ta note : « " + f.t + (f.y ? " (" + f.y + ")" : "") + " »", list:R, step:i, total:todo.length}).then(function(c){
+        if (!c) return;
+        if (c.text) fwRepl(nid, k, {nf:1}); else { fwRepl(nid, k, fwFromRes(c.r, {k:k})); fwEnrich(nid, k); }
+        return next();
+      });
+    }, function(e){ toast(fwErrTxt(e)); });
+  };
+  next();
+}
+function fwRepl(nid, k, patch){
+  var L = fwList(nid); if (!L) return; var j = L.findIndex(function(x){ return x.k === k; }); if (j < 0) return;
+  var keep = {k:k, seen:L[j].seen, at:L[j].at};
+  L[j] = Object.assign({}, L[j], patch, keep); return fwSave(nid, L);
+}
+/* ---------- fiche d'un film (choix D) ---------- */
+function fwFiOpen(k){ if (!NE) return; S.fwFi = k; history.pushState({ne:1, ff:1}, ""); fwFiDraw(true);
+  var f = (NE.note.films || []).find(function(x){ return x.k === k; });
+  if (f && f.id && (!f.pu || Date.now() - new Date(f.pu).getTime() > 3 * 864e5)) fwEnrich(NE.note._id, k);
+}
+function fwFiDraw(first){
+  var ed = document.getElementById("noteEd"); if (!ed || !NE) return;
+  var f = (NE.note.films || []).find(function(x){ return x.k === S.fwFi; });
+  var el = document.getElementById("fwFi");
+  if (!f){ if (el) el.remove(); return; }
+  if (!el){ el = document.createElement("div"); el.id = "fwFi"; el.className = "fw-fi"; el.setAttribute("role", "dialog"); el.setAttribute("aria-modal", "true"); ed.appendChild(el); }
+  el.setAttribute("aria-label", f.t);
+  var bg = f.bd ? FW_IMG + "w780" + f.bd : f.p ? FW_IMG + "w342" + f.p : "";
+  var pr = (f.pr || []).map(function(p){ return fwChip(p); }).join("") + (f.loc ? fwChip("Location") : "");
+  el.innerHTML = '<div class="fw-hero"><div class="fw-hbg' + (f.bd ? "" : " blur") + '" style="' + (bg ? 'background-image:url(' + bg + ')' : fwGrad(f.t)) + '"></div>'
+    + '<div class="fw-htop"><button type="button" class="ne-ic" data-act="fw-fi-close" aria-label="Retour">' + ICON.back + '</button></div><span class="fw-hps">' + fwPoster(f, "w342") + '</span></div>'
+    + '<div class="fw-info"><h2>' + h(f.t) + '</h2><p class="fw-meta">' + h(fwMeta(f, true)) + '</p>'
+    + (f.seen ? '<p class="fw-seen">Vu le ' + fwDay(f.seen) + '</p>' : "")
+    + (f.ov ? '<p class="fw-syn">' + h(f.ov) + '</p>' : f.id ? '<p class="fw-syn dim">Pas de résumé en français sur TMDB.</p>' : "")
+    + (f.id ? '<p class="fw-wh">Où le regarder en France</p><div class="fw-whr">' + (pr || (f.pu ? '<span class="fw-none">Pas en streaming en France pour l\'instant</span>' : '<span class="fw-none">Je regarde…</span>')) + '</div><p class="fw-jw">Plateformes : JustWatch' + (f.pu ? " · vérifié le " + fwDay(f.pu) : "") + '</p>' : "")
+    + (f.tr ? '<a class="fw-tr" href="https://www.youtube.com/watch?v=' + encodeURIComponent(f.tr) + '" target="_blank" rel="noopener"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5l11 7-11 7z"/></svg>Bande-annonce</a>' : "")
+    + (!f.id ? '<button type="button" class="fw-tr" data-act="fw-find1"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>' + (f.nf ? "Chercher à nouveau sur TMDB" : "Chercher l'affiche") + '</button>' : "")
+    + '<p class="fw-tmdb">Ce produit utilise l\'API TMDB mais n\'est ni approuvé ni certifié par TMDB.</p></div>'
+    + '<div class="fw-fbtns"><button type="button" class="fw-b1" data-act="fw-del">Retirer</button><button type="button" class="fw-b2" data-act="fw-seen">' + (f.seen ? "Remettre à voir" : "Marquer vu") + '</button></div>';
+  if (first){ el.scrollTop = 0; el.classList.remove("in"); void el.offsetWidth; el.classList.add("in"); }
+}
+function fwFiClose(now){ var el = document.getElementById("fwFi"); S.fwFi = null; if (!el) return; if (now || matchMedia("(prefers-reduced-motion: reduce)").matches) el.remove(); else { el.id = ""; el.classList.add("out"); setTimeout(function(){ el.remove(); }, 180); } }
+function fwFiBack(){ if (history.state && history.state.ff) history.back(); else fwFiClose(); }
+window.addEventListener("popstate", function(){ var st = history.state || {}; if (S.fwFi && !st.ff) fwFiClose(); });
+function fwAct(act, b){
+  if (act === "fw-pk"){ if (FW_PK){ FW_PK.sel = +b.dataset.i || 0; fwPkDraw(); } return true; }
+  if (act === "fw-pk-ok"){ var P = FW_PK; if (P && P.list[P.sel]) fwPkEnd({r:P.list[P.sel]}); return true; }
+  if (act === "fw-pk-text"){ var P2 = FW_PK; if (P2) fwPkEnd({text:1, q:P2.q || ""}); return true; }
+  if (!NE) return false;
+  var nid = NE.note._id;
+  switch (act){
+    case "fw-tab": S.fwTab = b.dataset.t; fwRender(); var sc = document.querySelector("#noteEd .ne-scroll"), w = document.getElementById("fwWall"); if (sc && w && sc.scrollTop > w.offsetTop) sc.scrollTop = w.offsetTop - 8; return true;
+    case "fw-open": fwFiOpen(b.dataset.k); return true;
+    case "fw-fi-close": fwFiBack(); return true;
+    case "fw-find": fwFindAll(); return true;
+    case "fw-mode": fwMode(); return true;
+    case "fw-add":
+      fwPick({title:"Ajouter un film ou une série", input:true}).then(function(c){
+        if (!c) return;
+        if (c.text){ var q = cap(String(c.q || "").trim()); if (q) fwPush(nid, {k:fwKey(), t:q, nf:1, seen:null, at:nowISO()}, "nf"); return; }
+        S.fwTab = c.r.mt === "tv" && S.fwTab === "series" ? "series" : "voir"; fwPush(nid, fwFromRes(c.r));
+      }); return true;
+    case "fw-find1":
+      var k1 = S.fwFi, f1 = (NE.note.films || []).find(function(x){ return x.k === k1; }); if (!f1) return true;
+      fwPick({title:"C'est lequel ?", input:true, q:f1.t}).then(function(c){
+        if (!c) return;
+        if (c.text){ fwRepl(nid, k1, {nf:1, t:cap(String(c.q || f1.t).trim()) || f1.t}); return; }
+        fwRepl(nid, k1, fwFromRes(c.r, {k:k1})); fwEnrich(nid, k1);
+      }); return true;
+    case "fw-seen":
+      var L = fwList(nid), j = L.findIndex(function(x){ return x.k === S.fwFi; }); if (j < 0) return true;
+      var was = L[j].seen, t = L[j].t, kk = L[j].k; L[j] = Object.assign({}, L[j], {seen: was ? null : nowISO()});
+      fwSave(nid, L); fwFiBack();
+      toast(was ? "« " + t + " » remis dans À voir." : "« " + t + " » rangé dans Vus.", {undo:function(){ var L2 = fwList(nid); if (!L2) return; var j2 = L2.findIndex(function(x){ return x.k === kk; }); if (j2 < 0) return; L2[j2] = Object.assign({}, L2[j2], {seen: was}); fwSave(nid, L2); }});
+      return true;
+    case "fw-del":
+      var L3 = fwList(nid), j3 = L3.findIndex(function(x){ return x.k === S.fwFi; }); if (j3 < 0) return true;
+      var gone = L3[j3]; L3.splice(j3, 1); fwSave(nid, L3); fwFiBack();
+      toast("« " + gone.t + " » retiré de la liste.", {undo:function(){ var L4 = fwList(nid); if (!L4) return; L4.splice(Math.min(j3, L4.length), 0, gone); fwSave(nid, L4); }});
+      return true;
+  }
+  return false;
+}
 function openNote(id, preset, from){
   try { var O = noteOpens(); O[id] = (O[id] || 0) + 1; localStorage.setItem("mw-nopen", JSON.stringify(O)); } catch(e){}
   var n = id ? S.notes.find(function(x){ return x._id === id; }) : null;
@@ -6671,13 +7084,14 @@ function openNote(id, preset, from){
   var body = el.querySelector("#neBody"), title = el.querySelector("#neTitle");
   body.querySelectorAll("figure[data-media]").forEach(hydrateFigure);
   updateNeMeta();
+  S.fwFi = null; S.fwTab = "voir"; if (fwIsWall(n)) fwMount(el);   /* MyWorld_1.51 : note Films en mur d'affiches */
   if (!isNew){ NE.last = collectNote(); NE.sig = JSON.stringify(NE.last); }
   body.addEventListener("input", function(){ updateNeMeta(); queueSave(); keepCaret(); });
   body.addEventListener("keyup", keepCaret);
   /* toucher le vide sous le texte (ou à côté) ne ferme pas le clavier : le curseur va à la fin */
   var scr = el.querySelector(".ne-scroll");
   scr.addEventListener("mousedown", function(e){
-    if (e.target !== scr) return;
+    if (e.target !== scr || fwOn()) return;
     e.preventDefault();
     if (e.clientY > body.getBoundingClientRect().bottom - 4 || document.activeElement !== body){
       body.focus(); var r = document.createRange(); r.selectNodeContents(body); r.collapse(false);
@@ -6921,6 +7335,7 @@ function updateNeMeta(){
   var c = txt.replace(/\s/g, "").length; document.getElementById("neCount").textContent = c + " caractère" + (c > 1 ? "s" : "");
   document.getElementById("neFolder").textContent = n.folder || "Sans catégorie";
   b.classList.toggle("empty", !txt.trim() && !b.querySelector("figure,ul.todo"));
+  if (fwOn()) document.getElementById("neCount").textContent = fwCountTxt(n.films);
 }
 function noteText(b){
   var c = b.cloneNode(true);
@@ -6938,7 +7353,9 @@ function collectNote(ne){
   var c = b.cloneNode(true); c.querySelectorAll("figure").forEach(function(f){ f.innerHTML = ""; f.removeAttribute("contenteditable"); });
   var figs = Array.prototype.slice.call(b.querySelectorAll("figure[data-media]"));
   var visual = figs.find(function(f){ return f.dataset.kind !== "audio"; });
-  return {title: document.getElementById("neTitle").value.trim(), html: cleanHTML(c.innerHTML), text: noteText(b), media: figs.map(function(f){ return f.dataset.media; }), thumb: visual ? visual.dataset.media : null, hasAudio: figs.some(function(f){ return f.dataset.kind === "audio"; }), folder: n.folder || null, bg: n.bg || "papier", pinned: !!n.pinned, createdAt: n.createdAt};
+  var o = {title: document.getElementById("neTitle").value.trim(), html: cleanHTML(c.innerHTML), text: noteText(b), media: figs.map(function(f){ return f.dataset.media; }), thumb: visual ? visual.dataset.media : null, hasAudio: figs.some(function(f){ return f.dataset.kind === "audio"; }), folder: n.folder || null, bg: n.bg || "papier", pinned: !!n.pinned, createdAt: n.createdAt};
+  if (n.films) o.films = n.films; if (n.wall != null) o.wall = !!n.wall;   /* MyWorld_1.51 */
+  return o;
 }
 function saveNote(){
   if (!NE || !db) return Promise.resolve();
@@ -6971,7 +7388,7 @@ function closeNote(skipHistory, noAnim){
   if (el){ el.id = ""; if (document.activeElement && el.contains(document.activeElement)) document.activeElement.blur();
     if (noAnim) el.remove(); else neAnimClose(el, nid, function(){ el.remove(); }); }
   document.body.classList.remove("ne-open");
-  NE = null;
+  NE = null; S.fwFi = null;
   if (!skipHistory && history.state && history.state.ne) history.back();
 }
 function neBack(){ if (history.state && history.state.ne) history.back(); else closeNote(true); }
@@ -6999,6 +7416,7 @@ function neMenu(){
   m.innerHTML = '<button type="button" role="menuitem" data-act="ne-pin">' + ICON.pin + (n.pinned ? "Désépingler" : "Épingler") + '</button>'
     + '<button type="button" role="menuitem" data-act="ne-folder">' + ICON.folder + 'Déplacer vers un dossier</button>'
     + (navigator.share ? '<button type="button" role="menuitem" data-act="ne-share">' + SH + 'Partager le texte</button>' : "")
+    + (fwOffer(n) ? '<button type="button" role="menuitem" data-act="fw-mode"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (fwOn() ? '<path d="M5 6h14M5 12h14M5 18h9"/>' : '<rect x="3.5" y="4" width="7" height="10" rx="1.5"/><rect x="13.5" y="4" width="7" height="10" rx="1.5"/><path d="M4 18h6M14 18h6"/>') + '</svg>' + (fwOn() ? "Afficher en texte" : "Mur d'affiches") + '</button>' : "")
     + '<hr><button type="button" role="menuitem" class="del" data-act="ne-del">' + ICON.trash + 'Supprimer la note</button>';
   m.style.top = (r.bottom - er.top + 4) + "px"; m.style.right = Math.max(8, er.right - r.right + 4) + "px";
   ed.appendChild(bg); ed.appendChild(m); btn.setAttribute("aria-expanded", "true");
@@ -7273,6 +7691,7 @@ document.addEventListener("click", function(e){
   var b = e.target.closest("[data-act]"); if (!b) return;
   var act = b.dataset.act, id = b.dataset.id;
   if (act === "close"){ closeSheet(); return; }
+  if (act.indexOf("fw-") === 0 && fwAct(act, b)) return;   /* MyWorld_1.51 */
   if (act === "bd-new"){ bdayNewSheet(); return; }
   if (act === "lab-open"){ labOpen(); return; }
   if (act === "eph-open"){ ephOpen(b.dataset.d); return; }
