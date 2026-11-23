@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Test · Vidéos à deux</title>
+<style>
+:root{--ink:#0B4F7C;--txt:#1C2430;--mut:#5C6675;--line:#DCE3EA;--ok:#2F7440;--okb:#E4F4E8;--ko:#A8402F;--kob:#FBE4DE;--wa:#8E6312;--wab:#FBEFD2}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:#F2F6F9;color:var(--txt);-webkit-tap-highlight-color:transparent}
+header{position:sticky;top:0;z-index:5;background:linear-gradient(135deg,#0B4F7C,#1D7FB8);color:#fff;padding:calc(12px + env(safe-area-inset-top,0px)) 16px 12px}
+header h1{margin:0;font-size:19px;font-weight:800}
+header p{margin:3px 0 0;font-size:12.5px;opacity:.9}
+main{max-width:620px;margin:0 auto;padding:14px 14px 90px}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:12px}
+.card h2{margin:0 0 8px;font-size:15px;font-weight:800;color:var(--ink)}
+.card h3{margin:12px 0 6px;font-size:13px;font-weight:800;color:var(--mut);text-transform:uppercase;letter-spacing:.05em}
+.row{display:flex;gap:8px}
+input[type=url]{flex:1;min-width:0;height:46px;border:1.5px solid var(--line);border-radius:12px;padding:0 12px;font-size:15px}
+button{font:inherit;border:0;border-radius:12px;height:46px;padding:0 14px;font-weight:800;font-size:14px;background:#E6EEF5;color:var(--ink)}
+button.main{background:var(--ink);color:#fff}
+button.sm{height:34px;padding:0 10px;font-size:13px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.chips button{height:34px;font-size:12.5px;border-radius:999px}
+.kv{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 10px;font-size:13.5px}
+.kv b{color:var(--mut);font-weight:700}
+.kv span{overflow-wrap:anywhere}
+.st{display:flex;align-items:flex-start;gap:8px;margin:6px 0;padding:8px 10px;border-radius:10px;font-size:13px;line-height:1.35;overflow-wrap:anywhere}
+.st.ok{background:var(--okb);color:var(--ok)}.st.ko{background:var(--kob);color:var(--ko)}.st.wa{background:var(--wab);color:var(--wa)}.st.in{background:#EEF2F6;color:var(--mut)}
+.st i{font-style:normal;font-weight:900;flex:none}
+.player{position:relative;width:100%;max-width:340px;margin:6px auto 0;border-radius:14px;overflow:hidden;background:#000}
+.player iframe,.player>div{display:block;width:100%;border:0}
+.vote{display:flex;gap:8px;justify-content:center;margin:8px 0 2px}
+.vote button{height:38px;font-size:13px}
+.vote button.on.y{background:var(--okb);color:var(--ok)}.vote button.on.n{background:var(--kob);color:var(--ko)}
+.thumb{display:block;max-width:160px;border-radius:10px;margin-top:6px;border:1px solid var(--line)}
+pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:11.5px;background:#F5F7F9;border-radius:10px;padding:10px;max-height:260px;overflow:auto;margin:6px 0 0}
+.foot{position:fixed;left:0;right:0;bottom:0;padding:10px 14px calc(10px + env(safe-area-inset-bottom,0px));background:rgba(242,246,249,.96);border-top:1px solid var(--line);display:flex;gap:8px;justify-content:center}
+.foot button{flex:1;max-width:300px}
+.hint{font-size:12.5px;color:var(--mut);margin:6px 0 0}
+a{color:var(--ink)}
+</style>
+</head>
+<body>
+<header><h1>Test · Vidéos à deux</h1><p id="env">…</p></header>
+<main>
+  <div class="card">
+    <h2>1. Un lien</h2>
+    <div class="row"><input id="u" type="url" inputmode="url" placeholder="Colle un lien YouTube, Instagram ou Facebook" autocomplete="off"><button class="main" id="go">Tester</button></div>
+    <div class="chips">
+      <button id="paste">Coller</button>
+      <button data-u="https://www.facebook.com/share/r/1ADuoXTbGv/">Lien Facebook du groupe</button>
+    </div>
+    <p class="hint">Colle tour à tour un Short YouTube, un reel Instagram et un reel Facebook (copiés depuis le groupe WhatsApp). Chaque test s'ajoute au rapport.</p>
+  </div>
+  <div id="out"></div>
+  <div class="card">
+    <h2>Connexion (pour les tests par le script)</h2>
+    <div id="auth" class="st in"><i>…</i><span>Je regarde si tu es connecté…</span></div>
+    <button id="login" hidden>Se connecter avec Google</button>
+  </div>
+</main>
+<div class="foot"><button class="main" id="copy">Copier le rapport</button></div>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { FIREBASE_CONFIG, AGENDA_TOKEN_URL } from "../firebase-config.js";
+
+const $ = (s) => document.querySelector(s);
+const h = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const REPORT = [];
+const log = (t) => { REPORT.push(t); };
+const standalone = matchMedia("(display-mode: standalone)").matches;
+const ua = navigator.userAgent, chrome = (ua.match(/Chrome\/(\d+)/) || [])[1];
+$("#env").textContent = (standalone ? "Ouverte dans l'appli installée" : "Ouverte dans un onglet du navigateur") + " · Chrome " + (chrome || "?");
+log("=== Test Vidéos à deux · " + new Date().toLocaleString("fr-FR") + " ===");
+log("Contexte : " + (standalone ? "appli installée" : "onglet navigateur") + " · " + ua);
+
+/* ---------- connexion (même compte que My World) ---------- */
+const app = initializeApp(FIREBASE_CONFIG), auth = getAuth(app);
+let user = null;
+onAuthStateChanged(auth, (u) => {
+  user = u;
+  $("#auth").className = "st " + (u ? "ok" : "wa");
+  $("#auth").innerHTML = u ? "<i>✓</i><span>Connecté : les tests par le script sont possibles.</span>" : "<i>!</i><span>Pas connecté : seuls les tests directs (sans le script) marchent.</span>";
+  $("#login").hidden = !!u;
+});
+$("#login").onclick = () => signInWithPopup(auth, new GoogleAuthProvider()).catch((e) => alert("Connexion impossible : " + e.code));
+async function script(want, extra){
+  if (!AGENDA_TOKEN_URL) throw new Error("pas d'adresse de script");
+  if (!user) throw new Error("pas connecté");
+  const idToken = await user.getIdToken();
+  const r = await fetch(AGENDA_TOKEN_URL, { method:"POST", headers:{ "Content-Type":"text/plain;charset=utf-8" }, body: JSON.stringify(Object.assign({}, extra, { idToken, want })) });
+  return JSON.parse(await r.text());
+}
+
+/* ---------- normalisation : {plateforme, id} ---------- */
+function vidParse(raw){
+  const m0 = String(raw || "").match(/https?:\/\/[^\s<>"']+/i); if (!m0) return null;
+  let url = m0[0].replace(/[).,;!?]+$/, ""), m;
+  if ((m = url.match(/(?:youtube\.com\/(?:shorts\/|watch\?(?:[^#]*&)?v=|embed\/|live\/|v\/)|youtu\.be\/)([\w-]{11})/i)))
+    return {p:"yt", id:m[1], url:/\/shorts\//i.test(url) ? "https://www.youtube.com/shorts/" + m[1] : "https://www.youtube.com/watch?v=" + m[1], raw:url};
+  if ((m = url.match(/instagram\.com\/(?:[\w.]+\/)?(reels?|p|tv)\/([\w-]+)/i))){
+    const kind = /^reels?$/i.test(m[1]) ? "reel" : m[1].toLowerCase();
+    return {p:"ig", id:m[2], kind, url:"https://www.instagram.com/" + kind + "/" + m[2] + "/", raw:url};
+  }
+  if ((m = url.match(/facebook\.com\/(?:reel|reels)\/(\d+)/i)) || (m = url.match(/facebook\.com\/(?:watch\/?\?(?:[^#]*&)?v=|[\w.]+\/videos\/(?:[\w.-]+\/)?|video\.php\?(?:[^#]*&)?v=)(\d+)/i)))
+    return {p:"fb", id:m[1], url:"https://www.facebook.com/reel/" + m[1], raw:url};
+  if ((m = url.match(/facebook\.com\/share\/(r|v|p)\/([\w-]+)/i)) || (m = url.match(/fb\.watch\/([\w-]+)/i)))
+    return {p:"fb", id:null, short:m[m.length - 1], url:url.split("?")[0], raw:url, resolve:true};
+  return {p:null, raw:url};
+}
+const PN = {yt:"YouTube", ig:"Instagram", fb:"Facebook"};
+
+/* ---------- appels oEmbed depuis le navigateur ---------- */
+function oeURL(v, u){
+  if (v.p === "yt") return "https://www.youtube.com/oembed?format=json&url=" + encodeURIComponent(u);
+  if (v.p === "ig") return "https://graph.facebook.com/v25.0/instagram_oembed?url=" + encodeURIComponent(u);
+  return "https://graph.facebook.com/v25.0/oembed_video?url=" + encodeURIComponent(u);
+}
+async function oeDirect(v, u){
+  const t0 = performance.now();
+  try {
+    const r = await fetch(oeURL(v, u), { mode:"cors" });
+    const ms = Math.round(performance.now() - t0), txt = await r.text(); let j = null; try { j = JSON.parse(txt); } catch(e){}
+    if (!r.ok) return {cls:"ko", txt:"Réponse " + r.status + " en " + ms + " ms : " + ((j && j.error && j.error.message) || txt.slice(0, 160))};
+    return {cls:"ok", txt:"OK en " + ms + " ms · champs : " + (j ? Object.keys(j).join(", ") : "?") + (j && j.title ? " · titre « " + j.title + " »" : " · pas de titre") + (j && j.thumbnail_url ? " · vignette ✓" : " · pas de vignette"), thumb:j && j.thumbnail_url};
+  } catch(e){ return {cls:"ko", txt:"Bloqué par le navigateur (CORS) ou réseau : " + e.message + " → il faudra passer par le script."}; }
+}
+
+/* ---------- lecteurs ---------- */
+let ytReady = null;
+function ytApi(){ if (ytReady) return ytReady; ytReady = new Promise((res) => { window.onYouTubeIframeAPIReady = res; const s = document.createElement("script"); s.src = "https://www.youtube.com/iframe_api"; s.onerror = () => res(null); document.head.appendChild(s); }); return ytReady; }
+function playerBox(n, v, url){
+  const box = document.createElement("div");
+  box.innerHTML = '<div class="player" style="aspect-ratio:9/16"></div><div class="vote" data-n="' + n + '"><button class="y">✓ Ça se lit</button><button class="n">✗ Ne se lit pas</button></div>';
+  const pl = box.querySelector(".player");
+  if (v.p === "yt"){
+    const d = document.createElement("div"); d.id = "yt" + n; d.style.height = "100%"; pl.appendChild(d);
+    ytApi().then((ok) => {
+      if (!ok && !window.YT){ pl.innerHTML = '<iframe src="https://www.youtube.com/embed/' + v.id + '?playsinline=1&rel=0" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen style="height:100%"></iframe>'; log("[" + n + "] API IFrame YouTube non chargée : lecteur simple"); return; }
+      new YT.Player("yt" + n, { videoId:v.id, width:"100%", height:"100%", playerVars:{ playsinline:1, rel:0 }, events:{
+        onReady: () => log("[" + n + "] YouTube : lecteur prêt"),
+        onStateChange: (e) => { if (e.data === YT.PlayerState.ENDED){ log("[" + n + "] YouTube : FIN DÉTECTÉE ✓"); const st = box.querySelector(".end"); if (st) st.hidden = false; } },
+        onError: (e) => log("[" + n + "] YouTube : erreur du lecteur " + e.data) } });
+    });
+    box.insertAdjacentHTML("beforeend", '<div class="st ok end" hidden><i>✓</i><span>Fin de la vidéo détectée : la suivante pourra se lancer toute seule.</span></div>');
+  } else if (v.p === "ig"){
+    pl.innerHTML = '<iframe src="https://www.instagram.com/' + v.kind + '/' + v.id + '/embed/" allow="autoplay; encrypted-media; fullscreen" allowfullscreen scrolling="no" style="height:100%;background:#fff"></iframe>';
+  } else {
+    pl.innerHTML = '<iframe src="https://www.facebook.com/plugins/video.php?href=' + encodeURIComponent(url) + '&show_text=false&width=340" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share; fullscreen" allowfullscreen scrolling="no" style="height:100%"></iframe>';
+  }
+  box.querySelectorAll(".vote button").forEach((b) => b.onclick = () => {
+    box.querySelectorAll(".vote button").forEach((x) => x.classList.remove("on")); b.classList.add("on");
+    log("[" + n + "] Lecteur " + PN[v.p] + (url !== v.url ? " (lien d'origine)" : "") + " : " + (b.classList.contains("y") ? "SE LIT" : "NE SE LIT PAS"));
+  });
+  return box;
+}
+
+/* ---------- un test ---------- */
+let N = 0;
+async function run(raw){
+  const v = vidParse(raw);
+  if (!v){ alert("Je ne trouve pas de lien dans ce texte."); return; }
+  const n = ++N, c = document.createElement("div"); c.className = "card";
+  $("#out").prepend(c);
+  log(""); log("[" + n + "] Lien collé : " + v.raw);
+  if (!v.p){ c.innerHTML = '<h2>Test ' + n + '</h2><div class="st ko"><i>✗</i><span>Plateforme non reconnue : ' + h(v.raw) + '</span></div>'; log("[" + n + "] Plateforme non reconnue"); return; }
+  const key = v.id ? v.p + "_" + v.id : "(à résoudre)";
+  c.innerHTML = '<h2>Test ' + n + ' · ' + PN[v.p] + '</h2><h3>Normalisation</h3><div class="kv"><b>Plateforme</b><span>' + PN[v.p] + '</span><b>Identifiant</b><span>' + h(v.id || "inconnu : lien court « " + v.short + " »") + '</span><b>Lien propre</b><span>' + h(v.url) + '</span><b>Clé (doublons)</b><span>' + h(key) + '</span>' + ((v.raw.split("?")[1] || "") ? '<b>Suivi retiré</b><span>?' + h(v.raw.split("?")[1]) + '</span>' : "") + '</div>'
+    + '<h3>Lecteur</h3><div class="pl"></div><h3>oEmbed depuis le téléphone</h3><div class="oe"><div class="st in"><i>…</i><span>Appel en cours…</span></div></div><h3>Par le script Google</h3><div class="sc"><div class="st in"><i>…</i><span>…</span></div></div>';
+  log("[" + n + "] Normalisé : " + PN[v.p] + " · id " + (v.id || "?") + " · " + v.url + " · clé " + key);
+  c.querySelector(".pl").appendChild(playerBox(n, v, v.url));
+  if (v.p === "yt") c.querySelector(".pl").insertAdjacentHTML("beforeend", '<p class="hint">Vignette sans clé :</p><img class="thumb" src="https://i.ytimg.com/vi/' + v.id + '/hqdefault.jpg" alt="">');
+  /* oEmbed direct */
+  const oe = await oeDirect(v, v.url);
+  c.querySelector(".oe").innerHTML = '<div class="st ' + oe.cls + '"><i>' + (oe.cls === "ok" ? "✓" : "✗") + '</i><span>' + h(oe.txt) + '</span></div>' + (oe.thumb ? '<img class="thumb" src="' + h(oe.thumb) + '" alt="">' : "");
+  log("[" + n + "] oEmbed direct : " + oe.txt);
+  /* script */
+  const sc = c.querySelector(".sc");
+  if (!user){ sc.innerHTML = '<div class="st wa"><i>!</i><span>Pas connecté : test par le script sauté.</span></div>'; log("[" + n + "] Script : sauté (pas connecté)"); return; }
+  sc.innerHTML = '<div class="st in"><i>…</i><span>Le script analyse le lien…</span></div>';
+  let j; const t0 = performance.now();
+  try { j = await script("lien", {url: v.raw}); } catch(e){ j = {error: e.message}; }
+  const ms = Math.round(performance.now() - t0);
+  if (!j || j.error){
+    const why = j && j.error === "bad_request" ? "le script ne connaît pas encore cette demande : colle le Code.gs de la 1.52 et fais « Nouvelle version »" : (j && j.error) || "?";
+    sc.innerHTML = '<div class="st ko"><i>✗</i><span>Script : ' + h(why) + '</span></div>'; log("[" + n + "] Script : erreur " + ((j && j.error) || "?")); return;
+  }
+  const f = vidParse(j.final) || {};
+  const o = j.oembed || {};
+  sc.innerHTML = '<div class="st ' + (j.chain.length > 1 ? "ok" : "in") + '"><i>' + (j.chain.length > 1 ? "✓" : "·") + '</i><span>' + (j.chain.length > 1 ? (j.chain.length - 1) + " redirection(s) suivie(s) en " + ms + " ms → " : "Pas de redirection (" + ms + " ms) · ") + h(j.final) + ' (code ' + j.status + ')</span></div>'
+    + (f.p && f.id && !v.id ? '<div class="st ok"><i>✓</i><span>Identifiant retrouvé : ' + PN[f.p] + ' ' + h(f.id) + ' → clé ' + h(f.p + "_" + f.id) + '</span></div>' : "")
+    + '<div class="st ' + (j.og.title || j.og.image ? "ok" : "ko") + '"><i>' + (j.og.title || j.og.image ? "✓" : "✗") + '</i><span>Page : ' + (j.og.title ? "titre « " + h(j.og.title.slice(0, 120)) + " »" : "pas de titre") + (j.og.image ? " · image ✓" : " · pas d'image") + '</span></div>'
+    + (j.og.image ? '<img class="thumb" src="' + h(j.og.image) + '" alt="" referrerpolicy="no-referrer">' : "")
+    + '<div class="st ' + (o.status === 200 ? "ok" : "ko") + '"><i>' + (o.status === 200 ? "✓" : "✗") + '</i><span>oEmbed par le script : ' + (o.status === 200 ? "OK · champs : " + (o.keys || []).join(", ") + (o.title ? " · titre « " + h(o.title) + " »" : "") + (o.thumb ? " · vignette ✓" : "") : "réponse " + o.status + " · " + h(o.error || "")) + '</span></div>';
+  log("[" + n + "] Script : " + (j.chain.length - 1) + " redirection(s) en " + ms + " ms → " + j.final + " (code " + j.status + ", page " + j.size + " car.)");
+  if (f.p && f.id && !v.id) log("[" + n + "] Identifiant retrouvé : " + f.p + "_" + f.id);
+  log("[" + n + "] Page : og:title « " + (j.og.title || "") + " » · og:image " + (j.og.image ? "oui" : "non") + " · og:type " + (j.og.type || "-"));
+  log("[" + n + "] oEmbed script : " + o.status + " · " + (o.status === 200 ? "champs " + (o.keys || []).join(",") + (o.title ? " · titre ok" : " · sans titre") + (o.thumb ? " · vignette ok" : " · sans vignette") : (o.error || "")));
+  /* Facebook : lecteur avec le lien résolu, pour comparer avec le lien court */
+  if (v.p === "fb" && v.resolve && f.p === "fb" && f.id){
+    sc.insertAdjacentHTML("beforeend", '<h3>Lecteur avec le lien résolu</h3>');
+    sc.appendChild(playerBox(n + "b", f, f.url));
+  }
+}
+$("#go").onclick = () => { const x = $("#u").value.trim(); if (x) run(x); };
+$("#u").addEventListener("keydown", (e) => { if (e.key === "Enter"){ e.preventDefault(); $("#go").click(); } });
+document.querySelectorAll("[data-u]").forEach((b) => b.onclick = () => { $("#u").value = b.dataset.u; run(b.dataset.u); });
+$("#paste").onclick = async () => { try { const t = await navigator.clipboard.readText(); $("#u").value = t; if (t) run(t); } catch(e){ alert("Lecture du presse-papiers refusée : colle à la main."); } };
+$("#copy").onclick = async () => { const t = REPORT.join("\n"); try { await navigator.clipboard.writeText(t); $("#copy").textContent = "Rapport copié ✓"; setTimeout(() => $("#copy").textContent = "Copier le rapport", 1800); } catch(e){ prompt("Copie ce rapport :", t); } };
+</script>
+</body>
+</html>

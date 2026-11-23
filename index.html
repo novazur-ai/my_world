@@ -2904,10 +2904,11 @@ var DECO = (function(){
 
 </script>
 <script>
-var APP_VERSION = "MyWorld_1.51";
+var APP_VERSION = "MyWorld_1.52";
 /* MyWorld_1.33 : nouveautés affichées dans les Réglages. À CHAQUE VERSION (appli ou jeu) : ajouter une entrée EN TÊTE,
    {v: numéro, d: date AAAA-MM-JJ, t: titre court, l: 1 à 3 phrases simples, sans jargon}. */
 var MW_NEWS = [
+  {"v": "1.52", "d": "2026-11-23", "t": "Page de test « Vidéos à deux »", "l": ["Réglages › Ta voix › « Page de test · Vidéos à deux » : colle un lien YouTube, Instagram ou Facebook pour voir s'il se lit dans l'appli et ce qu'on peut en tirer.", "C'est la première étape avant la page Vidéos et le mode soirée."]},
   {"v": "1.51", "d": "2026-11-23", "t": "Ta note Films en mur d'affiches", "l": ["Ta note Films devient un mur d'affiches avec les onglets À voir, Vus et Séries ; touche une affiche pour sa fiche : résumé, où le regarder en France, bande-annonce, « Marquer vu ».", "Quand tu ajoutes un titre (au + ou avec « Ajouter »), l'appli te demande « C'est lequel ? » s'il y a plusieurs films du même nom.", "Affiches et infos : TMDB ; plateformes : JustWatch."]},
   {"v": "1.50", "d": "2026-11-23", "t": "Essai de la dictée Whisper", "l": ["Réglages › Ta voix › « Essai de la dictée Whisper » : compare la dictée Google et Whisper (IA open source), avec le temps de réponse.", "La même page teste la recherche de films pour la note Films.", "Les clés d'API restent dans ton script Google, jamais dans l'appli."]},
   {"v": "1.49", "d": "2026-11-23", "t": "Air, mer, jours fériés et « Ce jour-là »", "l": ["Page Météo : qualité de l'air, pollen du jour, température de la mer et vagues.", "Les jours fériés apparaissent dans la semaine, le mois et le programme du jour ; les vacances scolaires (zone B) sont soulignées très discrètement.", "Dans les News : un événement « Ce jour-là » tiré de Wikipédia, à ouvrir d'un toucher."]},
@@ -6072,7 +6073,8 @@ function vxSettingsHTML(){
     + '<p class="rg-hint" style="margin-top:12px">Ce que l\'app a appris de ta voix : ces corrections s\'appliquent seulement à ce que tu dis au bouton +.</p>'
     + (rows || '<p class="rg-hint">Rien pour l\'instant. Lance une série : quand un mot est mal entendu, « Retenir la correction » l\'ajoute ici.</p>')
     + '<p class="rg-hint" style="margin-top:12px">' + h(S.vxDiag || "") + '</p>'
-    + '<button type="button" class="btn light lab-open" data-act="lab-open">Essai de la dictée Whisper</button>';
+    + '<button type="button" class="btn light lab-open" data-act="lab-open">Essai de la dictée Whisper</button>'
+    + '<a class="btn light lab-open" href="tests/videos.html" style="display:flex;align-items:center;justify-content:center;text-decoration:none">Page de test · Vidéos à deux</a>';   /* MyWorld_1.52 : étape 0 du projet Vidéos à deux */
 }
 function vxSum(){ var V = vxData(), n = V.rules.length; return (n ? n + " correction" + (n > 1 ? "s" : "") : "Aucune correction") + " · micro " + (V.auto ? "auto" : "au toucher"); }
 /* liste de mots favoris (Chrome) : seulement avec la reconnaissance sur le téléphone ; ici on regarde juste si c'est possible */

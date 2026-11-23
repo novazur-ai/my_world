@@ -22,11 +22,12 @@ function doPost(e) {
     }
     else if (body.want === "cles") {
       const p = PropertiesService.getScriptProperties();
-      out = { groq: !!p.getProperty("GROQ_KEY"), tmdb: !!p.getProperty("TMDB_KEY"), youtube: !!p.getProperty("YOUTUBE_KEY"), v: 151 };
+      out = { groq: !!p.getProperty("GROQ_KEY"), tmdb: !!p.getProperty("TMDB_KEY"), youtube: !!p.getProperty("YOUTUBE_KEY"), v: 152 };
     }
     else if (body.want === "voix") out = transcrire_(body);
     else if (body.want === "tmdb") out = tmdb_(body);
     else if (body.want === "youtube") out = youtube_(body);
+    else if (body.want === "lien") out = lien_(body);
     else out = { token: ScriptApp.getOAuthToken() };
   } catch (err) {
     out = { error: "bad_request" };
@@ -157,6 +158,44 @@ function youtube_(body) {
     const sn = v.snippet || {}, th = sn.thumbnails || {};
     return { id: v.id, title: sn.title || "", channel: sn.channelTitle || "", dur: (v.contentDetails || {}).duration || "", thumb: ((th.high || th.medium || th.default) || {}).url || "" };
   }) };
+}
+
+/* 1.52 (« Vidéos à deux », page de test) : un lien vidéo partagé → redirections suivies une à une (liens courts
+   facebook.com/share/r/…), titre et image de la page (og:title, og:image), et oEmbed de Meta / YouTube sans jeton. */
+function lien_(body) {
+  let url = String(body.url || "").trim();
+  const ok = function (u) { return /^https:\/\/([\w-]+\.)*(facebook\.com|fb\.watch|instagram\.com|youtube\.com|youtu\.be)(\/|$)/i.test(u); };
+  if (!ok(url)) return { error: "bad_url" };
+  const UA = "Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Mobile Safari/537.36";
+  const chain = [url]; let r = null, code = 0;
+  for (let i = 0; i < 6; i++) {
+    r = UrlFetchApp.fetch(url, { followRedirects: false, muteHttpExceptions: true, headers: { "User-Agent": UA, "Accept-Language": "fr-FR,fr;q=0.9" } });
+    code = r.getResponseCode();
+    if (code < 300 || code >= 400) break;
+    const hd = r.getAllHeaders(); let loc = hd.Location || hd.location; if (Array.isArray(loc)) loc = loc[0];
+    if (!loc) break;
+    if (!/^https?:/i.test(loc)) loc = url.replace(/^(https?:\/\/[^\/]+).*$/, "$1") + (loc.charAt(0) === "/" ? "" : "/") + loc;
+    url = loc; chain.push(url);
+  }
+  const html = r ? String(r.getContentText()).slice(0, 400000) : "";
+  const dec = function (x) { return String(x || "").replace(/&amp;/g, "&").replace(/&quot;/g, '"').replace(/&#0?39;|&#x27;/gi, "'").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&#(\d+);/g, function (m, n) { return String.fromCharCode(+n); }).replace(/&#x([0-9a-f]+);/gi, function (m, n) { return String.fromCharCode(parseInt(n, 16)); }); };
+  const meta = function (k) {
+    const a = html.match(new RegExp("<meta[^>]+(?:property|name)=[\"']" + k + "[\"'][^>]*content=[\"']([^\"']*)", "i"))
+      || html.match(new RegExp("<meta[^>]+content=[\"']([^\"']*)[\"'][^>]*(?:property|name)=[\"']" + k + "[\"']", "i"));
+    return a ? dec(a[1]) : "";
+  };
+  const og = { title: meta("og:title"), image: meta("og:image"), desc: meta("og:description").slice(0, 300), type: meta("og:type"), url: meta("og:url") };
+  let oe = null, oeUrl = "";
+  if (/instagram\.com/i.test(url)) oeUrl = "https://graph.facebook.com/v25.0/instagram_oembed?url=";
+  else if (/facebook\.com|fb\.watch/i.test(url)) oeUrl = "https://graph.facebook.com/v25.0/oembed_video?url=";
+  else oeUrl = "https://www.youtube.com/oembed?format=json&url=";
+  try {
+    const o = UrlFetchApp.fetch(oeUrl + encodeURIComponent(og.url && ok(og.url) ? og.url : url), { muteHttpExceptions: true });
+    const t = o.getContentText();
+    let j = null; try { j = JSON.parse(t); } catch (e) {}
+    oe = { status: o.getResponseCode(), keys: j ? Object.keys(j) : [], title: j && j.title || "", thumb: j && j.thumbnail_url || "", author: j && j.author_name || "", error: j && j.error ? (j.error.message || "").slice(0, 200) : (j ? "" : t.slice(0, 200)) };
+  } catch (e) { oe = { status: 0, error: String(e).slice(0, 200) }; }
+  return { final: url, chain: chain, status: code, size: html.length, og: og, oembed: oe };
 }
 
 function json_(o) { return ContentService.createTextOutput(JSON.stringify(o)).setMimeType(ContentService.MimeType.JSON); }
