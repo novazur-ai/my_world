@@ -1377,6 +1377,23 @@ body.fan-on nav.tabs a,body.fan-on .nav-add{opacity:.35;pointer-events:none;tran
 .bd-gs.no{min-height:34px;padding:0 11px 0 9px;background:#FFEBD9;color:#A34A16;cursor:pointer}
 .bd-gs.add{min-height:34px;padding:0 13px;background:#EEF2F6;color:#33449A;cursor:pointer}
 .bd-av{display:grid;place-items:center;border-radius:50%;font-weight:900;flex:none}
+/* MyWorld_1.49 : air / mer (Météo), jours fériés, vacances scolaires (discret), éphéméride (News) */
+.mx{display:grid;grid-template-columns:1fr 1fr;gap:10px}.mx.one{grid-template-columns:1fr}
+.mx-c{background:#fff;border:1px solid #E6ECF2;border-radius:18px;box-shadow:0 6px 20px rgba(11,58,92,.06);padding:12px 14px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.mx-h{font-size:11px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:#6B7785}
+.mx-c b{font-size:22px;font-weight:900;color:#10263D;line-height:1.15}
+.mx-s{font-size:12.5px;font-weight:700;color:#5B6B7C;line-height:1.3}
+.wsd.fer:not(.on):not(.today) b,.mcell.fer:not(.sel):not(.today) .mn{color:#B4532A}
+.wsd.vs,.mcell.vs{position:relative}
+.wsd.vs::after,.mcell.vs::after{content:"";position:absolute;left:28%;right:28%;bottom:1px;height:2px;border-radius:2px;background:#C9C2E6;opacity:.75}
+.m-fer{margin:8px 0 0;font-size:13px;font-weight:800;color:#B4532A}
+.m-vs{margin:4px 0 0;font-size:11.5px;font-weight:700;color:#9AA3AE}
+.hp-chip.fer em{background:#FBE3D6;color:#9A4320}
+.gz-eph{display:flex;flex-direction:column;align-items:flex-start;gap:4px;width:100%;text-align:left;font:inherit;color:inherit;background:#FBF7EE;border:1px solid #EFE3C8;border-radius:20px;padding:14px 16px;cursor:pointer}
+.gz-eph .ey{font-size:11px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:#8E6312}
+.gz-eph .yr{font-size:26px;font-weight:900;color:#5C4210;line-height:1.05}
+.gz-eph .t{font-size:14.5px;font-weight:700;color:#3B3426;line-height:1.4}
+.gz-eph .src{font-size:11px;font-weight:800;color:#A08A5C}
 #gzPop{position:fixed;inset:0;z-index:45}
 #gzPop .gz-veil{position:absolute;inset:0;background:rgba(10,30,50,.35);opacity:0;transition:opacity .2s}
 #gzPop .gz-pop{position:absolute;left:0;right:0;bottom:0;max-width:640px;margin:0 auto;background:#fff;border-radius:26px 26px 0 0;box-shadow:0 -14px 40px rgba(10,30,50,.22);padding:10px 20px calc(24px + env(safe-area-inset-bottom,0px));max-height:82vh;overflow:auto;overscroll-behavior:contain;transform:translateY(100%);transition:transform .28s cubic-bezier(.16,1,.3,1)}
@@ -2791,10 +2808,11 @@ var DECO = (function(){
 
 </script>
 <script>
-var APP_VERSION = "MyWorld_1.48";
+var APP_VERSION = "MyWorld_1.49";
 /* MyWorld_1.33 : nouveautés affichées dans les Réglages. À CHAQUE VERSION (appli ou jeu) : ajouter une entrée EN TÊTE,
    {v: numéro, d: date AAAA-MM-JJ, t: titre court, l: 1 à 3 phrases simples, sans jargon}. */
 var MW_NEWS = [
+  {"v": "1.49", "d": "2026-11-23", "t": "Air, mer, jours fériés et « Ce jour-là »", "l": ["Page Météo : qualité de l'air, pollen du jour, température de la mer et vagues.", "Les jours fériés apparaissent dans la semaine, le mois et le programme du jour ; les vacances scolaires (zone B) sont soulignées très discrètement.", "Dans les News : un événement « Ce jour-là » tiré de Wikipédia, à ouvrir d'un toucher."]},
   {"v": "1.48", "d": "2026-11-18", "t": "Page Anniversaires", "l": ["Nouvelle fleur « Anniversaires » dans le lanceur : le prochain anniversaire en grand, puis tous les autres par période.", "« Voir l'année » affiche la roue de l'année ; « Ajouter » en haut à droite.", "Les anniversaires qui n'étaient pas encore dans ton Google Agenda y sont ajoutés tout seuls, sans doublon."]},
   {"v": "1.47", "d": "2026-11-18", "t": "Chiffre du jour : l'article d'un appui long", "l": ["Dans les News, un toucher sur le chiffre du jour passe toujours au suivant.", "Un appui long ouvre l'article d'où vient le chiffre, dans la fenêtre des News, sans quitter l'app.", "Les chiffres des prochains jours garderont aussi le titre, le résumé et les phrases clés de leur article."]},
   {"v": "1.46", "d": "2026-11-18", "t": "Fond Cinéma", "l": ["Nouveau fond « Cinéma » pour les notes : une bande de pellicule sur les bords, le grain du film et la lueur du projecteur, avec un titre façon affiche."]},
@@ -3277,6 +3295,8 @@ function homeProgHTML(){
     var open = e.src === "gcal" ? ' data-act="ev-open" data-gid="' + h(e.gid) + '" data-d="' + h(e.date || di) + '"' : e.src === "draft" && !e.todo ? ' data-act="ev-open" data-id="' + h(e.id) + '"' : ' data-act="home-go" data-k="month" data-d="' + h(di) + '"';
     return '<button type="button" class="hp-chip' + (past ? ' past' : '') + '"' + open + '><em style="background:' + C[0] + ';color:' + C[1] + '">' + (e.src === "bday" ? "🎂" : e.time ? h(fmtTime(e.time)) : "Journée") + '</em>' + h(e.src === "bday" ? e.title : sp.core) + '</button>';
   }).join("");
+  var ferd = ferieOf(di);
+  if (ferd) chips = '<button type="button" class="hp-chip fer" data-act="home-go" data-k="month" data-d="' + h(di) + '"><em>Férié</em>' + h(ferd) + '</button>' + chips;
   var svc = svcCardHTML(di), note = calNotice();
   if (!svc && !chips && !note) return "";
   return '<section class="section gut hp" aria-label="Programme ' + h(lbl.toLowerCase()) + '">' + note + svc
@@ -3399,11 +3419,13 @@ function weekDaysHTML(off){
     var d = addDays(m, i), di = iso(d), evs = eventsOn(di), cats = [];
     evs.forEach(function(e){ var c = e.cat || "neutre"; if (cats.indexOf(c) < 0) cats.push(c); });
     var dots = cats.slice(0, 3).map(function(c){ return '<i style="background:' + (CAT_COL[c] || CAT_COL.neutre)[2] + '"></i>'; }).join("");
-    out += '<button type="button" class="wsd' + (di === sel ? " on" : "") + (di === iso(t) ? " today" : "") + (d < t ? " past" : "") + '" data-act="day-sel" data-d="' + di + '" aria-pressed="' + (di === sel) + '" aria-label="' + h(cap(JOURS_LONG[d.getDay()]) + " " + d.getDate() + (evs.length ? ", " + evs.length + " rendez-vous" : "") + (vacSpan(di) ? ", service à " + vacShort(di) : "") + ". Appui long : voir le mois") + '"' + (off !== (S.weekOff || 0) ? ' tabindex="-1"' : '') + '><small>' + cap(JOURS[d.getDay()].replace(".", "")) + '</small><b>' + d.getDate() + '</b>' + (hasPlanning() ? '<span class="whr">' + vacShort(di) + '</span>' : '') + '<span class="pts">' + dots + '</span></button>';
+    var fer = ferieOf(di), vs = vsOf(di);
+    out += '<button type="button" class="wsd' + (di === sel ? " on" : "") + (fer ? " fer" : "") + (vs ? " vs" : "") + (di === iso(t) ? " today" : "") + (d < t ? " past" : "") + '" data-act="day-sel" data-d="' + di + '" aria-pressed="' + (di === sel) + '" aria-label="' + h(cap(JOURS_LONG[d.getDay()]) + " " + d.getDate() + (evs.length ? ", " + evs.length + " rendez-vous" : "") + (vacSpan(di) ? ", service à " + vacShort(di) : "") + (fer ? ", férié : " + fer : "") + (vs ? ", " + vs : "") + ". Appui long : voir le mois") + '"' + (off !== (S.weekOff || 0) ? ' tabindex="-1"' : '') + '><small>' + cap(JOURS[d.getDay()].replace(".", "")) + '</small><b>' + d.getDate() + '</b>' + (hasPlanning() ? '<span class="whr">' + vacShort(di) + '</span>' : '') + '<span class="pts">' + dots + '</span></button>';
   }
   return out;
 }
 function weekStripHTML(){
+  ensureExtCal();
   var off = S.weekOff || 0;
   var sr = '<button type="button" class="sr" data-act="week-off" data-n="-1"' + (off <= 0 ? " disabled" : "") + '>Semaine précédente</button><button type="button" class="sr" data-act="week-off" data-n="1">Semaine suivante</button>';
   return '<section class="section gut wstrip-sec" aria-label="Choisir un jour (glisse pour changer de semaine)">' + sr + '<div class="wstrip ws-slider"><div class="ws-track" id="wsTrack">'
@@ -3686,6 +3708,141 @@ function mtAlert(d){
   }
   return "";
 }
+/* ===== MyWorld_1.49 : API gratuites sans clé.
+   Page Météo seulement : air (indice européen) et pollen (Open-Meteo Air Quality, prévisions CAMS / Copernicus),
+   mer (Open-Meteo Marine : température de l'eau, vagues). Jours fériés (calendrier.api.gouv.fr, secours : calcul local),
+   vacances scolaires de la zone B (académie de Nice, data.education.gouv.fr ; affichage très discret),
+   éphéméride « Ce jour-là » dans les News (Wikipédia en français, feed onthisday/selected). ===== */
+var MX_SEA_HOME = {lat:43.62, lon:7.17};   /* au large de Cagnes : le modèle de la mer n'a pas de valeur sur une case de terre */
+/* seuils de MétéoSuisse (classes de risque, concentration journalière moyenne, grains/m³) ; l'olivier n'y figure pas */
+var MX_POL = [["alder_pollen","Aulne",[1,11,70,250]],["birch_pollen","Bouleau",[1,11,70,300]],["grass_pollen","Graminées",[1,20,50,150]],["mugwort_pollen","Armoise",[1,6,15,50]],["ragweed_pollen","Ambroisie",[1,6,11,40]],["olive_pollen","Olivier",null]];
+var MX_LV = ["faible","moyen","fort","très fort"];
+var MX_AQI = [[20,"Bon","#2F7440"],[40,"Assez bon","#56661A"],[60,"Moyen","#8E6312"],[80,"Médiocre","#AA4A1C"],[100,"Très mauvais","#A8402F"],[1e9,"Extrêmement mauvais","#6640A6"]];
+function extGet(u){ return fetch(u).then(function(r){ if (!r.ok) throw new Error(r.status); return r.json(); }).catch(function(){ return null; }); }
+function mxKey(){ var p = mtPlace(); return p.lat.toFixed(3) + "," + p.lon.toFixed(3); }
+function ensureMeteoX(){
+  var p = mtPlace(), key = mxKey();
+  if (!S.mx){ try { var c = JSON.parse(localStorage.getItem("meteoX") || "null"); if (c && c.key) S.mx = c; } catch(e){} }
+  if (S.mx && S.mx.key === key && Date.now() - S.mx.at < 60 * 60000) return;
+  if (S.mxBusy === key || (S.mxErrAt && Date.now() - S.mxErrAt < 5 * 60000)) return;
+  S.mxBusy = key;
+  var sp = mtIsHome(p) ? MX_SEA_HOME : p;
+  Promise.all([
+    extGet("https://air-quality-api.open-meteo.com/v1/air-quality?latitude=" + p.lat + "&longitude=" + p.lon + "&timezone=Europe%2FParis&forecast_days=1&hourly=european_aqi," + MX_POL.map(function(x){ return x[0]; }).join(",")),
+    extGet("https://marine-api.open-meteo.com/v1/marine?latitude=" + sp.lat + "&longitude=" + sp.lon + "&timezone=Europe%2FParis&forecast_days=1&hourly=sea_surface_temperature,wave_height")
+  ]).then(function(r){
+    S.mxBusy = null;
+    if (!r[0] && !r[1]) S.mxErrAt = Date.now();
+    else { S.mx = {key:key, at:Date.now(), air:r[0], sea:r[1]}; try { localStorage.setItem("meteoX", JSON.stringify(S.mx)); } catch(e){} }
+    if (S.view === "meteo") render();
+  });
+}
+function mxNowIdx(H){ var t = new Date(), k = iso(t) + "T" + pad(t.getHours()); var i = H.time.findIndex(function(x){ return x.slice(0, 13) === k; }); return i; }
+function mxNum(v){ return typeof v === "number" && isFinite(v) ? v : null; }
+function mxAir(a){
+  if (!a || !a.hourly || !a.hourly.time) return null;
+  var H = a.hourly, i = mxNowIdx(H), aqi = i >= 0 ? mxNum(H.european_aqi[i]) : null;
+  var pol = MX_POL.map(function(x){
+    var v = (H[x[0]] || []).filter(function(n){ return mxNum(n) !== null; }), avg = v.length ? v.reduce(function(s, n){ return s + n; }, 0) / v.length : 0;
+    var lv = -1; if (x[2]) x[2].forEach(function(th, k){ if (avg >= th) lv = k; });
+    return {n:x[1], avg:avg, lv:lv, olive:!x[2]};
+  }).filter(function(o){ return o.avg >= 1; }).sort(function(a, b){ return (b.lv - a.lv) || (b.avg - a.avg); });
+  if (aqi === null && !pol.length && !(H.european_aqi || []).some(function(n){ return mxNum(n) !== null; })) return null;
+  var q = aqi === null ? null : MX_AQI.filter(function(x){ return aqi <= x[0]; })[0];
+  var ptxt = !pol.length ? "Pollen : quasi absent" : "Pollen · " + pol.slice(0, 2).map(function(o){ return o.n + (o.olive ? " " + Math.round(o.avg) + " grains/m³" : " " + MX_LV[o.lv]); }).join(" · ");
+  return {q:q, aqi:aqi, ptxt:ptxt};
+}
+function mxSeaState(w){ return w < .1 ? "calme" : w < .5 ? "belle" : w < 1.25 ? "peu agitée" : w < 2.5 ? "agitée" : w < 4 ? "forte" : "très forte"; }
+function mxSea(s){
+  if (!s || !s.hourly || !s.hourly.time) return null;
+  var H = s.hourly, i = mxNowIdx(H); if (i < 0) return null;
+  var t = mxNum((H.sea_surface_temperature || [])[i]), w = mxNum((H.wave_height || [])[i]);
+  if (t === null && w === null) return null;
+  return {t:t, w:w};
+}
+function meteoXHTML(){
+  ensureMeteoX();
+  var m = S.mx && S.mx.key === mxKey() ? S.mx : null; if (!m) return "";
+  var A = mxAir(m.air), M = mxSea(m.sea); if (!A && !M) return "";
+  var out = '<div class="mx' + (A && M ? "" : " one") + '">';
+  if (A) out += '<div class="mx-c"><span class="mx-h">Air</span><b' + (A.q ? ' style="color:' + A.q[2] + '"' : "") + '>' + (A.q ? h(A.q[1]) : "—") + '</b><span class="mx-s">' + h(A.ptxt) + '</span></div>';
+  if (M) out += '<div class="mx-c"><span class="mx-h">Mer</span><b>' + (M.t !== null ? Math.round(M.t) + "°" : "—") + '</b><span class="mx-s">' + (M.w !== null ? "Vagues " + String(Math.round(M.w * 10) / 10).replace(".", ",") + " m · " + mxSeaState(M.w) : "Eau") + '</span></div>';
+  return out + '</div>';
+}
+/* jours fériés : API officielle (gardée 30 jours), sinon calcul local (Pâques, Ascension, Pentecôte + dates fixes) */
+function ferLocal(y){
+  var a = y % 19, b = Math.floor(y / 100), c = y % 100, d = Math.floor(b / 4), e = b % 4, f = Math.floor((b + 8) / 25), g = Math.floor((b - f + 1) / 3), hh = (19 * a + b - d - g + 15) % 30, i = Math.floor(c / 4), k = c % 4, l = (32 + 2 * e + 2 * i - hh - k) % 7, m = Math.floor((a + 11 * hh + 22 * l) / 451), mo = Math.floor((hh + l - 7 * m + 114) / 31), da = ((hh + l - 7 * m + 114) % 31) + 1;
+  var E = new Date(y, mo - 1, da), o = {};
+  [["01-01","1er janvier"],["05-01","1er mai"],["05-08","8 mai"],["07-14","14 juillet"],["08-15","Assomption"],["11-01","Toussaint"],["11-11","11 novembre"],["12-25","Jour de Noël"]].forEach(function(x){ o[y + "-" + x[0]] = x[1]; });
+  o[iso(addDays(E, 1))] = "Lundi de Pâques"; o[iso(addDays(E, 39))] = "Ascension"; o[iso(addDays(E, 50))] = "Lundi de Pentecôte";
+  return o;
+}
+var EXT = {fer:null, vs:null, busy:false, done:false};
+function ensureExtCal(){
+  if (EXT.done || EXT.busy) return; EXT.busy = true;
+  try { EXT.fer = JSON.parse(localStorage.getItem("mw-feries") || "null"); EXT.vs = JSON.parse(localStorage.getItem("mw-vacs") || "null"); } catch(e){}
+  var now = Date.now(), jobs = [];
+  if (!EXT.fer || now - EXT.fer.at > 30 * 864e5) jobs.push(extGet("https://calendrier.api.gouv.fr/jours-feries/metropole.json").then(function(d){
+    if (d && typeof d === "object" && Object.keys(d).length > 5){ EXT.fer = {at:Date.now(), d:d}; try { localStorage.setItem("mw-feries", JSON.stringify(EXT.fer)); } catch(e){} }
+  }));
+  if (!EXT.vs || now - EXT.vs.at > 7 * 864e5){
+    var since = iso(addDays(today(), -60)), base = "https://data.education.gouv.fr/api/explore/v2.1/catalog/datasets/fr-en-calendrier-scolaire/records?limit=60&order_by=start_date&where=";
+    var q = function(w){ return extGet(base + encodeURIComponent(w + " and end_date >= date'" + since + "'")); };
+    jobs.push(q('location="Nice"').then(function(d){ return d && d.results && d.results.length ? d : q('zones="Zone B"'); }).then(function(d){
+      if (!d || !d.results) return;
+      var seen = {}, l = [];
+      d.results.forEach(function(r){
+        if (!r.start_date || !r.end_date || /enseignant/i.test(r.population || "")) return;
+        var s = String(r.start_date).slice(0, 10), e = String(r.end_date).slice(0, 10), k = s + e; if (seen[k]) return; seen[k] = 1;
+        l.push({s:s, e:e, n:String(r.description || "Vacances scolaires")});
+      });
+      if (l.length){ EXT.vs = {at:Date.now(), l:l}; try { localStorage.setItem("mw-vacs", JSON.stringify(EXT.vs)); } catch(e){} }
+    }));
+  }
+  if (!jobs.length){ EXT.busy = false; EXT.done = true; return; }
+  Promise.all(jobs).then(function(){ EXT.busy = false; EXT.done = true; render(); });
+}
+function ferieOf(di){
+  var y = +di.slice(0, 4);
+  if (EXT.fer && EXT.fer.d && Object.keys(EXT.fer.d).some(function(k){ return k.slice(0, 4) === String(y); })) return EXT.fer.d[di] || "";
+  EXT.loc = EXT.loc || {}; if (!EXT.loc[y]) EXT.loc[y] = ferLocal(y);
+  return EXT.loc[y][di] || "";
+}
+/* vacances : on part après la classe du jour de début, la reprise se fait le matin du jour de fin → jours strictement entre les deux */
+function vsOf(di){ var l = EXT.vs && EXT.vs.l; if (!l) return ""; for (var i = 0; i < l.length; i++) if (di > l[i].s && di < l[i].e) return l[i].n; return ""; }
+/* éphéméride (Wikipédia en français), gardée par jour */
+function ephData(di){
+  var k = "mw-eph-" + di.slice(5);
+  try { var c = JSON.parse(localStorage.getItem(k) || "null"); if (c && c.l) return c.l; } catch(e){}
+  S.ephBusy = S.ephBusy || {};
+  if (!S.ephBusy[k] && !(S.ephErr && Date.now() - S.ephErr < 10 * 60000)){
+    S.ephBusy[k] = 1;
+    extGet("https://fr.wikipedia.org/api/rest_v1/feed/onthisday/selected/" + di.slice(5, 7) + "/" + di.slice(8, 10)).then(function(d){
+      var l = ((d && d.selected) || []).filter(function(x){ return x && x.text && x.year; }).slice(0, 40).map(function(x){
+        var p = (x.pages || [])[0] || {};
+        return {y:x.year, t:String(x.text), ti:(p.titles && p.titles.normalized) || p.title || "", ex:String(p.extract || ""), u:(p.content_urls && p.content_urls.mobile && p.content_urls.mobile.page) || (p.content_urls && p.content_urls.desktop && p.content_urls.desktop.page) || ""};
+      });
+      if (l.length){ try { localStorage.setItem(k, JSON.stringify({at:Date.now(), l:l})); } catch(e){} } else S.ephErr = Date.now();
+      delete S.ephBusy[k]; if (S.view === "gazette") render();
+    });
+  }
+  return null;
+}
+function ephPick(di){
+  var l = ephData(di); if (!l || !l.length) return null;
+  var d = parseISO(di), n = Math.floor((d - new Date(d.getFullYear(), 0, 1)) / 864e5) + d.getFullYear();
+  return l[n % l.length];
+}
+function ephHTML(di){
+  var e = ephPick(di); if (!e) return "";
+  var ago = +di.slice(0, 4) - e.y;
+  return '<button type="button" class="gz-eph" data-act="eph-open" data-d="' + h(di) + '"><span class="ey">Ce jour-là' + (ago > 0 ? " · il y a " + ago + " ans" : "") + '</span><span class="yr">' + h(String(e.y)) + '</span><span class="t">' + h(e.t) + '</span><span class="src">Wikipédia</span></button>';
+}
+function ephOpen(di){
+  var e = ephPick(di); if (!e) return;
+  if (!e.u){ toast(e.t); return; }
+  gzOpen(null, {tag:"Ce jour-là", big:String(e.y), title:e.ti || e.t, lead:e.t, more:e.ex, url:e.u, source:"Wikipédia"});
+}
 /* MyWorld_1.35 : aujourd'hui heure par heure (maquette B « courbe ») : de l'heure en cours à minuit, seulement sur la page Météo */
 var MT_HW = 58;
 function mtHours(d){
@@ -3725,9 +3882,11 @@ function viewMeteo(){
     return html + '</div>';
   }
   html += mtHoursHTML(d);
+  var mxh = meteoXHTML();
   html += '<div class="mt-parts">' + mtParts(d).map(function(o){
     return '<div class="mt-part"><span class="n">' + h(o.name) + '</span><span class="top"><b>' + mtRound(o.temp) + '</b>' + wIcon(o.code, o.day, 36) + '</span><span class="x">' + h(mtLabel(o.code)) + (o.prob >= 20 ? ' · <em>' + o.prob + ' %</em>' : "") + '</span></div>';
   }).join("") + '</div>';
+  html += mxh;
   var al = mtAlert(d);
   if (al) html += '<div class="mt-alert" role="note">' + wIcon(65, true, 26) + '<span>' + h(al) + '</span></div>';
   var D = d.daily, bad = -1;
@@ -3736,7 +3895,7 @@ function viewMeteo(){
     var i = k + 1, dd = parseISO(t);
     return '<div class="' + (i === bad ? "bad" : "") + '"><span>' + cap(JOURS[dd.getDay()]) + '</span>' + wIcon(D.weather_code[i], true, 26) + '<b>' + mtRound(D.temperature_2m_max[i]) + '</b><span>' + mtRound(D.temperature_2m_min[i]) + '</span>' + (D.precipitation_probability_max[i] >= 30 ? '<i>' + D.precipitation_probability_max[i] + ' %</i>' : '<i>&nbsp;</i>') + '</div>';
   }).join("") + '</div>';
-  html += '<p class="mt-credit">Données météo : <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo.com</a> · mise à jour ' + h(ago(new Date(S.meteo.at).toISOString())) + '</p>';
+  html += '<p class="mt-credit">Météo, air et mer : <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo.com</a>' + (mxh ? ' · Copernicus' : '') + ' · mise à jour ' + h(ago(new Date(S.meteo.at).toISOString())) + '</p>';
   return html + '</div>';
 }
 function meteoHero(date){
@@ -3876,6 +4035,7 @@ function viewGazette(){
     html += (ranked ? '<p class="gz-lbl">Tes ' + list.length + ' infos du jour</p>' : '') + '<div class="gz-list">' + list.map(function(g){ var c = gzCol(g.topic), rt = rates[g._id];
       return '<button type="button" class="gz-card' + (read.indexOf(g._id) >= 0 ? " read" : "") + '" data-act="gz-open" data-id="' + h(g._id) + '"><span class="gz-tp" style="color:' + c[1] + '">' + gzIcon(g.topic, 13) + h(g.topic || "") + (rt && !rt.imp ? '<i class="gz-rt r' + (rt.r < 0 ? 0 : rt.r + 1) + '" aria-label="Noté"></i>' : '') + '</span><span class="t">' + h(g.title) + '</span>' + (g.lead ? '<span class="l">' + h(g.lead) + '</span>' : "") + '<span class="meta">' + h(g.source || "") + (gzWhen(g) ? " · " + h(gzWhen(g)) : "") + '</span></button>'; }).join("") + '</div>';
   }
+  html += ephHTML(S.gzDay);
   html += '<button type="button" class="lt-add" data-act="settings" data-sec="news"><span class="lt-addi">' + LT_PLUS + '</span><span>Gérer mes sujets</span></button></div>';
   return html;
 }
@@ -5851,7 +6011,7 @@ function eventEditSheet(gid, did){
 }
 function monthHTML(){
   var t = today(), m0 = new Date(t.getFullYear(), t.getMonth() + S.monthOffset, 1), dim = new Date(m0.getFullYear(), m0.getMonth()+1, 0).getDate();
-  var key = monthKey(m0); ensureMonth(m0);
+  var key = monthKey(m0); ensureMonth(m0); ensureExtCal();
   if (!S.monthSel || S.monthSel.slice(0,7) !== key) S.monthSel = (monthKey(t) === key) ? iso(t) : iso(m0);
   var lead = (m0.getDay() + 6) % 7, cells = [], plan = hasPlanning();
   ["lun","mar","mer","jeu","ven","sam","dim"].forEach(function(d){ cells.push('<div class="h" aria-hidden="true">' + d + '</div>'); });
@@ -5860,7 +6020,7 @@ function monthHTML(){
   for (var d=1; d<=dim; d++){
     var dt = new Date(m0.getFullYear(), m0.getMonth(), d), di = iso(dt), evs = eventsOn(di);
     evs.forEach(function(e){ if (e.src === "bday" || /^anniversaire/i.test(e.title)) nBd++; else nEv++; });
-    var cls = "mcell" + (di === iso(t) ? " today" : "") + (di === S.monthSel ? " sel" : "") + (dt < t ? " past" : "");
+    var cls = "mcell" + (di === iso(t) ? " today" : "") + (di === S.monthSel ? " sel" : "") + (dt < t ? " past" : "") + (ferieOf(di) ? " fer" : "") + (vsOf(di) ? " vs" : "");
     cells.push('<button type="button" class="' + cls + '" data-act="mday" data-d="' + di + '" aria-pressed="' + (di === S.monthSel) + '" aria-label="' + h(fmtDay(dt) + (evs.length ? ", " + evs.length + " événement" + (evs.length>1?"s":"") : ", rien de prévu")) + '"><span class="mn">' + d + '</span>' + (plan ? '<span class="mh' + (vacOf(di) === "CP" ? " cp" : "") + '">' + vacShort(di) + '</span>' : '') + '<span class="dots" aria-hidden="true">' + evs.slice(0,3).map(function(e){ return '<i class="k-' + (CATS[e.cat] ? e.cat : "neutre") + '"' + (dt < t ? ' style="opacity:.55"' : "") + '></i>'; }).join("") + '</span></button>');
   }
   var sel = parseISO(S.monthSel), selEvs = eventsOn(S.monthSel), vsp = vacSpan(S.monthSel), vv = vacOf(S.monthSel);
@@ -5868,6 +6028,7 @@ function monthHTML(){
   else if (vv === "CP") selEvs = [{title:"Congé", cat:"boulot", src:"vac"}].concat(selEvs);
   var panel = '<div class="mpanel"><div class="wdate' + (S.monthSel === iso(t) ? " today" : "") + '"><small>' + JOURS[sel.getDay()].replace(".","") + '</small><b>' + sel.getDate() + '</b></div><div style="min-width:0">'
     + (S.monthLoading[key] ? '<p class="wfree">Je récupère ton agenda…</p>' : selEvs.length ? '<div class="wevs">' + selEvs.map(evCard).join("") + '</div>' : '<p class="wfree" style="padding-top:10px">Libre</p>')
+    + (ferieOf(S.monthSel) ? '<p class="m-fer">Jour férié · ' + h(ferieOf(S.monthSel)) + '</p>' : "") + (vsOf(S.monthSel) ? '<p class="m-vs">' + h(vsOf(S.monthSel)) + ' · zone B</p>' : "")
     + (S.monthErr[key] ? '<p class="notice" style="margin:8px 0 0">' + h(S.monthErr[key]) + '</p>' : "") + '</div></div>';
   return '<div class="row" style="justify-content:space-between"><button type="button" class="btn light" data-act="mprev" aria-label="Mois précédent">‹</button><h3 style="font-size:20px;font-weight:800;color:var(--ink);letter-spacing:-.01em">' + cap(MOIS[m0.getMonth()]) + ' ' + m0.getFullYear() + '</h3><button type="button" class="btn light" data-act="mnext" aria-label="Mois suivant">›</button></div>'
     + (nEv || nBd ? '<p class="msum"><span>' + (nEv ? nEv + " rendez-vous" : "") + (nEv && nBd ? "</span> ce mois · " : nEv ? "</span> ce mois" : "") + (nBd ? (nEv ? "" : "<span>") + nBd + " anniversaire" + (nBd > 1 ? "s" : "") + (nEv ? "" : "</span> ce mois") : "") + '</p>' : "")
@@ -6998,6 +7159,7 @@ document.addEventListener("click", function(e){
   var act = b.dataset.act, id = b.dataset.id;
   if (act === "close"){ closeSheet(); return; }
   if (act === "bd-new"){ bdayNewSheet(); return; }
+  if (act === "eph-open"){ ephOpen(b.dataset.d); return; }
   if (act === "bd-wheel"){ S.bdWheel = !S.bdWheel; S.bdSel = null; render(); return; }
   if (act === "bd-dot"){ S.bdSel = id; render(); return; }
   if (act === "bd-sync"){ bdSyncAll(true); return; }
