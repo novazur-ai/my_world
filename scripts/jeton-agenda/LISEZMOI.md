@@ -38,3 +38,29 @@ Le même script sert pour l'agenda et pour le sommeil : on garde la même adress
 
 ## C. Vérifier
 Ouvrir My World > page Sommeil : « Dernier envoi reçu » doit afficher l'heure de la synchro.
+
+# Clés d'API gratuites (MyWorld_1.50) : dictée Whisper, films, vidéos
+
+Les clés restent **dans le script** (propriétés du script), jamais dans le code de l'appli, qui est public sur GitHub.
+L'appli demande au script, qui vérifie ta session puis appelle le service.
+
+## A. Créer les clés (une fois)
+1. **Groq** (dictée Whisper) : https://console.groq.com → se connecter → « API Keys » → créer une clé → la copier.
+2. **TMDB** (films et séries) : créer un compte sur https://www.themoviedb.org → Paramètres du compte → « API »
+   → demander une clé (usage personnel, non commercial) → copier le **jeton d'accès en lecture** (long texte qui commence par « eyJ »)
+   ou la clé v3 : les deux marchent.
+3. **YouTube** (pour le projet Vidéos, peut attendre) : https://console.cloud.google.com → « API et services » → « Bibliothèque »
+   → « YouTube Data API v3 » → Activer → « Identifiants » → « Créer des identifiants » → « Clé API »
+   → la restreindre à « YouTube Data API v3 ».
+
+## B. Mettre le script à jour (ordinateur conseillé, 5 min)
+1. https://script.google.com, projet « My World – agenda ».
+2. Remplacer tout le contenu de `Code.gs` par celui de ce dossier. Enregistrer.
+3. Roue dentée (Paramètres du projet) → « Propriétés du script » → ajouter :
+   `GROQ_KEY` = clé Groq, `TMDB_KEY` = jeton ou clé TMDB, `YOUTUBE_KEY` = clé YouTube (plus tard si tu veux).
+   Ne pas toucher aux autres propriétés (SLEEP_KEY, nuits « n:… »).
+4. « Déployer » > « Gérer les déploiements » > crayon > Version : « Nouvelle version » > « Déployer ».
+   Jamais « Nouveau déploiement » (l'adresse changerait).
+
+## C. Vérifier
+Dans My World : Réglages › Ta voix › « Essai de la dictée Whisper ». En haut, Groq / TMDB / YouTube passent au vert.

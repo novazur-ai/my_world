@@ -172,6 +172,15 @@ function makeCal(email){
         return j && Array.isArray(j.nights) ? j : { old: true };
       } catch(e){ console.warn("[Sommeil] script injoignable :", e && e.message); return null; }
     },
+    /* MyWorld_1.50 : appels aux API à clé (dictée Whisper, TMDB, YouTube) par le script Google, qui garde les clés */
+    script: async (want, extra) => {
+      if (!AGENDA_TOKEN_URL) throw err("no_script");
+      if (!auth.currentUser) throw err("no_user");
+      if (!navigator.onLine) throw err("offline");
+      const idToken = await auth.currentUser.getIdToken();
+      const r = await fetch(AGENDA_TOKEN_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(Object.assign({}, extra || {}, { idToken, want })) });
+      return JSON.parse(await r.text());
+    },
     hasToken: () => !!readTok(),
     hasConsented: () => !!localStorage.getItem("gcalConsented"),
     disconnect: () => {

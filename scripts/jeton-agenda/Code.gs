@@ -2,7 +2,10 @@
    1. Agenda : renouvelle l'accès à Google Agenda en arrière-plan (il vérifie d'abord que la demande vient de ta session dans l'appli).
    2. Sommeil (MyWorld_1.8) : reçoit tes nuits envoyées par HC Webhook depuis ton téléphone, les garde ici,
       et les donne à My World quand l'appli les demande (même vérification de session).
-      HC Webhook appelle l'adresse du script suivie de ?k=<clé secrète> (Apps Script ne lit pas les en-têtes personnalisés). */
+      HC Webhook appelle l'adresse du script suivie de ?k=<clé secrète> (Apps Script ne lit pas les en-têtes personnalisés).
+   3. Clés d'API gratuites (MyWorld_1.50) : gardées ICI, dans les propriétés du script (jamais dans le code public de l'appli).
+      GROQ_KEY = dictée Whisper (Groq), TMDB_KEY = films et séries (TMDB), YOUTUBE_KEY = infos des vidéos YouTube.
+      L'appli demande « voix », « tmdb » ou « youtube » ; le script vérifie ta session puis appelle le service avec la clé. */
 const ALLOWED_EMAIL = "t.mallet06@gmail.com";
 const FIREBASE_API_KEY = "AIzaSyBgYrV_-hMre0i_0IBGU70yAopTrFIXK0E"; // clé publique Firebase, déjà visible dans firebase-config.js
 const NIGHTS_KEEP = 200; // nuits gardées dans le script (My World les recopie dans ta base)
@@ -17,6 +20,13 @@ function doPost(e) {
       const p = PropertiesService.getScriptProperties();
       out = { nights: lireNuits_(body.since || ""), seen: p.getProperty("SLEEP_SEEN") || "", test: p.getProperty("SLEEP_TEST") || "", key: !!p.getProperty("SLEEP_KEY") };
     }
+    else if (body.want === "cles") {
+      const p = PropertiesService.getScriptProperties();
+      out = { groq: !!p.getProperty("GROQ_KEY"), tmdb: !!p.getProperty("TMDB_KEY"), youtube: !!p.getProperty("YOUTUBE_KEY"), v: 150 };
+    }
+    else if (body.want === "voix") out = transcrire_(body);
+    else if (body.want === "tmdb") out = tmdb_(body);
+    else if (body.want === "youtube") out = youtube_(body);
     else out = { token: ScriptApp.getOAuthToken() };
   } catch (err) {
     out = { error: "bad_request" };
@@ -29,6 +39,15 @@ function doGet() { return json_({ ok: true, app: "My World" }); }
 
 function sessionOk_(idToken) {
   if (!idToken) return false;
+  /* session déjà vérifiée il y a moins de 10 min : on gagne un aller-retour (la dictée doit être rapide) */
+  const ck = "s:" + Utilities.base64EncodeWebSafe(Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, idToken)).slice(0, 40);
+  const cache = CacheService.getScriptCache();
+  if (cache.get(ck) === "1") return true;
+  const ok = sessionCheck_(idToken);
+  if (ok) cache.put(ck, "1", 600);
+  return ok;
+}
+function sessionCheck_(idToken) {
   const r = UrlFetchApp.fetch("https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=" + FIREBASE_API_KEY, {
     method: "post", contentType: "application/json", payload: JSON.stringify({ idToken: idToken }),
     headers: { Referer: "https://novazur-ai.github.io/" }, muteHttpExceptions: true
@@ -81,6 +100,63 @@ function lireNuits_(since) {
     try { const v = JSON.parse(all[k]); if (!since || v.up > since) { v.id = k.slice(2).replace(/:/g, "-"); out.push(v); } } catch (err) {}
   });
   return out.sort(function (a, b) { return a.s < b.s ? -1 : 1; });
+}
+
+/* ---------- MyWorld_1.50 : dictée Whisper (Groq), films (TMDB), vidéos (YouTube) ---------- */
+function cle_(nom) { return PropertiesService.getScriptProperties().getProperty(nom) || ""; }
+
+/* body.audio = son en base64, body.mime = type (audio/webm…), body.prompt = mots à bien reconnaître (facultatif) */
+function transcrire_(body) {
+  const key = cle_("GROQ_KEY");
+  if (!key) return { error: "no_key" };
+  if (!body.audio) return { error: "no_audio" };
+  const t0 = Date.now();
+  const mime = String(body.mime || "audio/webm").split(";")[0];
+  const ext = mime.indexOf("mp4") >= 0 ? "m4a" : mime.indexOf("ogg") >= 0 ? "ogg" : mime.indexOf("wav") >= 0 ? "wav" : "webm";
+  const blob = Utilities.newBlob(Utilities.base64Decode(body.audio), mime, "voix." + ext);
+  const form = { file: blob, model: body.model === "turbo" ? "whisper-large-v3-turbo" : "whisper-large-v3", language: "fr", response_format: "json", temperature: "0" };
+  if (body.prompt) form.prompt = String(body.prompt).slice(0, 800);
+  const r = UrlFetchApp.fetch("https://api.groq.com/openai/v1/audio/transcriptions", {
+    method: "post", headers: { Authorization: "Bearer " + key }, payload: form, muteHttpExceptions: true
+  });
+  const code = r.getResponseCode();
+  let j = {};
+  try { j = JSON.parse(r.getContentText()); } catch (err) {}
+  if (code !== 200) return { error: code === 429 ? "quota" : "groq_" + code, detail: (j.error && j.error.message) || "" };
+  return { text: String(j.text || "").trim(), ms: Date.now() - t0 };
+}
+
+/* body.path : seulement les chemins utiles (recherche, fiche, où regarder) ; body.q : recherche */
+function tmdb_(body) {
+  const key = cle_("TMDB_KEY");
+  if (!key) return { error: "no_key" };
+  const path = String(body.path || "");
+  if (!/^(search\/multi|search\/movie|search\/tv|(movie|tv)\/\d+(\/watch\/providers)?)$/.test(path)) return { error: "bad_path" };
+  const qs = { language: "fr-FR", region: "FR", include_adult: "false" };
+  if (body.q) qs.query = String(body.q).slice(0, 120);
+  if (body.year) qs.year = String(body.year).slice(0, 4);
+  if (/^(movie|tv)\/\d+$/.test(path)) qs.append_to_response = "watch/providers";
+  const headers = {};
+  if (key.indexOf("eyJ") === 0) headers.Authorization = "Bearer " + key; else qs.api_key = key;   /* jeton v4 ou clé v3 */
+  const url = "https://api.themoviedb.org/3/" + path + "?" + Object.keys(qs).map(function (k) { return k + "=" + encodeURIComponent(qs[k]); }).join("&");
+  const r = UrlFetchApp.fetch(url, { headers: headers, muteHttpExceptions: true });
+  if (r.getResponseCode() !== 200) return { error: "tmdb_" + r.getResponseCode() };
+  return { data: JSON.parse(r.getContentText()) };
+}
+
+/* body.ids : identifiants de vidéos YouTube (50 au plus) → titre, chaîne, durée, vignette */
+function youtube_(body) {
+  const key = cle_("YOUTUBE_KEY");
+  if (!key) return { error: "no_key" };
+  const ids = (body.ids || []).map(String).filter(function (x) { return /^[\w-]{6,20}$/.test(x); }).slice(0, 50);
+  if (!ids.length) return { items: [] };
+  const r = UrlFetchApp.fetch("https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails&id=" + ids.join(",") + "&key=" + key, { muteHttpExceptions: true });
+  if (r.getResponseCode() !== 200) return { error: "youtube_" + r.getResponseCode() };
+  const j = JSON.parse(r.getContentText());
+  return { items: (j.items || []).map(function (v) {
+    const sn = v.snippet || {}, th = sn.thumbnails || {};
+    return { id: v.id, title: sn.title || "", channel: sn.channelTitle || "", dur: (v.contentDetails || {}).duration || "", thumb: ((th.high || th.medium || th.default) || {}).url || "" };
+  }) };
 }
 
 function json_(o) { return ContentService.createTextOutput(JSON.stringify(o)).setMimeType(ContentService.MimeType.JSON); }

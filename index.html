@@ -1394,6 +1394,22 @@ body.fan-on nav.tabs a,body.fan-on .nav-add{opacity:.35;pointer-events:none;tran
 .gz-eph .yr{font-size:26px;font-weight:900;color:#5C4210;line-height:1.05}
 .gz-eph .t{font-size:14.5px;font-weight:700;color:#3B3426;line-height:1.4}
 .gz-eph .src{font-size:11px;font-weight:800;color:#A08A5C}
+/* MyWorld_1.50 : essai de la dictée Whisper + recherche TMDB */
+.lab-open{margin-top:12px;width:100%}
+.lab-keys{display:flex;gap:6px;flex-wrap:wrap;margin:2px 0 8px}.lab-k{font-size:12px;font-weight:800;padding:4px 10px;border-radius:999px;background:#FFEBD9;color:#A34A16}.lab-k.on{background:#E4F4E8;color:#2F7440}
+.lab-err{margin:4px 0 8px;font-size:13px;font-weight:800;color:#A8402F}
+.lab-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0 8px}
+.lab-mic{min-height:76px;border:0;border-radius:18px;background:#0B4F7C;color:#fff;font:inherit;font-weight:900;font-size:15px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;cursor:pointer}
+.lab-mic small{font-size:11.5px;font-weight:700;opacity:.8}.lab-mic.two{background:#33449A}.lab-mic.on{background:#D63A2C;transform:scale(.97)}
+.lab-tg{display:flex;gap:8px;align-items:center;font-size:13px;font-weight:700;color:#5B6B7C;margin:2px 0 8px}
+.lab-live{font-size:13px;font-weight:800;color:#D63A2C;margin:6px 0}
+.lab-r{border:1px solid #E6ECF2;border-radius:14px;padding:10px 12px;margin:8px 0;background:#fff}.lab-rh{font-size:11px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:#6B7785;margin-bottom:4px}
+.lab-r p{margin:3px 0;font-size:14px;line-height:1.4}.lab-r b{display:inline-block;min-width:70px;color:#0B4F7C}.lab-r i{color:#A34A16}.lab-r .lab-t{font-size:12px;color:#6B7785;font-weight:700}
+.lab-h{margin:18px 0 6px;font-size:15px}
+.lab-f{display:grid;grid-template-columns:1fr auto;gap:8px}.lab-f input{min-width:0;height:44px;border:1.5px solid #D5DEE7;border-radius:12px;padding:0 12px;font:inherit}
+.lab-film{display:grid;grid-template-columns:46px 1fr;gap:10px;align-items:start;padding:8px 0;border-bottom:1px solid #EEF2F6}.lab-film img,.lab-noimg{width:46px;height:69px;border-radius:6px;object-fit:cover;background:#E6ECF2;display:block}
+.lab-film b{display:block;font-size:14.5px}.lab-film small{display:block;font-size:12px;color:#6B7785;line-height:1.35}
+.lab-tmdb{font-size:11px;color:#85858F;margin:8px 0 0}
 #gzPop{position:fixed;inset:0;z-index:45}
 #gzPop .gz-veil{position:absolute;inset:0;background:rgba(10,30,50,.35);opacity:0;transition:opacity .2s}
 #gzPop .gz-pop{position:absolute;left:0;right:0;bottom:0;max-width:640px;margin:0 auto;background:#fff;border-radius:26px 26px 0 0;box-shadow:0 -14px 40px rgba(10,30,50,.22);padding:10px 20px calc(24px + env(safe-area-inset-bottom,0px));max-height:82vh;overflow:auto;overscroll-behavior:contain;transform:translateY(100%);transition:transform .28s cubic-bezier(.16,1,.3,1)}
@@ -2808,10 +2824,11 @@ var DECO = (function(){
 
 </script>
 <script>
-var APP_VERSION = "MyWorld_1.49";
+var APP_VERSION = "MyWorld_1.50";
 /* MyWorld_1.33 : nouveautés affichées dans les Réglages. À CHAQUE VERSION (appli ou jeu) : ajouter une entrée EN TÊTE,
    {v: numéro, d: date AAAA-MM-JJ, t: titre court, l: 1 à 3 phrases simples, sans jargon}. */
 var MW_NEWS = [
+  {"v": "1.50", "d": "2026-11-23", "t": "Essai de la dictée Whisper", "l": ["Réglages › Ta voix › « Essai de la dictée Whisper » : compare la dictée Google et Whisper (IA open source), avec le temps de réponse.", "La même page teste la recherche de films pour la note Films.", "Les clés d'API restent dans ton script Google, jamais dans l'appli."]},
   {"v": "1.49", "d": "2026-11-23", "t": "Air, mer, jours fériés et « Ce jour-là »", "l": ["Page Météo : qualité de l'air, pollen du jour, température de la mer et vagues.", "Les jours fériés apparaissent dans la semaine, le mois et le programme du jour ; les vacances scolaires (zone B) sont soulignées très discrètement.", "Dans les News : un événement « Ce jour-là » tiré de Wikipédia, à ouvrir d'un toucher."]},
   {"v": "1.48", "d": "2026-11-18", "t": "Page Anniversaires", "l": ["Nouvelle fleur « Anniversaires » dans le lanceur : le prochain anniversaire en grand, puis tous les autres par période.", "« Voir l'année » affiche la roue de l'année ; « Ajouter » en haut à droite.", "Les anniversaires qui n'étaient pas encore dans ton Google Agenda y sont ajoutés tout seuls, sans doublon."]},
   {"v": "1.47", "d": "2026-11-18", "t": "Chiffre du jour : l'article d'un appui long", "l": ["Dans les News, un toucher sur le chiffre du jour passe toujours au suivant.", "Un appui long ouvre l'article d'où vient le chiffre, dans la fenêtre des News, sans quitter l'app.", "Les chiffres des prochains jours garderont aussi le titre, le résumé et les phrases clés de leur article."]},
@@ -5865,6 +5882,103 @@ function vxHeroHTML(){
     + '<div class="vx-chs" role="group" aria-label="Thème de la série">' + chips + '</div>'
     + '<button type="button" class="vx-go" data-act="vx-go" data-th="' + th + '">' + vxIc("mic", 20) + 'Lancer une série de 10</button></div>';
 }
+/* ===== MyWorld_1.50 : « Essai de la dictée Whisper » (Réglages › Ta voix) : page de test avant de changer le bouton +.
+   Compare la dictée Google du téléphone et Whisper (Groq, IA open source) appelé par le script Google qui garde la clé.
+   Teste aussi la recherche de films (TMDB) pour la note Films. Rien n'est enregistré. ===== */
+var LAB = {rec:null, chunks:[], t0:0, sr:null, srTxt:"", srErr:"", mode:"", busy:false, res:[], keys:null};
+var LAB_PROMPT = "Dictée pour My World : à faire, rendez-vous, rdv, rappel, rappelle-moi, anniv, minuteur, courses, note, Cagnes-sur-Mer, Nice, Forpharos, vacation.";
+function labOpen(){
+  LAB.res = []; LAB.keys = null;
+  openSheet("Essai de la dictée Whisper", '<div id="labBody">' + labHTML() + '</div>', function(){ labKeys(); });
+}
+function labRedraw(){ var b = document.getElementById("labBody"); if (b) b.innerHTML = labHTML(); }
+function labKeys(){
+  if (!mcp || !mcp.script){ LAB.keys = {err:"L'appli n'a pas encore le lien vers le script."}; labRedraw(); return; }
+  mcp.script("cles").then(function(j){ LAB.keys = j && j.v ? j : {err:"Le script Google n'est pas encore à jour (nouvelle version à déployer)."}; labRedraw(); })
+    .catch(function(){ LAB.keys = {err:"Script injoignable (connexion ?)."}; labRedraw(); });
+}
+function labHTML(){
+  var K = LAB.keys, ok = function(b, n){ return '<span class="lab-k ' + (b ? "on" : "") + '">' + (b ? "✓ " : "✗ ") + n + '</span>'; };
+  var st = !K ? '<p class="rg-hint">Je vérifie le script…</p>' : K.err ? '<p class="lab-err">' + h(K.err) + '</p>' : '<div class="lab-keys">' + ok(K.groq, "Groq") + ok(K.tmdb, "TMDB") + ok(K.youtube, "YouTube") + '</div>';
+  var res = LAB.res.map(function(r){
+    return '<div class="lab-r"><div class="lab-rh">' + h(r.mode) + ' · ' + h(r.dur) + '</div>'
+      + (r.g !== undefined ? '<p><b>Google</b> ' + (r.g ? "« " + h(r.g) + " »" : '<i>' + h(r.gErr || "rien") + '</i>') + '</p>' : "")
+      + '<p><b>Whisper</b> ' + (r.w ? "« " + h(r.w) + " »" : '<i>' + h(r.wErr || "…") + '</i>') + '</p>'
+      + (r.t ? '<p class="lab-t">' + h(r.t) + '</p>' : "") + '</div>';
+  }).join("");
+  return st
+    + '<p class="rg-hint">Maintiens un bouton, dis une phrase, relâche. Rien n\'est créé ni enregistré : on compare seulement ce qui est compris.</p>'
+    + '<div class="lab-btns"><button type="button" class="lab-mic' + (LAB.mode === "w" ? " on" : "") + '" data-lab="w">Whisper seul<small>maintenir pour parler</small></button><button type="button" class="lab-mic two' + (LAB.mode === "2" ? " on" : "") + '" data-lab="2">Google + Whisper<small>les deux en même temps</small></button></div>'
+    + '<label class="lab-tg"><input type="checkbox" id="labTurbo"' + (LAB.turbo ? " checked" : "") + '> Modèle « turbo » (plus rapide, un peu moins précis)</label>'
+    + (LAB.mode ? '<p class="lab-live" aria-live="polite">' + (LAB.mode === "send" ? "J'envoie à Whisper…" : "J'écoute… relâche pour envoyer" + (LAB.srTxt ? " · Google : « " + h(LAB.srTxt) + " »" : "")) + '</p>' : "")
+    + res
+    + '<h4 class="lab-h">Films (TMDB)</h4><div class="lab-f"><input id="labQ" type="search" placeholder="Un titre, ex. Dune" autocomplete="off"><button type="button" class="btn light" data-lab="tmdb">Chercher</button></div><div id="labFilms">' + (LAB.films || "") + '</div>';
+}
+function labB64(blob){ return new Promise(function(res){ var fr = new FileReader(); fr.onload = function(){ res(String(fr.result).split(",")[1] || ""); }; fr.readAsDataURL(blob); }); }
+function labStart(mode){
+  if (LAB.busy) return;
+  if (!navigator.mediaDevices || !window.MediaRecorder){ toast("Ce navigateur ne sait pas enregistrer le son."); return; }
+  LAB.busy = true; LAB.mode = mode; LAB.srTxt = ""; LAB.srErr = ""; LAB.stopAsked = false; labRedraw();
+  var go = function(stream){
+    LAB.stream = stream; LAB.chunks = [];
+    var rec; try { rec = new MediaRecorder(stream); } catch(e){ rec = null; }
+    if (!rec){ LAB.busy = false; LAB.mode = ""; toast("Enregistrement impossible."); labRedraw(); return; }
+    LAB.rec = rec; rec.ondataavailable = function(e){ if (e.data && e.data.size) LAB.chunks.push(e.data); };
+    rec.onstop = labSend; rec.start(); LAB.t0 = Date.now();
+    if (mode === "2"){
+      var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (SR){ try { var r = new SR(); r.lang = "fr-FR"; r.interimResults = true; r.continuous = true;
+        r.onresult = function(ev){ var t = ""; for (var i = 0; i < ev.results.length; i++) t += ev.results[i][0].transcript; LAB.srTxt = t.trim(); var lv = document.querySelector(".lab-live"); if (lv) lv.textContent = "J'écoute… · Google : « " + LAB.srTxt + " »"; };
+        r.onerror = function(ev){ LAB.srErr = "erreur Google : " + (ev.error || "?"); };
+        r.start(); LAB.sr = r; } catch(e){ LAB.srErr = "Google n'a pas démarré"; } }
+      else LAB.srErr = "pas de dictée Google ici";
+    }
+    if (LAB.stopAsked) labStop();
+  };
+  navigator.mediaDevices.getUserMedia({audio:true}).then(go).catch(function(){ LAB.busy = false; LAB.mode = ""; toast("Micro refusé : autorise le micro pour My World."); labRedraw(); });
+}
+function labStop(){
+  if (!LAB.rec){ LAB.stopAsked = true; return; }
+  if (LAB.rec.state === "recording"){ LAB.dur = Date.now() - LAB.t0; LAB.rec.stop(); }
+  if (LAB.sr){ try { LAB.sr.stop(); } catch(e){} }
+}
+function labSend(){
+  var mode = LAB.mode, dur = LAB.dur || 0, chunks = LAB.chunks, mime = (LAB.rec && LAB.rec.mimeType) || "audio/webm";
+  if (LAB.stream) LAB.stream.getTracks().forEach(function(t){ t.stop(); });
+  LAB.rec = null; LAB.stream = null;
+  var turbo = !!(document.getElementById("labTurbo") || {}).checked; LAB.turbo = turbo;
+  var r = {mode: mode === "2" ? "Google + Whisper" : "Whisper seul", dur: (Math.round(dur / 100) / 10).toString().replace(".", ",") + " s de parole"};
+  setTimeout(function(){
+    if (mode === "2"){ r.g = LAB.srTxt; r.gErr = LAB.srErr; }
+    LAB.sr = null; LAB.mode = "send"; labRedraw();
+    var blob = new Blob(chunks, {type: mime}), t1 = Date.now();
+    if (blob.size < 800){ r.wErr = "son vide : le micro n'a rien enregistré" + (mode === "2" ? " (sans doute pris par la dictée Google)" : ""); LAB.res.unshift(r); LAB.busy = false; LAB.mode = ""; labRedraw(); return; }
+    labB64(blob).then(function(b64){
+      return mcp.script("voix", {audio:b64, mime:mime, prompt:LAB_PROMPT, model: turbo ? "turbo" : ""});
+    }).then(function(j){
+      if (j && j.text !== undefined){ r.w = j.text; r.t = "Texte reçu " + ((Date.now() - t1) / 1000).toFixed(1).replace(".", ",") + " s après le relâcher · Groq vu du script : " + ((j.ms || 0) / 1000).toFixed(1).replace(".", ",") + " s · " + Math.round(blob.size / 1024) + " Ko" + (turbo ? " · turbo" : ""); }
+      else r.wErr = j && j.error === "no_key" ? "clé Groq absente du script" : j && j.error === "quota" ? "quota Groq atteint" : "erreur : " + ((j && (j.detail || j.error)) || "?");
+    }).catch(function(){ r.wErr = "script injoignable"; }).then(function(){ LAB.res.unshift(r); LAB.busy = false; LAB.mode = ""; labRedraw(); });
+  }, mode === "2" ? 500 : 0);
+}
+function labTmdb(){
+  var q = ((document.getElementById("labQ") || {}).value || "").trim(); if (!q) return;
+  LAB.films = '<p class="rg-hint">Je cherche…</p>'; labRedraw(); document.getElementById("labQ").value = q;
+  mcp.script("tmdb", {path:"search/multi", q:q}).then(function(j){
+    if (!j || !j.data){ LAB.films = '<p class="lab-err">' + h(j && j.error === "no_key" ? "Clé TMDB absente du script." : "Erreur : " + ((j && j.error) || "?")) + '</p>'; return; }
+    var L = (j.data.results || []).filter(function(x){ return x.media_type === "movie" || x.media_type === "tv"; }).slice(0, 4);
+    if (!L.length){ LAB.films = '<p class="rg-hint">Rien trouvé.</p>'; return; }
+    LAB.films = L.map(function(x){
+      var y = (x.release_date || x.first_air_date || "").slice(0, 4);
+      return '<div class="lab-film">' + (x.poster_path ? '<img src="https://image.tmdb.org/t/p/w92' + h(x.poster_path) + '" alt="" loading="lazy">' : '<span class="lab-noimg"></span>') + '<span><b>' + h(x.title || x.name || "") + '</b><small>' + (x.media_type === "tv" ? "Série" : "Film") + (y ? " · " + y : "") + '</small><small>' + h(String(x.overview || "").slice(0, 120)) + (String(x.overview || "").length > 120 ? "…" : "") + '</small></span></div>';
+    }).join("") + '<p class="lab-tmdb">Données : TMDB. Ce produit utilise l\'API TMDB mais n\'est ni approuvé ni certifié par TMDB.</p>';
+  }).catch(function(){ LAB.films = '<p class="lab-err">Script injoignable.</p>'; }).then(function(){ var q0 = (document.getElementById("labQ") || {}).value; labRedraw(); var qi = document.getElementById("labQ"); if (qi) qi.value = q0 || q; });
+}
+document.addEventListener("pointerdown", function(e){ var b = e.target.closest && e.target.closest(".lab-mic"); if (!b) return; e.preventDefault(); if (LAB.busy) return; LAB.pressed = true; labStart(b.dataset.lab); });
+["pointerup","pointercancel"].forEach(function(n){ document.addEventListener(n, function(){ if (!LAB.pressed) return; LAB.pressed = false; labStop(); }); });
+document.addEventListener("contextmenu", function(e){ if (e.target.closest && e.target.closest(".lab-mic")) e.preventDefault(); });
+document.addEventListener("click", function(e){ var b = e.target.closest && e.target.closest('[data-lab="tmdb"]'); if (b) labTmdb(); });
+document.addEventListener("keydown", function(e){ if (e.key === "Enter" && e.target && e.target.id === "labQ"){ e.preventDefault(); labTmdb(); } });
 function vxSettingsHTML(){
   var V = vxData();
   var rows = V.rules.map(function(r, i){ return {r:r, i:i}; }).reverse().map(function(o){
@@ -5873,7 +5987,8 @@ function vxSettingsHTML(){
   return '<div class="rg-tgl"><span>Micro automatique<small>Le micro s\'allume tout seul à chaque phrase</small></span><button type="button" class="vx-tg" data-act="vx-auto" role="switch" aria-checked="' + !!V.auto + '" aria-label="Micro automatique"></button></div>'
     + '<p class="rg-hint" style="margin-top:12px">Ce que l\'app a appris de ta voix : ces corrections s\'appliquent seulement à ce que tu dis au bouton +.</p>'
     + (rows || '<p class="rg-hint">Rien pour l\'instant. Lance une série : quand un mot est mal entendu, « Retenir la correction » l\'ajoute ici.</p>')
-    + '<p class="rg-hint" style="margin-top:12px">' + h(S.vxDiag || "") + '</p>';
+    + '<p class="rg-hint" style="margin-top:12px">' + h(S.vxDiag || "") + '</p>'
+    + '<button type="button" class="btn light lab-open" data-act="lab-open">Essai de la dictée Whisper</button>';
 }
 function vxSum(){ var V = vxData(), n = V.rules.length; return (n ? n + " correction" + (n > 1 ? "s" : "") : "Aucune correction") + " · micro " + (V.auto ? "auto" : "au toucher"); }
 /* liste de mots favoris (Chrome) : seulement avec la reconnaissance sur le téléphone ; ici on regarde juste si c'est possible */
@@ -7159,6 +7274,7 @@ document.addEventListener("click", function(e){
   var act = b.dataset.act, id = b.dataset.id;
   if (act === "close"){ closeSheet(); return; }
   if (act === "bd-new"){ bdayNewSheet(); return; }
+  if (act === "lab-open"){ labOpen(); return; }
   if (act === "eph-open"){ ephOpen(b.dataset.d); return; }
   if (act === "bd-wheel"){ S.bdWheel = !S.bdWheel; S.bdSel = null; render(); return; }
   if (act === "bd-dot"){ S.bdSel = id; render(); return; }
