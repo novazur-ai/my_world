@@ -22,7 +22,7 @@ function doPost(e) {
     }
     else if (body.want === "cles") {
       const p = PropertiesService.getScriptProperties();
-      out = { groq: !!p.getProperty("GROQ_KEY"), tmdb: !!p.getProperty("TMDB_KEY"), youtube: !!p.getProperty("YOUTUBE_KEY"), v: 152 };
+      out = { groq: !!p.getProperty("GROQ_KEY"), tmdb: !!p.getProperty("TMDB_KEY"), youtube: !!p.getProperty("YOUTUBE_KEY"), v: 153 };
     }
     else if (body.want === "voix") out = transcrire_(body);
     else if (body.want === "tmdb") out = tmdb_(body);
@@ -195,7 +195,29 @@ function lien_(body) {
     let j = null; try { j = JSON.parse(t); } catch (e) {}
     oe = { status: o.getResponseCode(), keys: j ? Object.keys(j) : [], title: j && j.title || "", thumb: j && j.thumbnail_url || "", author: j && j.author_name || "", error: j && j.error ? (j.error.message || "").slice(0, 200) : (j ? "" : t.slice(0, 200)) };
   } catch (e) { oe = { status: 0, error: String(e).slice(0, 200) }; }
-  return { final: url, chain: chain, status: code, size: html.length, og: og, oembed: oe };
+  /* 1.53 : vignette et texte depuis la page d'intégration (faite pour être affichée ailleurs, sans connexion) */
+  let emb = null;
+  try {
+    const src = String(body.url || ""), href = String(body.href || "");
+    let eu = "";
+    const ig = src.match(/instagram\.com\/(?:[\w.]+\/)?(reels?|p|tv)\/([\w-]+)/i);
+    if (ig) eu = "https://www.instagram.com/" + (/^reels?$/i.test(ig[1]) ? "reel" : ig[1].toLowerCase()) + "/" + ig[2] + "/embed/captioned/";
+    else if (/facebook\.com\/(reel|reels|watch|[\w.]+\/videos)\b/i.test(href || src)) eu = "https://www.facebook.com/plugins/video.php?show_text=true&width=340&href=" + encodeURIComponent(href || src);
+    if (eu) {
+      const e = UrlFetchApp.fetch(eu, { muteHttpExceptions: true, followRedirects: true, headers: { "User-Agent": UA, "Accept-Language": "fr-FR,fr;q=0.9" } });
+      const t = String(e.getContentText()).slice(0, 600000);
+      const pick = function (re) { const m = t.match(re); return m ? dec(m[1]) : ""; };
+      let img = pick(/class=["'][^"']*EmbeddedMediaImage[^"']*["'][^>]*src=["']([^"']+)/i) || pick(/<img[^>]+src=["']([^"']+)["'][^>]*class=["'][^"']*EmbeddedMediaImage/i)
+        || pick(/<img[^>]+src=["'](https:\/\/(?:scontent|[\w.-]*fbcdn|[\w.-]*cdninstagram)[^"']+)["']/i) || pick(/"(?:poster|thumbnail_url|preferred_thumbnail)"\s*:\s*\{?[^}]*?"?(?:uri|url)?"?\s*:?\s*"(https:[^"]+)"/i);
+      img = img.replace(/\\\//g, "/");
+      const cap = pick(/class=["']Caption["'][^>]*>([\s\S]{0,600}?)<\/div>/i).replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim().slice(0, 200);
+      const who = pick(/class=["']UsernameText["'][^>]*>([^<]{1,60})</i) || pick(/class=["'][^"']*(?:_2_79|author)[^"']*["'][^>]*>([^<]{1,60})</i);
+      let imgOk = 0, imgKo = 0;
+      if (img) { try { const ir = UrlFetchApp.fetch(img, { muteHttpExceptions: true }); imgOk = ir.getResponseCode(); imgKo = ir.getBlob().getBytes().length; } catch (x) { imgOk = -1; } }
+      emb = { url: eu, status: e.getResponseCode(), size: t.length, image: img, imageStatus: imgOk, imageBytes: imgKo, caption: cap, author: who, login: /\/login|accounts\/login/i.test(t.slice(0, 5000)) };
+    }
+  } catch (x) { emb = { error: String(x).slice(0, 200) }; }
+  return { final: url, chain: chain, status: code, size: html.length, og: og, oembed: oe, embed: emb };
 }
 
 function json_(o) { return ContentService.createTextOutput(JSON.stringify(o)).setMimeType(ContentService.MimeType.JSON); }

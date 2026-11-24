@@ -68,5 +68,5 @@ Dans My World : Réglages › Ta voix › « Essai de la dictée Whisper ». En 
 MyWorld_1.51 (note Films) : le script renvoie aussi la bande-annonce des films. Si tu as collé `Code.gs` avant la 1.51,
 recolle-le et refais « Nouvelle version » (étape B.2 et B.4) ; sinon tout marche, sauf le bouton « Bande-annonce ».
 
-MyWorld_1.52 (Vidéos à deux, page de test) : nouvelle demande `lien` (suit les liens courts Facebook, lit le titre et l'image
+MyWorld_1.52-1.53 (Vidéos à deux, page de test) : demande `lien` (1.53 : essaie aussi la page d'intégration Instagram / Facebook pour la vignette) (suit les liens courts Facebook, lit le titre et l'image
 de la page, essaie oEmbed). Aucune clé à ajouter : il suffit d'avoir collé le `Code.gs` de la 1.52 et fait « Nouvelle version ».

@@ -187,11 +187,13 @@ async function run(raw){
   const oe = await oeDirect(v, v.url);
   c.querySelector(".oe").innerHTML = '<div class="st ' + oe.cls + '"><i>' + (oe.cls === "ok" ? "✓" : "✗") + '</i><span>' + h(oe.txt) + '</span></div>' + (oe.thumb ? '<img class="thumb" src="' + h(oe.thumb) + '" alt="">' : "");
   log("[" + n + "] oEmbed direct : " + oe.txt);
+  let resolved = null;
   if (oe.html){
     log("[" + n + "] Code d'intégration (début) : " + oe.html.replace(/\s+/g, " ").slice(0, 400));
     const L = oeLinks(oe.html), hit = L.map(vidParse).find((x) => x && x.p === v.p && x.id);
     log("[" + n + "] Adresses dans le code : " + (L.length ? L.join(" | ") : "aucune"));
     const box = c.querySelector(".oe");
+    if (hit) resolved = hit;
     if (hit && !v.id){
       box.insertAdjacentHTML("beforeend", '<div class="st ok"><i>✓</i><span>Vraie adresse retrouvée dans le code de Meta : ' + h(hit.url) + ' → clé ' + h(hit.p + "_" + hit.id) + '</span></div><h3>Lecteur avec l\'adresse retrouvée</h3>');
       box.appendChild(playerBox(n + "o", hit, hit.url));
@@ -207,7 +209,7 @@ async function run(raw){
   if (!user){ sc.innerHTML = '<div class="st wa"><i>!</i><span>Pas connecté : test par le script sauté.</span></div>'; log("[" + n + "] Script : sauté (pas connecté)"); return; }
   sc.innerHTML = '<div class="st in"><i>…</i><span>Le script analyse le lien…</span></div>';
   let j; const t0 = performance.now();
-  try { j = await script("lien", {url: v.raw}); } catch(e){ j = {error: e.message}; }
+  try { j = await script("lien", {url: v.raw, href: resolved ? resolved.url : (v.p === "fb" && v.id ? v.url : "")}); } catch(e){ j = {error: e.message}; }
   const ms = Math.round(performance.now() - t0);
   if (!j || j.error){
     const why = j && j.error === "bad_request" ? "le script ne connaît pas encore cette demande : colle le Code.gs de la 1.52 et fais « Nouvelle version »" : (j && j.error) || "?";
@@ -223,6 +225,14 @@ async function run(raw){
   log("[" + n + "] Script : " + (j.chain.length - 1) + " redirection(s) en " + ms + " ms → " + j.final + " (code " + j.status + ", page " + j.size + " car.)");
   if (f.p && f.id && !v.id) log("[" + n + "] Identifiant retrouvé : " + f.p + "_" + f.id);
   log("[" + n + "] Page : og:title « " + (j.og.title || "") + " » · og:image " + (j.og.image ? "oui" : "non") + " · og:type " + (j.og.type || "-"));
+  const e = j.embed;
+  if (e){
+    const okI = e.image && e.imageStatus === 200;
+    sc.insertAdjacentHTML("beforeend", '<h3>Page d\'intégration (vignette)</h3>' + (e.error ? '<div class="st ko"><i>✗</i><span>' + h(e.error) + '</span></div>'
+      : '<div class="st ' + (okI ? "ok" : "ko") + '"><i>' + (okI ? "✓" : "✗") + '</i><span>Page ' + e.status + (e.login ? " (demande de connexion)" : "") + ' · ' + (e.image ? "image trouvée" + (okI ? ", téléchargeable par le script (" + Math.round(e.imageBytes / 1024) + " Ko)" : " mais pas téléchargeable (" + e.imageStatus + ")") : "pas d'image") + (e.author ? " · compte « " + h(e.author) + " »" : "") + (e.caption ? " · texte « " + h(e.caption.slice(0, 90)) + " »" : "") + '</span></div>'
+      + (e.image ? '<img class="thumb" src="' + h(e.image) + '" alt="" referrerpolicy="no-referrer">' : "")));
+    log("[" + n + "] Page d'intégration : " + (e.error ? "erreur " + e.error : e.status + (e.login ? " (connexion demandée)" : "") + " · image " + (e.image ? "oui, script " + e.imageStatus + " / " + e.imageBytes + " octets" : "non") + (e.author ? " · compte ok" : "") + (e.caption ? " · texte ok" : "")));
+  } else if (v.p !== "yt") log("[" + n + "] Page d'intégration : pas essayée (le script n'est pas en 1.53)");
   log("[" + n + "] oEmbed script : " + o.status + " · " + (o.status === 200 ? "champs " + (o.keys || []).join(",") + (o.title ? " · titre ok" : " · sans titre") + (o.thumb ? " · vignette ok" : " · sans vignette") : (o.error || "")));
   /* Facebook : lecteur avec le lien résolu, pour comparer avec le lien court */
   if (v.p === "fb" && v.resolve && f.p === "fb" && f.id){
