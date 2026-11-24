@@ -182,6 +182,8 @@ function vidEnrich(x, lien){
       }
     }
     const meta = vidMetaFrom(j), e = j.embed || {};
+    /* 1.56 : Facebook n'a renvoyé aucune image de sa page d'intégration → la vidéo n'est sans doute pas publique, le lecteur ne la lira pas */
+    if (x.p === "fb" && x.id && e.status === 200) meta.noEmb = e.image ? 0 : 1;
     return (e.b64 ? vidThumb(e.b64, e.mime) : Promise.resolve("")).then((th) => { if (th) meta.thumb = th; return done(meta); });
   }, () => done({}));
 }
@@ -286,7 +288,7 @@ function vdOpen(L, i0){
     + '<button type="button" class="vd-rb nx" data-act="vd-next" aria-label="Vidéo suivante"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></button></div>'
     + '<div class="vd-bot" id="vdBot"></div></div>';
   root.hidden = false; document.body.classList.add("vd-on");
-  VD = { keys: L.map((x) => x._id), i: -1, lock: null, timer: 0, yt: null, seenSet: {} };
+  VD = { keys: L.map((x) => x._id), i: -1, lock: null, timer: 0, yt: null, seenSet: {}, force: {} };
   history.pushState({ vd: 1 }, "");
   vdWake(true); vdSwipe(root.querySelector(".vd-s"));
   render();
@@ -313,6 +315,8 @@ function vdGo(i){
     });
   } else if (x.p === "ig"){
     st.innerHTML = '<iframe src="https://www.instagram.com/' + (x.kind || "reel") + '/' + encodeURIComponent(x.id) + '/embed/" allow="autoplay; encrypted-media; fullscreen" allowfullscreen scrolling="no" class="ig"></iframe>';
+  } else if (x.noEmb && !VD.force[x._id]){
+    st.innerHTML = '<div class="vd-nop"><p>Facebook ne laisse pas lire cette vidéo ici (elle n\'est sans doute pas publique).</p><a class="nv-btn" href="' + h(x.raw || x.url) + '" target="_blank" rel="noopener">Ouvrir dans Facebook</a><button type="button" class="vd-force" data-act="vd-force">Essayer quand même</button></div>';
   } else if (x.id){
     st.innerHTML = '<iframe src="https://www.facebook.com/plugins/video.php?href=' + encodeURIComponent(x.url) + '&show_text=false&autoplay=true&width=400" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share; fullscreen" allowfullscreen scrolling="no"></iframe>';
   } else {
@@ -399,6 +403,7 @@ document.addEventListener("click", (e) => {
     case "vd-close": vdClose(); break;
     case "vd-next": if (VD) vdGo(VD.i + 1); break;
     case "vd-react": if (VD) vdReact(b.dataset.r); break;
+    case "vd-force": if (VD){ const xf = vdItem(VD.i); if (xf){ VD.force[xf._id] = 1; const i0 = VD.i; VD.i = -1; vdGo(i0); } } break;
     case "nv-paste": pasteSheet(); break;
     case "nv-clip":
       if (navigator.clipboard && navigator.clipboard.readText) navigator.clipboard.readText().then((t) => { const u = $("vdUrl"); if (u) u.value = t.trim(); }, () => { const u = $("vdUrl"); if (u){ u.placeholder = "Appui long ici, puis Coller"; u.focus(); } });

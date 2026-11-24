@@ -1539,6 +1539,7 @@ body.vd-on{overflow:hidden}
 .vd-nop,.vd-fin{padding:0 32px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:14px;color:#E6EBF0;font-size:15px;line-height:1.45}
 .vd-fin-t{margin:0;font-size:24px;font-weight:800;color:#FFFFFF}
 .vd-fin p,.vd-nop p{margin:0}
+.vd-force{border:0;background:none;color:#C9D2DA;font:inherit;font-size:13.5px;font-weight:700;text-decoration:underline;padding:8px}
 .lab-keys{display:flex;gap:6px;flex-wrap:wrap;margin:2px 0 8px}.lab-k{font-size:12px;font-weight:800;padding:4px 10px;border-radius:999px;background:#FFEBD9;color:#A34A16}.lab-k.on{background:#E4F4E8;color:#2F7440}
 .lab-err{margin:4px 0 8px;font-size:13px;font-weight:800;color:#A8402F}
 .lab-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0 8px}
@@ -2967,10 +2968,11 @@ var DECO = (function(){
 
 </script>
 <script>
-var APP_VERSION = "MyWorld_1.55";
+var APP_VERSION = "MyWorld_1.56";
 /* MyWorld_1.33 : nouveautés affichées dans les Réglages. À CHAQUE VERSION (appli ou jeu) : ajouter une entrée EN TÊTE,
    {v: numéro, d: date AAAA-MM-JJ, t: titre court, l: 1 à 3 phrases simples, sans jargon}. */
 var MW_NEWS = [
+  {"v": "1.56", "d": "2026-11-24", "t": "Vidéos Facebook qui ne se lisent pas", "l": ["Quand Facebook ne laisse pas lire une vidéo hors de son appli (souvent parce qu'elle n'est pas publique), la soirée affiche « Ouvrir dans Facebook » au lieu d'un écran noir.", "« Essayer quand même » lance le lecteur si tu veux vérifier. Pareil dans « Nos vidéos » d'Alessia."]},
   {"v": "1.55", "d": "2026-11-24", "t": "« Nos vidéos » pour Alessia", "l": ["Alessia a sa propre petite appli « Nos vidéos » (novazur-ai.github.io/my_world/videos/) : elle partage une vidéo vers elle et la vidéo arrive dans la même liste que la tienne.", "Même grille et même soirée qu'ici, de la plus ancienne à la plus récente, avec un bouton « My World ».", "Soirée : le bouton « Suivante » se touche bien même sous un long titre, et les boutons disparaissent à l'écran de fin."]},
   {"v": "1.54", "d": "2026-11-24", "t": "Vidéos à deux", "l": ["Nouvelle fleur « Vidéos » : la liste des vidéos à regarder avec Alessia (YouTube, Instagram, Facebook), avec qui l'a partagée.", "Partage une vidéo vers My World depuis son appli (ou colle le lien au +) : elle rejoint la liste, même pour Alessia.", "« Lancer la soirée » : les vidéos à la suite en plein écran, coups de cœur et fous rires ; chaque vidéo regardée passe dans « Vues »."]},
   {"v": "1.53", "d": "2026-11-24", "t": "Essai de la dictée : bouton « Google seul »", "l": ["Sur Android, Google et l'enregistrement pour Whisper ne peuvent pas écouter en même temps : la dictée Google s'arrêtait (« aborted »).", "Nouveau bouton « Google seul » pour comparer la même phrase avec Whisper, et « Les deux » essaie maintenant Google en premier."]},
@@ -3385,6 +3387,8 @@ function vidEnrich(x, lien){
       }
     }
     var meta = vidMetaFrom(j, x), e = j.embed || {};
+    /* 1.56 : Facebook n'a renvoyé aucune image de sa page d'intégration → la vidéo n'est sans doute pas publique, le lecteur ne la lira pas */
+    if (x.p === "fb" && x.id && e.status === 200) meta.noEmb = e.image ? 0 : 1;
     return (e.b64 ? vidThumb(e.b64, e.mime) : Promise.resolve("")).then(function(th){ if (th) meta.thumb = th; return done(meta); });
   }, function(){ return done({}); });
 }
@@ -3476,7 +3480,7 @@ function vdOpen(L, i0){
     + '<button type="button" class="vd-rb nx" data-act="vd-next" aria-label="Vidéo suivante"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></button></div>'
     + '<div class="vd-bot" id="vdBot"></div></div>';
   root.hidden = false; document.body.classList.add("vd-on");
-  VD = {keys:L.map(function(x){ return x._id; }), i:-1, lock:null, timer:0, yt:null, seenSet:{}};
+  VD = {keys:L.map(function(x){ return x._id; }), i:-1, lock:null, timer:0, yt:null, seenSet:{}, force:{}};
   history.pushState({vd:1}, "");
   vdWake(true); vdSwipe(root.querySelector(".vd-s"));
   vdGo(i0 || 0);
@@ -3502,6 +3506,8 @@ function vdGo(i){
     });
   } else if (x.p === "ig"){
     st.innerHTML = '<iframe src="https://www.instagram.com/' + (x.kind || "reel") + '/' + encodeURIComponent(x.id) + '/embed/" allow="autoplay; encrypted-media; fullscreen" allowfullscreen scrolling="no" class="ig"></iframe>';
+  } else if (x.noEmb && !VD.force[x._id]){
+    st.innerHTML = '<div class="vd-nop"><p>Facebook ne laisse pas lire cette vidéo ici (elle n\'est sans doute pas publique).</p><a class="btn green" href="' + h(x.raw || x.url) + '" target="_blank" rel="noopener">Ouvrir dans Facebook</a><button type="button" class="vd-force" data-act="vd-force">Essayer quand même</button></div>';
   } else if (x.id){
     st.innerHTML = '<iframe src="https://www.facebook.com/plugins/video.php?href=' + encodeURIComponent(x.url) + '&show_text=false&autoplay=true&width=400" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share; fullscreen" allowfullscreen scrolling="no"></iframe>';
   } else {
@@ -3580,6 +3586,7 @@ function vdAct(act, b){
     case "vd-close": vdClose(); return true;
     case "vd-next": if (VD) vdGo(VD.i + 1); return true;
     case "vd-react": if (VD) vdReact(b.dataset.r); return true;
+    case "vd-force": if (VD){ var xf = vdItem(VD.i); if (xf){ VD.force[xf._id] = 1; var i0 = VD.i; VD.i = -1; vdGo(i0); } } return true;
   }
   return false;
 }
