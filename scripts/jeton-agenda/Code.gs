@@ -195,6 +195,29 @@ function lien_(body) {
     let j = null; try { j = JSON.parse(t); } catch (e) {}
     oe = { status: o.getResponseCode(), keys: j ? Object.keys(j) : [], title: j && j.title || "", thumb: j && j.thumbnail_url || "", author: j && j.author_name || "", error: j && j.error ? (j.error.message || "").slice(0, 200) : (j ? "" : t.slice(0, 200)) };
   } catch (e) { oe = { status: 0, error: String(e).slice(0, 200) }; }
+  /* 1.53 : lien court Facebook (share/r, share/v, fb.watch) : on essaie les autres adresses de Facebook, qui redirigent parfois vers le reel avant la connexion */
+  let fbTries = null, fbReel = "";
+  const sh = String(body.url || "").match(/facebook\.com\/share\/(r|v|p)\/([\w-]+)/i);
+  if (sh) {
+    fbTries = [];
+    const UAD = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36";
+    const hosts = ["m.facebook.com", "mbasic.facebook.com", "web.facebook.com", "www.facebook.com"];
+    for (let i = 0; i < hosts.length && !fbReel; i++) {
+      for (let k = 0; k < 2 && !fbReel; k++) {
+        const u0 = "https://" + hosts[i] + "/share/" + sh[1] + "/" + sh[2] + "/";
+        try {
+          const rr = UrlFetchApp.fetch(u0, { followRedirects: false, muteHttpExceptions: true, headers: { "User-Agent": k ? UAD : UA, "Accept-Language": "fr-FR,fr;q=0.9" } });
+          const hd = rr.getAllHeaders(); let loc = hd.Location || hd.location; if (Array.isArray(loc)) loc = loc[0];
+          loc = String(loc || "");
+          const deep = decodeURIComponent(loc);
+          const m = deep.match(/facebook\.com\/(?:reel|reels)\/(\d+)|\/videos\/(?:[\w.-]+\/)?(\d+)|[?&]v=(\d+)/);
+          if (m) fbReel = "https://www.facebook.com/reel/" + (m[1] || m[2] || m[3]);
+          fbTries.push({ host: hosts[i], ua: k ? "ordinateur" : "téléphone", code: rr.getResponseCode(), loc: loc.slice(0, 220) });
+        } catch (x) { fbTries.push({ host: hosts[i], ua: k ? "ordinateur" : "téléphone", code: -1, loc: String(x).slice(0, 120) }); }
+      }
+    }
+    if (fbReel && !body.href) body.href = fbReel;
+  }
   /* 1.53 : vignette et texte depuis la page d'intégration (faite pour être affichée ailleurs, sans connexion) */
   let emb = null;
   try {
@@ -217,7 +240,7 @@ function lien_(body) {
       emb = { url: eu, status: e.getResponseCode(), size: t.length, image: img, imageStatus: imgOk, imageBytes: imgKo, caption: cap, author: who, login: /\/login|accounts\/login/i.test(t.slice(0, 5000)) };
     }
   } catch (x) { emb = { error: String(x).slice(0, 200) }; }
-  return { final: url, chain: chain, status: code, size: html.length, og: og, oembed: oe, embed: emb };
+  return { final: url, chain: chain, status: code, size: html.length, og: og, oembed: oe, embed: emb, fbTries: fbTries, fbReel: fbReel };
 }
 
 function json_(o) { return ContentService.createTextOutput(JSON.stringify(o)).setMimeType(ContentService.MimeType.JSON); }

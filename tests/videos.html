@@ -190,6 +190,16 @@ async function run(raw){
   let resolved = null;
   if (oe.html){
     log("[" + n + "] Code d'intégration (début) : " + oe.html.replace(/\s+/g, " ").slice(0, 400));
+    if (v.p === "fb"){
+      const box0 = c.querySelector(".oe");
+      box0.insertAdjacentHTML("beforeend", '<h3>Lecteur officiel de Meta (code d\'intégration tel quel)</h3><div class="player sdk" style="min-height:200px;background:#fff"></div><div class="vote sdkv"><button class="y">✓ Ça se lit</button><button class="n">✗ Ne se lit pas</button></div>');
+      const pl0 = box0.querySelector(".player.sdk");
+      pl0.innerHTML = oe.html.replace(/<script[\s\S]*?<\/script>/gi, "").replace(/<div id="fb-root"><\/div>/, "");
+      if (!document.getElementById("fb-root")){ const r0 = document.createElement("div"); r0.id = "fb-root"; document.body.prepend(r0); }
+      const parse = () => { try { window.FB && FB.XFBML.parse(pl0); } catch(e){ log("[" + n + "] SDK Facebook : erreur " + e.message); } };
+      if (window.FB) parse(); else if (!document.getElementById("fbsdk")){ const sx = document.createElement("script"); sx.id = "fbsdk"; sx.async = true; sx.crossOrigin = "anonymous"; sx.src = "https://connect.facebook.net/fr_FR/sdk.js#xfbml=1&version=v27.0"; sx.onload = () => { log("[" + n + "] SDK Facebook chargé"); setTimeout(parse, 300); }; sx.onerror = () => log("[" + n + "] SDK Facebook : pas chargé"); document.head.appendChild(sx); } else setTimeout(parse, 1500);
+      box0.querySelectorAll(".sdkv button").forEach((b) => b.onclick = () => { box0.querySelectorAll(".sdkv button").forEach((x) => x.classList.remove("on")); b.classList.add("on"); log("[" + n + "] Lecteur officiel Meta (SDK) : " + (b.classList.contains("y") ? "SE LIT" : "NE SE LIT PAS")); });
+    }
     const L = oeLinks(oe.html), hit = L.map(vidParse).find((x) => x && x.p === v.p && x.id);
     log("[" + n + "] Adresses dans le code : " + (L.length ? L.join(" | ") : "aucune"));
     const box = c.querySelector(".oe");
@@ -232,7 +242,14 @@ async function run(raw){
       : '<div class="st ' + (okI ? "ok" : "ko") + '"><i>' + (okI ? "✓" : "✗") + '</i><span>Page ' + e.status + (e.login ? " (demande de connexion)" : "") + ' · ' + (e.image ? "image trouvée" + (okI ? ", téléchargeable par le script (" + Math.round(e.imageBytes / 1024) + " Ko)" : " mais pas téléchargeable (" + e.imageStatus + ")") : "pas d'image") + (e.author ? " · compte « " + h(e.author) + " »" : "") + (e.caption ? " · texte « " + h(e.caption.slice(0, 90)) + " »" : "") + '</span></div>'
       + (e.image ? '<img class="thumb" src="' + h(e.image) + '" alt="" referrerpolicy="no-referrer">' : "")));
     log("[" + n + "] Page d'intégration : " + (e.error ? "erreur " + e.error : e.status + (e.login ? " (connexion demandée)" : "") + " · image " + (e.image ? "oui, script " + e.imageStatus + " / " + e.imageBytes + " octets" : "non") + (e.author ? " · compte ok" : "") + (e.caption ? " · texte ok" : "")));
-  } else if (v.p !== "yt") log("[" + n + "] Page d'intégration : pas essayée (le script n'est pas en 1.53)");
+  } else if (v.p !== "yt") log("[" + n + "] Page d'intégration : pas essayée (pas d'adresse de reel)");
+  if (j.fbTries){
+    sc.insertAdjacentHTML("beforeend", '<h3>Lien court : autres adresses de Facebook</h3>' + j.fbTries.map((t) => '<div class="st ' + (/reel|videos|[?&]v=/.test(decodeURIComponent(t.loc)) ? "ok" : "in") + '"><i>·</i><span>' + h(t.host) + ' (' + t.ua + ') → ' + t.code + (t.loc ? " · " + h(t.loc.slice(0, 120)) : "") + '</span></div>').join("")
+      + (j.fbReel ? '<div class="st ok"><i>✓</i><span>Reel retrouvé : ' + h(j.fbReel) + '</span></div>' : '<div class="st ko"><i>✗</i><span>Aucune adresse ne mène au reel sans connexion.</span></div>'));
+    j.fbTries.forEach((t) => log("[" + n + "] Essai " + t.host + " (" + t.ua + ") : " + t.code + " → " + t.loc));
+    log("[" + n + "] Reel retrouvé par le script : " + (j.fbReel || "non"));
+    if (j.fbReel){ const fr = vidParse(j.fbReel); if (fr && fr.id){ sc.insertAdjacentHTML("beforeend", '<h3>Lecteur avec le reel retrouvé</h3>'); sc.appendChild(playerBox(n + "r", fr, fr.url)); } }
+  }
   log("[" + n + "] oEmbed script : " + o.status + " · " + (o.status === 200 ? "champs " + (o.keys || []).join(",") + (o.title ? " · titre ok" : " · sans titre") + (o.thumb ? " · vignette ok" : " · sans vignette") : (o.error || "")));
   /* Facebook : lecteur avec le lien résolu, pour comparer avec le lien court */
   if (v.p === "fb" && v.resolve && f.p === "fb" && f.id){
