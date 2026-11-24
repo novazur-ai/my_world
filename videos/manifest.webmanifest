@@ -1,0 +1,23 @@
+{
+  "id": "/my_world/videos/",
+  "name": "Nos vidéos",
+  "short_name": "Nos vidéos",
+  "description": "Les vidéos à regarder ensemble",
+  "lang": "fr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FFFFFF",
+  "theme_color": "#FFFFFF",
+  "icons": [
+    { "src": "icons/nv-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/nv-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/nv-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "share_target": {
+    "action": "./",
+    "method": "GET",
+    "params": { "title": "share_title", "text": "share_text", "url": "share_url" }
+  }
+}

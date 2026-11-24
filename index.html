@@ -1525,7 +1525,7 @@ body.vd-on{overflow:hidden}
 .vd-tr{display:flex;align-items:center;justify-content:space-between}
 .vd-tr span{font-size:14px;font-weight:700;text-shadow:0 1px 3px rgba(0,0,0,.5)}
 .vd-x{width:44px;height:44px;border-radius:50%;border:0;background:rgba(255,255,255,.18);color:#FFFFFF;display:grid;place-items:center}
-.vd-side{position:absolute;right:12px;bottom:calc(150px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:16px;align-items:center}
+.vd-side{position:absolute;z-index:2;right:12px;bottom:calc(150px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:16px;align-items:center}
 .vd-rb{width:52px;height:52px;border-radius:50%;border:0;background:rgba(255,255,255,.18);color:#FFFFFF;display:grid;place-items:center;-webkit-tap-highlight-color:transparent}
 .vd-rb.heart{color:#FFB3BF}.vd-rb.laugh{color:#FFE2A6}
 .vd-rb.heart.on{background:#FF6B81;color:#FFFFFF}.vd-rb.laugh.on{background:#FFD27A;color:#3A2A08}
@@ -2967,10 +2967,11 @@ var DECO = (function(){
 
 </script>
 <script>
-var APP_VERSION = "MyWorld_1.54";
+var APP_VERSION = "MyWorld_1.55";
 /* MyWorld_1.33 : nouveautés affichées dans les Réglages. À CHAQUE VERSION (appli ou jeu) : ajouter une entrée EN TÊTE,
    {v: numéro, d: date AAAA-MM-JJ, t: titre court, l: 1 à 3 phrases simples, sans jargon}. */
 var MW_NEWS = [
+  {"v": "1.55", "d": "2026-11-24", "t": "« Nos vidéos » pour Alessia", "l": ["Alessia a sa propre petite appli « Nos vidéos » (novazur-ai.github.io/my_world/videos/) : elle partage une vidéo vers elle et la vidéo arrive dans la même liste que la tienne.", "Même grille et même soirée qu'ici, de la plus ancienne à la plus récente, avec un bouton « My World ».", "Soirée : le bouton « Suivante » se touche bien même sous un long titre, et les boutons disparaissent à l'écran de fin."]},
   {"v": "1.54", "d": "2026-11-24", "t": "Vidéos à deux", "l": ["Nouvelle fleur « Vidéos » : la liste des vidéos à regarder avec Alessia (YouTube, Instagram, Facebook), avec qui l'a partagée.", "Partage une vidéo vers My World depuis son appli (ou colle le lien au +) : elle rejoint la liste, même pour Alessia.", "« Lancer la soirée » : les vidéos à la suite en plein écran, coups de cœur et fous rires ; chaque vidéo regardée passe dans « Vues »."]},
   {"v": "1.53", "d": "2026-11-24", "t": "Essai de la dictée : bouton « Google seul »", "l": ["Sur Android, Google et l'enregistrement pour Whisper ne peuvent pas écouter en même temps : la dictée Google s'arrêtait (« aborted »).", "Nouveau bouton « Google seul » pour comparer la même phrase avec Whisper, et « Les deux » essaie maintenant Google en premier."]},
   {"v": "1.52", "d": "2026-11-23", "t": "Page de test « Vidéos à deux »", "l": ["Réglages › Ta voix › « Page de test · Vidéos à deux » : colle un lien YouTube, Instagram ou Facebook pour voir s'il se lit dans l'appli et ce qu'on peut en tirer.", "C'est la première étape avant la page Vidéos et le mode soirée."]},
@@ -3360,7 +3361,7 @@ function vidMetaFrom(j, x){
     var m = og.title.match(/^(.+?) sur (?:Instagram|Facebook)\s*:\s*[«"“](.+)[»"”]\s*$/i);
     if (m){ t = m[2]; if (!out.author) out.author = m[1].trim(); } else t = og.title;
   }
-  if (t) out.title = t.replace(/\s+/g, " ").slice(0, 140);
+  if (t) out.title = t.replace(/\s+/g, " ").trim().slice(0, 140);
   return out;
 }
 function vidEnrich(x, lien){
@@ -3536,6 +3537,7 @@ function vdEnd(){
   var n = Object.keys(VD.seenSet).length;
   document.getElementById("vdStage").innerHTML = '<div class="vd-fin"><p class="vd-fin-t">C\'est fini pour ce soir !</p><p>' + (n ? n + " vidéo" + (n > 1 ? "s" : "") + " regardée" + (n > 1 ? "s" : "") + " ensemble." : "Aucune vidéo regardée.") + '</p><button type="button" class="btn green" data-act="vd-close">Terminer</button></div>';
   document.getElementById("vdBot").innerHTML = ""; VD.i = VD.keys.length;
+  var sd = document.querySelector("#vdRoot .vd-side"); if (sd) sd.style.display = "none";
 }
 function vdClose(fromPop){
   if (!VD) return; clearTimeout(VD.timer); if (VD.yt){ try { VD.yt.destroy(); } catch(e){} } vdWake(false); VD = null;
