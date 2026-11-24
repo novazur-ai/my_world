@@ -5,7 +5,10 @@
       HC Webhook appelle l'adresse du script suivie de ?k=<clé secrète> (Apps Script ne lit pas les en-têtes personnalisés).
    3. Clés d'API gratuites (MyWorld_1.50) : gardées ICI, dans les propriétés du script (jamais dans le code public de l'appli).
       GROQ_KEY = dictée Whisper (Groq), TMDB_KEY = films et séries (TMDB), YOUTUBE_KEY = infos des vidéos YouTube.
-      L'appli demande « voix », « tmdb » ou « youtube » ; le script vérifie ta session puis appelle le service avec la clé. */
+      L'appli demande « voix », « tmdb » ou « youtube » ; le script vérifie ta session puis appelle le service avec la clé.
+   4. Vidéos à deux (MyWorld_1.54) : la propriété du script PARTAGE_EMAILS (adresses séparées par des virgules, jamais écrites
+      ici car ce code est public) liste les comptes qui partagent la liste de vidéos. Ces comptes n'ont droit QU'À « lien »
+      (analyser un lien vidéo) et « youtube » : ni l'agenda, ni le sommeil, ni la dictée, ni les films. */
 const ALLOWED_EMAIL = "t.mallet06@gmail.com";
 const FIREBASE_API_KEY = "AIzaSyBgYrV_-hMre0i_0IBGU70yAopTrFIXK0E"; // clé publique Firebase, déjà visible dans firebase-config.js
 const NIGHTS_KEEP = 200; // nuits gardées dans le script (My World les recopie dans ta base)
@@ -15,14 +18,16 @@ function doPost(e) {
   let out;
   try {
     const body = JSON.parse(e.postData.contents);
-    if (!sessionOk_(body.idToken)) out = { error: "refused" };
+    const who = sessionWho_(body.idToken);
+    if (!who) out = { error: "refused" };
+    else if (who !== "o" && body.want !== "lien" && body.want !== "youtube") out = { error: "refused" };   /* compte partagé : vidéos seulement */
     else if (body.want === "sommeil") {
       const p = PropertiesService.getScriptProperties();
       out = { nights: lireNuits_(body.since || ""), seen: p.getProperty("SLEEP_SEEN") || "", test: p.getProperty("SLEEP_TEST") || "", key: !!p.getProperty("SLEEP_KEY") };
     }
     else if (body.want === "cles") {
       const p = PropertiesService.getScriptProperties();
-      out = { groq: !!p.getProperty("GROQ_KEY"), tmdb: !!p.getProperty("TMDB_KEY"), youtube: !!p.getProperty("YOUTUBE_KEY"), v: 153 };
+      out = { groq: !!p.getProperty("GROQ_KEY"), tmdb: !!p.getProperty("TMDB_KEY"), youtube: !!p.getProperty("YOUTUBE_KEY"), v: 154 };
     }
     else if (body.want === "voix") out = transcrire_(body);
     else if (body.want === "tmdb") out = tmdb_(body);
@@ -38,15 +43,23 @@ function doPost(e) {
 /* Ouvrir l'adresse du script dans un navigateur : simple vérification qu'il répond. */
 function doGet() { return json_({ ok: true, app: "My World" }); }
 
-function sessionOk_(idToken) {
-  if (!idToken) return false;
+function sessionOk_(idToken) { return sessionWho_(idToken) === "o"; }
+/* "o" = toi (propriétaire), "a" = un compte de PARTAGE_EMAILS, "" = refusé */
+function sessionWho_(idToken) {
+  if (!idToken) return "";
   /* session déjà vérifiée il y a moins de 10 min : on gagne un aller-retour (la dictée doit être rapide) */
-  const ck = "s:" + Utilities.base64EncodeWebSafe(Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, idToken)).slice(0, 40);
+  const ck = "w:" + Utilities.base64EncodeWebSafe(Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, idToken)).slice(0, 40);
   const cache = CacheService.getScriptCache();
-  if (cache.get(ck) === "1") return true;
-  const ok = sessionCheck_(idToken);
-  if (ok) cache.put(ck, "1", 600);
-  return ok;
+  const c = cache.get(ck); if (c === "o" || c === "a") return c;
+  const mail = sessionCheck_(idToken);
+  let who = "";
+  if (mail && mail === ALLOWED_EMAIL) who = "o";
+  else if (mail) {
+    const list = String(PropertiesService.getScriptProperties().getProperty("PARTAGE_EMAILS") || "").toLowerCase().split(/[\s,;]+/).filter(String);
+    if (list.indexOf(mail) >= 0) who = "a";
+  }
+  if (who) cache.put(ck, who, 600);
+  return who;
 }
 function sessionCheck_(idToken) {
   const r = UrlFetchApp.fetch("https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=" + FIREBASE_API_KEY, {
@@ -54,7 +67,7 @@ function sessionCheck_(idToken) {
     headers: { Referer: "https://novazur-ai.github.io/" }, muteHttpExceptions: true
   });
   const u = (JSON.parse(r.getContentText()).users || [])[0];
-  return !!(u && String(u.email).toLowerCase() === ALLOWED_EMAIL && u.emailVerified);
+  return u && u.emailVerified ? String(u.email || "").toLowerCase() : "";
 }
 
 /* Phases Health Connect (SleepSessionRecord.STAGE_TYPE_*) :
@@ -236,8 +249,10 @@ function lien_(body) {
       const cap = pick(/class=["']Caption["'][^>]*>([\s\S]{0,600}?)<\/div>/i).replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim().slice(0, 200);
       const who = pick(/class=["']UsernameText["'][^>]*>([^<]{1,60})</i) || pick(/class=["'][^"']*(?:_2_79|author)[^"']*["'][^>]*>([^<]{1,60})</i);
       let imgOk = 0, imgKo = 0;
-      if (img) { try { const ir = UrlFetchApp.fetch(img, { muteHttpExceptions: true }); imgOk = ir.getResponseCode(); imgKo = ir.getBlob().getBytes().length; } catch (x) { imgOk = -1; } }
-      emb = { url: eu, status: e.getResponseCode(), size: t.length, image: img, imageStatus: imgOk, imageBytes: imgKo, caption: cap, author: who, login: /\/login|accounts\/login/i.test(t.slice(0, 5000)) };
+      let b64 = "", mime = "";
+      if (img) { try { const ir = UrlFetchApp.fetch(img, { muteHttpExceptions: true }); imgOk = ir.getResponseCode(); const bl = ir.getBlob(), by = bl.getBytes(); imgKo = by.length;
+        if (body.img && imgOk === 200 && imgKo < 300000) { b64 = Utilities.base64Encode(by); mime = bl.getContentType() || "image/jpeg"; } } catch (x) { imgOk = -1; } }
+      emb = { url: eu, status: e.getResponseCode(), size: t.length, image: img, imageStatus: imgOk, imageBytes: imgKo, caption: cap, author: who, login: /\/login|accounts\/login/i.test(t.slice(0, 5000)), b64: b64, mime: mime };
     }
   } catch (x) { emb = { error: String(x).slice(0, 200) }; }
   return { final: url, chain: chain, status: code, size: html.length, og: og, oembed: oe, embed: emb, fbTries: fbTries, fbReel: fbReel };

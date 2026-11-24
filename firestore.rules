@@ -1,6 +1,9 @@
 rules_version = '2';
-// Seul le propriétaire, connectée avec son compte Google, peut lire et écrire ses propres données.
+// Seul le propriétaire, connecté avec son compte Google, peut lire et écrire ses propres données.
 // La GitHub Action de la Gazette passe par un compte de service : elle n'est pas concernée par ces règles.
+// MyWorld_1.54 « Vidéos à deux » : la liste de vidéos commune (shared/videos/…) est ouverte à 2 comptes.
+// ⚠️ Ce dépôt est public : l'adresse du 2e compte n'est PAS écrite ici. Dans la console Firebase, remplacer
+//    ADRESSE_DU_2E_COMPTE par la vraie adresse (elle reste privée dans la console).
 service cloud.firestore {
   match /databases/{database}/documents {
     match /users/{uid}/{document=**} {
@@ -8,6 +11,11 @@ service cloud.firestore {
         && request.auth.uid == uid
         && request.auth.token.email == "t.mallet06@gmail.com"
         && request.auth.token.email_verified == true;
+    }
+    match /shared/videos/{document=**} {
+      allow read, write: if request.auth != null
+        && request.auth.token.email_verified == true
+        && request.auth.token.email in ["t.mallet06@gmail.com", "ADRESSE_DU_2E_COMPTE"];
     }
   }
 }
