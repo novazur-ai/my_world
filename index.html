@@ -1480,7 +1480,7 @@ body.fan-on nav.tabs a,body.fan-on .nav-add{opacity:.35;pointer-events:none;tran
 .lab-err{margin:4px 0 8px;font-size:13px;font-weight:800;color:#A8402F}
 .lab-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0 8px}
 .lab-mic{min-height:76px;border:0;border-radius:18px;background:#0B4F7C;color:#fff;font:inherit;font-weight:900;font-size:15px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;cursor:pointer}
-.lab-mic small{font-size:11.5px;font-weight:700;opacity:.8}.lab-mic.two{background:#33449A}.lab-mic.on{background:#D63A2C;transform:scale(.97)}
+.lab-mic small{font-size:11.5px;font-weight:700;opacity:.8}.lab-mic.two{background:#33449A}.lab-mic.gg{background:#2F7440}.lab-mic.wide{grid-column:1/-1;min-height:60px}.lab-mic.on{background:#D63A2C;transform:scale(.97)}
 .lab-tg{display:flex;gap:8px;align-items:center;font-size:13px;font-weight:700;color:#5B6B7C;margin:2px 0 8px}
 .lab-live{font-size:13px;font-weight:800;color:#D63A2C;margin:6px 0}
 .lab-r{border:1px solid #E6ECF2;border-radius:14px;padding:10px 12px;margin:8px 0;background:#fff}.lab-rh{font-size:11px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:#6B7785;margin-bottom:4px}
@@ -2904,10 +2904,11 @@ var DECO = (function(){
 
 </script>
 <script>
-var APP_VERSION = "MyWorld_1.52";
+var APP_VERSION = "MyWorld_1.53";
 /* MyWorld_1.33 : nouveautés affichées dans les Réglages. À CHAQUE VERSION (appli ou jeu) : ajouter une entrée EN TÊTE,
    {v: numéro, d: date AAAA-MM-JJ, t: titre court, l: 1 à 3 phrases simples, sans jargon}. */
 var MW_NEWS = [
+  {"v": "1.53", "d": "2026-11-24", "t": "Essai de la dictée : bouton « Google seul »", "l": ["Sur Android, Google et l'enregistrement pour Whisper ne peuvent pas écouter en même temps : la dictée Google s'arrêtait (« aborted »).", "Nouveau bouton « Google seul » pour comparer la même phrase avec Whisper, et « Les deux » essaie maintenant Google en premier."]},
   {"v": "1.52", "d": "2026-11-23", "t": "Page de test « Vidéos à deux »", "l": ["Réglages › Ta voix › « Page de test · Vidéos à deux » : colle un lien YouTube, Instagram ou Facebook pour voir s'il se lit dans l'appli et ce qu'on peut en tirer.", "C'est la première étape avant la page Vidéos et le mode soirée."]},
   {"v": "1.51", "d": "2026-11-23", "t": "Ta note Films en mur d'affiches", "l": ["Ta note Films devient un mur d'affiches avec les onglets À voir, Vus et Séries ; touche une affiche pour sa fiche : résumé, où le regarder en France, bande-annonce, « Marquer vu ».", "Quand tu ajoutes un titre (au + ou avec « Ajouter »), l'appli te demande « C'est lequel ? » s'il y a plusieurs films du même nom.", "Affiches et infos : TMDB ; plateformes : JustWatch."]},
   {"v": "1.50", "d": "2026-11-23", "t": "Essai de la dictée Whisper", "l": ["Réglages › Ta voix › « Essai de la dictée Whisper » : compare la dictée Google et Whisper (IA open source), avec le temps de réponse.", "La même page teste la recherche de films pour la note Films.", "Les clés d'API restent dans ton script Google, jamais dans l'appli."]},
@@ -5988,12 +5989,13 @@ function labHTML(){
   var res = LAB.res.map(function(r){
     return '<div class="lab-r"><div class="lab-rh">' + h(r.mode) + ' · ' + h(r.dur) + '</div>'
       + (r.g !== undefined ? '<p><b>Google</b> ' + (r.g ? "« " + h(r.g) + " »" : '<i>' + h(r.gErr || "rien") + '</i>') + '</p>' : "")
-      + '<p><b>Whisper</b> ' + (r.w ? "« " + h(r.w) + " »" : '<i>' + h(r.wErr || "…") + '</i>') + '</p>'
+      + (r.noW ? "" : '<p><b>Whisper</b> ' + (r.w ? "« " + h(r.w) + " »" : '<i>' + h(r.wErr || "…") + '</i>') + '</p>')
       + (r.t ? '<p class="lab-t">' + h(r.t) + '</p>' : "") + '</div>';
   }).join("");
   return st
     + '<p class="rg-hint">Maintiens un bouton, dis une phrase, relâche. Rien n\'est créé ni enregistré : on compare seulement ce qui est compris.</p>'
-    + '<div class="lab-btns"><button type="button" class="lab-mic' + (LAB.mode === "w" ? " on" : "") + '" data-lab="w">Whisper seul<small>maintenir pour parler</small></button><button type="button" class="lab-mic two' + (LAB.mode === "2" ? " on" : "") + '" data-lab="2">Google + Whisper<small>les deux en même temps</small></button></div>'
+    + '<div class="lab-btns"><button type="button" class="lab-mic' + (LAB.mode === "w" ? " on" : "") + '" data-lab="w">Whisper seul<small>maintenir pour parler</small></button><button type="button" class="lab-mic gg' + (LAB.mode === "g" ? " on" : "") + '" data-lab="g">Google seul<small>maintenir pour parler</small></button><button type="button" class="lab-mic two wide' + (LAB.mode === "2" ? " on" : "") + '" data-lab="2">Les deux en même temps<small>essai : Google d\'abord, puis l\'enregistrement</small></button></div>'
+    + '<p class="rg-hint">Pour comparer, dis la même phrase avec « Whisper seul » puis avec « Google seul ».</p>'
     + '<label class="lab-tg"><input type="checkbox" id="labTurbo"' + (LAB.turbo ? " checked" : "") + '> Modèle « turbo » (plus rapide, un peu moins précis)</label>'
     + (LAB.mode ? '<p class="lab-live" aria-live="polite">' + (LAB.mode === "send" ? "J'envoie à Whisper…" : "J'écoute… relâche pour envoyer" + (LAB.srTxt ? " · Google : « " + h(LAB.srTxt) + " »" : "")) + '</p>' : "")
     + res
@@ -6003,36 +6005,55 @@ function labB64(blob){ return new Promise(function(res){ var fr = new FileReader
 function labStart(mode){
   if (LAB.busy) return;
   if (!navigator.mediaDevices || !window.MediaRecorder){ toast("Ce navigateur ne sait pas enregistrer le son."); return; }
-  LAB.busy = true; LAB.mode = mode; LAB.srTxt = ""; LAB.srErr = ""; LAB.stopAsked = false; labRedraw();
+  LAB.busy = true; LAB.mode = mode; LAB.srTxt = ""; LAB.srErr = ""; LAB.stopAsked = false; LAB.srEnd = false; labRedraw();
+  /* 1.53 : sur Android, un seul programme à la fois tient le micro → « Google seul » pour comparer, et « les deux » démarre Google en premier */
+  var SRc = window.SpeechRecognition || window.webkitSpeechRecognition;
+  var srOn = function(){
+    if (!SRc){ LAB.srErr = "pas de dictée Google ici"; return null; }
+    try { var r = new SRc(); r.lang = "fr-FR"; r.interimResults = true; r.continuous = true;
+      r.onresult = function(ev){ var t = ""; for (var i = 0; i < ev.results.length; i++) t += ev.results[i][0].transcript; LAB.srTxt = t.trim(); var lv = document.querySelector(".lab-live"); if (lv) lv.textContent = "J'écoute… · Google : « " + LAB.srTxt + " »"; };
+      r.onerror = function(ev){ LAB.srErr = "erreur Google : " + (ev.error || "?"); };
+      r.onend = function(){ LAB.srEnd = true; if (LAB.mode === "g") labSendG(); };
+      r.start(); LAB.sr = r; return r; } catch(e){ LAB.srErr = "Google n'a pas démarré"; return null; }
+  };
+  if (mode === "g"){
+    LAB.t0 = Date.now();
+    if (!srOn()){ labSendG(); return; }
+    if (LAB.stopAsked) labStop();
+    return;
+  }
   var go = function(stream){
     LAB.stream = stream; LAB.chunks = [];
     var rec; try { rec = new MediaRecorder(stream); } catch(e){ rec = null; }
     if (!rec){ LAB.busy = false; LAB.mode = ""; toast("Enregistrement impossible."); labRedraw(); return; }
     LAB.rec = rec; rec.ondataavailable = function(e){ if (e.data && e.data.size) LAB.chunks.push(e.data); };
     rec.onstop = labSend; rec.start(); LAB.t0 = Date.now();
-    if (mode === "2"){
-      var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-      if (SR){ try { var r = new SR(); r.lang = "fr-FR"; r.interimResults = true; r.continuous = true;
-        r.onresult = function(ev){ var t = ""; for (var i = 0; i < ev.results.length; i++) t += ev.results[i][0].transcript; LAB.srTxt = t.trim(); var lv = document.querySelector(".lab-live"); if (lv) lv.textContent = "J'écoute… · Google : « " + LAB.srTxt + " »"; };
-        r.onerror = function(ev){ LAB.srErr = "erreur Google : " + (ev.error || "?"); };
-        r.start(); LAB.sr = r; } catch(e){ LAB.srErr = "Google n'a pas démarré"; } }
-      else LAB.srErr = "pas de dictée Google ici";
-    }
     if (LAB.stopAsked) labStop();
   };
+  var gumDone = false, gum = function(){ if (gumDone) return; gumDone = true; navigator.mediaDevices.getUserMedia({audio:true}).then(go).catch(function(){ LAB.busy = false; LAB.mode = ""; if (LAB.sr){ try { LAB.sr.abort(); } catch(e){} } toast("Micro refusé : autorise le micro pour My World."); labRedraw(); }); };
+  if (mode === "2"){ var r2 = srOn(); if (r2){ r2.onaudiostart = gum; setTimeout(gum, 900); return; } }
+  gumDone = true;
   navigator.mediaDevices.getUserMedia({audio:true}).then(go).catch(function(){ LAB.busy = false; LAB.mode = ""; toast("Micro refusé : autorise le micro pour My World."); labRedraw(); });
 }
 function labStop(){
+  if (LAB.mode === "g"){ if (LAB.sr && !LAB.tRel){ LAB.dur = Date.now() - LAB.t0; LAB.tRel = Date.now(); try { LAB.sr.stop(); } catch(e){} } else if (!LAB.sr) LAB.stopAsked = true; return; }
   if (!LAB.rec){ LAB.stopAsked = true; return; }
   if (LAB.rec.state === "recording"){ LAB.dur = Date.now() - LAB.t0; LAB.rec.stop(); }
   if (LAB.sr){ try { LAB.sr.stop(); } catch(e){} }
+}
+function labSendG(){
+  if (LAB.mode !== "g") return;
+  var dur = LAB.dur || (Date.now() - (LAB.t0 || Date.now())), rel = LAB.tRel || Date.now();
+  var r = {mode:"Google seul", noW:true, dur:(Math.round(dur / 100) / 10).toString().replace(".", ",") + " s de parole", g:LAB.srTxt, gErr:LAB.srErr,
+    t:LAB.srTxt ? "Texte final " + ((Date.now() - rel) / 1000).toFixed(1).replace(".", ",") + " s après le relâcher" : ""};
+  LAB.sr = null; LAB.tRel = 0; LAB.res.unshift(r); LAB.busy = false; LAB.mode = ""; labRedraw();
 }
 function labSend(){
   var mode = LAB.mode, dur = LAB.dur || 0, chunks = LAB.chunks, mime = (LAB.rec && LAB.rec.mimeType) || "audio/webm";
   if (LAB.stream) LAB.stream.getTracks().forEach(function(t){ t.stop(); });
   LAB.rec = null; LAB.stream = null;
   var turbo = !!(document.getElementById("labTurbo") || {}).checked; LAB.turbo = turbo;
-  var r = {mode: mode === "2" ? "Google + Whisper" : "Whisper seul", dur: (Math.round(dur / 100) / 10).toString().replace(".", ",") + " s de parole"};
+  var r = {mode: mode === "2" ? "Les deux en même temps" : "Whisper seul", dur: (Math.round(dur / 100) / 10).toString().replace(".", ",") + " s de parole"};
   setTimeout(function(){
     if (mode === "2"){ r.g = LAB.srTxt; r.gErr = LAB.srErr; }
     LAB.sr = null; LAB.mode = "send"; labRedraw();
