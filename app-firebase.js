@@ -13,12 +13,13 @@ const fs = initializeFirestore(app, { localCache: persistentLocalCache({ tabMana
 function makeDb(uid){
   const base = "users/" + uid;
   const wrapSnap = (s) => ({ docs: s.docs.map(d => ({ id: d.id, data: () => d.data() })) });
-  function coll(name){
-    const ref = collection(fs, base + "/" + name);
+  function coll(name, root){
+    const path = (root || base) + "/" + name;
+    const ref = collection(fs, path);
     const api = {
       add: (data) => addDoc(ref, data),
       newId: () => doc(ref).id,
-      doc: (id) => docApi(base + "/" + name + "/" + id),
+      doc: (id) => docApi(path + "/" + id),
       onSnapshot: (cb, err) => onSnapshot(ref, s => cb(wrapSnap(s)), err),
       orderBy: (field, dir) => ({ limit: (n) => ({ onSnapshot: (cb, err) => onSnapshot(query(ref, orderBy(field, dir || "asc"), limit(n)), s => cb(wrapSnap(s)), err) }) })
     };
@@ -29,13 +30,16 @@ function makeDb(uid){
     return {
       update: (data) => updateDoc(ref, data),
       set: (data) => setDoc(ref, data),
+      merge: (data) => setDoc(ref, data, { merge: true }),
       delete: () => deleteDoc(ref),
       get: () => getDoc(ref).then(s => ({ exists: s.exists(), data: () => s.data() })),
       onSnapshot: (cb, err) => onSnapshot(ref, s => cb({ exists: s.exists(), data: () => s.data() }), err)
     };
   }
   return {
-    collection: coll,
+    collection: (name) => coll(name),
+    /* MyWorld_1.54 : espace commun (shared/…), par ex. shared/videos/items pour « Vidéos à deux » */
+    shared: (name) => coll(name, "shared"),
     doc: (rel) => docApi(base + "/" + rel),
     /* sauvegarde : import en lots de 400 écritures */
     importAll: async (backup) => {

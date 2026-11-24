@@ -1476,6 +1476,69 @@ body.fan-on nav.tabs a,body.fan-on .nav-add{opacity:.35;pointer-events:none;tran
 .fw-fi .fw-tmdb{text-align:left;margin-top:4px}
 .fw-fbtns{box-sizing:border-box;position:sticky;bottom:0;padding:14px 24px calc(16px + env(safe-area-inset-bottom,0px));background:linear-gradient(180deg,rgba(21,19,21,0),#151315 30%)}
 .fw-fbtns .fw-b1{color:#FF9A8C}
+/* MyWorld_1.54 : Vidéos à deux (grille + mode soirée) */
+.vd-page{padding-bottom:150px}
+.vd-warn{margin:4px 0 12px;padding:12px 14px;border-radius:14px;background:#FBEFD2;color:#6E4A0A;font-size:13.5px;line-height:1.45}
+.vd-tabs{display:flex;gap:8px;margin:6px 0 14px;overflow-x:auto;scrollbar-width:none}
+.vd-tabs button{flex:none;height:36px;padding:0 14px;border-radius:18px;border:1px solid var(--line);background:#FFFFFF;color:#14202B;font:inherit;font-size:13px;font-weight:700}
+.vd-tabs button.on{background:#0B4F7C;border-color:#0B4F7C;color:#FFFFFF}
+.vd-gh{display:flex;justify-content:space-between;align-items:baseline;margin:14px 0 8px}
+.vd-gh h2{margin:0;font-size:15px;font-weight:800}
+.vd-gh span{font-size:12px;color:#4A5A68}
+.vd-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px 8px}
+.vd-cell{display:flex;flex-direction:column;gap:5px;min-width:0;padding:0;border:0;background:none;font:inherit;text-align:left;color:#14202B;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+.vd-cell:active .vd-th{transform:scale(.96)}
+.vd-th{position:relative;display:block;aspect-ratio:9/16;border-radius:12px;overflow:hidden;background:#DDE3EA;transition:transform .15s}
+.vd-th img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.vd-ph{position:absolute;inset:0;display:grid;place-items:center;opacity:.7}
+.vd-ph svg{width:34px;height:34px}
+.vd-pb{position:absolute;top:6px;left:6px;height:20px;padding:0 6px;border-radius:10px;color:#FFFFFF;font-size:10px;font-weight:800;display:inline-flex;align-items:center}
+.vd-pb.s{position:static;flex:none}
+.vd-new{position:absolute;top:8px;right:8px;width:10px;height:10px;border-radius:50%;background:#F2614E;border:2px solid #FFFFFF}
+.vd-who{position:absolute;bottom:6px;left:6px;display:flex}
+.vd-who i{width:22px;height:22px;border-radius:50%;color:#FFFFFF;font-size:11px;font-weight:800;font-style:normal;display:grid;place-items:center;border:1.5px solid #FFFFFF}
+.vd-who i+i{margin-left:-7px}
+.vd-dur{position:absolute;bottom:7px;right:6px;font-size:10px;font-weight:700;color:#FFFFFF;background:#14202BCC;padding:2px 5px;border-radius:6px}
+.vd-heart{position:absolute;top:30px;right:7px;color:#FF6B81;font-size:14px;text-shadow:0 1px 3px rgba(0,0,0,.4)}
+.vd-cell small{font-size:11.5px;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.vd-cred{margin:18px 0 0;font-size:11px;color:#6A7884;text-align:center}
+.vd-go{position:fixed;left:50%;bottom:calc(98px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:30;height:54px;padding:0 24px;border-radius:27px;border:0;background:#0B4F7C;color:#FFFFFF;font:inherit;font-size:16px;font-weight:800;display:flex;align-items:center;gap:10px;box-shadow:0 8px 24px rgba(11,79,124,.35);white-space:nowrap}
+.vd-go small{font-size:12px;font-weight:700;opacity:.75}
+body.fan-on .vd-go,body.mic-on .vd-go,body.add-on .vd-go,body.ne-open .vd-go{display:none}
+.vd-btns{display:flex;gap:10px;margin-top:14px}.vd-btns .btn{flex:1}
+.vd-danger{color:#C2412D}
+.vd-sh .vd-shm{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0;font-size:13px;color:#4A5A68}
+.vd-ext{display:block;margin-top:14px;text-align:center;font-size:14px;font-weight:700;color:#0B4F7C}
+/* mode soirée */
+#vdRoot{position:fixed;inset:0;z-index:92}
+#vdRoot *{box-sizing:border-box}
+body.vd-on{overflow:hidden}
+.vd-s{position:absolute;inset:0;background:#000000;color:#FFFFFF;overflow:hidden;touch-action:none}
+.vd-stage{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;touch-action:auto}
+.vd-stage iframe,.vd-stage>div:not(.vd-nop):not(.vd-fin){width:100%;height:100%;border:0;display:block}
+.vd-stage iframe.ig{background:#FFFFFF}
+.vd-top{position:absolute;top:0;left:0;right:0;padding:calc(12px + env(safe-area-inset-top,0px)) 14px 26px;background:linear-gradient(to bottom,rgba(0,0,0,.7),rgba(0,0,0,0));display:flex;flex-direction:column;gap:10px;pointer-events:none}
+.vd-top *{pointer-events:auto}
+.vd-segs{display:grid;gap:3px}
+.vd-segs span{height:3px;border-radius:2px;background:rgba(255,255,255,.3)}
+.vd-segs span.done{background:#FFFFFF}.vd-segs span.on{background:rgba(255,255,255,.8)}
+.vd-tr{display:flex;align-items:center;justify-content:space-between}
+.vd-tr span{font-size:14px;font-weight:700;text-shadow:0 1px 3px rgba(0,0,0,.5)}
+.vd-x{width:44px;height:44px;border-radius:50%;border:0;background:rgba(255,255,255,.18);color:#FFFFFF;display:grid;place-items:center}
+.vd-side{position:absolute;right:12px;bottom:calc(150px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:16px;align-items:center}
+.vd-rb{width:52px;height:52px;border-radius:50%;border:0;background:rgba(255,255,255,.18);color:#FFFFFF;display:grid;place-items:center;-webkit-tap-highlight-color:transparent}
+.vd-rb.heart{color:#FFB3BF}.vd-rb.laugh{color:#FFE2A6}
+.vd-rb.heart.on{background:#FF6B81;color:#FFFFFF}.vd-rb.laugh.on{background:#FFD27A;color:#3A2A08}
+.vd-rb.on{transform:scale(1.06)}
+.vd-bot{position:absolute;left:0;right:0;bottom:0;padding:56px 80px calc(22px + env(safe-area-inset-bottom,0px)) 16px;background:linear-gradient(to top,rgba(0,0,0,.82),rgba(0,0,0,0));display:flex;flex-direction:column;gap:7px}
+.vd-by{display:flex;align-items:center;flex-wrap:wrap;gap:8px}
+.vd-av{width:28px;height:28px;border-radius:50%;border:1.5px solid #FFFFFF;font-size:13px;font-weight:800;display:grid;place-items:center}
+.vd-byn{font-size:13px;font-weight:700}.vd-byd{font-size:12px;color:#C9D2DA}
+.vd-bt{margin:0;font-size:15px;font-weight:700;line-height:1.35;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.vd-hint{margin:0;font-size:12px;color:#C9D2DA;display:flex;align-items:center;gap:6px}
+.vd-nop,.vd-fin{padding:0 32px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:14px;color:#E6EBF0;font-size:15px;line-height:1.45}
+.vd-fin-t{margin:0;font-size:24px;font-weight:800;color:#FFFFFF}
+.vd-fin p,.vd-nop p{margin:0}
 .lab-keys{display:flex;gap:6px;flex-wrap:wrap;margin:2px 0 8px}.lab-k{font-size:12px;font-weight:800;padding:4px 10px;border-radius:999px;background:#FFEBD9;color:#A34A16}.lab-k.on{background:#E4F4E8;color:#2F7440}
 .lab-err{margin:4px 0 8px;font-size:13px;font-weight:800;color:#A8402F}
 .lab-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0 8px}
@@ -2043,7 +2106,7 @@ body.by-on #navFade{display:none}
 
 <div id="evRoot" hidden></div>
 <div id="gameRoot" hidden></div>
-<div id="fidRoot" hidden></div><div id="beYear" hidden role="dialog" aria-label="Ton année"></div>
+<div id="fidRoot" hidden></div><div id="vdRoot" hidden></div><div id="beYear" hidden role="dialog" aria-label="Ton année"></div>
 <div id="navFade" aria-hidden="true"></div>
 <nav class="tabs" aria-label="Navigation">
   <div class="in">
@@ -2904,10 +2967,11 @@ var DECO = (function(){
 
 </script>
 <script>
-var APP_VERSION = "MyWorld_1.53";
+var APP_VERSION = "MyWorld_1.54";
 /* MyWorld_1.33 : nouveautés affichées dans les Réglages. À CHAQUE VERSION (appli ou jeu) : ajouter une entrée EN TÊTE,
    {v: numéro, d: date AAAA-MM-JJ, t: titre court, l: 1 à 3 phrases simples, sans jargon}. */
 var MW_NEWS = [
+  {"v": "1.54", "d": "2026-11-24", "t": "Vidéos à deux", "l": ["Nouvelle fleur « Vidéos » : la liste des vidéos à regarder avec Alessia (YouTube, Instagram, Facebook), avec qui l'a partagée.", "Partage une vidéo vers My World depuis son appli (ou colle le lien au +) : elle rejoint la liste, même pour Alessia.", "« Lancer la soirée » : les vidéos à la suite en plein écran, coups de cœur et fous rires ; chaque vidéo regardée passe dans « Vues »."]},
   {"v": "1.53", "d": "2026-11-24", "t": "Essai de la dictée : bouton « Google seul »", "l": ["Sur Android, Google et l'enregistrement pour Whisper ne peuvent pas écouter en même temps : la dictée Google s'arrêtait (« aborted »).", "Nouveau bouton « Google seul » pour comparer la même phrase avec Whisper, et « Les deux » essaie maintenant Google en premier."]},
   {"v": "1.52", "d": "2026-11-23", "t": "Page de test « Vidéos à deux »", "l": ["Réglages › Ta voix › « Page de test · Vidéos à deux » : colle un lien YouTube, Instagram ou Facebook pour voir s'il se lit dans l'appli et ce qu'on peut en tirer.", "C'est la première étape avant la page Vidéos et le mode soirée."]},
   {"v": "1.51", "d": "2026-11-23", "t": "Ta note Films en mur d'affiches", "l": ["Ta note Films devient un mur d'affiches avec les onglets À voir, Vus et Séries ; touche une affiche pour sa fiche : résumé, où le regarder en France, bande-annonce, « Marquer vu ».", "Quand tu ajoutes un titre (au + ou avec « Ajouter »), l'appli te demande « C'est lequel ? » s'il y a plusieurs films du même nom.", "Affiches et infos : TMDB ; plateformes : JustWatch."]},
@@ -3132,8 +3196,9 @@ function heroHTML(){
   var sub = "";
   if (S.view === "courses"){ var nc = coOpen().filter(function(x){ return !x.done; }).length; sub = '<p class="sub">' + (nc ? nc + " article" + (nc > 1 ? "s" : "") + " à prendre" : "Liste vide") + '</p>'; }
   if (S.view === "anniv"){ var bdn = bdItems().length, bdq = bdItems().filter(function(i){ return !i.md; }).length; sub = '<p class="sub">' + (bdn ? bdn + " anniversaire" + (bdn > 1 ? "s" : "") + (bdq ? " · " + bdq + " date" + (bdq > 1 ? "s" : "") + " à compléter" : "") : "Aucun pour l'instant") + '</p><button type="button" class="hd-add" data-act="bd-new">' + LT_PLUS + 'Ajouter</button>'; }
+  if (S.view === "videos"){ var vnv = vidLists().voir.length; sub = '<p class="sub">À regarder avec Alessia' + (vnv ? " · " + vnv + " pas encore vue" + (vnv > 1 ? "s" : "") : "") + '</p><button type="button" class="hd-add" data-act="vd-add">' + LT_PLUS + 'Ajouter</button>'; }
   if (S.view === "cartes"){ var nf = fidAll().length; sub = '<p class="sub">' + (nf ? nf + " carte" + (nf > 1 ? "s" : "") + " de fidélité" : "Aucune carte pour l'instant") + '</p>'; }
-  var title = S.view === "conclusions" ? "Conclusions" : S.view === "sommeil" ? "Sommeil" : S.view === "cartes" ? "Tes cartes" : S.view === "anniv" ? "Anniversaires" : S.view === "listes" ? "Tes listes" : S.view === "courses" ? "Tes courses" : S.view === "fiche" ? "Ta fiche" : S.view === "notes" ? "Notes" : "Les News";
+  var title = S.view === "conclusions" ? "Conclusions" : S.view === "sommeil" ? "Sommeil" : S.view === "cartes" ? "Tes cartes" : S.view === "anniv" ? "Anniversaires" : S.view === "videos" ? "Vidéos" : S.view === "listes" ? "Tes listes" : S.view === "courses" ? "Tes courses" : S.view === "fiche" ? "Ta fiche" : S.view === "notes" ? "Notes" : "Les News";
   if (S.view === "gazette"){ var u = S.settings && S.settings.gazetteUpdatedAt, ds0 = gzDays();
     if (S.gzDay){ var nb = gzBatch(S.gzDay).length; title = "Les News"; sub = '<p class="sub">' + h(gzDayLabel(S.gzDay) + (S.gzDay === iso(today()) || S.gzDay === iso(addDays(today(), -1)) ? " · " + parseISO(S.gzDay).getDate() + " " + MOIS[parseISO(S.gzDay).getMonth()] : "") + " · " + nb + " info" + (nb > 1 ? "s" : "")) + '</p>'; }
     else sub = '<p class="sub"><span class="pulse" aria-hidden="true" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#2F7440;margin-right:6px"></span>' + h(u ? (iso(new Date(u)) === iso(today()) ? "Mise à jour à " + new Date(u).getHours() + " h " + pad(new Date(u).getMinutes()) : "Mise à jour " + ago(u)) + " · " + ds0.length + " jour" + (ds0.length > 1 ? "s" : "") + " d'archives" : "En attente de la première mise à jour") + '</p>'; }
@@ -3189,6 +3254,332 @@ function bdBadge(b){
 }
 function bdRow(b){
   return '<div class="bd3row"><button type="button" class="bd3main" data-act="bday-edit" data-id="' + h(b.id) + '" aria-label="Anniversaire de ' + h(b.person) + ', ' + h(b.date.getDate() + " " + MOIS[b.date.getMonth()]) + '"><span class="bd-dt"><small>' + MOIS_COURT[b.date.getMonth()] + '</small><b>' + b.date.getDate() + '</b></span><span class="bd-tx"><b>' + h(b.person) + '</b><small>' + h(cap(JOURS_LONG[b.date.getDay()]) + " · " + bdWhen(b)) + '</small></span></button>' + bdBadge(b) + '</div>';
+}
+/* ===== MyWorld_1.54 : « Vidéos à deux » (brief claude/videos-a-deux-brief.md ; maquettes validées « Vidéos à deux : grille et mode soirée »).
+   Liste commune avec Alessia : Firestore shared/videos/items/{plateforme_id} (règles : 2 comptes). Une vidéo = {p, id, kind, url,
+   title, author, thumb, dur, by:{T,A}, at, seen, react:{coeur, rire}, enr}. « Vue » = une seule marque commune, posée pendant la soirée.
+   Lecteurs validés sur le 11T Pro (page de test 1.52-1.53) : YouTube /embed (API IFrame, fin détectée), Instagram /embed/, Facebook
+   plugins/video.php avec l'adresse du reel (les liens courts /share/r/ sont retrouvés par le script via m.facebook.com).
+   Titre + vignette : YouTube par oEmbed (direct) ; Instagram / Facebook par le script (page d'intégration), vignette réduite et gardée
+   dans la fiche (les liens d'images de Meta expirent). */
+var VD_P = {yt:{n:"YouTube", c:"#C4302B"}, ig:{n:"Insta", c:"#B0307A"}, fb:{n:"Facebook", c:"#1060C9"}};
+var VD_W = {T:{n:"Théo", c:"#0B4F7C"}, A:{n:"Alessia", c:"#B23C6E"}};
+var VD_ME = "T", VD = null, VD_TRY = {}, VD_BUSY = false;
+var VD_ICON = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M10.5 9.5v5l4-2.5z" fill="currentColor"/></svg>';
+var VD_PLAY = '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"/></svg>';
+S.vids = []; S.vidTab = "voir"; S.vidErr = "";
+function vidParse(raw){
+  var m0 = String(raw || "").match(/https?:\/\/[^\s<>"']+/i); if (!m0) return null;
+  var url = m0[0].replace(/[).,;!?]+$/, ""), m;
+  if ((m = url.match(/(?:youtube\.com\/(?:shorts\/|watch\?(?:[^#]*&)?v=|embed\/|live\/|v\/)|youtu\.be\/)([\w-]{11})/i)))
+    return {p:"yt", id:m[1], url:/\/shorts\//i.test(url) ? "https://www.youtube.com/shorts/" + m[1] : "https://www.youtube.com/watch?v=" + m[1], raw:url};
+  if ((m = url.match(/instagram\.com\/(?:[\w.]+\/)?(reels?|p|tv)\/([\w-]+)/i))){
+    var kind = /^reels?$/i.test(m[1]) ? "reel" : m[1].toLowerCase();
+    return {p:"ig", id:m[2], kind:kind, url:"https://www.instagram.com/" + kind + "/" + m[2] + "/", raw:url};
+  }
+  if ((m = url.match(/facebook\.com\/(?:reel|reels)\/(\d+)/i)) || (m = url.match(/facebook\.com\/(?:watch\/?\?(?:[^#]*&)?v=|[\w.]+\/videos\/(?:[\w.-]+\/)?|video\.php\?(?:[^#]*&)?v=)(\d+)/i)))
+    return {p:"fb", id:m[1], url:"https://www.facebook.com/reel/" + m[1], raw:url};
+  if ((m = url.match(/facebook\.com\/share\/(r|v|p)\/([\w-]+)/i)) || (m = url.match(/fb\.watch\/([\w-]+)/i)))
+    return {p:"fb", id:null, short:m[m.length - 1], url:url.split("?")[0], raw:url};
+  return null;
+}
+function vidKey(v){ return v.id ? v.p + "_" + v.id : "fbs_" + v.short; }
+function vidRef(key){ return db.shared("videos/items").doc(key); }
+function vidSnap(){
+  if (!db || !db.shared || vidSnap.on) return; vidSnap.on = 1;
+  db.shared("videos/items").onSnapshot(function(s){
+    S.vids = s.docs.map(function(d){ var x = d.data(); x._id = d.id; return x; }); S.vidErr = "";
+    if (S.view === "videos") render();
+    if (VD) vdChrome();
+    setTimeout(vidEnrichNext, 400);
+  }, function(e){ S.vidErr = /permission|denied/i.test(String(e && (e.code || e.message))) ? "rules" : "net"; vidSnap.on = 0; if (S.view === "videos") render(); });
+}
+function vidBy(x){ var b = x.by || {}; return ["T", "A"].filter(function(k){ return b[k]; }); }
+function vidWho(x){ var b = x.by || {}, L = vidBy(x); return L.sort(function(a, c){ return String(b[a]).localeCompare(String(b[c])); }); }
+function vidLists(){
+  var all = S.vids.filter(function(x){ return vidBy(x).length; });
+  var voir = all.filter(function(x){ return !x.seen; }).sort(function(a, b){ return String(b.at).localeCompare(String(a.at)); });
+  var vues = all.filter(function(x){ return x.seen; }).sort(function(a, b){ return String(b.seen).localeCompare(String(a.seen)); });
+  var coeur = all.filter(function(x){ return x.react && x.react.coeur; }).sort(function(a, b){ return String(b.at).localeCompare(String(a.at)); });
+  return {voir:voir, vues:vues, coeur:coeur};
+}
+function vidTitle(x){ return x.title || (x.author ? (x.p === "yt" ? "Vidéo de " : "Reel de ") + x.author : x.p === "yt" ? "Vidéo YouTube" : x.p === "ig" ? "Reel Instagram" : "Reel Facebook"); }
+function vidDur(s){ s = Math.round(s || 0); return s ? Math.floor(s / 60) + ":" + pad(s % 60) : ""; }
+/* ---------- ajout (partage, + de la page, phrase au +) ---------- */
+function vidAdd(raw){
+  var v = vidParse(raw); if (!v) return false;
+  if (!db || !db.shared){ toast("La liste de vidéos n'est pas disponible."); return true; }
+  vidSnap();
+  if (location.hash.replace("#", "") !== "videos") location.hash = "videos";
+  if (v.p === "fb" && !v.id){
+    toast("Je retrouve la vidéo Facebook…");
+    vidLien(v.raw).then(function(j){
+      var r = j && j.fbReel ? vidParse(j.fbReel) : null;
+      if (r && r.id){ r.raw = v.raw; vidSave(r, j); } else vidSave(v, null);
+    }, function(){ vidSave(v, null); });
+  } else vidSave(v, null);
+  return true;
+}
+function vidSave(v, lien){
+  var key = vidKey(v), ex = S.vids.find(function(x){ return x._id === key; }), now = nowISO(), ref = vidRef(key);
+  if (ex){
+    if (ex.by && ex.by[VD_ME]){ toast(ex.seen ? "Vous l'avez déjà regardée ensemble." : "Elle est déjà dans la liste."); return; }
+    var pb = {}; pb[VD_ME] = now;
+    ref.merge({by:pb}).then(function(){
+      toast("Ajoutée ! Alessia l'avait aussi partagée.", {undo:function(){ var u = {}; u[VD_ME] = null; ref.merge({by:u}).catch(dbErr); }});
+    }).catch(vidErr);
+    return;
+  }
+  var d = {p:v.p, id:v.id || null, kind:v.kind || null, short:v.short || null, url:v.url, raw:v.raw || v.url, title:"", author:"", thumb:"", dur:0, by:{}, at:now, seen:null, react:{}, enr:0};
+  d.by[VD_ME] = now;
+  ref.set(d).then(function(){
+    toast("Ajoutée ! Alessia la verra aussi.", {undo:function(){ ref.delete().catch(dbErr); }});
+    vidEnrich(Object.assign({_id:key}, d), lien);
+  }).catch(vidErr);
+}
+function vidErr(e){ if (/permission|denied/i.test(String(e && (e.code || e.message)))){ S.vidErr = "rules"; toast("La liste commune n'est pas encore ouverte : il faut coller les règles Firebase."); render(); } else dbErr(e); }
+function vidLien(url, href){
+  if (!mcp || !mcp.script) return Promise.reject(new Error("no_script"));
+  return mcp.script("lien", {url:url, href:href || "", img:1}).then(function(j){ if (!j || j.error) throw new Error((j && j.error) || "lien"); return j; });
+}
+/* ---------- titre, compte et vignette ---------- */
+function vidThumb(b64, mime){
+  return new Promise(function(res){
+    var im = new Image();
+    im.onload = function(){ try { var w = 216, hh = 384, c = document.createElement("canvas"); c.width = w; c.height = hh; var g = c.getContext("2d"), s = Math.max(w / im.width, hh / im.height), dw = im.width * s, dh = im.height * s;
+      g.drawImage(im, (w - dw) / 2, (hh - dh) / 2, dw, dh); res(c.toDataURL("image/jpeg", .72)); } catch(e){ res(""); } };
+    im.onerror = function(){ res(""); };
+    im.src = "data:" + (mime || "image/jpeg") + ";base64," + b64;
+  });
+}
+function vidMetaFrom(j, x){
+  var out = {}, e = (j && j.embed) || {}, og = (j && j.og) || {};
+  if (e.author) out.author = String(e.author).trim().slice(0, 60);
+  var t = String(e.caption || "").trim();
+  if (!t && og.title && !/^(instagram|facebook)$/i.test(og.title.trim())){
+    var m = og.title.match(/^(.+?) sur (?:Instagram|Facebook)\s*:\s*[«"“](.+)[»"”]\s*$/i);
+    if (m){ t = m[2]; if (!out.author) out.author = m[1].trim(); } else t = og.title;
+  }
+  if (t) out.title = t.replace(/\s+/g, " ").slice(0, 140);
+  return out;
+}
+function vidEnrich(x, lien){
+  var key = x._id, ref = vidRef(key); VD_TRY[key] = 1;
+  var done = function(patch){ patch.enr = (x.enr || 0) + 1; return ref.merge(patch).catch(function(){}); };
+  if (x.p === "yt"){
+    return fetch("https://www.youtube.com/oembed?format=json&url=" + encodeURIComponent(x.url)).then(function(r){ return r.ok ? r.json() : {}; }).then(function(j){
+      return done({title:String(j.title || "").slice(0, 140), author:String(j.author_name || "").slice(0, 60), thumb:"https://i.ytimg.com/vi/" + x.id + "/hqdefault.jpg"});
+    }, function(){ return done({thumb:"https://i.ytimg.com/vi/" + x.id + "/hqdefault.jpg"}); });
+  }
+  var P = lien ? Promise.resolve(lien) : vidLien(x.raw || x.url, x.p === "fb" && x.id ? x.url : "");
+  return P.then(function(j){
+    /* lien court Facebook retrouvé plus tard : la fiche passe sous sa vraie clé */
+    if (x.p === "fb" && !x.id && j.fbReel){
+      var r = vidParse(j.fbReel);
+      if (r && r.id){
+        var nk = vidKey(r), ex = S.vids.find(function(y){ return y._id === nk; });
+        var d = Object.assign({}, x, {id:r.id, url:r.url, short:null}); delete d._id;
+        var w = ex ? vidRef(nk).merge({by:Object.assign({}, x.by || {})}) : vidRef(nk).set(d);
+        return w.then(function(){ return ref.delete(); }).then(function(){ if (!ex) return vidEnrich(Object.assign({_id:nk}, d), j); }).catch(function(){});
+      }
+    }
+    var meta = vidMetaFrom(j, x), e = j.embed || {};
+    return (e.b64 ? vidThumb(e.b64, e.mime) : Promise.resolve("")).then(function(th){ if (th) meta.thumb = th; return done(meta); });
+  }, function(){ return done({}); });
+}
+function vidEnrichNext(){
+  if (VD_BUSY || !navigator.onLine || !db || !db.shared) return;
+  var x = S.vids.find(function(y){ return !VD_TRY[y._id] && (y.enr || 0) < 3 && (!y.thumb || (y.p === "fb" && !y.id)); });
+  if (!x) return;
+  if (x.p !== "yt" && (!mcp || !mcp.script)) return;
+  VD_BUSY = true;
+  Promise.resolve(vidEnrich(x, null)).then(function(){ VD_BUSY = false; setTimeout(vidEnrichNext, 700); }, function(){ VD_BUSY = false; });
+}
+/* ---------- page Vidéos (maquette « My World · Vidéos ») ---------- */
+function vidWeek(isoStr){ var d = new Date(isoStr); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() - ((d.getDay() + 6) % 7)); return d.getTime(); }
+function vidCell(x){
+  var P = VD_P[x.p] || VD_P.yt, who = vidWho(x), dur = vidDur(x.dur);
+  return '<button type="button" class="vd-cell" data-act="vd-open" data-k="' + h(x._id) + '" aria-label="' + h(vidTitle(x) + " · " + P.n + (x.seen ? "" : " · pas encore vue")) + '">'
+    + '<span class="vd-th"' + (x.thumb ? "" : ' style="background:' + (x.p === "yt" ? "#E7D9D8" : x.p === "ig" ? "#EBDCE6" : "#D9E3F1") + '"') + '>'
+    + (x.thumb ? '<img src="' + h(x.thumb) + '" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer">' : '<span class="vd-ph" style="color:' + P.c + '">' + VD_ICON + '</span>')
+    + '<span class="vd-pb" style="background:' + P.c + '">' + P.n + '</span>'
+    + (x.seen ? "" : '<span class="vd-new" aria-hidden="true"></span>')
+    + '<span class="vd-who">' + who.map(function(k){ return '<i style="background:' + VD_W[k].c + '">' + k + '</i>'; }).join("") + '</span>'
+    + (dur ? '<span class="vd-dur">' + dur + '</span>' : "") + (x.react && x.react.coeur ? '<span class="vd-heart" aria-hidden="true">♥</span>' : "")
+    + '</span><small>' + h(vidTitle(x)) + '</small></button>';
+}
+function viewVideos(){
+  vidSnap(); setTimeout(vidEnrichNext, 800);
+  var s = vidLists(), tab = S.vidTab in s ? S.vidTab : "voir", L = s[tab];
+  var tb = function(k, lbl, n){ return '<button type="button" role="tab" class="' + (k === tab ? "on" : "") + '" aria-selected="' + (k === tab) + '" data-act="vd-tab" data-t="' + k + '">' + lbl + (n ? " · " + n : "") + '</button>'; };
+  var html = '<div class="lt-wrap gut vd-page">';
+  if (S.vidErr === "rules") html += '<div class="vd-warn"><b>La liste commune n\'est pas encore ouverte.</b> Il faut coller les nouvelles règles dans la console Firebase (Firestore › Règles), puis « Publier ».</div>';
+  else if (S.vidErr) html += '<div class="vd-warn">Je n\'arrive pas à joindre la liste de vidéos. Vérifie la connexion.</div>';
+  html += '<div class="vd-tabs" role="tablist">' + tb("voir", "À voir", s.voir.length) + tb("vues", "Vues", s.vues.length) + tb("coeur", "Coups de cœur", s.coeur.length) + '</div>';
+  if (!L.length){
+    html += '<p class="lt-empty">' + (tab === "vues" ? "Aucune vidéo regardée ensemble pour l'instant. Pendant la soirée, chaque vidéo qui passe arrive ici." : tab === "coeur" ? "Pas encore de coup de cœur : touche le cœur pendant la soirée." : "Rien à regarder pour l'instant. Dans YouTube, Instagram ou Facebook : Partager → My World. Ou touche « Ajouter » pour coller un lien.") + '</p>';
+  } else {
+    var groups = [], thisW = vidWeek(new Date().toISOString());
+    L.forEach(function(x){
+      var w = vidWeek(tab === "vues" ? x.seen : x.at), lbl = w === thisW ? "Cette semaine" : w === thisW - 7 * 864e5 ? "La semaine dernière" : "Plus tôt";
+      var g = groups[groups.length - 1]; if (!g || g.l !== lbl){ g = {l:lbl, L:[]}; groups.push(g); } g.L.push(x);
+    });
+    groups.forEach(function(g, i){ html += '<div class="vd-gh"><h2>' + g.l + '</h2>' + (i === 0 ? '<span>' + (tab === "vues" ? "dernières vues d'abord" : "plus récentes d'abord") + '</span>' : "") + '</div><div class="vd-grid">' + g.L.map(vidCell).join("") + '</div>'; });
+  }
+  html += '<p class="vd-cred">Partagées par Théo et Alessia · vignettes : YouTube, Instagram, Facebook</p></div>';
+  if (s.voir.length) html += '<button type="button" class="vd-go" data-act="vd-soiree">' + VD_PLAY + 'Lancer la soirée<small>' + s.voir.length + ' vidéo' + (s.voir.length > 1 ? "s" : "") + '</small></button>';
+  return html;
+}
+function vidAddSheet(){
+  openSheet("Ajouter une vidéo", '<form id="fVdAdd"><div class="field"><label for="vdUrl">Lien YouTube, Instagram ou Facebook</label><input id="vdUrl" type="url" inputmode="url" autocomplete="off" placeholder="https://…"></div>'
+    + '<p class="rg-hint">Plus simple depuis l\'appli de la vidéo : Partager → My World.</p>'
+    + '<div class="vd-btns"><button type="button" class="btn light" data-act="vd-paste">Coller</button><button type="submit" class="btn green">Ajouter</button></div></form>', function(){
+    var f = document.getElementById("fVdAdd"), u = document.getElementById("vdUrl");
+    setTimeout(function(){ try { u.focus(); } catch(e){} }, 80);
+    f.onsubmit = function(e){ e.preventDefault(); var t = u.value.trim(); if (!vidParse(t)){ toast("Ce lien n'est ni YouTube, ni Instagram, ni Facebook."); return; } closeSheet(); vidAdd(t); };
+  });
+}
+function vidSheet(k){
+  var x = S.vids.find(function(y){ return y._id === k; }); if (!x) return;
+  var P = VD_P[x.p], who = vidWho(x);
+  openSheet(vidTitle(x), '<div class="vd-sh"><p class="vd-shm"><span class="vd-pb s" style="background:' + P.c + '">' + P.n + '</span>' + h(who.map(function(w){ return "Partagée par " + VD_W[w].n + " · " + vidDay(x.by[w]); }).join(" · ")) + (x.seen ? " · vue le " + vidDay(x.seen) : "") + '</p>'
+    + '<div class="vd-btns"><button type="button" class="btn light vd-danger" data-act="vd-del" data-k="' + h(k) + '">Retirer</button>'
+    + (x.seen ? '<button type="button" class="btn light" data-act="vd-unsee" data-k="' + h(k) + '">Remettre à voir</button>' : "")
+    + '<button type="button" class="btn green" data-act="vd-one" data-k="' + h(k) + '">Regarder</button></div>'
+    + '<a class="vd-ext" href="' + h(x.url) + '" target="_blank" rel="noopener">Ouvrir dans ' + (x.p === "ig" ? "Instagram" : P.n) + '</a></div>');
+}
+var VD_JOURS = ["dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"];
+function vidDay(s){ if (!s) return ""; var d = new Date(s), t = new Date(), diff = Math.round((new Date(t.toDateString()) - new Date(d.toDateString())) / 864e5);
+  return diff === 0 ? "aujourd'hui" : diff === 1 ? "hier" : diff < 7 ? VD_JOURS[d.getDay()] : d.getDate() + " " + MOIS[d.getMonth()]; }
+/* appui long sur une vignette = fiche (retirer, remettre à voir, ouvrir dans l'appli) */
+(function(){
+  var t = 0, k = null, fired = false, x0 = 0, y0 = 0;
+  document.addEventListener("pointerdown", function(e){ var b = e.target.closest && e.target.closest(".vd-cell"); if (!b) return; k = b.dataset.k; fired = false; x0 = e.clientX; y0 = e.clientY;
+    clearTimeout(t); t = setTimeout(function(){ fired = true; try { navigator.vibrate && navigator.vibrate(12); } catch(x){} vidSheet(k); }, 460); });
+  document.addEventListener("pointermove", function(e){ if (k && (Math.abs(e.clientX - x0) > 10 || Math.abs(e.clientY - y0) > 10)){ clearTimeout(t); k = null; } });
+  ["pointerup", "pointercancel"].forEach(function(n){ document.addEventListener(n, function(){ clearTimeout(t); k = null; setTimeout(function(){ fired = false; }, 350); }); });
+  document.addEventListener("click", function(e){ if (fired && e.target.closest && e.target.closest(".vd-cell")){ e.preventDefault(); e.stopPropagation(); fired = false; } }, true);
+  document.addEventListener("contextmenu", function(e){ if (e.target.closest && e.target.closest(".vd-cell")) e.preventDefault(); });
+})();
+/* ---------- mode soirée (maquette « Mode soirée ») ---------- */
+var YT_API = null;
+function vdYt(){ if (YT_API) return YT_API; YT_API = new Promise(function(res){ if (window.YT && YT.Player) return res(true); var prev = window.onYouTubeIframeAPIReady; window.onYouTubeIframeAPIReady = function(){ if (prev) try { prev(); } catch(e){} res(true); }; var s = document.createElement("script"); s.src = "https://www.youtube.com/iframe_api"; s.onerror = function(){ YT_API = null; res(false); }; document.head.appendChild(s); }); return YT_API; }
+function vdOpen(L, i0){
+  if (!L.length) return;
+  var root = document.getElementById("vdRoot");
+  root.innerHTML = '<div class="vd-s" role="dialog" aria-modal="true" aria-label="Soirée vidéos"><div class="vd-stage" id="vdStage"></div>'
+    + '<div class="vd-top"><div class="vd-segs" id="vdSegs"></div><div class="vd-tr"><span id="vdCount"></span><button type="button" class="vd-x" data-act="vd-close" aria-label="Quitter la soirée"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div></div>'
+    + '<div class="vd-side"><button type="button" class="vd-rb heart" data-act="vd-react" data-r="coeur" aria-label="Coup de cœur" aria-pressed="false"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C1 8.6 3 5 6.6 5c2 0 3.4 1.1 4.4 2.6C12 6.1 13.4 5 15.4 5 19 5 21 8.6 19.6 11.8 17.5 16.4 12 21 12 21z"/></svg></button>'
+    + '<button type="button" class="vd-rb laugh" data-act="vd-react" data-r="rire" aria-label="Ça nous a fait rire" aria-pressed="false"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M7.5 13.5h9a4.5 4.5 0 0 1-9 0z" fill="currentColor"/><path d="M8 9.5l2 1-2 1M16 9.5l-2 1 2 1"/></svg></button>'
+    + '<a class="vd-rb" id="vdExt" href="#" target="_blank" rel="noopener" aria-label="Ouvrir dans l\'appli"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></a>'
+    + '<button type="button" class="vd-rb nx" data-act="vd-next" aria-label="Vidéo suivante"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></button></div>'
+    + '<div class="vd-bot" id="vdBot"></div></div>';
+  root.hidden = false; document.body.classList.add("vd-on");
+  VD = {keys:L.map(function(x){ return x._id; }), i:-1, lock:null, timer:0, yt:null, seenSet:{}};
+  history.pushState({vd:1}, "");
+  vdWake(true); vdSwipe(root.querySelector(".vd-s"));
+  vdGo(i0 || 0);
+}
+function vdItem(i){ var k = VD && VD.keys[i]; return S.vids.find(function(x){ return x._id === k; }); }
+function vdGo(i){
+  if (!VD) return; var n = VD.keys.length;
+  if (i >= n){ vdEnd(); return; } if (i < 0) i = 0;
+  if (i === VD.i && document.getElementById("vdStage").firstChild) return;
+  VD.i = i; clearTimeout(VD.timer);
+  if (VD.yt){ try { VD.yt.destroy(); } catch(e){} VD.yt = null; }
+  var x = vdItem(i), st = document.getElementById("vdStage"); if (!x){ vdGo(i + 1); return; }
+  st.innerHTML = "";
+  if (x.p === "yt"){
+    var d = document.createElement("div"); d.id = "vdYt"; st.appendChild(d);
+    vdYt().then(function(ok){
+      if (!VD || VD.i !== i) return;
+      if (!ok){ st.innerHTML = '<iframe src="https://www.youtube.com/embed/' + encodeURIComponent(x.id) + '?playsinline=1&rel=0&autoplay=1" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>'; return; }
+      VD.yt = new YT.Player("vdYt", {videoId:x.id, width:"100%", height:"100%", playerVars:{playsinline:1, rel:0, autoplay:1, modestbranding:1}, events:{
+        onReady:function(ev){ try { ev.target.playVideo(); var du = ev.target.getDuration(); if (du && !x.dur) vidRef(x._id).merge({dur:Math.round(du)}).catch(function(){}); } catch(e){} },
+        onStateChange:function(ev){ if (ev.data === 0 && VD && VD.i === i){ vdSeen(x); setTimeout(function(){ if (VD && VD.i === i) vdGo(i + 1); }, 700); } }
+      }});
+    });
+  } else if (x.p === "ig"){
+    st.innerHTML = '<iframe src="https://www.instagram.com/' + (x.kind || "reel") + '/' + encodeURIComponent(x.id) + '/embed/" allow="autoplay; encrypted-media; fullscreen" allowfullscreen scrolling="no" class="ig"></iframe>';
+  } else if (x.id){
+    st.innerHTML = '<iframe src="https://www.facebook.com/plugins/video.php?href=' + encodeURIComponent(x.url) + '&show_text=false&autoplay=true&width=400" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share; fullscreen" allowfullscreen scrolling="no"></iframe>';
+  } else {
+    st.innerHTML = '<div class="vd-nop"><p>Cette vidéo Facebook ne se lit pas ici pour l\'instant (lien pas encore retrouvé).</p><a class="btn green" href="' + h(x.raw || x.url) + '" target="_blank" rel="noopener">Ouvrir dans Facebook</a></div>';
+  }
+  /* « vue » commune : la vidéo est restée 6 s à l'écran pendant la soirée */
+  VD.timer = setTimeout(function(){ if (VD && VD.i === i) vdSeen(x); }, 6000);
+  vdChrome();
+}
+function vdSeen(x){ if (!VD || VD.seenSet[x._id] || x.seen) return; VD.seenSet[x._id] = 1; vidRef(x._id).merge({seen:nowISO()}).catch(function(){}); }
+function vdChrome(){
+  if (!VD) return; var n = VD.keys.length, i = VD.i, x = vdItem(i); if (!x) return;
+  var segs = document.getElementById("vdSegs"), cnt = document.getElementById("vdCount"), bot = document.getElementById("vdBot");
+  var a = Math.max(0, Math.min(i - 5, n - 12)), b = Math.min(n, a + 12);
+  segs.style.gridTemplateColumns = "repeat(" + (b - a) + ",minmax(0,1fr))";
+  segs.innerHTML = VD.keys.slice(a, b).map(function(_, j){ var k = a + j; return '<span class="' + (k < i ? "done" : k === i ? "on" : "") + '"></span>'; }).join("");
+  cnt.textContent = "Soirée vidéos · " + (i + 1) + " / " + n;
+  var who = vidWho(x), P = VD_P[x.p], w0 = who[0] || "T";
+  bot.innerHTML = '<div class="vd-by"><span class="vd-av" style="background:' + VD_W[w0].c + '">' + w0 + '</span><span class="vd-byn">Partagée par ' + who.map(function(k){ return VD_W[k].n; }).join(" et ") + '</span><span class="vd-byd">· ' + h(vidDay(x.by[w0])) + '</span><span class="vd-pb s" style="background:' + P.c + '">' + P.n + '</span></div>'
+    + '<p class="vd-bt">' + h(vidTitle(x)) + '</p><p class="vd-hint"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg>' + (i < n - 1 ? "Glisse vers le haut pour la suivante" : "Dernière vidéo de la soirée") + '</p>';
+  var r = x.react || {};
+  document.querySelectorAll("#vdRoot .vd-rb[data-r]").forEach(function(btn){ var on = !!r[btn.dataset.r]; btn.classList.toggle("on", on); btn.setAttribute("aria-pressed", on); });
+  var ext = document.getElementById("vdExt"); ext.href = x.raw || x.url; ext.setAttribute("aria-label", "Ouvrir dans " + (x.p === "ig" ? "Instagram" : P.n));
+}
+function vdReact(r){
+  var x = vdItem(VD.i); if (!x) return; var cur = !!(x.react && x.react[r]), p = {}; p[r] = !cur;
+  vidRef(x._id).merge({react:p}).catch(vidErr);
+  x.react = Object.assign({}, x.react || {}, p); vdChrome();
+  try { navigator.vibrate && navigator.vibrate(10); } catch(e){}
+}
+function vdEnd(){
+  if (!VD) return; clearTimeout(VD.timer); if (VD.yt){ try { VD.yt.destroy(); } catch(e){} VD.yt = null; }
+  var n = Object.keys(VD.seenSet).length;
+  document.getElementById("vdStage").innerHTML = '<div class="vd-fin"><p class="vd-fin-t">C\'est fini pour ce soir !</p><p>' + (n ? n + " vidéo" + (n > 1 ? "s" : "") + " regardée" + (n > 1 ? "s" : "") + " ensemble." : "Aucune vidéo regardée.") + '</p><button type="button" class="btn green" data-act="vd-close">Terminer</button></div>';
+  document.getElementById("vdBot").innerHTML = ""; VD.i = VD.keys.length;
+}
+function vdClose(fromPop){
+  if (!VD) return; clearTimeout(VD.timer); if (VD.yt){ try { VD.yt.destroy(); } catch(e){} } vdWake(false); VD = null;
+  var root = document.getElementById("vdRoot"); root.hidden = true; root.innerHTML = ""; document.body.classList.remove("vd-on");
+  if (!fromPop && history.state && history.state.vd) history.back();
+  if (S.view === "videos") render();
+}
+window.addEventListener("popstate", function(){ if (VD && !(history.state && history.state.vd)) vdClose(true); });
+function vdWake(on){
+  if (!VD) return;
+  if (!on){ if (VD.lock){ VD.lock.release().catch(function(){}); VD.lock = null; } return; }
+  if (!("wakeLock" in navigator)) return;
+  navigator.wakeLock.request("screen").then(function(l){ if (!VD){ l.release(); return; } VD.lock = l; l.addEventListener("release", function(){ if (VD && VD.lock === l) VD.lock = null; }); }).catch(function(){});
+}
+document.addEventListener("visibilitychange", function(){ if (VD && document.visibilityState === "visible" && !VD.lock) vdWake(true); });
+/* glisser vers le haut / le bas sur les zones hors du lecteur (le lecteur garde ses propres gestes) */
+function vdSwipe(el){
+  var y0 = null, x0 = 0, t0 = 0;
+  el.addEventListener("pointerdown", function(e){ if (e.target.closest(".vd-stage") || e.target.closest("button,a")) return; y0 = e.clientY; x0 = e.clientX; t0 = Date.now(); try { el.setPointerCapture(e.pointerId); } catch(x){} });
+  el.addEventListener("pointerup", function(e){ if (y0 === null || !VD) return; var dy = e.clientY - y0, dx = e.clientX - x0; y0 = null;
+    if (Math.abs(dy) > 50 && Math.abs(dy) > Math.abs(dx) * 1.3 && Date.now() - t0 < 900) vdGo(VD.i + (dy < 0 ? 1 : -1)); });
+  el.addEventListener("pointercancel", function(){ y0 = null; });
+}
+document.addEventListener("keydown", function(e){ if (!VD) return; if (e.key === "Escape"){ e.preventDefault(); vdClose(); } else if (e.key === "ArrowDown" || e.key === "ArrowRight"){ e.preventDefault(); vdGo(VD.i + 1); } else if (e.key === "ArrowUp" || e.key === "ArrowLeft"){ e.preventDefault(); vdGo(VD.i - 1); } });
+function vdAct(act, b){
+  switch (act){
+    case "vd-tab": S.vidTab = b.dataset.t; render(); return true;
+    case "vd-add": vidAddSheet(); return true;
+    case "vd-paste": if (navigator.clipboard && navigator.clipboard.readText) navigator.clipboard.readText().then(function(t){ var u = document.getElementById("vdUrl"); if (u) u.value = t.trim(); }, function(){ toast("Colle le lien à la main (appui long dans le champ)."); }); return true;
+    case "vd-soiree": var L0 = vidLists().voir.slice().reverse(); vdOpen(L0, 0); return true;
+    case "vd-open":
+      var s = vidLists(), tab = S.vidTab in s ? S.vidTab : "voir", L1 = tab === "voir" ? s.voir.slice().reverse() : s[tab], k = b.dataset.k;
+      vdOpen(L1, Math.max(0, L1.findIndex(function(x){ return x._id === k; }))); return true;
+    case "vd-one": closeSheet(); var x1 = S.vids.find(function(y){ return y._id === b.dataset.k; }); if (x1) vdOpen([x1], 0); return true;
+    case "vd-del":
+      closeSheet(); var x2 = S.vids.find(function(y){ return y._id === b.dataset.k; }); if (!x2) return true;
+      var keep = Object.assign({}, x2); delete keep._id;
+      vidRef(x2._id).delete().then(function(){ toast("Vidéo retirée de la liste.", {undo:function(){ vidRef(x2._id).set(keep).catch(dbErr); }}); }).catch(vidErr); return true;
+    case "vd-unsee": closeSheet(); vidRef(b.dataset.k).merge({seen:null}).then(function(){ toast("Remise dans « À voir »."); }).catch(vidErr); return true;
+    case "vd-close": vdClose(); return true;
+    case "vd-next": if (VD) vdGo(VD.i + 1); return true;
+    case "vd-react": if (VD) vdReact(b.dataset.r); return true;
+  }
+  return false;
 }
 function viewAnniv(){
   setTimeout(function(){ bdSyncAll(false); }, 600);
@@ -4262,7 +4653,7 @@ function render(){
   document.getElementById("gazBadge").hidden = !unseenN;
   document.getElementById("gazBadgeSr").textContent = unseenN ? ", " + unseenN + " nouveauté" + (unseenN > 1 ? "s" : "") : "";
   var ae = document.activeElement, keepRg = v === "reglages" && document.getElementById("rgPage") && ae && ae.closest && ae.closest("#rgPage") && (ae.tagName === "TEXTAREA" || (ae.tagName === "INPUT" && /^(text|date|search)$/.test(ae.type)));
-  var html = keepRg ? "" : v === "reglages" ? settingsHTML() : v === "voix" ? vxHTML() : v === "jeu" ? "" : v === "listes" ? viewListes() : v === "courses" ? viewCourses() : v === "cartes" ? viewCartes() : v === "anniv" ? viewAnniv() : v === "sommeil" ? viewSommeil() : v === "bienetre" ? viewBienetre() : v === "conclusions" ? viewConclusions() : v === "fiche" ? viewFiche() : v === "gazette" ? viewGazette() : v === "meteo" ? viewMeteo() : v === "notes" ? viewNotes() : viewAccueil();
+  var html = keepRg ? "" : v === "reglages" ? settingsHTML() : v === "voix" ? vxHTML() : v === "jeu" ? "" : v === "listes" ? viewListes() : v === "courses" ? viewCourses() : v === "cartes" ? viewCartes() : v === "anniv" ? viewAnniv() : v === "videos" ? viewVideos() : v === "sommeil" ? viewSommeil() : v === "bienetre" ? viewBienetre() : v === "conclusions" ? viewConclusions() : v === "fiche" ? viewFiche() : v === "gazette" ? viewGazette() : v === "meteo" ? viewMeteo() : v === "notes" ? viewNotes() : viewAccueil();
   if (S.dbState === "off") html = '<section class="section gut" style="margin-top:24px"><div class="card soft-empty">Tes données ne sont pas disponibles pour l\'instant. Vérifie ta connexion, puis recharge l\'appli.</div></section>' + html;
   if (!keepRg) document.getElementById("view").innerHTML = html;
   if (v === "reglages" && !keepRg) mountSettings();
@@ -5069,6 +5460,8 @@ function onCapture(e){
   if (S.vxMiss){ if (!spoken && Date.now() - S.vxMiss.at < 600000 && vxNorm(text).join(" ") !== vxNorm(S.vxMiss.heard).join(" ")) vxAddMiss(text, S.vxMiss.heard); S.vxMiss = null; }
   /* MyWorld_1.42 : une phrase que tu m'as apprise passe avant tout le reste */
   var lm = wfMatch(text); if (lm){ input.value = ""; hint.textContent = ""; if (!document.getElementById("addRoot").hidden) addClose(); wfRunAll(wfFromRule(lm, text), text); return; }
+  /* MyWorld_1.54 : un lien vidéo collé au + rejoint la liste Vidéos */
+  if (vidParse(text)){ input.value = ""; hint.textContent = ""; if (!document.getElementById("addRoot").hidden) addClose(); vidAdd(text); return; }
   /* MyWorld_1.38 : minuteur */
   var tc = timerCmd(text); if (tc){ input.value = ""; hint.textContent = "";
     if (tc.miss){ understand(text).then(function(r){ wfStart(text, r, ["minuteur"]); }); return; }
@@ -5180,6 +5573,7 @@ var OPEN_APPS = [
   ["courses", /^(?:ma |la |les |mes )?(?:liste de |liste des )?courses$/],
   ["cartes", /^(?:mes |les |ma )?cartes?(?: de fidelite)?$|^(?:la )?fidelite$|^(?:mon |le )?portefeuille$/],
   ["anniv", /^(?:mes |les )?(?:anniversaires?|annivs?|annifs?|dates d'anniversaire)$/],
+  ["videos", /^(?:les |mes |nos )?(?:videos|reels|shorts)(?: a deux)?$|^(?:la )?soiree videos?$/],
   ["sommeil", /^(?:mon |le |la )?(?:suivi du |suivi de )?(?:sommeil|mon sommeil)$|^(?:mes |les |ma )?nuits?$/],
   ["bienetre", /^(?:mon |le |la )?(?:bien[- ]?etre|humeur|mood ?board|mood)$/],
   ["conclusions", /^(?:mes |les )?(?:conclusions|tendances)$/],
@@ -5293,7 +5687,7 @@ var WF_IC = {
   trash:'<path d="M4.5 7h15M9.5 7V4.5h5V7M6.5 7l1 13h9l1-13"/>'
 };
 function wfIc(k, sz){ return '<svg width="' + (sz || 22) + '" height="' + (sz || 22) + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + WF_IC[k] + '</svg>'; }
-var WF_APPS = [["meteo","Météo"],["sommeil","Sommeil"],["bienetre","Bien-être"],["courses","Courses"],["cartes","Cartes"],["anniv","Anniversaires"],["listes:todo","À faire"],["listes:rappels","Rappels"],["month","Le mois"],["notes","Notes"],["gazette","News"],["conclusions","Conclusions"],["fiche","Fiche"],["reglages","Réglages"],["accueil","Accueil"]];
+var WF_APPS = [["meteo","Météo"],["sommeil","Sommeil"],["bienetre","Bien-être"],["courses","Courses"],["cartes","Cartes"],["anniv","Anniversaires"],["videos","Vidéos"],["listes:todo","À faire"],["listes:rappels","Rappels"],["month","Le mois"],["notes","Notes"],["gazette","News"],["conclusions","Conclusions"],["fiche","Fiche"],["reglages","Réglages"],["accueil","Accueil"]];
 var WF_SLOT = {d:"durée", h:"heure", x:"texte"};
 /* texte en minuscules sans accents, de même longueur que l'original (pour retrouver les morceaux d'origine) */
 function wfN(t){ return noAcc(String(t || "").toLowerCase()).replace(/[’]/g, "'").replace(/[{}]/g, " "); }
@@ -5648,7 +6042,7 @@ function phActLbl(a){
   return l + (x ? " · " + x : "");
 }
 /* ---------- MyWorld_1.43 : « Apprends à ton App » (entraînement de la voix, piste C + karaoké de B) ---------- */
-var VX_VER = "1.51";
+var VX_VER = "1.54";
 /* Phrases d'entraînement : à enrichir à chaque nouvelle fonction (v = version qui les ajoute → badge « Nouveau ») */
 var VX_CAT = [
   {id:"kw-afaire1", g:"kw", t:"À faire : rappeler le garage"},
@@ -5683,6 +6077,7 @@ var VX_CAT = [
   {id:"op-courses", g:"open", t:"Ouvre ma liste de courses"},
   {id:"op-anniv", g:"open", t:"Ouvre les anniversaires", v:"1.48"},
   {id:"kw-anniv2", g:"kw", t:"Anniv de Camille le 3 décembre", v:"1.48"},
+  {id:"op-videos", g:"open", t:"Ouvre les vidéos", v:"1.54"},
   {id:"kw-films1", g:"kw", t:"Ajoute Interstellar à mes films", v:"1.51"},
   {id:"op-films", g:"open", t:"Ouvre mes films", v:"1.51"}
 ].map(function(x){ x.v = x.v || "1.43"; return x; });
@@ -7715,6 +8110,7 @@ document.addEventListener("click", function(e){
   var act = b.dataset.act, id = b.dataset.id;
   if (act === "close"){ closeSheet(); return; }
   if (act.indexOf("fw-") === 0 && fwAct(act, b)) return;   /* MyWorld_1.51 */
+  if (act.indexOf("vd-") === 0 && vdAct(act, b)) return;   /* MyWorld_1.54 */
   if (act === "bd-new"){ bdayNewSheet(); return; }
   if (act === "lab-open"){ labOpen(); return; }
   if (act === "eph-open"){ ephOpen(b.dataset.d); return; }
@@ -7829,7 +8225,7 @@ document.addEventListener("click", function(e){
 document.addEventListener("keydown", function(e){ if (e.key === "Escape" && document.getElementById("neMn")) { neMenuClose(); return; } if (e.key === "Escape") { closeSheet(); var l = document.querySelector(".levelup"); if (l) l.remove(); } });
 document.getElementById("captureForm").addEventListener("submit", onCapture);
 
-var TABS = ["accueil","notes","listes","courses","fiche","gazette","meteo","jeu","cartes","sommeil","bienetre","conclusions","reglages","voix","anniv"];
+var TABS = ["accueil","notes","listes","courses","fiche","gazette","meteo","jeu","cartes","sommeil","bienetre","conclusions","reglages","voix","anniv","videos"];
 
 
 /* ===== MyWorld_0.13 : page « Tes listes » (À faire / Rappels) ===== */
@@ -8905,6 +9301,7 @@ var FAN_APPS = [
   {k:"meteo", n:"Météo", bg:"#D2E8FA", ink:"#2C679C", ic:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18h10a4 4 0 0 0 .5-8 5.5 5.5 0 0 0-10.6 1.5A3.3 3.3 0 0 0 7 18z"/></svg>'},
   {k:"cartes", n:"Cartes", bg:"#E4E9F7", ink:"#33449A", ic:FID_CARD},
   {k:"anniv", n:"Anniversaires", bg:"#FBDDE8", ink:"#A3315C", ic:BD_FLOWER},   /* MyWorld_1.48 */
+  {k:"videos", n:"Vidéos", bg:"#D6E6F2", ink:"#0B4F7C", ic:VD_ICON},   /* MyWorld_1.54 : Vidéos à deux */
   {k:"bienetre", n:"Bien-être", bg:"#FBE3EA", ink:"#9A3A55", ic:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16.5 4.8A8.5 8.5 0 1 0 19.6 9"/><path d="M8.8 14.2q3.2 2.9 6.4 0"/><circle cx="9.3" cy="10" r=".6" fill="currentColor"/><circle cx="14.7" cy="10" r=".6" fill="currentColor"/></svg>'},
   /* MyWorld_1.1 : le jeu Forpharos remplace la tuile Drive (« Bientôt ») */
   {k:"jeu", n:"La Veille de Forpharos", bg:"#F3E1C7", ink:"#8A3328", ic:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21l1.2-11h3.6L15 21z"/><path d="M8.5 10h7M10 6.5h4V10h-4z"/><path d="M12 3.5v3"/><path d="M14 8.2l6-2.2M10 8.2L4 6"/><path d="M5 21h14"/></svg>'}
@@ -8914,8 +9311,8 @@ var FAN_APPS = [
    Pour rester fluide : la plante et le lierre sont dessinés image par image sur deux canevas (feuilles pré-dessinées une seule fois),
    les fleurs sont de simples boutons animés par le navigateur (transform). Le dessin s'arrête quand la plante a fini de pousser.
    Appui long sur une appli : on la déplace où l'on veut, sa branche la suit et reste accrochée à la tige (position gardée dans les réglages). */
-var IVY_ORDER = ["notes", "listes", "courses", "fiche", "gazette", "meteo", "jeu", "cartes", "bienetre", "anniv"];   /* MyWorld_1.4 : + Cartes (8e fleur, en haut à gauche) ; 1.11 : + Bien-être (9e, en haut à droite) ; 1.48 : + Anniversaires (10e, à droite entre À faire et Fiche) */
-var IVY_COL = {notes:"#F5C842", listes:"#F29A62", courses:"#5CC2B0", fiche:"#A983E6", gazette:"#E8B44A", meteo:"#73A9E6", jeu:"#C9533F", cartes:"#7F95E0", bienetre:"#E58FA6", anniv:"#D2507E"};
+var IVY_ORDER = ["notes", "listes", "courses", "fiche", "gazette", "meteo", "jeu", "cartes", "bienetre", "anniv", "videos"];   /* MyWorld_1.4 : + Cartes (8e fleur, en haut à gauche) ; 1.11 : + Bien-être (9e, en haut à droite) ; 1.48 : + Anniversaires (10e, à droite entre À faire et Fiche) */
+var IVY_COL = {notes:"#F5C842", listes:"#F29A62", courses:"#5CC2B0", fiche:"#A983E6", gazette:"#E8B44A", meteo:"#73A9E6", jeu:"#C9533F", cartes:"#7F95E0", bienetre:"#E58FA6", anniv:"#D2507E", videos:"#3E86C9"};
 var IVY = (function(){
   var PAL = { leaf: ["#62A04E", "#2D6A2E", "#163C1B"], vein: "rgba(205,232,170,.62)", st: ["#5B4630", "#4E7A35", "#7BAE5A"], pet: "#4C7A34", node: "#7A5B3A", hi: "rgba(185,222,148,.5)", hair: "rgba(156,122,82,.85)" };
   var GEAR = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>';
@@ -8976,7 +9373,7 @@ var IVY = (function(){
       + '<circle cx="42" cy="42" r="31" fill="url(#ivpg' + id + ')"/><path d="M42 11 L46 38 L73 42 L46 46 L42 73 L38 46 L11 42 L38 38Z" fill="rgba(255,255,255,.55)"/><circle cx="42" cy="42" r="20" fill="rgba(255,255,255,.75)"/></svg>'; }
 
   /* ===== le modèle : toutes les formes et l'instant où chacune apparaît ===== */
-  var DEF = [[66, 420], [300, 392], [62, 290], [300, 262], [74, 176], [286, 150], null, [64, 92], [298, 60], [304, 327]];   /* 1.11 : Bien-être en haut à droite ; 1.48 : Anniversaires à droite, entre À faire et Fiche */   /* la 7e (index 6) est au bout de la tige */
+  var DEF = [[66, 420], [300, 392], [62, 290], [300, 262], [74, 176], [286, 150], null, [64, 92], [298, 60], [304, 327], [60, 355]];   /* 1.11 : Bien-être en haut à droite ; 1.48 : Anniversaires à droite, entre À faire et Fiche */   /* la 7e (index 6) est au bout de la tige */
   function model(o){
     var bx = o.bx, by = o.by, W = o.W, H = o.H, kx = Math.min(W, 440) / 360, ky = Math.max(.72, Math.min(1.35, (by - 70) / 474)), sc = Math.max(.85, Math.min(1.2, Math.min(kx, ky)));
     var md = { o: o, kx: kx, ky: ky, sc: sc, mx: function(x){ return W / 2 + (x - 180) * kx; }, my: function(y){ return by - (540 - y) * ky; } };
@@ -9400,6 +9797,8 @@ function markReady(k){ readyParts[k] = 1; if (!readySent && readyParts.items && 
 })();
 function processShare(){
   var sh = S.pendingShare; if (!sh || !db) return; S.pendingShare = null;
+  /* MyWorld_1.54 : un lien YouTube, Instagram ou Facebook va dans Vidéos (pas dans les notes) */
+  if (vidAdd((sh.url ? sh.url + " " : "") + sh.text + " " + sh.title)) return;
   var text = sh.text.replace(/\r\n?/g, "\n");
   if (sh.url && text.indexOf(sh.url) < 0) text = (text ? text + "\n" : "") + sh.url;
   var title = sh.title, lines = text.split("\n");
@@ -9415,6 +9814,7 @@ window.startData = function(dbApi, calApi){
   db = dbApi; mcp = calApi;
   snap("items","items"); snap("log","log"); snap("gazette","gazette",["addedAt","desc",80]); snap("notes","notes"); snap("sleep","sleep",["s","desc",400]); snap("mood","mood");
   setTimeout(function(){ slSync(false); }, 2500);
+  setTimeout(vidSnap, 1500);   /* MyWorld_1.54 : liste commune de vidéos */
   db.doc("settings/main").onSnapshot(function(s){ S.settings = s.exists ? s.data() : null; render(); markReady("settings"); }, function(){ markReady("settings"); });
   watchCal();
 };
